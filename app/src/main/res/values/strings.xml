@@ -8,8 +8,9 @@
     <string name="cancel">Cancel</string>
     <string name="please_wait">Please wait !</string>
     <string name="pic_photo">Choose a photo</string>
-    <string name="see_more">... see more</string>
+    <string name="see_more">… see more</string>
     <string name="error_no_internet">No Internet</string>
     <string name="try_again">Try again!</string>
     <string name="error_take_photo">Faild to take a photo, Try agin !</string>
+    <string name="note_release">Note: This version is unstable.</string>
 </resources>

@@ -1,7 +1,6 @@
 package com.mafqud.android.core
 
 import android.app.Activity
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -11,10 +10,9 @@ import android.view.Window
 import android.view.WindowManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.ColorInt
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.mafqud.android.R
-import com.mafqud.android.SplashActivity
+import com.mafqud.android.HomeActivity
 
 
 fun Window.hideStatusBar() {
@@ -95,7 +93,7 @@ fun Context.changLanguage(lang: String) {
 }
 
 fun Activity.restartApplication() {
-    startActivity(Intent(this, SplashActivity::class.java))
+    startActivity(Intent(this, HomeActivity::class.java))
     this.overridePendingTransition(0, 0);
     this.finish()
 }

@@ -225,6 +225,9 @@ dependencies {
     //gradiant textview
     implementation 'com.github.veeyaarVR:SuperGradientTextView:1.1'
 
+    //SplashScreen compat library
+    implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
+
 }
 
 
