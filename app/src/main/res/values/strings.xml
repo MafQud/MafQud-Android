@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Mafqud</string>
+    <string name="google">Google</string>
+    <string name="facebook">Facebook</string>
+    <string name="log_out">Log out</string>
+    <string name="are_you_sure_logout">Are you sure to log out?</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="please_wait">Please wait !</string>
+    <string name="pic_photo">Choose a photo</string>
+    <string name="see_more">... see more</string>
+    <string name="error_no_internet">No Internet</string>
+    <string name="try_again">Try again!</string>
+    <string name="error_take_photo">Faild to take a photo, Try agin !</string>
 </resources>

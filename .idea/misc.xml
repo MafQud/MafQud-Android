@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/compose-model-1636890409314.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_flash_off.xml" value="0.1815" />
+        <entry key="app/src/main/res/drawable/ic_flash_on.xml" value="0.1815" />
+        <entry key="app/src/main/res/drawable/my_color_state_list.xml" value="0.1815" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2942708333333333" />
       </map>
     </option>

@@ -29,9 +29,21 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        // my.jks information
+        release {
+            storeFile file('/home/shehata/Desktop/mykey.jks')
+            storePassword 'android'
+            keyAlias 'upload'
+            keyPassword 'android'
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            // to sign the release apk
+            signingConfig signingConfigs.release
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", "BUILDTYPE_AND_PRE_RELEASE", "\"release.${getPreRelease()}\""
 
