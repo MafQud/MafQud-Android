@@ -1,0 +1,107 @@
+## 1 (workflow name)
+name: Build and Deploy to play store(Internal test)
+
+## 2 (conditions) -> Actions that will be executed when you push code currently none
+on:
+  push:
+    tags:
+      - "v*.*.*-alpha"
+## 3 (jobs)
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Generate Release Bundle
+        run: ./gradlew bundleRelease
+
+      - name: Sign Release Bundle
+        uses: r0adkll/sign-android-release@v1
+        # ID used to access action output
+        id: sign_app
+        with:
+          releaseDirectory: app/build/outputs/bundle/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+      - uses: actions/upload-artifact@master
+        with:
+          name: release.abb
+          path: app/build/outputs/bundle/release/app-release.aab
+      - uses: actions/upload-artifact@master
+        with:
+          name: mapping.txt
+          path: app/build/outputs/mapping/release/mapping.txt
+          
+  deploy-play-store:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      # 1
+      - uses: actions/download-artifact@master
+        with:
+          name: release.abb
+#      - uses: actions/download-artifact@master
+#        with:
+#          name: mapping.txt
+      # 2
+      - name: Publish to Play Store alpha test track
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+          # 3
+          packageName: com.raywenderlich.android.rwquotes
+          releaseFile: app/build/outputs/bundle/release/app-release.aab
+          whatsNewDirectory: whatsnew/
+          track: internal
+#          mappingFile: mapping.txt
+
+
+  discord_notification:
+    needs: [deploy-play-store]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set output
+        id: vars
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+      # for printing app version name in workflow
+      - name: Check version output
+        env:
+          RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
+        run: |
+            echo $RELEASE_VERSION
+            echo ${{ steps.vars.outputs.tag }}
+
+      - uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          nodetail: true
+          color: 0x00FF00
+          avatar_url: ${{ secrets.DISCORD_AVATAR }}
+          username: |
+            ${{ github.event.repository.name }} application
+          title: |
+            :star2:  New version of ${{ github.event.repository.name }} is ready!
+          description: |
+            :clipboard: Version `${{ steps.vars.outputs.tag }}`
+            :outbox_tray: Click [here](//TODO ADD APP LINK) to install!
+
+
+  notifyTelegram:
+    needs: [deploy-play-store]
+    runs-on: ubuntu-latest
+    steps:
+    - name: send custom message
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        message: |
+          New version of ${{ github.event.repository.name }} is ready!
+          Version: ${{ steps.vars.outputs.tag }}
+          Click to install!
+          (//TODO ADD APP LINK)
