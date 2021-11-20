@@ -2,8 +2,9 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id "org.jetbrains.kotlin.kapt" version "1.5.31"
-
+    id 'com.google.firebase.crashlytics'
 }
+
 // breaking
 ext.majorVersion = 0
 // feature
