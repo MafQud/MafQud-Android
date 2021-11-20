@@ -11,10 +11,15 @@ ext.minorVersion = 1
 //bugfix
 ext.patchVersion = 0
 /*
- alpha - beta - RC - stable
+ alpha - beta  - stable
  */
-ext.preRelease = "alpha"
+ext.preRelease = ReleaseType.ALPHA
 
+enum ReleaseType {
+    ALPHA,
+    BETA,
+    STABLE
+}
 android {
     compileSdk 31
 
@@ -25,6 +30,7 @@ android {
         versionCode generateVersionCode() // 010203
         versionName generateVersionName() // 1.2.3-alpha
         buildConfigField "String", "PRE_RELEASE", "\"${getPreRelease()}\""
+        buildConfigField "boolean", "IS_STABLE", "${isStable()}"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -49,7 +55,7 @@ android {
 
         }
         debug {
-            versionNameSuffix ".debug"
+            versionNameSuffix "-debug"
             buildConfigField "String", "BUILDTYPE_AND_PRE_RELEASE", "\"debug.${getPreRelease()}\""
 
         }
@@ -240,9 +246,16 @@ private String getPreRelease() {
 
 }
 
+private boolean isStable() {
+    if (ext.preRelease == ReleaseType.STABLE) {
+        return true
+    } else false
+
+}
+
 private String generateVersionName() {
     String versionName = "${ext.majorVersion}.${ext.minorVersion}.${ext.patchVersion}"
-    if (ext.preRelease != null & !ext.preRelease.isEmpty()) {
+    if (ext.preRelease != null) {
         versionName = versionName + "-" + ext.preRelease
     }
     return versionName

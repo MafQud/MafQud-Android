@@ -8,11 +8,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.unit.sp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.mafqud.android.ui.material.BoxUi
 import com.mafqud.android.ui.material.ColumnUi
 import com.mafqud.android.ui.material.TextUi
+import java.util.*
 
 class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,11 +28,16 @@ class HomeActivity : AppCompatActivity() {
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    TextUi(text = BuildConfig.VERSION_NAME, fontSize = 18.sp)
-                    TextUi(text = stringResource(id = R.string.note_release), fontSize = 14.sp)
-
+                    TextUi(
+                        text = BuildConfig.VERSION_NAME.lowercase(),
+                        fontSize = 18.sp
+                    )
+                    if (!BuildConfig.IS_STABLE) {
+                        TextUi(text = stringResource(id = R.string.note_release), fontSize = 14.sp)
+                    }
                 }
             }
+
         }
 
 
