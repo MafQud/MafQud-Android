@@ -3,6 +3,7 @@ package com.mafqud.android
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Alignment
@@ -11,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.unit.sp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mafqud.android.ui.material.BoxUi
 import com.mafqud.android.ui.material.ColumnUi
 import com.mafqud.android.ui.material.TextUi
