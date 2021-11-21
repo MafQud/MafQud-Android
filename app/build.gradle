@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id "org.jetbrains.kotlin.kapt" version "1.5.31"
     id 'com.google.firebase.crashlytics'
+    id 'com.google.gms.google-services'
+
 }
 
 // breaking
@@ -101,6 +103,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$gradle.kotlin_version"
     implementation 'com.google.firebase:firebase-analytics:17.2.2'
+    implementation 'com.google.android.play:core-ktx:1.8.1'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
@@ -243,6 +246,9 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+
+
 }
 
 

@@ -10,7 +10,16 @@ import android.view.Window
 import android.view.WindowManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.ColorInt
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
+import com.google.android.play.core.appupdate.AppUpdateInfo
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mafqud.android.R
 import com.mafqud.android.HomeActivity
 
@@ -109,6 +118,20 @@ fun Activity.statusBarColor(@ColorInt resColor: Int) {
     }
 }
 
+
+fun Context.showChromeCustomTabs(url: String) {
+
+    CustomTabsIntent.Builder()
+        .setShowTitle(true)
+        .setToolbarColor(ContextCompat.getColor(this, R.color.red))
+        .addDefaultShareMenuItem()
+        .setStartAnimations(this, android.R.anim.fade_in, android.R.anim.fade_out)
+        .setExitAnimations(this, android.R.anim.fade_in, android.R.anim.fade_out)
+        .build().also {
+            it.launchUrl(this, Uri.parse(url))
+        }
+}
+
 fun FragmentActivity.openGallery(
     galleryLauncher: ActivityResultLauncher<Intent>
 ) {
@@ -120,3 +143,53 @@ fun FragmentActivity.openGallery(
 
 fun Context.getAppName(): String = applicationInfo.loadLabel(packageManager).toString()
 
+
+fun Activity.inAppReview() {
+    val manager = ReviewManagerFactory.create(this)
+
+    (manager.requestReviewFlow()).addOnCompleteListener { request ->
+        if (request.isSuccessful) {
+            // We got the ReviewInfo object
+            val reviewInfo = request.result
+            manager.launchReviewFlow(this, reviewInfo)
+        } else {
+            //rateApp()
+        }
+    }
+
+}
+fun Activity.inAppUpdate() {
+    // Creates instance of the manager.
+    val appUpdateManager = AppUpdateManagerFactory.create(this)
+
+    // Returns an intent object that you use to check for an update.
+    val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+    // Checks that the platform will allow the specified type of update.
+    appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+        if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+            // && appUpdateInfo.updatePriority() >= HIGH_PRIORITY_UPDATE
+            && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+        ) {
+            try {
+                // Request the update.
+                startUpdate(appUpdateManager, appUpdateInfo)
+
+            } catch (e: Exception) {
+                FirebaseCrashlytics.getInstance().log(e.localizedMessage)
+            }
+        }
+    }
+}
+
+private fun Activity.startUpdate(appUpdateManager: AppUpdateManager, appUpdateInfo: AppUpdateInfo) {
+    appUpdateManager.startUpdateFlowForResult(
+        // Pass the intent that is returned by 'getAppUpdateInfo()'.
+        appUpdateInfo,
+        // Or 'AppUpdateType.FLEXIBLE' for flexible updates.
+        AppUpdateType.FLEXIBLE,
+        // The current activity making the update request.
+        this,
+        // Include a request code to later monitor this update request.
+        101)
+}
