@@ -3,9 +3,9 @@ package com.mafqud.android.services
 
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.mafqud.android.notification.NotificationHelper
-import com.mafqud.android.notification.NotificationHelper.Companion.NOTIFICATION_FCM_PUSH
-import com.mafqud.android.util.Logger
+import com.mafqud.android.util.notification.NotificationHelper
+import com.mafqud.android.util.notification.NotificationHelper.Companion.NOTIFICATION_FCM_PUSH
+import com.mafqud.android.util.other.Logger
 
 
 class MyFirebaseMessagingService  : FirebaseMessagingService() {

@@ -1,7 +1,10 @@
 package com.mafqud.android
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.WindowManager
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Arrangement
@@ -13,10 +16,10 @@ import androidx.compose.ui.unit.sp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
-import com.mafqud.android.core.inAppUpdate
-import com.mafqud.android.ui.material.BoxUi
-import com.mafqud.android.ui.material.ColumnUi
-import com.mafqud.android.ui.material.TextUi
+import com.mafqud.android.ui.theme.BoxUi
+import com.mafqud.android.ui.theme.ColumnUi
+import com.mafqud.android.ui.theme.TextUi
+import com.mafqud.android.util.other.inAppUpdate
 
 
 class HomeActivity : AppCompatActivity() {
@@ -58,6 +61,7 @@ class HomeActivity : AppCompatActivity() {
     private fun initialSetup() {
         // Handle the splash screen transition.
         val splashScreen = installSplashScreen()
+
         // check google play for our app update
         inAppUpdate()
     }
