@@ -16,8 +16,6 @@ import androidx.core.graphics.drawable.DrawableCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.google.android.libraries.maps.model.BitmapDescriptor
-import com.google.android.libraries.maps.model.BitmapDescriptorFactory
 import com.mafqud.android.R
 import java.io.IOException
 import java.io.InputStream
@@ -74,58 +72,4 @@ fun Context.downloadBitmapFromUrl(
             }
         })
 
-}
-
-fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor? {
-    val vectorDrawable = ContextCompat.getDrawable(context, vectorResId)
-    vectorDrawable!!.setBounds(0, 0, vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight)
-    vectorDrawable.setTint(context.resources.getColor(R.color.purple))
-    val bitmap = Bitmap.createBitmap(
-        vectorDrawable.intrinsicWidth,
-        vectorDrawable.intrinsicHeight,
-        Bitmap.Config.ARGB_8888
-    )
-    val canvas = Canvas(bitmap)
-    vectorDrawable.draw(canvas)
-    return BitmapDescriptorFactory.fromBitmap(bitmap)
-}
-
-fun getBitmapFromAsset(context: Context, strName: String): Bitmap? {
-    val assetManager: AssetManager = context.getAssets()
-    var istr: InputStream? = null
-    return try {
-        istr = assetManager.open(strName)
-        val b = BitmapFactory.decodeStream(istr)
-        Bitmap.createScaledBitmap(b, 200, 200, false)
-    } catch (e: IOException) {
-        e.printStackTrace()
-        null
-    }
-}
-
-/*fun getSvgFromAsset(context: Context, strName: String): Bitmap {
-    // Load and parse a SVG
-    // Load and parse a SVG
-    val svg = SVGBuilder()
-        .readFromAsset(context.assets, strName) // if svg in assets
-        // .setWhiteMode(true) // draw fills in white, doesn't draw strokes
-        // .setColorSwap(0xFF008800, 0xFF33AAFF) // swap a single colour
-        // .setColorFilter(filter) // run through a colour filter
-        // .set[Stroke|Fill]ColorFilter(filter) // apply a colour filter to only the stroke or fill
-        .build()
-
-    // Turn into a drawable
-    return svg.drawable.toBitmap()
-}*/
-fun getBitmapFromVectorDrawable(context: Context?, drawableId: Int): Bitmap? {
-    var drawable = ContextCompat.getDrawable(context!!, drawableId)
-    drawable = DrawableCompat.wrap(drawable!!).mutate()
-    val bitmap = Bitmap.createBitmap(
-        drawable.intrinsicWidth,
-        drawable.intrinsicHeight, Bitmap.Config.ARGB_8888
-    )
-    val canvas = Canvas(bitmap)
-    drawable.setBounds(0, 0, canvas.width, canvas.height)
-    drawable.draw(canvas)
-    return bitmap
 }

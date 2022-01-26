@@ -366,14 +366,14 @@ fun SliderHorizontalUi(
     content: @Composable (Int, PagerState) -> Unit
 ) {
 
-    val pagerState = rememberPagerState(pageCount = count)
+    val pagerState = rememberPagerState( )
 
     ColumnUi(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        HorizontalPager(state = pagerState) { page ->
+        HorizontalPager(state = pagerState, count = count) { page ->
             CardUi(
                 Modifier
                     .graphicsLayer {
@@ -453,14 +453,14 @@ fun SliderVerticalUi(
     content: @Composable (Int, PagerState) -> Unit
 ) {
 
-    val pagerState = rememberPagerState(pageCount = count)
+    val pagerState = rememberPagerState()
 
     ColumnUi(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        VerticalPager(state = pagerState) { page ->
+        VerticalPager(state = pagerState, count = count) { page ->
             CardUi(
                 Modifier
                     .graphicsLayer {
