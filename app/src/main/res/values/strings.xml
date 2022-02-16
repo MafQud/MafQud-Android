@@ -18,4 +18,20 @@
     <string name="channel_description_upload">For uploading</string>
     <string name="channel_name_push">FCM</string>
     <string name="channel_description">FCM receiver</string>
+    <string name="uploading">Uploading</string>
+    <string name="fcm_notification_channel_id">102</string>
+    <string name="permission_read_denied">Cann\'t access files.</string>
+    <string name="permission_needed">Permission needed</string>
+    <string name="open_setting">Open Setting</string>
+    <string name="camera_dialog">Camera and Storage permissions needed for tacking and accessing photos</string>
+    <string name="storage_dialog">Storage permission needed for accessing photos</string>
+    <string name="open_gps">Please, open your GPS to get your current location</string>
+    <string name="error_no_more_data">Can\'t load more data.. Check Internet connection!</string>
+    <string name="error_bad_gateway">Bad Getway</string>
+    <string name="error_unknown">Unknown Error</string>
+    <string name="error_not_found">Not found</string>
+    <string name="error_not_auth">Email or password are incorrect</string>
+    <string name="error_server_error">Server error</string>
+    <string name="error_forbidden">Forbidden</string>
+    <string name="error_bad_request">Bad request</string>
 </resources>

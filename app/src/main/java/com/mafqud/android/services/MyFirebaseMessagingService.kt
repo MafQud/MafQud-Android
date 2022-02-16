@@ -3,8 +3,7 @@ package com.mafqud.android.services
 
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.mafqud.android.util.notification.NotificationHelper
-import com.mafqud.android.util.notification.NotificationHelper.Companion.NOTIFICATION_FCM_PUSH
+import com.mafqud.android.util.notification.Notifier
 import com.mafqud.android.util.other.Logger
 
 
@@ -24,13 +23,11 @@ class MyFirebaseMessagingService  : FirebaseMessagingService() {
         // Check if message contains a notification payload.
         remoteMessage.notification?.let {
             Logger.e("Message Notification Body:", it.body!!)
-            val build = NotificationHelper.Builder(context = baseContext)
-                .setTitle(it.title)
-                .setDescription(it.body)
-                .setType(NOTIFICATION_FCM_PUSH)
-                .build()
-
-
+            Notifier.fcmNotification(
+                context = baseContext,
+                title = it.title,
+                description = it.body
+            )
         }
     }
 

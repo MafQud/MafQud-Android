@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "1063332945556-gdm46c7jpvvivn6hogo9vh92co8ehrmv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mafqud.android",
+            "certificate_hash": "b67e83d48d45702d3453e055ce81265aef051ead"
+          }
+        },
+        {
           "client_id": "1063332945556-pdsj7sjkgg9r850hub8pgu8bg4um2cdu.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

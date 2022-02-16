@@ -7,16 +7,17 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.ui.theme.BoxUi
 import com.mafqud.android.ui.theme.redBoldToWhite
 
 @Composable
-fun CircleLoading(loadingState: Boolean) {
+fun CircleLoading(loadingState: Boolean, circleSize: Dp = 35.dp) {
     if (loadingState) {
         BoxUi(modifier = Modifier.fillMaxSize(), Alignment.Center) {
             CircularProgressIndicator(
-                modifier = Modifier.size(35.dp),
+                modifier = Modifier.size(circleSize),
                 color = MaterialTheme.colors.redBoldToWhite
             )
         }
