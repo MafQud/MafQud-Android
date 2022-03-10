@@ -21,7 +21,7 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mafqud.android.R
-import com.mafqud.android.HomeActivity
+import com.mafqud.android.splash.SplashActivity
 
 
 fun Window.hideStatusBar() {
@@ -102,7 +102,7 @@ fun Context.changLanguage(lang: String) {
 }
 
 fun Activity.restartApplication() {
-    startActivity(Intent(this, HomeActivity::class.java))
+    startActivity(Intent(this, SplashActivity::class.java))
     this.overridePendingTransition(0, 0);
     this.finish()
 }

@@ -34,7 +34,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextLayoutResult
@@ -51,63 +50,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.PopupProperties
 import com.google.accompanist.pager.*
 import com.mafqud.android.R
-
 import kotlin.math.absoluteValue
 
-
-@Composable
-fun MyTheme(
-    darkTheme: Boolean = false /*TODO Change in next release*/,
-    content: @Composable () -> Unit
-) {
-    val LightColors = lightColors(
-        primary = colorResource(id = R.color.red),
-        primaryVariant = colorResource(id = R.color.red),
-
-        secondary = colorResource(id = R.color.purple),
-        secondaryVariant = colorResource(id = R.color.purple),
-
-        onPrimary = colorResource(id = R.color.white),
-        onSecondary = colorResource(id = R.color.white),
-        onSurface = colorResource(id = R.color.red),
-        // Using default values for onPrimary, surface, error, etc.
-    )
-
-    val DarkColors = darkColors(
-        primary = colorResource(id = R.color.red),
-        primaryVariant = colorResource(id = R.color.black),
-
-        secondary = colorResource(id = R.color.purple),
-        secondaryVariant = colorResource(id = R.color.purple),
-
-        onPrimary = colorResource(id = R.color.black),
-        onSecondary = colorResource(id = R.color.white),
-        onSurface = colorResource(id = R.color.white),
-
-        // secondaryVariant == secondary in dark theme
-    )
-
-
-    val Shapes = Shapes(
-        small = RoundedCornerShape(percent = 50),
-        medium = RoundedCornerShape(percent = 25),
-        large = RoundedCornerShape(size = 4.dp)
-    )
-
-    val colors = if (darkTheme) {
-        DarkColors
-    } else {
-        LightColors
-    }
-
-    MaterialTheme(
-        colors = colors,
-        typography = MyTypography,
-        shapes = Shapes,
-        content = content
-    )
-
-}
 
 @Composable
 fun TextUi(

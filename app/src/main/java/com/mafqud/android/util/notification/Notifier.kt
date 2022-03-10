@@ -10,7 +10,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import com.mafqud.android.HomeActivity
+import com.mafqud.android.splash.SplashActivity
 import com.mafqud.android.R
 
 
@@ -45,7 +45,7 @@ object Notifier {
         channelId: String,
         title: String = "",
         description: String = "",
-        intent: Intent = Intent(context, HomeActivity::class.java),
+        intent: Intent = Intent(context, SplashActivity::class.java),
         pendingIntent: PendingIntent = getPendingIntent(context, intent)
     ): NotificationCompat.Builder {
         return NotificationCompat.Builder(context, channelId)

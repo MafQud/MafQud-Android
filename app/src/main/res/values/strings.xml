@@ -34,4 +34,9 @@
     <string name="error_server_error">Server error</string>
     <string name="error_forbidden">Forbidden</string>
     <string name="error_bad_request">Bad request</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="welcome_mafqud">Welcome with mafqud</string>
+    <string name="mafqud_help">Mafqud helps you to ...</string>
+    <string name="login">Log in</string>
+    <string name="sign_up">Sign up</string>
 </resources>
