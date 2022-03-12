@@ -43,4 +43,9 @@
     <string name="insert_phone_num">Insert phone number</string>
     <string name="next">Next</string>
     <string name="egypt_code">+20</string>
+    <string name="create_account">Create account</string>
+    <string name="insert_email">Insert email</string>
+    <string name="example_name">Ex: Osama Yasser</string>
+    <string name="full_name">Full Name</string>
+    <string name="example_email">Ex: user@gmail.com</string>
 </resources>

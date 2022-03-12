@@ -6,21 +6,29 @@
 
     <fragment
         android:id="@+id/introFragment"
-        android:name="com.mafqud.android.auth.IntroFragment"
+        android:name="com.mafqud.android.auth.intro.IntroFragment"
         android:label="IntroFragment" >
         <action
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/empty"
+            app:popExitAnim="@android:anim/slide_out_right"
             android:id="@+id/action_introFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
         <action
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/empty"
+            app:popExitAnim="@android:anim/slide_out_right"
             android:id="@+id/action_introFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.mafqud.android.auth.LoginFragment"
+        android:name="com.mafqud.android.auth.login.LoginFragment"
         android:label="LoginFragment" />
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.mafqud.android.auth.RegisterFragment"
+        android:name="com.mafqud.android.auth.register.RegisterFragment"
         android:label="RegisterFragment" />
 </navigation>

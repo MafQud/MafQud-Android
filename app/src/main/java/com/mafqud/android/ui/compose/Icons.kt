@@ -11,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
@@ -25,6 +26,7 @@ fun IconBack(
     iconSize: Dp = mIconSize,
     iconColor: Color = MaterialTheme.colorScheme.tertiary,
     backgroundColor: Color = MaterialTheme.colorScheme.tertiaryContainer,
+    alpha: Float = 1f,
     onClick: () -> Unit
 ) {
     BoxUi(
@@ -32,6 +34,7 @@ fun IconBack(
             .size(iconSize)
             .clip(RoundedCornerShape(50))
             .background(backgroundColor)
+            .alpha(alpha)
             .clickable {
                 onClick()
             }
