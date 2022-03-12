@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/home_navigation.xml"
+    app:startDestination="@id/homeFragment">
+
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.mafqud.android.home.HomeFragment"
+        android:label="HomeFragment" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.mafqud.android.home.MapFragment"
+        android:label="MapFragment" />
+    <fragment
+        android:id="@+id/reportFragment"
+        android:name="com.mafqud.android.home.ReportFragment"
+        android:label="ReportFragment" />
+    <fragment
+        android:id="@+id/moreFragment"
+        android:name="com.mafqud.android.home.MoreFragment"
+        android:label="MoreFragment" />
+</navigation>

@@ -12,12 +12,12 @@
 
     <style name="MaterialCalendar.HeaderLayout1" parent="Widget.MaterialComponents.MaterialCalendar.HeaderLayout">
         <!--<item name="android:background">?attr/colorPrimary</item>-->
-        <item name="android:background">@color/purple</item>
+        <item name="android:background">@color/blue</item>
     </style>
 
     <style name="TextButton.Dialog1" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/white</item>
-        <item name="backgroundTint">@color/purple</item>
+        <item name="backgroundTint">@color/blue</item>
     </style>
 
 
@@ -25,8 +25,8 @@
     <style name="TimePacker" parent="ThemeOverlay.MaterialComponents.TimePicker">
         <item name="colorPrimary">@color/white</item>
         <item name="colorOnPrimary">@color/red</item>
-        <item name="colorOnSurface">@color/purple</item>
-        <item name="clockNumberTextColor">@color/purple</item>
+        <item name="colorOnSurface">@color/blue</item>
+        <item name="clockNumberTextColor">@color/blue</item>
     </style>
 
 
@@ -37,7 +37,7 @@
     </style>
 
     <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-        <item name="android:textColor">@color/purple</item>
+        <item name="android:textColor">@color/blue</item>
     </style>
 
     <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">

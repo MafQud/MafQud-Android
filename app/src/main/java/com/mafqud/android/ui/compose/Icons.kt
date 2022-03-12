@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,6 +22,32 @@ import com.mafqud.android.ui.theme.IconUi
 
 private val mIconSize = 35.dp
 
+
+@Composable
+fun IconNotification(
+    iconSize: Dp = mIconSize,
+    iconColor: Color = MaterialTheme.colorScheme.primary,
+    backgroundColor: Color = MaterialTheme.colorScheme.secondary,
+    alpha: Float = 0.5f,
+    onClick: () -> Unit
+) {
+    BoxUi(
+        modifier = Modifier
+            .size(iconSize)
+            .clip(RoundedCornerShape(50))
+            .background(backgroundColor.copy(alpha = alpha))
+            .clickable {
+                onClick()
+            }
+            .padding(4.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        IconUi(
+            imageVector = Icons.Filled.Notifications,
+            tint = iconColor,
+        )
+    }
+}
 @Composable
 fun IconBack(
     iconSize: Dp = mIconSize,

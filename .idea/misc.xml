@@ -11,9 +11,11 @@
         <entry key="app/src/main/res/drawable/ic_login.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_mafqud_logo.xml" value="0.207" />
         <entry key="app/src/main/res/drawable/my_color_state_list.xml" value="0.1815" />
+        <entry key="app/src/main/res/drawable/tab_color.xml" value="0.1645" />
         <entry key="app/src/main/res/layout/activity_auth.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2942708333333333" />
+        <entry key="app/src/main/res/menu/menu_bottom_main.xml" value="0.1" />
       </map>
     </option>
   </component>

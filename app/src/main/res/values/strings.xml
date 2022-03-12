@@ -48,4 +48,8 @@
     <string name="example_name">Ex: Osama Yasser</string>
     <string name="full_name">Full Name</string>
     <string name="example_email">Ex: user@gmail.com</string>
+    <string name="title_home">Home</string>
+    <string name="title_report">Report</string>
+    <string name="title_map">Map</string>
+    <string name="title_more">More</string>
 </resources>
