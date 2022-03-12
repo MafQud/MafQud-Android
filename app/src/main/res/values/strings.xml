@@ -39,4 +39,8 @@
     <string name="mafqud_help">Mafqud helps you to ...</string>
     <string name="login">Log in</string>
     <string name="sign_up">Sign up</string>
+    <string name="login_title">Login</string>
+    <string name="insert_phone_num">Insert phone number</string>
+    <string name="next">Next</string>
+    <string name="egypt_code">+20</string>
 </resources>

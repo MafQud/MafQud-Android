@@ -474,7 +474,7 @@ fun ColumnUi(
 fun RowUi(
     modifier: Modifier = Modifier,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
-    verticalAlignment: Alignment.Vertical = Alignment.Top,
+    verticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
     content: @Composable RowScope.() -> Unit
 ) {
     Row(modifier, horizontalArrangement, verticalAlignment, content)

@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.mafqud.android.R
+import com.mafqud.android.ui.compose.GeneralButton
 
 import com.mafqud.android.ui.theme.*
 

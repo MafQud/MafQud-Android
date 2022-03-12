@@ -1,54 +1,51 @@
-package com.mafqud.android.ui.android
+package com.mafqud.android.ui.compose
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.mafqud.android.R
+import com.mafqud.android.ui.theme.BoxUi
+import com.mafqud.android.ui.theme.ButtonUi
+import com.mafqud.android.ui.theme.TextUi
 
-import com.mafqud.android.ui.theme.*
+private val mButtonHeight = 50.dp
 
-@Composable
-fun GoogleButton(onGoogleClicked: () -> Unit) {
-    ButtonUi(
-        modifier = Modifier.clip(RoundedCornerShape(4.dp)),
-        colors = ButtonDefaults.buttonColors(MaterialTheme.colors.white200Always),
-        onClick = onGoogleClicked
-    ) {
-        //IconUi(painter = painterResource(id = R.drawable.ic_google))
-        SpacerUi(modifier = Modifier.width(2.dp))
-        TextUi(
-            text = stringResource(id = R.string.google),
-            style = MaterialTheme.typography.body1,
-            color = MaterialTheme.colors.blackAlways
-        )
-    }
-}
 
 @Composable
-fun FacebookButton(onFacebookClicked: () -> Unit) {
-    ButtonUi(
-        modifier = Modifier.clip(RoundedCornerShape(4.dp)),
-        colors = ButtonDefaults.buttonColors(MaterialTheme.colors.blueAlways),
-        onClick = onFacebookClicked
-    ) {
-        //IconUi(painter = painterResource(id = R.drawable.ic_facebook))
-        SpacerUi(modifier = Modifier.width(2.dp))
-        TextUi(
-            text = stringResource(id = R.string.facebook),
-            style = MaterialTheme.typography.body1,
-            color = MaterialTheme.colors.whiteAlways
-        )
+fun ButtonAuth(
+    title: String, height: Dp = mButtonHeight,
+    textColor: Color = MaterialTheme.colorScheme.background,
+    backgroundColor: Color = MaterialTheme.colorScheme.primary,
+    onClick: () -> Unit,
+) {
+    BoxUi {
+        ButtonUi(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(height)
+                .clip(RoundedCornerShape(50)),
+            onClick = {
+                onClick()
+            },
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = backgroundColor
+            )
+        ) {
+            TextUi(
+                text = title,
+                color = textColor,
+                style = MaterialTheme.typography.labelLarge
+            )
+        }
     }
 }
 
@@ -59,8 +56,8 @@ fun GeneralButton(
     title: String,
     cornerSize: Dp = 8.dp,
     borderColor: Color = Color.Transparent,
-    buttonColor: Color = MaterialTheme.colors.primary,
-    textColor: Color = MaterialTheme.colors.whiteAlways,
+    buttonColor: Color = Color.Black,
+    textColor: Color = Color.Black,
 ) {
     val mModifier =
         modifier.then(
@@ -75,12 +72,11 @@ fun GeneralButton(
         BoxUi(contentAlignment = Alignment.Center) {
             TextUi(
                 text = title,
-                style = MaterialTheme.typography.body1,
+                style = MaterialTheme.typography.labelLarge,
                 color = textColor
             )
         }
 
 
     }
-
 }
