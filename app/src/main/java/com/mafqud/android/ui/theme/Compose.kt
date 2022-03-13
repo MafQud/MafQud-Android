@@ -253,7 +253,7 @@ fun TextFieldUi(
 @Composable
 fun BoxUi(
     modifier: Modifier = Modifier,
-    contentAlignment: Alignment = Alignment.TopStart,
+    contentAlignment: Alignment = Alignment.Center,
     propagateMinConstraints: Boolean = false,
     content: @Composable BoxScope.() -> Unit
 ) {

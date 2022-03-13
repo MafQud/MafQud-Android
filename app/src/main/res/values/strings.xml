@@ -52,4 +52,5 @@
     <string name="title_report">Report</string>
     <string name="title_map">Map</string>
     <string name="title_more">More</string>
+    <string name="search_title">Search with name</string>
 </resources>

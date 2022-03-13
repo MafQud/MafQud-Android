@@ -1,4 +1,4 @@
-package com.mafqud.android.home
+package com.mafqud.android.more
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,7 @@ import com.mafqud.android.ui.theme.MafQudTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MapFragment : Fragment() {
+class MoreFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,

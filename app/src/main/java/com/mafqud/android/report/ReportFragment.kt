@@ -1,4 +1,4 @@
-package com.mafqud.android.home
+package com.mafqud.android.report
 
 import android.os.Bundle
 import android.view.LayoutInflater

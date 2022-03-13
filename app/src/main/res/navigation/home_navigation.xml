@@ -11,14 +11,14 @@
         android:label="HomeFragment" />
     <fragment
         android:id="@+id/mapFragment"
-        android:name="com.mafqud.android.home.MapFragment"
+        android:name="com.mafqud.android.map.MapFragment"
         android:label="MapFragment" />
     <fragment
         android:id="@+id/reportFragment"
-        android:name="com.mafqud.android.home.ReportFragment"
+        android:name="com.mafqud.android.report.ReportFragment"
         android:label="ReportFragment" />
     <fragment
         android:id="@+id/moreFragment"
-        android:name="com.mafqud.android.home.MoreFragment"
+        android:name="com.mafqud.android.more.MoreFragment"
         android:label="MoreFragment" />
 </navigation>

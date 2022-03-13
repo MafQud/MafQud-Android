@@ -201,11 +201,11 @@ private fun HeadItem(
                 .padding(start = 16.dp, top = 16.dp),
             contentAlignment = Alignment.CenterStart
         ) {
-            IconBack(iconColor = MaterialTheme.colorScheme.onPrimary,
-                backgroundColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            IconBack(iconColor = MaterialTheme.colorScheme.onSecondary,
+                backgroundColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.4f),
                 onClick = {
-                onBackPressed()
-            })
+                    onBackPressed()
+                })
         }
         TextUi(
             modifier = Modifier
