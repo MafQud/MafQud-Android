@@ -508,7 +508,7 @@ fun LazyRowUi(
         horizontalArrangement,
         verticalAlignment,
         flingBehavior,
-        content
+        content = content
     )
 }
 
@@ -532,7 +532,7 @@ fun LazyColumnUi(
         verticalArrangement,
         horizontalAlignment,
         flingBehavior,
-        content
+        content = content
     )
 }
 
@@ -592,6 +592,7 @@ fun SpacerSmallLine() {
     }
 }
 
+/*
 @ExperimentalFoundationApi
 @Composable
 fun GridUi(
@@ -635,6 +636,7 @@ fun LazyGridUi(
         content
     )
 }
+*/
 
 
 @Composable
