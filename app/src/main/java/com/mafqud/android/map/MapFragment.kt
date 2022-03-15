@@ -26,7 +26,7 @@ class MapFragment : Fragment() {
             )
             setContent {
                 MafQudTheme {
-
+                    MapScreen()
                 }
             }
         }

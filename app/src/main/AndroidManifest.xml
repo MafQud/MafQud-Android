@@ -72,6 +72,11 @@
         <meta-data
             android:name="firebase_analytics_collection_enabled"
             android:value="false" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCb2s9O7_FWlGJ5sNOzs0UuVP21_mI8FTc" />
+
     </application>
 
 </manifest>

@@ -24,7 +24,10 @@ import com.mafqud.android.ui.theme.SpacerUi
 
 @Composable
 @Preview
-fun ReportScreen() {
+fun ReportScreen(
+    onReportLost: () -> Unit = {},
+    onReportFound: () -> Unit = {},
+) {
     BoxUi(
         modifier = Modifier
             .fillMaxSize()
@@ -47,7 +50,7 @@ fun ReportScreen() {
             ButtonAuth(title = stringResource(id = R.string.report_lost),
                 textColor = MaterialTheme.colorScheme.onSecondary,
                 backgroundColor = MaterialTheme.colorScheme.primary, onClick = {
-
+                    onReportLost()
 
                 })
 
@@ -57,7 +60,7 @@ fun ReportScreen() {
             ButtonAuth(title = stringResource(id = R.string.report_found),
                 textColor = MaterialTheme.colorScheme.onSecondary,
                 backgroundColor = MaterialTheme.colorScheme.onPrimaryContainer, onClick = {
-
+                    onReportFound()
                 })
         }
 
