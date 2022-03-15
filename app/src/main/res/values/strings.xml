@@ -53,4 +53,6 @@
     <string name="title_map">Map</string>
     <string name="title_more">More</string>
     <string name="search_title">Search with name</string>
+    <string name="report_lost">Report  lost</string>
+    <string name="report_found">Report found</string>
 </resources>

@@ -3,6 +3,7 @@ package com.mafqud.android.splash
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -36,22 +37,34 @@ fun SplashScreen(onAnimationFinished: () -> Unit = {}) {
 
         // to be as indicator for the users to know, whose version he is working on.
         BoxUi(
-            contentAlignment = Alignment.Center, modifier = Modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .background(
                     androidx.compose.material3.MaterialTheme.colorScheme.background
                 )
         ) {
+
+            LottieAnimation(
+                modifier = Modifier
+                    .size(300.dp, 220.dp)
+                    .align(Alignment.Center),
+                composition = composition.value,
+                progress = mProgress.value,
+            )
+           /* GifImage(
+                modifier = Modifier
+                    .size(300.dp, 220.dp)
+                    .align(Alignment.Center),
+                imageID = R.drawable.animation_logo
+            )*/
+
             ColumnUi(
-                verticalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(20.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                LottieAnimation(
-                    modifier = Modifier.size(300.dp, 220.dp),
-                    composition = composition.value,
-                    progress = mProgress.value,
-                )
-
                 TextUi(
                     text = BuildConfig.VERSION_NAME.toLowerCase(),
                     fontSize = 14.sp
@@ -60,6 +73,7 @@ fun SplashScreen(onAnimationFinished: () -> Unit = {}) {
                     TextUi(text = stringResource(id = R.string.note_release), fontSize = 14.sp)
                 }
             }
+
         }
         if (mProgress.value == 1f) {
             onAnimationFinished()

@@ -26,7 +26,7 @@ class ReportFragment : Fragment() {
             )
             setContent {
                 MafQudTheme {
-
+                    ReportScreen()
                 }
             }
         }

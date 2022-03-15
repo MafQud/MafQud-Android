@@ -25,7 +25,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
-import com.mafqud.android.ui.compose.IconNotification
 import com.mafqud.android.ui.theme.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -38,16 +37,11 @@ fun HomeScreen() {
             ),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        ColumnUi(
+        BoxUi(
             Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            HeadUi()
-            SpacerUi(modifier = Modifier.height(20.dp))
             SearchUi()
-
         }
-
         BodyUi(Modifier.weight(1f))
     }
 }
@@ -55,9 +49,11 @@ fun HomeScreen() {
 
 @Composable
 private fun SearchUi() {
-    TapsUi()
-    DropDownUi()
-    SearchNameUi()
+   ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+       TapsUi()
+       DropDownUi()
+       SearchNameUi()
+   }
 }
 
 @Composable
@@ -369,37 +365,7 @@ private fun CreateUserPhoto(
 }
 
 @Composable
-private fun HeadUi() {
-    RowUi(
-        modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-
-        RowUi(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            BoxUi(
-                Modifier
-                    .size(35.dp)
-                    .clip(RoundedCornerShape(50))
-                    .background(MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f)),
-                contentAlignment = Alignment.Center
-            ) {
-                TextUi(
-                    text = "M",
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    style = MaterialTheme.typography.titleMedium
-                )
-            }
-            TextUi(
-                text = "Marwa Kamel",
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                style = MaterialTheme.typography.titleMedium
-            )
-        }
+fun HomeHostNavigation() {
 
 
-        IconNotification {
-
-        }
-
-
-    }
 }

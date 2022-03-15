@@ -4,7 +4,9 @@ import android.graphics.BlurMaskFilter
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.Typeface
+import android.os.Build.VERSION.SDK_INT
 import android.view.LayoutInflater
+import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.*
@@ -48,6 +50,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.PopupProperties
+import coil.ImageLoader
+import coil.compose.rememberImagePainter
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
+import coil.size.OriginalSize
 import com.google.accompanist.pager.*
 import com.mafqud.android.R
 import kotlin.math.absoluteValue
@@ -310,7 +317,7 @@ fun SliderHorizontalUi(
     content: @Composable (Int, PagerState) -> Unit
 ) {
 
-    val pagerState = rememberPagerState( )
+    val pagerState = rememberPagerState()
 
     ColumnUi(
         modifier = Modifier.fillMaxSize(),
@@ -631,12 +638,14 @@ fun LazyGridUi(
 
 
 @Composable
-fun createAndroidViewForXMLLayout(@LayoutRes resId: Int, modifier: Modifier) {
+fun CreateAndroidViewForXMLLayout(@LayoutRes resId: Int, modifier: Modifier): View {
     val context = LocalContext.current
     val your_xml_Layout = remember(resId, context) {
         LayoutInflater.from(context).inflate(resId, null)
     }
+
     AndroidView(modifier = modifier, factory = { your_xml_Layout })
+    return your_xml_Layout
 }
 
 @Composable
@@ -692,33 +701,32 @@ fun GradientTextUi(name: String, colors: List<Color>, modifier: Modifier = Modif
     }
 }
 
-/*@Composable
-fun gradiantTextUi(text: String) {
-    val context = LocalContext.current
-    val your_xml_Layout = remember(R.layout.grad_text, context) {
-        val view = LayoutInflater.from(context).inflate(R.layout.grad_text, null)
-        val textView = view.findViewById<TextView>(R.id.text)
-        textView.text = text
-        *//* val shader = LinearGradient(0f, 0f, 0f, textView.textSize,
-             Color.RED, Color.BLUE,
-             Shader.TileMode.CLAMP)
-         textView.paint.shader = shader*//*
-        return@remember view
-    }
-    AndroidView(modifier = Modifier, factory = { your_xml_Layout })
-}*/
 
-/*
 @Composable
-fun SwipeToRefresh(
-    content: @Composable () -> Unit,
-    isRefreshing: Boolean = false,
-    onRefresh: () -> Unit
+fun GifImage(
+    modifier: Modifier = Modifier,
+    imageID: Int
 ) {
-    SwipeRefresh(
-        state = rememberSwipeRefreshState(isRefreshing),
-        onRefresh = onRefresh,
-    ) {
-        content()
-    }
-}*/
+    val context = LocalContext.current
+    val imageLoader = ImageLoader.Builder(context)
+        .componentRegistry {
+            if (SDK_INT >= 28) {
+                add(ImageDecoderDecoder(context))
+            } else {
+                add(GifDecoder())
+            }
+        }
+        .build()
+
+    Image(
+        painter = rememberImagePainter(
+            imageLoader = imageLoader,
+            data = imageID,
+            builder = {
+                size(OriginalSize)
+            },
+        ),
+        contentDescription = null,
+        modifier = modifier
+    )
+}

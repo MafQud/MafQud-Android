@@ -1,13 +1,20 @@
 package com.mafqud.android.home
 
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mafqud.android.R
 import com.mafqud.android.base.activity.BaseActivity
+import com.mafqud.android.ui.compose.HomeAppBar
+import com.mafqud.android.ui.theme.ColumnUi
+import com.mafqud.android.ui.theme.CreateAndroidViewForXMLLayout
+import com.mafqud.android.ui.theme.MafQudTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,50 +26,27 @@ class HomeActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
-
-        navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        bottomNavigationView = findViewById(R.id.bottom_nav)
-
-        //setup
-        NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.navController)
-
-        // listen on (bottomNavigationView) item clicked
-        // onNavigationBottomItemClicked(bottomNavigationView)
-    }
-
-
-  /*  private fun onNavigationBottomItemClicked(
-        bottomNavigationView: BottomNavigationView
-    ) {
-        bottomNavigationView.setOnItemSelectedListener { menu ->
-
-            when (menu.itemId) {
-                R.id.homeFragment -> {
-                    navigateToDestination(menu)
-                    true
-                }
-                R.id.exploreFragment,
-                R.id.offersFragment,
-                R.id.mapFragment,
-                R.id.profileFragment ->{
-                }
-                else -> {
-                    false
+        setContent {
+            MafQudTheme {
+                ColumnUi {
+                    HomeAppBar()
+                    NavigationHostFragment()
                 }
             }
-
-
         }
-    }*/
+    }
 
-    private fun navigateToDestination(menu: MenuItem) {
-        try {
-            NavigationUI.onNavDestinationSelected(menu, navHostFragment.navController)
-        } catch (e: Exception) {
-
-        }
+    @Composable
+    private fun NavigationHostFragment() {
+        val layout = CreateAndroidViewForXMLLayout(
+            R.layout.activity_home,
+            Modifier.fillMaxSize()
+        )
+        navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        bottomNavigationView = layout.findViewById(R.id.bottom_nav)
+        //setup
+        NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.navController)
     }
 
     fun bottomNavigationBarVisibility(isVisible: Boolean = true) {
