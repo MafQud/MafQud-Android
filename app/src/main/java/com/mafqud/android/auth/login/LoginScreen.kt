@@ -21,6 +21,7 @@ import com.mafqud.android.ui.compose.IconBack
 import com.mafqud.android.ui.compose.TextFieldPassword
 import com.mafqud.android.ui.compose.TextFieldPhone
 import com.mafqud.android.ui.theme.*
+import com.mafqud.android.util.validation.PasswordError
 import com.mafqud.android.util.validation.validateLoginForm
 
 data class LoginUiData(
@@ -37,9 +38,8 @@ fun LoginScreen(
     val phone = remember {
         mutableStateOf("")
     }
-    val isPassError = remember {
-        mutableStateOf(false)
-    }
+    val isPasswordError = remember { mutableStateOf(PasswordError()) }
+
     val isPhoneError = remember {
         mutableStateOf(false)
     }
@@ -106,7 +106,7 @@ fun LoginScreen(
 
             )
 
-            TextFieldPassword(pass, isPassError, focusRequester)
+            TextFieldPassword(pass, isPasswordError, focusRequester)
             SpacerUi(modifier = Modifier.height(12.dp))
             ButtonAuth(title = stringResource(id = R.string.next), onClick = {
                 // first validate data
@@ -114,7 +114,7 @@ fun LoginScreen(
                     phone = phone.value,
                     password = pass.value,
                     isPhoneError = isPhoneError,
-                    isPasswordError = isPassError,
+                    isPasswordError = isPasswordError,
                     onSuccessValidation = { phone, pass ->
                         // fire button click
                         onNextPressed(

@@ -19,6 +19,13 @@ import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
 import com.mafqud.android.ui.compose.*
 import com.mafqud.android.ui.theme.*
+import com.mafqud.android.util.validation.PasswordError
+import com.mafqud.android.util.validation.validateNAmeAndEmailForm
+import com.mafqud.android.util.validation.validatePassAndConfirm
+import com.mafqud.android.util.validation.validatePhoneForm
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 enum class StepCount {
@@ -31,7 +38,16 @@ enum class StepCount {
 
 
 @Composable
-fun RegisterScreen(onBackPressed: () -> Unit) {
+fun RegisterScreen(
+    registerFormData: MutableState<RegisterIntent.Signup>,
+    activeStep: MutableState<StepCount>,
+    onStepOne: (String) -> Unit,
+    onStepTwo: (String) -> Unit,
+    onStepThree: (String, String) -> Unit,
+    onStepFour: (Int, Int) -> Unit,
+    onStepFive: (String) -> Unit,
+    onBackPressed: () -> Unit,
+) {
     BoxUi(
         modifier = Modifier
             .fillMaxSize()
@@ -41,9 +57,6 @@ fun RegisterScreen(onBackPressed: () -> Unit) {
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            val activeStep = remember {
-                mutableStateOf(StepCount.One)
-            }
 
             HeadItem(activeStep, Modifier.weight(1f), onBackPressed)
 
@@ -65,11 +78,16 @@ fun RegisterScreen(onBackPressed: () -> Unit) {
                         SpacerUi(modifier = Modifier.height(50.dp))
                         // display the needed view
                         when (activeStep.value) {
-                            StepCount.One -> PhoneForm(activeStep)
-                            StepCount.Two -> OTPForm(activeStep)
-                            StepCount.Three -> NameAndEmailForm(activeStep)
-                            StepCount.Four -> LocationForm(activeStep)
-                            StepCount.Five -> PassWordForm(activeStep)
+                            StepCount.One -> PhoneForm(registerFormData.value.phone, onStepOne)
+
+                            StepCount.Two -> OTPForm(onStepTwo)
+
+                            StepCount.Three -> NameAndEmailForm(registerFormData.value, onStepThree)
+
+                            StepCount.Four -> LocationForm(registerFormData.value, onStepFour)
+
+                            StepCount.Five -> PassWordForm(registerFormData.value.password,onStepFive)
+
                         }
                     }
                 }
@@ -79,28 +97,72 @@ fun RegisterScreen(onBackPressed: () -> Unit) {
 }
 
 @Composable
-fun OTPForm(activeStep: MutableState<StepCount>) {
-    ButtonAuth(title = stringResource(id = R.string.next), onClick = {
-        activeStep.value = StepCount.Three
+fun OTPForm(onClicked: (String) -> Unit) {
+    ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
 
-    })
+        TextUi(
+            modifier = Modifier.fillMaxWidth(),
+            text = stringResource(id = R.string.insert_otp),
+            style = MaterialTheme.typography.titleMedium
+        )
+
+        val otpState = remember {
+            mutableStateOf("")
+        }
+        val otpOPState = remember {
+            mutableStateOf("")
+        }
+
+        OTPCommon(code = otpState.value, onFilled = {
+            otpOPState.value = it
+        })
+
+        // request fake OTP
+        gettingOTP { otp ->
+            otpState.value = otp
+        }
+
+        SpacerUi(modifier = Modifier.height(20.dp))
+
+        ButtonAuth(title = stringResource(id = R.string.next), onClick = {
+            // TODO OTP CODE
+            onClicked("")
+
+        })
+    }
 }
+
+private fun gettingOTP(onGetOTP: (String) -> Unit) {
+    GlobalScope.launch {
+        // simulate getting otp from server
+        //onGetOTP("")
+        //Toast.makeText(requireContext(), "Sending OTP", Toast.LENGTH_SHORT).show()
+        val otp = getFakeOTP()
+        // pass otp to remember state
+        onGetOTP(otp)
+    }
+}
+
+private suspend fun getFakeOTP(): String {
+    delay(1200)
+    return "khda"
+}
+
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun PassWordForm(activeStep: MutableState<StepCount>) {
+private fun PassWordForm(passwordInitial: String, onClicked: (String) -> Unit) {
 
     val password = remember {
-        mutableStateOf("")
+        mutableStateOf(passwordInitial)
     }
 
     val passwordConfirm = remember {
-        mutableStateOf("")
+        mutableStateOf(passwordInitial)
     }
 
-    val isPassError = remember {
-        mutableStateOf(false)
-    }
+    val isPasswordError = remember { mutableStateOf(PasswordError()) }
+
     val (focusRequester) = FocusRequester.createRefs()
 
     ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -111,7 +173,7 @@ private fun PassWordForm(activeStep: MutableState<StepCount>) {
             style = MaterialTheme.typography.titleMedium
 
         )
-        TextFieldPassword(password, isPassError, focusRequester)
+        TextFieldPassword(password, isPasswordError, focusRequester)
 
         SpacerUi(modifier = Modifier.height(8.dp))
 
@@ -121,17 +183,27 @@ private fun PassWordForm(activeStep: MutableState<StepCount>) {
             style = MaterialTheme.typography.titleMedium
 
         )
-        TextFieldPassword(passwordConfirm, isPassError, focusRequester)
+        TextFieldPassword(passwordConfirm, isPasswordError, focusRequester)
 
         SpacerUi(modifier = Modifier.height(8.dp))
         ButtonAuth(title = stringResource(id = R.string.register), onClick = {
-            activeStep.value = StepCount.Five
+            // first validate data
+            validatePassAndConfirm(
+                password1 = password.value,
+                password2 = passwordConfirm.value,
+                isPasswordError = isPasswordError,
+                onValidationSuccess = { pass ->
+                    // fire button click
+                    onClicked(pass)
+                }
+            )
+
         })
     }
 }
 
 @Composable
-private fun LocationForm(activeStep: MutableState<StepCount>) {
+private fun LocationForm(signUpData: RegisterIntent.Signup, onClicked: (Int, Int) -> Unit) {
     ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         val selectedItem = remember {
             mutableStateOf("")
@@ -167,26 +239,29 @@ private fun LocationForm(activeStep: MutableState<StepCount>) {
         }
         SpacerUi(modifier = Modifier.height(20.dp))
         ButtonAuth(title = stringResource(id = R.string.next), onClick = {
-            activeStep.value = StepCount.Five
+            onClicked(-1, -1)
         })
     }
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun NameAndEmailForm(activeStep: MutableState<StepCount>) {
-    val firstName = remember {
-        mutableStateOf("")
+private fun NameAndEmailForm(
+    signUpData: RegisterIntent.Signup,
+    onClicked: (String, String) -> Unit
+) {
+    val fullName = remember {
+        mutableStateOf(signUpData.fullName)
     }
 
     val email = remember {
-        mutableStateOf("")
+        mutableStateOf(signUpData.email)
     }
 
-    val phone = remember {
-        mutableStateOf("")
+    val isNameError = remember {
+        mutableStateOf(false)
     }
-    val isPhoneError = remember {
+    val isEmailError = remember {
         mutableStateOf(false)
     }
     val (focusRequester) = FocusRequester.createRefs()
@@ -199,7 +274,7 @@ private fun NameAndEmailForm(activeStep: MutableState<StepCount>) {
             style = MaterialTheme.typography.titleMedium
 
         )
-        TextFieldName(stringResource(id = R.string.example_name), firstName)
+        TextFieldName(stringResource(id = R.string.example_name), fullName, isNameError)
 
         SpacerUi(modifier = Modifier.height(8.dp))
 
@@ -209,20 +284,30 @@ private fun NameAndEmailForm(activeStep: MutableState<StepCount>) {
             style = MaterialTheme.typography.titleMedium
 
         )
-        TextFieldEmail(email)
+        TextFieldEmail(email, isEmailError)
 
         SpacerUi(modifier = Modifier.height(8.dp))
         ButtonAuth(title = stringResource(id = R.string.next), onClick = {
-            activeStep.value = StepCount.Four
+            // first validate data
+            validateNAmeAndEmailForm(
+                name = fullName.value,
+                email = email.value,
+                isNameError = isNameError,
+                isEmailError = isEmailError,
+                onSuccessValidation = { name, email ->
+                    // fire button click
+                    onClicked(name, email)
+                }
+            )
         })
     }
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun PhoneForm(activeStep: MutableState<StepCount>) {
+private fun PhoneForm(mPhone: String, onNextPressed: (String) -> Unit) {
     val phone = remember {
-        mutableStateOf("")
+        mutableStateOf(mPhone)
     }
     val isPhoneError = remember {
         mutableStateOf(false)
@@ -239,14 +324,17 @@ private fun PhoneForm(activeStep: MutableState<StepCount>) {
         TextFieldPhone(phone, isPhoneError, focusRequester)
         SpacerUi(modifier = Modifier.height(20.dp))
         ButtonAuth(title = stringResource(id = R.string.next), onClick = {
-            activeStep.value = StepCount.Two
+            // first validate data
+            validatePhoneForm(
+                phone = phone.value,
+                isPhoneError = isPhoneError,
+                onSuccessValidation = { phone ->
+                    // fire button click
+                    onNextPressed(phone)
+                }
+            )
         })
     }
-}
-
-@Composable
-private fun EmailForm(activeStep: MutableState<StepCount>) {
-
 }
 
 @Composable

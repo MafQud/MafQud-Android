@@ -34,12 +34,17 @@ import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
 import com.mafqud.android.ui.theme.*
 import com.mafqud.android.util.validation.PHONE_MAX_LENGTH
+import com.mafqud.android.util.validation.PasswordError
 
 private val mTFHeight = 50.dp
 
 
 @Composable
-fun TextFieldName(placeHolderTitle: String, value: MutableState<String>) {
+fun TextFieldName(
+    placeHolderTitle: String,
+    value: MutableState<String>,
+    isNameError: MutableState<Boolean>
+) {
     TextFieldUi(
         modifier = Modifier
             .fillMaxWidth()
@@ -47,6 +52,7 @@ fun TextFieldName(placeHolderTitle: String, value: MutableState<String>) {
         value = value.value,
         onValueChange = {
             value.value = it
+            isNameError.value = false
         },
         placeholder = {
             TextUi(
@@ -57,6 +63,15 @@ fun TextFieldName(placeHolderTitle: String, value: MutableState<String>) {
             )
 
         },
+        trailingIcon = {
+            if (isNameError.value)
+                Icon(
+                    Icons.Filled.Error,
+                    stringResource(id = R.string.error_name),
+                    tint = MaterialTheme.colorScheme.error
+                )
+        },
+        isError = isNameError.value,
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         shape = RoundedCornerShape(50),
@@ -70,7 +85,7 @@ fun TextFieldName(placeHolderTitle: String, value: MutableState<String>) {
 
 
 @Composable
-fun TextFieldEmail(value: MutableState<String>) {
+fun TextFieldEmail(value: MutableState<String>, isEmailError: MutableState<Boolean>) {
     TextFieldUi(
         modifier = Modifier
             .fillMaxWidth()
@@ -78,6 +93,7 @@ fun TextFieldEmail(value: MutableState<String>) {
         value = value.value,
         onValueChange = {
             value.value = it
+            isEmailError.value = false
         },
         placeholder = {
             TextUi(
@@ -88,6 +104,15 @@ fun TextFieldEmail(value: MutableState<String>) {
             )
 
         },
+        trailingIcon = {
+            if (isEmailError.value)
+                Icon(
+                    Icons.Filled.Error,
+                    stringResource(id = R.string.error_name),
+                    tint = MaterialTheme.colorScheme.error
+                )
+        },
+        isError = isEmailError.value,
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         shape = RoundedCornerShape(50),
@@ -174,7 +199,7 @@ fun TextFieldPhone(
 @Composable
 fun TextFieldPassword(
     value: MutableState<String>,
-    isPasswordError: MutableState<Boolean>,
+    isPasswordError: MutableState<PasswordError>,
     focusRequester: FocusRequester,
 ) {
     val passwordVisibility = remember { mutableStateOf(false) }
@@ -188,10 +213,10 @@ fun TextFieldPassword(
         value = value.value,
         onValueChange = {
             value.value = it
-            isPasswordError.value = false
+            isPasswordError.value.isError = false
         },
         trailingIcon = {
-            if (isPasswordError.value)
+            if (isPasswordError.value.isError)
                 Icon(
                     Icons.Filled.Error,
                     stringResource(id = R.string.error_password),
@@ -211,7 +236,7 @@ fun TextFieldPassword(
                 }
             }
         },
-        isError = isPasswordError.value,
+        isError = isPasswordError.value.isError,
         visualTransformation = if (passwordVisibility.value)
             VisualTransformation.None else PasswordVisualTransformation(),
         singleLine = true,

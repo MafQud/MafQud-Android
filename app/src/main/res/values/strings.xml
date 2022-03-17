@@ -62,4 +62,8 @@
     <string name="password">Password</string>
     <string name="password_confirm">Password confirm</string>
     <string name="address">Address</string>
+    <string name="insert_otp">Insert OTP</string>
+    <string name="error_name">Insert a valid name</string>
+    <string name="are_you_sure_close">Are you sure to close this page?</string>
+    <string name="close">Close</string>
 </resources>

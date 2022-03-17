@@ -1,5 +1,6 @@
 package com.mafqud.android.ui.compose
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.size
@@ -16,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mafqud.android.R
 import com.mafqud.android.ui.theme.BoxUi
 import com.mafqud.android.ui.theme.ColumnUi
@@ -109,6 +111,90 @@ fun LoadingDialog(
             }
         }
 
+    }
+
+}
+
+
+fun Context.showAreYouSureDialog(onCloseClicked: () -> Unit) {
+    val alertDialog = MaterialAlertDialogBuilder(this,
+        R.style.MaterialAlertDialog_rounded)
+
+    // SettingsActivity Dialog Title
+    alertDialog.setTitle(getString(R.string.are_you_sure_close))
+
+    // SettingsActivity Dialog Message
+    alertDialog.setCancelable(true)
+    alertDialog.setPositiveButton(
+        getString(R.string.close)
+    ) { p0, p1 ->
+        onCloseClicked()
+    }
+
+    alertDialog.setNegativeButton(
+        getString(R.string.cancel)
+    ) { p0, p1 ->
+        p0.dismiss()
+    }
+
+    val dialog = alertDialog.create()
+    //dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+    //2. now setup to change color of the button
+    dialog.setOnShowListener {
+        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE)
+            .setTextColor(resources.getColor(R.color.black))
+        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE)
+            .setTextColor(resources.getColor(R.color.red))
+    }
+    // Showing Alert Message
+    dialog.show()
+}
+
+@Composable
+fun AreYouSureDialog(isOpened: MutableState<Boolean>, onConfirmClicked: () -> Unit) {
+    ColumnUi {
+
+        if (isOpened.value) {
+            AlertDialog(
+                shape = RoundedCornerShape(4.dp),
+                onDismissRequest = {
+                    // Dismiss the dialog when the user clicks outside the dialog or on the back
+                    // button. If you want to disable that functionality, simply use an empty
+                    // onCloseRequest.
+                    isOpened.value = false
+                },
+                title = {
+                    TextUi(text = stringResource(id = R.string.log_out))
+                },
+                text = {
+                    TextUi(stringResource(id = R.string.are_you_sure_close))
+                },
+                confirmButton = {
+                    GeneralButton(
+                        modifier = Modifier.clip(RoundedCornerShape(4.dp)),
+                        onClicked = {
+                            isOpened.value = false
+                            onConfirmClicked()
+                        }, title = stringResource(id = R.string.close),
+                        buttonColor = MaterialTheme.colorScheme.primary
+                    )
+                },
+                dismissButton = {
+                    GeneralButton(
+                        modifier = Modifier.clip(RoundedCornerShape(4.dp)),
+                        onClicked = {
+                            isOpened.value = false
+
+                        },
+                        title = stringResource(id = R.string.cancel),
+                        buttonColor = MaterialTheme.colorScheme.primary,
+                        textColor = MaterialTheme.colorScheme.primary,
+                    )
+                }
+            )
+
+        }
     }
 
 }

@@ -6,6 +6,17 @@ import androidx.compose.runtime.MutableState
 
 const val PHONE_MAX_LENGTH = 10
 
+data class PasswordError(
+    var isError: Boolean = false,
+    var type: PassErrorType = PassErrorType.NONE
+)
+
+enum class PassErrorType {
+    INCOMPATIBLE,
+    LESS,
+    NONE
+}
+
 fun isValidEmail(email: String): Boolean {
     return if (TextUtils.isEmpty(email)) {
         false
@@ -36,11 +47,29 @@ fun isValidName(name: String): Boolean {
 }
 
 
+fun validatePhoneForm(
+    phone: String,
+    isPhoneError: MutableState<Boolean>,
+    onSuccessValidation: (String) -> Unit
+) {
+
+    // check phone validation or any
+    if (!isValidPhone(phone)) {
+        isPhoneError.value = true
+        return
+    } else {
+        isPhoneError.value = false
+    }
+
+    onSuccessValidation(phone)
+
+}
+
 fun validateLoginForm(
     phone: String,
     password: String,
     isPhoneError: MutableState<Boolean>,
-    isPasswordError: MutableState<Boolean>,
+    isPasswordError: MutableState<PasswordError>,
     onSuccessValidation: (String, String) -> Unit
 ) {
 
@@ -53,11 +82,63 @@ fun validateLoginForm(
     }
 
     if (!isValidPassword(password)) {
-        isPasswordError.value = true
+        isPasswordError.value.isError = true
         return
     } else {
-        isPasswordError.value = false
+        isPasswordError.value.isError = false
     }
     onSuccessValidation(phone, password)
+
+}
+
+fun validatePassAndConfirm(
+    password1: String,
+    password2: String,
+    isPasswordError: MutableState<PasswordError>,
+    onValidationSuccess: (String) -> Unit
+) {
+
+    // check email validation or any
+    if (!isValidPasswordConfirm(password1, password2)) {
+        isPasswordError.value = PasswordError(isError = true, type = PassErrorType.INCOMPATIBLE)
+        return
+    } else {
+        isPasswordError.value = PasswordError(isError = false, type = PassErrorType.NONE)
+    }
+    if (!isValidPassword(password1)) {
+        isPasswordError.value = PasswordError(isError = true, type = PassErrorType.LESS)
+        return
+    } else {
+        isPasswordError.value = PasswordError(isError = false, type = PassErrorType.NONE)
+    }
+    onValidationSuccess(password1)
+
+}
+
+fun validateNAmeAndEmailForm(
+    name: String,
+    email: String,
+    isNameError: MutableState<Boolean>,
+    isEmailError: MutableState<Boolean>,
+    onSuccessValidation: (String, String) -> Unit
+) {
+    val mName = name.trim()
+    val mEmail = email.trim()
+
+    // check phone validation or any
+    if (!isValidName(mName)) {
+        isNameError.value = true
+        return
+    } else {
+        isNameError.value = false
+    }
+
+    if (!isValidEmail(mEmail)) {
+        isEmailError.value = true
+        return
+    } else {
+        isEmailError.value = false
+    }
+    onSuccessValidation(mName, mEmail)
 
 }
