@@ -14,7 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.mafqud.android.home.HomeActivity
-import com.mafqud.android.ui.android.LoadingDialog
+import com.mafqud.android.ui.compose.LoadingDialog
 import com.mafqud.android.ui.theme.MafQudTheme
 import com.mafqud.android.util.network.ShowNetworkErrorSnakeBarUi
 import com.mafqud.android.util.other.hideKeypad

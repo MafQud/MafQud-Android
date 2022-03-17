@@ -41,7 +41,7 @@ fun SplashScreen(onAnimationFinished: () -> Unit = {}) {
             modifier = Modifier
                 .fillMaxSize()
                 .background(
-                    androidx.compose.material3.MaterialTheme.colorScheme.background
+                    androidx.compose.material3.MaterialTheme.colorScheme.onPrimary
                 )
         ) {
 

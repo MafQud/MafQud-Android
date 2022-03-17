@@ -1,4 +1,4 @@
-package com.mafqud.android.ui.android
+package com.mafqud.android.ui.compose
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
@@ -17,9 +17,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.mafqud.android.R
-import com.mafqud.android.ui.compose.GeneralButton
-
-import com.mafqud.android.ui.theme.*
+import com.mafqud.android.ui.theme.BoxUi
+import com.mafqud.android.ui.theme.ColumnUi
+import com.mafqud.android.ui.theme.TextUi
 
 
 @Composable
@@ -48,7 +48,7 @@ fun LogoutDialog(isOpened: MutableState<Boolean>, onConfirmClicked: () -> Unit) 
                             isOpened.value = false
                             onConfirmClicked()
                         }, title = stringResource(id = R.string.confirm),
-                        buttonColor = MaterialTheme.colors.purpleAlways
+                        buttonColor = MaterialTheme.colorScheme.primary
                     )
                 },
                 dismissButton = {
@@ -59,8 +59,8 @@ fun LogoutDialog(isOpened: MutableState<Boolean>, onConfirmClicked: () -> Unit) 
 
                         },
                         title = stringResource(id = R.string.cancel),
-                        buttonColor = MaterialTheme.colors.whiteAlways,
-                        textColor = MaterialTheme.colors.blackAlways,
+                        buttonColor = MaterialTheme.colorScheme.primary,
+                        textColor = MaterialTheme.colorScheme.primary,
                     )
                 }
             )
@@ -90,15 +90,21 @@ fun LoadingDialog(
                 modifier = Modifier
                     //.clip(RoundedCornerShape(8.dp))
                     .size(200.dp, 150.dp)
-                    .background(MaterialTheme.colors.whiteAlways, shape = RoundedCornerShape(10.dp))
+                    .background(
+                        MaterialTheme.colorScheme.onPrimary,
+                        shape = RoundedCornerShape(10.dp)
+                    )
 
             ) {
                 ColumnUi(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    CircularProgressIndicator()
-                    TextUi(text = title)
+                    CircularProgressIndicator(
+                        color =
+                        MaterialTheme.colorScheme.primary
+                    )
+                    TextUi(text = title, color = MaterialTheme.colorScheme.primary)
                 }
             }
         }
