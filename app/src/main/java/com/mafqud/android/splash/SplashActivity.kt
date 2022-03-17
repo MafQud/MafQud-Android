@@ -3,6 +3,8 @@ package com.mafqud.android.splash
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -11,17 +13,18 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
+import com.mafqud.android.auth.AuthActivity
 import com.mafqud.android.data.DataStoreManager
 import com.mafqud.android.data.DataStoreManager.Companion.IS_PASSED_INTRO
 import com.mafqud.android.data.DataStoreManager.Companion.LANGUAGE
 import com.mafqud.android.home.HomeActivity
-import com.mafqud.android.auth.AuthActivity
 import com.mafqud.android.ui.theme.MafQudTheme
 import com.mafqud.android.util.other.changLanguage
 import com.mafqud.android.util.other.inAppUpdate
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+const val SPLASH_DELAY = 4000L
 
 @SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
@@ -70,9 +73,10 @@ class SplashActivity : AppCompatActivity() {
         //getHashKey()
         setContent {
             MafQudTheme {
-                SplashScreen {
+                SplashScreen {}
+                Handler(Looper.getMainLooper()).postDelayed({
                     startApplication()
-                }
+                }, SPLASH_DELAY)
             }
         }
         // check google play for our app update

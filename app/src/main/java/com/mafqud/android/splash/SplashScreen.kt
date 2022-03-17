@@ -13,7 +13,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
@@ -21,7 +20,9 @@ import com.mafqud.android.BuildConfig
 import com.mafqud.android.R
 import com.mafqud.android.ui.theme.BoxUi
 import com.mafqud.android.ui.theme.ColumnUi
+import com.mafqud.android.ui.theme.GifImage
 import com.mafqud.android.ui.theme.TextUi
+
 
 @Preview("Splash")
 @Composable
@@ -44,19 +45,19 @@ fun SplashScreen(onAnimationFinished: () -> Unit = {}) {
                 )
         ) {
 
-            LottieAnimation(
-                modifier = Modifier
-                    .size(300.dp, 220.dp)
-                    .align(Alignment.Center),
-                composition = composition.value,
-                progress = mProgress.value,
-            )
-           /* GifImage(
+            /* LottieAnimation(
+                 modifier = Modifier
+                     .size(300.dp, 220.dp)
+                     .align(Alignment.Center),
+                 composition = composition.value,
+                 progress = mProgress.value,
+             )*/
+            GifImage(
                 modifier = Modifier
                     .size(300.dp, 220.dp)
                     .align(Alignment.Center),
                 imageID = R.drawable.animation_logo
-            )*/
+            )
 
             ColumnUi(
                 modifier = Modifier
@@ -75,10 +76,14 @@ fun SplashScreen(onAnimationFinished: () -> Unit = {}) {
             }
 
         }
-        if (mProgress.value == 1f) {
+        /*Handler(Looper.getMainLooper()).postDelayed({
+            onAnimationFinished()
+        }, 4000)*/
+
+        /*if (mProgress.value == 1f) {
             onAnimationFinished()
         } else if (composition.isFailure) {
             onAnimationFinished()
-        }
+        }*/
     }
 }
