@@ -64,10 +64,5 @@ fun ReportScreen(
                 })
         }
 
-        ImageUi(
-            painter = painterResource(id = R.drawable.ic_mafqud_logo),
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-        )
     }
 }

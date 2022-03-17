@@ -9,9 +9,11 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
@@ -90,6 +92,7 @@ private fun LocationForm(activeStep: MutableState<StepCount>) {
     })
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun NameForm(activeStep: MutableState<StepCount>) {
     val firstName = remember {
@@ -99,6 +102,11 @@ private fun NameForm(activeStep: MutableState<StepCount>) {
     val phone = remember {
         mutableStateOf("")
     }
+    val isPhoneError = remember {
+        mutableStateOf(false)
+    }
+    val (focusRequester) = FocusRequester.createRefs()
+
     ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         // full name
         TextUi(
@@ -118,7 +126,7 @@ private fun NameForm(activeStep: MutableState<StepCount>) {
             style = MaterialTheme.typography.titleMedium
 
         )
-        TextFieldPhone(phone)
+        TextFieldPhone(phone, isPhoneError, focusRequester)
 
         SpacerUi(modifier = Modifier.height(8.dp))
         ButtonAuth(title = stringResource(id = R.string.next), onClick = {
@@ -127,11 +135,17 @@ private fun NameForm(activeStep: MutableState<StepCount>) {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun PhoneForm(activeStep: MutableState<StepCount>) {
     val phone = remember {
         mutableStateOf("")
     }
+    val isPhoneError = remember {
+        mutableStateOf(false)
+    }
+    val (focusRequester) = FocusRequester.createRefs()
+
     ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         TextUi(
             modifier = Modifier.fillMaxWidth(),
@@ -139,7 +153,7 @@ private fun PhoneForm(activeStep: MutableState<StepCount>) {
             style = MaterialTheme.typography.titleMedium
 
         )
-        TextFieldPhone(phone)
+        TextFieldPhone(phone, isPhoneError, focusRequester)
         SpacerUi(modifier = Modifier.height(20.dp))
         ButtonAuth(title = stringResource(id = R.string.next), onClick = {
             activeStep.value = StepCount.Three

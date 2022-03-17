@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
 import com.mafqud.android.ui.theme.*
@@ -49,11 +50,11 @@ fun HomeScreen() {
 
 @Composable
 private fun SearchUi() {
-   ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-       TapsUi()
-       DropDownUi()
-       SearchNameUi()
-   }
+    ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        TapsUi()
+        DropDownUi()
+        SearchNameUi()
+    }
 }
 
 @Composable
@@ -254,7 +255,7 @@ private fun BodyUi(modifier: Modifier) {
             .verticalScroll(rememberScrollState())
             .background(MaterialTheme.colorScheme.onSecondary)
             .padding(top = 16.dp, start = 16.dp, end = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         CaseItem()
         CaseItem()
@@ -265,20 +266,28 @@ private fun BodyUi(modifier: Modifier) {
 }
 
 @Composable
+@Preview
 private fun CaseItem() {
     BoxUi(
         Modifier
             .fillMaxWidth()
+            .height(120.dp)
             .clip(RoundedCornerShape(12.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
-            .padding(12.dp)
+            .padding(4.dp)
     ) {
         RowUi(
+            Modifier
+                .fillMaxSize(),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalAlignment = Alignment.Top
         ) {
             CreateUserPhoto()
-            ColumnUi(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            ColumnUi(
+                Modifier
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(2.dp)
+            ) {
                 // name
                 RowUi(
                     Modifier
@@ -292,13 +301,13 @@ private fun CaseItem() {
                         TextUi(
                             text = "Osama Ali",
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
-                            style = MaterialTheme.typography.titleLarge
+                            style = MaterialTheme.typography.titleMedium
                         )
                         //address
                         TextUi(
                             text = "Cairo - Egypt",
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            style = MaterialTheme.typography.titleMedium
+                            style = MaterialTheme.typography.titleSmall
                         )
                     }
 
@@ -315,7 +324,7 @@ private fun CaseItem() {
                             // modifier = Modifier.padding(12.dp),
                             text = "more",
                             color = MaterialTheme.colorScheme.onSecondary,
-                            style = MaterialTheme.typography.titleMedium
+                            style = MaterialTheme.typography.titleSmall
                         )
                     }
                 }
@@ -327,12 +336,11 @@ private fun CaseItem() {
                     style = MaterialTheme.typography.titleMedium
                 )
 
-                SpacerUi(modifier = Modifier.height(8.dp))
                 //date
                 TextUi(
                     text = "16/3/2022",
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleSmall
                 )
             }
         }

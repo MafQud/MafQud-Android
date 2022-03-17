@@ -55,4 +55,7 @@
     <string name="search_title">Search with name</string>
     <string name="report_lost">Report  lost</string>
     <string name="report_found">Report found</string>
+    <string name="error_password">Password is short</string>
+    <string name="insert_password">Insert password</string>
+    <string name="error_phone">Insert a valid phone</string>
 </resources>

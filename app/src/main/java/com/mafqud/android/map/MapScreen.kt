@@ -46,8 +46,9 @@ fun MapScreen() {
                 exit = fadeOut()
             ) {
                 CircularProgressIndicator(
+                    color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
-                        .background(MaterialTheme.colorScheme.primary)
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
                         .wrapContentSize()
                 )
             }

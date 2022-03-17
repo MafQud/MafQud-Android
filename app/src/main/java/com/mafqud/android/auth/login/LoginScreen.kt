@@ -9,26 +9,52 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
 import com.mafqud.android.ui.compose.ButtonAuth
 import com.mafqud.android.ui.compose.IconBack
+import com.mafqud.android.ui.compose.TextFieldPassword
 import com.mafqud.android.ui.compose.TextFieldPhone
 import com.mafqud.android.ui.theme.*
+import com.mafqud.android.util.validation.validateLoginForm
 
+data class LoginUiData(
+    val phone: String,
+    val password: String,
+)
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun LoginScreen(onBackPressed: () -> Boolean) {
+fun LoginScreen(
+    onBackPressed: () -> Unit,
+    onNextPressed: (LoginUiData) -> Unit,
+) {
+    val phone = remember {
+        mutableStateOf("")
+    }
+    val isPassError = remember {
+        mutableStateOf(false)
+    }
+    val isPhoneError = remember {
+        mutableStateOf(false)
+    }
+    val pass = remember {
+        mutableStateOf("")
+    }
     BoxUi(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.onPrimary)
-            .padding(16.dp)
+            .padding(16.dp),
 
-    ) {
+        ) {
+
+        val (focusRequester) = FocusRequester.createRefs()
 
         // back arrow
         BoxUi(
@@ -47,11 +73,8 @@ fun LoginScreen(onBackPressed: () -> Boolean) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            val phone = remember {
-                mutableStateOf("")
-            }
             //image
-            SpacerUi(modifier = Modifier.height(90.dp))
+            SpacerUi(modifier = Modifier.height(12.dp))
 
             ImageUi(
                 painter = painterResource(id = R.drawable.ic_login),
@@ -72,9 +95,36 @@ fun LoginScreen(onBackPressed: () -> Boolean) {
 
             )
 
-            TextFieldPhone(phone)
-            SpacerUi(modifier = Modifier.height(52.dp))
+            TextFieldPhone(phone, isPhoneError, focusRequester)
+
+            SpacerUi(modifier = Modifier.height(8.dp))
+
+            TextUi(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(id = R.string.insert_password),
+                style = MaterialTheme.typography.labelLarge
+
+            )
+
+            TextFieldPassword(pass, isPassError, focusRequester)
+            SpacerUi(modifier = Modifier.height(12.dp))
             ButtonAuth(title = stringResource(id = R.string.next), onClick = {
+                // first validate data
+                validateLoginForm(
+                    phone = phone.value,
+                    password = pass.value,
+                    isPhoneError = isPhoneError,
+                    isPasswordError = isPassError,
+                    onSuccessValidation = { phone, pass ->
+                        // fire button click
+                        onNextPressed(
+                            LoginUiData(
+                                phone = phone,
+                                password = pass,
+                            )
+                        )
+                    }
+                )
 
             })
         }

@@ -2,12 +2,15 @@ package com.mafqud.android.util.other
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 
 
 @SuppressLint("ServiceCast")
@@ -54,4 +57,22 @@ fun Activity.isKeyPadIsOpened(): Boolean {
         .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
     return imm.isActive
+}
+
+fun Activity.isGooglePlayServiceEnabled(): Boolean {
+    try {
+        val instance = GoogleApiAvailability.getInstance()
+        val responseCode = instance.isGooglePlayServicesAvailable(this)
+        when (responseCode) {
+            ConnectionResult.SUCCESS -> return true
+            else -> {
+                val errorDialog: Dialog? = instance.getErrorDialog(this, responseCode, 123)
+                errorDialog?.setCancelable(false)
+                errorDialog?.show()
+            }
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+    return false
 }
