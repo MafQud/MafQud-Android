@@ -6,14 +6,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.twotone.ArrowDropDown
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -26,6 +23,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
+import com.mafqud.android.ui.compose.DropDownItems
 import com.mafqud.android.ui.theme.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -102,19 +100,19 @@ private fun DropDownUi() {
             mutableStateOf("")
         }
         DropDownItems(
-            modifier = Modifier.weight(1f),
             items = listOf("Age"),
-            selectedItemID = selectedItem
+            selectedItemID = selectedItem,
+            modifier = Modifier.weight(1f).height(30.dp),
         )
         DropDownItems(
             items = listOf("Date"),
             selectedItemID = selectedItem,
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).height(30.dp),
         )
         DropDownItems(
             items = listOf("City"),
             selectedItemID = selectedItem,
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).height(30.dp),
         )
 
     }
@@ -193,60 +191,7 @@ private fun TapsUi() {
 }
 
 
-@Composable
-private fun DropDownItems(
-    items: List<String>,
-    selectedItemID: MutableState<String>,
-    modifier: Modifier
-) {
-    val expanded = remember { mutableStateOf(false) }
-    val selectedText = remember { mutableStateOf(items.first()) }
 
-    BoxUi(
-        modifier = modifier
-            .height(30.dp)
-            .clip(RoundedCornerShape(50))
-            .background(MaterialTheme.colorScheme.primary)
-            .padding(horizontal = 4.dp)
-            .clickable {
-                expanded.value = !expanded.value
-            },
-        contentAlignment = Alignment.Center
-    ) {
-        // Back arrow here
-        RowUi(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
-        ) { // Anchor view
-            TextUi(
-                modifier = Modifier.padding(start = 4.dp),
-                text = selectedText.value, style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSecondary
-            ) // City name label
-            IconUi(
-                imageVector = Icons.TwoTone.ArrowDropDown,
-                tint = MaterialTheme.colorScheme.onSecondary
-            )
-        }
-
-        DropDownMenuUi(expanded = expanded.value,
-            modifier = Modifier.fillMaxWidth(), content = {
-                items.forEachIndexed { index, label ->
-                    DropdownMenuItem(onClick = {
-                        selectedText.value = label
-                        selectedItemID.value = label
-                        expanded.value = false
-                    }) {
-                        TextUi(
-                            modifier = Modifier.padding(4.dp),
-                            text = label
-                        )
-                    }
-                }
-            }, onDismissRequest = { expanded.value = false })
-    }
-}
 
 @Composable
 private fun BodyUi(modifier: Modifier) {

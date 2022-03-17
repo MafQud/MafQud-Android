@@ -58,4 +58,8 @@
     <string name="error_password">Password is short</string>
     <string name="insert_password">Insert password</string>
     <string name="error_phone">Insert a valid phone</string>
+    <string name="register">Register</string>
+    <string name="password">Password</string>
+    <string name="password_confirm">Password confirm</string>
+    <string name="address">Address</string>
 </resources>

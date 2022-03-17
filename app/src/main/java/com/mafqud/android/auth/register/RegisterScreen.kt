@@ -65,9 +65,9 @@ fun RegisterScreen(onBackPressed: () -> Unit) {
                         SpacerUi(modifier = Modifier.height(50.dp))
                         // display the needed view
                         when (activeStep.value) {
-                            StepCount.One -> EmailForm(activeStep)
-                            StepCount.Two -> PhoneForm(activeStep)
-                            StepCount.Three -> NameForm(activeStep)
+                            StepCount.One -> PhoneForm(activeStep)
+                            StepCount.Two -> OTPForm(activeStep)
+                            StepCount.Three -> NameAndEmailForm(activeStep)
                             StepCount.Four -> LocationForm(activeStep)
                             StepCount.Five -> PassWordForm(activeStep)
                         }
@@ -79,23 +79,107 @@ fun RegisterScreen(onBackPressed: () -> Unit) {
 }
 
 @Composable
-private fun PassWordForm(activeStep: MutableState<StepCount>) {
+fun OTPForm(activeStep: MutableState<StepCount>) {
     ButtonAuth(title = stringResource(id = R.string.next), onClick = {
+        activeStep.value = StepCount.Three
 
-    })
-}
-
-@Composable
-private fun LocationForm(activeStep: MutableState<StepCount>) {
-    ButtonAuth(title = stringResource(id = R.string.next), onClick = {
-        activeStep.value = StepCount.Five
     })
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun NameForm(activeStep: MutableState<StepCount>) {
+private fun PassWordForm(activeStep: MutableState<StepCount>) {
+
+    val password = remember {
+        mutableStateOf("")
+    }
+
+    val passwordConfirm = remember {
+        mutableStateOf("")
+    }
+
+    val isPassError = remember {
+        mutableStateOf(false)
+    }
+    val (focusRequester) = FocusRequester.createRefs()
+
+    ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        // full name
+        TextUi(
+            modifier = Modifier.fillMaxWidth(),
+            text = stringResource(id = R.string.password),
+            style = MaterialTheme.typography.titleMedium
+
+        )
+        TextFieldPassword(password, isPassError, focusRequester)
+
+        SpacerUi(modifier = Modifier.height(8.dp))
+
+        TextUi(
+            modifier = Modifier.fillMaxWidth(),
+            text = stringResource(id = R.string.password_confirm),
+            style = MaterialTheme.typography.titleMedium
+
+        )
+        TextFieldPassword(passwordConfirm, isPassError, focusRequester)
+
+        SpacerUi(modifier = Modifier.height(8.dp))
+        ButtonAuth(title = stringResource(id = R.string.register), onClick = {
+            activeStep.value = StepCount.Five
+        })
+    }
+}
+
+@Composable
+private fun LocationForm(activeStep: MutableState<StepCount>) {
+    ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        val selectedItem = remember {
+            mutableStateOf("")
+        }
+
+        TextUi(
+            modifier = Modifier.fillMaxWidth(),
+            text = stringResource(id = R.string.address),
+            style = MaterialTheme.typography.titleMedium
+
+        )
+        RowUi(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            DropDownItems(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(50.dp),
+                items = listOf("Gov"),
+                selectedItemID = selectedItem,
+                iconColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+                textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+            )
+            DropDownItems(
+                items = listOf("City"),
+                selectedItemID = selectedItem,
+                modifier = Modifier
+                    .weight(1f)
+                    .height(50.dp),
+                iconColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+                textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+            )
+        }
+        SpacerUi(modifier = Modifier.height(20.dp))
+        ButtonAuth(title = stringResource(id = R.string.next), onClick = {
+            activeStep.value = StepCount.Five
+        })
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun NameAndEmailForm(activeStep: MutableState<StepCount>) {
     val firstName = remember {
+        mutableStateOf("")
+    }
+
+    val email = remember {
         mutableStateOf("")
     }
 
@@ -119,14 +203,13 @@ private fun NameForm(activeStep: MutableState<StepCount>) {
 
         SpacerUi(modifier = Modifier.height(8.dp))
 
-        //phone
         TextUi(
             modifier = Modifier.fillMaxWidth(),
-            text = stringResource(id = R.string.insert_phone_num),
+            text = stringResource(id = R.string.insert_email),
             style = MaterialTheme.typography.titleMedium
 
         )
-        TextFieldPhone(phone, isPhoneError, focusRequester)
+        TextFieldEmail(email)
 
         SpacerUi(modifier = Modifier.height(8.dp))
         ButtonAuth(title = stringResource(id = R.string.next), onClick = {
@@ -156,29 +239,14 @@ private fun PhoneForm(activeStep: MutableState<StepCount>) {
         TextFieldPhone(phone, isPhoneError, focusRequester)
         SpacerUi(modifier = Modifier.height(20.dp))
         ButtonAuth(title = stringResource(id = R.string.next), onClick = {
-            activeStep.value = StepCount.Three
+            activeStep.value = StepCount.Two
         })
     }
 }
 
 @Composable
 private fun EmailForm(activeStep: MutableState<StepCount>) {
-    val email = remember {
-        mutableStateOf("")
-    }
-    ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        TextUi(
-            modifier = Modifier.fillMaxWidth(),
-            text = stringResource(id = R.string.insert_email),
-            style = MaterialTheme.typography.titleMedium
 
-        )
-        TextFieldEmail(email)
-        SpacerUi(modifier = Modifier.height(20.dp))
-        ButtonAuth(title = stringResource(id = R.string.next), onClick = {
-            activeStep.value = StepCount.Two
-        })
-    }
 }
 
 @Composable
@@ -246,6 +314,7 @@ private fun HeadItem(
             }
 
         }
+        SpacerUi(modifier = Modifier.height(8.dp))
     }
 }
 
