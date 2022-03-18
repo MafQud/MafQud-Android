@@ -66,4 +66,7 @@
     <string name="error_name">Insert a valid name</string>
     <string name="are_you_sure_close">Are you sure to close this page?</string>
     <string name="close">Close</string>
+    <string name="error_code">Code not correct</string>
+    <string name="code_time">Code expired after:</string>
+    <string name="secound">sec</string>
 </resources>

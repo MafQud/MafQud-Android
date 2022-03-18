@@ -86,7 +86,7 @@ class SplashActivity : AppCompatActivity() {
     private fun changeApplicationLanguage() {
         // To change app lang
         lifecycleScope.launchWhenCreated {
-            val lang = dataStoreManager.read(LANGUAGE, LangType.EN.toString())
+            val lang = dataStoreManager.read(LANGUAGE, LangType.AR.toString())
             changLanguage(lang)
         }
     }

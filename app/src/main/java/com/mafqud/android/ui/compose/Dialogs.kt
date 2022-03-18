@@ -1,5 +1,6 @@
 package com.mafqud.android.ui.compose
 
+import android.app.ProgressDialog
 import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -114,6 +115,7 @@ fun LoadingDialog(
     }
 
 }
+
 
 
 fun Context.showAreYouSureDialog(onCloseClicked: () -> Unit) {

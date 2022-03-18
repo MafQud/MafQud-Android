@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
 import com.mafqud.android.ui.compose.*
+import com.mafqud.android.ui.other.TimerUi
 import com.mafqud.android.ui.theme.*
 import com.mafqud.android.util.validation.PasswordError
 import com.mafqud.android.util.validation.validateNAmeAndEmailForm
@@ -41,6 +42,7 @@ enum class StepCount {
 fun RegisterScreen(
     registerFormData: MutableState<RegisterIntent.Signup>,
     activeStep: MutableState<StepCount>,
+    otpState: MutableState<String>,
     onStepOne: (String) -> Unit,
     onStepTwo: (String) -> Unit,
     onStepThree: (String, String) -> Unit,
@@ -48,6 +50,16 @@ fun RegisterScreen(
     onStepFive: (String) -> Unit,
     onBackPressed: () -> Unit,
 ) {
+    // create variable for isTimerRunning
+    val isTimerRunning = remember {
+        mutableStateOf(false)
+    }
+
+    // create variable for current time
+    val currentTime = remember {
+        mutableStateOf(120L)
+    }
+
     BoxUi(
         modifier = Modifier
             .fillMaxSize()
@@ -80,13 +92,19 @@ fun RegisterScreen(
                         when (activeStep.value) {
                             StepCount.One -> PhoneForm(registerFormData.value.phone, onStepOne)
 
-                            StepCount.Two -> OTPForm(onStepTwo)
+                            StepCount.Two -> {
+                                isTimerRunning.value = true
+                                OTPForm(otpState, isTimerRunning, currentTime, onStepTwo)
+                            }
 
                             StepCount.Three -> NameAndEmailForm(registerFormData.value, onStepThree)
 
                             StepCount.Four -> LocationForm(registerFormData.value, onStepFour)
 
-                            StepCount.Five -> PassWordForm(registerFormData.value.password,onStepFive)
+                            StepCount.Five -> PassWordForm(
+                                registerFormData.value.password,
+                                onStepFive
+                            )
 
                         }
                     }
@@ -97,7 +115,12 @@ fun RegisterScreen(
 }
 
 @Composable
-fun OTPForm(onClicked: (String) -> Unit) {
+fun OTPForm(
+    otpState: MutableState<String>,
+    isTimerRunning: MutableState<Boolean>,
+    currentTime: MutableState<Long>,
+    onClicked: (String) -> Unit
+) {
     ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
 
         TextUi(
@@ -106,29 +129,33 @@ fun OTPForm(onClicked: (String) -> Unit) {
             style = MaterialTheme.typography.titleMedium
         )
 
-        val otpState = remember {
-            mutableStateOf("")
-        }
         val otpOPState = remember {
             mutableStateOf("")
+        }
+        val isEnabled = remember {
+            mutableStateOf(false)
         }
 
         OTPCommon(code = otpState.value, onFilled = {
             otpOPState.value = it
+            isEnabled.value = otpOPState.value.length == 6
         })
 
-        // request fake OTP
-        gettingOTP { otp ->
-            otpState.value = otp
-        }
+
+        TimerUi(isTimerRunning = isTimerRunning, currentTime = currentTime)
+
 
         SpacerUi(modifier = Modifier.height(20.dp))
 
-        ButtonAuth(title = stringResource(id = R.string.next), onClick = {
-            // TODO OTP CODE
-            onClicked("")
+        ButtonAuth(
+            enabled = isEnabled.value,
+            title = stringResource(id = R.string.next),
+            onClick = {
+                if (otpOPState.value.length == 6) {
+                    onClicked(otpOPState.value)
+                }
 
-        })
+            })
     }
 }
 

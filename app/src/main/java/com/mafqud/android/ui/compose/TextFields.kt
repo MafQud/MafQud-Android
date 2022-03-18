@@ -78,7 +78,10 @@ fun TextFieldName(
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
             unfocusedIndicatorColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent
+            focusedIndicatorColor = Color.Transparent,
+            errorCursorColor = MaterialTheme.colorScheme.error,
+            errorIndicatorColor = MaterialTheme.colorScheme.error,
+            errorLeadingIconColor = MaterialTheme.colorScheme.error
         )
     )
 }
@@ -119,7 +122,11 @@ fun TextFieldEmail(value: MutableState<String>, isEmailError: MutableState<Boole
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
             unfocusedIndicatorColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent
+            focusedIndicatorColor = Color.Transparent,
+            errorCursorColor = MaterialTheme.colorScheme.error,
+            errorIndicatorColor = MaterialTheme.colorScheme.error,
+            errorLeadingIconColor = MaterialTheme.colorScheme.error
+
         )
     )
 }
@@ -181,6 +188,9 @@ fun TextFieldPhone(
                 backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
                 unfocusedIndicatorColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent,
+                errorCursorColor = MaterialTheme.colorScheme.error,
+                errorIndicatorColor = MaterialTheme.colorScheme.error,
+                errorLeadingIconColor = MaterialTheme.colorScheme.error
             )
         )
 
@@ -250,7 +260,10 @@ fun TextFieldPassword(
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
             unfocusedIndicatorColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent
+            focusedIndicatorColor = Color.Transparent,
+            errorCursorColor = MaterialTheme.colorScheme.error,
+            errorIndicatorColor = MaterialTheme.colorScheme.error,
+            errorLeadingIconColor = MaterialTheme.colorScheme.error
         )
     )
 }

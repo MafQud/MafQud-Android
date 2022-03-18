@@ -14,4 +14,5 @@ sealed class RegisterIntent {
     ) : RegisterIntent()
 
     object DisplayGovAndCity : RegisterIntent()
+    data class VerifyOTP(val loading: Boolean = false) : RegisterIntent()
 }

@@ -16,8 +16,13 @@ class RegisterViewModel @Inject constructor(private val registerRepository: Regi
                 is RegisterIntent.Signup -> signUp(it)
                 is RegisterIntent.ValidateEmail -> validateEmail(it)
                 is RegisterIntent.ValidatePhone -> validatePhone(it)
+                is RegisterIntent.VerifyOTP -> verifyOTP(it)
             }
         }
+    }
+
+    private fun verifyOTP(registerIntent: RegisterIntent.VerifyOTP) {
+        emitLoadingState(isLoading = registerIntent.loading)
     }
 
     private fun getGovAndCity() {
@@ -51,6 +56,12 @@ class RegisterViewModel @Inject constructor(private val registerRepository: Regi
     }
 
     private fun validatePhone(registerIntent: RegisterIntent.ValidatePhone) {
+        // save  entered phone
+        _stateChannel.tryEmit(
+            stateChannel.value.copy(
+                phone = registerIntent.phone
+            )
+        )
         emitLoadingState()
         launchViewModelScope {
             val result = registerRepository.isValidPhone(registerIntent)
@@ -140,14 +151,15 @@ class RegisterViewModel @Inject constructor(private val registerRepository: Regi
 
     private fun emitLoadingState(
         isValidPhone: Boolean = false,
-        isValidEmail: Boolean = false
+        isValidEmail: Boolean = false,
+        isLoading: Boolean = true
     ) {
         launchViewModelScope {
             _stateChannel.emit(
                 stateChannel.value.copy(
                     isValidPhone = isValidPhone,
                     isValidEmail = isValidEmail,
-                    isLoading = true,
+                    isLoading = isLoading,
                     errorFieldMessage = null,
                     networkError = null,
                     isSuccess = false,

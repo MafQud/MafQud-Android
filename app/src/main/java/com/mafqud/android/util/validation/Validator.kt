@@ -60,7 +60,6 @@ fun validatePhoneForm(
     } else {
         isPhoneError.value = false
     }
-
     onSuccessValidation(phone)
 
 }

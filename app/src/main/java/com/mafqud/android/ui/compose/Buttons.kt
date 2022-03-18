@@ -25,10 +25,12 @@ fun ButtonAuth(
     title: String, height: Dp = mButtonHeight,
     textColor: Color = MaterialTheme.colorScheme.background,
     backgroundColor: Color = MaterialTheme.colorScheme.primary,
+    enabled: Boolean = true,
     onClick: () -> Unit,
 ) {
     BoxUi {
         ButtonUi(
+            enabled = enabled,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(height)

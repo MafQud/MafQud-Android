@@ -30,10 +30,10 @@ import kotlinx.coroutines.delay
 @Preview
 fun OTPCommon(
     code: String = "",
-    otpLength: Int = 4,
+    otpLength: Int = 6,
     /*reset: Boolean = false,*/
     displayDelay: Long = 150,
-    onFilled: (String) -> Unit ={},
+    onFilled: (String) -> Unit = {},
 ) {
 
     // if the inserted mCode is filled so, call onFilled listener
@@ -50,7 +50,14 @@ fun OTPCommon(
     val otpState4 = remember {
         mutableStateOf("")
     }
-    val localOTP = otpState1.value + otpState2.value + otpState3.value + otpState4.value
+    val otpState5 = remember {
+        mutableStateOf("")
+    }
+    val otpState6 = remember {
+        mutableStateOf("")
+    }
+    val localOTP =
+        otpState1.value + otpState2.value + otpState3.value + otpState4.value + otpState5.value + otpState6.value
     // check fill state
     /* var isValidate by remember {
          mutableStateOf(false)
@@ -72,6 +79,10 @@ fun OTPCommon(
             otpState3.value = code[2].toString()
             delay(displayDelay)
             otpState4.value = code[3].toString()
+            delay(displayDelay)
+            otpState5.value = code[4].toString()
+            delay(displayDelay)
+            otpState6.value = code[5].toString()
         })
 
     }
@@ -92,6 +103,8 @@ fun OTPCommon(
         CommonOtpTextField(otp = otpState2, focusRequesters, 1)
         CommonOtpTextField(otp = otpState3, focusRequesters, 2)
         CommonOtpTextField(otp = otpState4, focusRequesters, 3)
+        CommonOtpTextField(otp = otpState5, focusRequesters, 4)
+        CommonOtpTextField(otp = otpState6, focusRequesters, 5)
     }
 }
 
@@ -135,7 +148,7 @@ fun CommonOtpTextField(
             unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant
         ),
         modifier = Modifier
-            .size(64.dp)
+            .size(50.dp)
             .focusOrder(focusRequester = focusRequesters[index]) {
                 if (index != focusRequesters.lastIndex)
                     focusRequesters[index + 1].requestFocus()

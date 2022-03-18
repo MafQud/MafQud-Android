@@ -193,3 +193,12 @@ private fun Activity.startUpdate(appUpdateManager: AppUpdateManager, appUpdateIn
         // Include a request code to later monitor this update request.
         101)
 }
+
+fun getTimeFromSec(totalSecs: Long): String {
+
+    val hours = totalSecs / 3600;
+    val minutes = (totalSecs % 3600) / 60;
+    val seconds = totalSecs % 60;
+
+    return String.format("%02d:%02d", minutes, seconds)
+}

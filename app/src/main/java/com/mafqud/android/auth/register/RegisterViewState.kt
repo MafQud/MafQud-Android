@@ -8,6 +8,8 @@ data class RegisterViewState(
     val isLoading: Boolean = false,
     val isValidPhone: Boolean = false,
     val isValidEmail: Boolean = false,
+    val phone: String? = null,
+    val email: String? = null,
 
     val errorFieldMessage: String? = null,
     val data: String? = null,

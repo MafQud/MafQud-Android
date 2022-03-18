@@ -13,20 +13,45 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.FirebaseException
+import com.google.firebase.FirebaseTooManyRequestsException
+import com.google.firebase.auth.*
+import com.google.firebase.auth.PhoneAuthProvider.ForceResendingToken
+import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks
+import com.mafqud.android.R
 import com.mafqud.android.home.HomeActivity
 import com.mafqud.android.ui.compose.LoadingDialog
 import com.mafqud.android.ui.compose.showAreYouSureDialog
+import com.mafqud.android.ui.other.showToast
 import com.mafqud.android.ui.theme.MafQudTheme
 import com.mafqud.android.util.network.ShowNetworkErrorSnakeBarUi
+import com.mafqud.android.util.other.Logger
 import com.mafqud.android.util.other.hideKeypad
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
+
 
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
 
     private val viewModel: RegisterViewModel by viewModels()
+
+    // variable for FirebaseAuth class
+    private lateinit var mAuth: FirebaseAuth
+
+    // string for storing our verification ID
+    private var verificationId: String = ""
+
+    //OTP remember
+    private val otpState: MutableState<String> = mutableStateOf("")
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mAuth = FirebaseAuth.getInstance()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,7 +75,9 @@ class RegisterFragment : Fragment() {
                     RegisterScreen(
                         registerFormData,
                         activeStep,
+                        otpState,
                         onStepOne = { phone ->
+                            otpState.value = ""
                             registerFormData.value = registerFormData.value.copy(
                                 phone = phone
 
@@ -59,8 +86,10 @@ class RegisterFragment : Fragment() {
 
                         },
                         onStepTwo = { otp ->
-                            activeStep.value = StepCount.Three
-
+                            otpState.value = otp
+                            verifyCode(otp) {
+                                activeStep.value = StepCount.Three
+                            }
                         },
                         onStepThree = { name, email ->
                             registerFormData.value = registerFormData.value.copy(
@@ -110,7 +139,7 @@ class RegisterFragment : Fragment() {
 
     private fun handleBackWithCurrentStep(activeStep: MutableState<StepCount>) {
         when (activeStep.value) {
-            StepCount.One ->{
+            StepCount.One -> {
                 requireContext().showAreYouSureDialog {
                     findNavController().popBackStack()
                 }
@@ -158,7 +187,11 @@ class RegisterFragment : Fragment() {
         LoadingDialog(stateValue.isLoading)
 
         if (stateValue.isValidPhone) {
-            activeStep.value = StepCount.Two
+            if (stateValue.phone != null) {
+                sendVerificationCode(stateValue.phone, activeStep)
+                //activeStep.value = StepCount.Two
+            }
+
         }
         if (stateValue.isValidEmail) {
             activeStep.value = StepCount.Four
@@ -187,5 +220,124 @@ class RegisterFragment : Fragment() {
         requireActivity().finish()
     }
 
+    /**
+     * Phone OTP
+     */
+
+    private fun sendVerificationCode(phone: String, activeStep: MutableState<StepCount>) {
+        val mPhone = "+20$phone"
+        // this method is used for getting
+        // OTP on user phone number.
+        val options = PhoneAuthOptions.newBuilder(mAuth)
+            .setPhoneNumber(mPhone) // Phone number to verify
+            .setTimeout(120L, TimeUnit.SECONDS) // Timeout and unit
+            .setActivity(requireActivity()) // Activity (for callback binding)
+            .setCallbacks(object : OnVerificationStateChangedCallbacks() {
+                // below method is used when
+                // OTP is sent from Firebase
+                override fun onCodeSent(s: String, forceResendingToken: ForceResendingToken) {
+                    super.onCodeSent(s, forceResendingToken)
+                    // when we receive the OTP it
+                    // contains a unique id which
+                    // we are storing in our string
+                    // which we have already created.
+                    verificationId = s
+                    activeStep.value = StepCount.Two
+                }
+
+                // this method is called when user
+                // receive OTP from Firebase.
+                override fun onVerificationCompleted(phoneAuthCredential: PhoneAuthCredential) {
+                    // below line is used for getting OTP code
+                    // which is sent in phone auth credentials.
+                    val code = phoneAuthCredential.smsCode
+
+                    // checking if the code
+                    // is null or not.
+                    if (code != null) {
+                        // if the code is not null then
+                        // we are setting that code to
+                        // our OTP edittext field.
+                        //edtOTP.setText(code)
+                        otpState.value = code
+
+                        // after setting this code
+                        // to OTP edittext field we
+                        // are calling our verifycode method.
+                        verifyCode(code) {
+                            activeStep.value = StepCount.Three
+                        }
+                    }
+                }
+
+                // this method is called when firebase doesn't
+                // sends our OTP code due to any error or issue.
+                override fun onVerificationFailed(e: FirebaseException) {
+                    // displaying error message with firebase exception.
+                    // This callback is invoked in an invalid request for verification is made,
+                    // for instance if the the phone number format is not valid.
+
+                    val message = if (e is FirebaseAuthInvalidCredentialsException) {
+                        // Invalid request
+                        "Invalid request ${e.message}"
+
+                    } else if (e is FirebaseTooManyRequestsException) {
+                        // The SMS quota for the project has been exceeded
+                        "SMS quota for Mafqud has been exceeded"
+
+                    } else {
+                        "Unknown error"
+                    }
+                    // Show a message and update the UI
+                    // ...
+                    Logger.i("onVeriFailed", message)
+                    requireContext().showToast(
+                        message,
+                    )
+                }
+            }) // OnVerificationStateChangedCallbacks
+            .build()
+        PhoneAuthProvider.verifyPhoneNumber(options)
+    }
+
+    fun verifyCode(code: String, onSuccessOtp: () -> Unit) {
+        verifyOtpLoadingIntent(isLoading = true)
+        // below line is used for getting getting
+        // credentials from our verification id and code.
+        val credential = PhoneAuthProvider.getCredential(verificationId, code)
+
+        // after getting credential we are
+        // calling sign in method.
+        signInWithCredential(credential, onSuccessOtp)
+    }
+
+    private fun signInWithCredential(
+        credential: PhoneAuthCredential,
+        onSuccessOtp: () -> Unit,
+    ) {
+        // inside this method we are checking if
+        // the code entered is correct or not.
+        mAuth.signInWithCredential(credential)
+            .addOnCompleteListener { task ->
+                verifyOtpLoadingIntent(isLoading = false)
+                if (task.isSuccessful) {
+                    // if the code is correct and the task is successful
+                    onSuccessOtp()
+
+                } else {
+                    // if the code is not correct then we are
+                    // displaying an error message to the user.
+                    requireContext().showToast(
+                        getString(R.string.error_code),
+                    )
+                }
+            }
+    }
+
+    private fun verifyOtpLoadingIntent(isLoading: Boolean) {
+        lifecycleScope.launchWhenCreated {
+            viewModel.intentChannel.send(RegisterIntent.VerifyOTP(loading = isLoading))
+        }
+    }
 
 }
