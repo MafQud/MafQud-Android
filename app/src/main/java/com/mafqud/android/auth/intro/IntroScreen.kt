@@ -1,10 +1,7 @@
 package com.mafqud.android.auth.intro
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -13,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
 import com.mafqud.android.ui.compose.ButtonAuth
@@ -44,19 +42,23 @@ fun IntroScreen(onLogin: () -> Unit, onSignUp: () -> Unit) {
             )
 
             TextUi(
-                modifier = Modifier.padding(top = 12.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp),
                 text = stringResource(id = R.string.welcome_mafqud),
                 color = MaterialTheme.colorScheme.background,
-                style = MaterialTheme.typography.headlineMedium
-
+                style = MaterialTheme.typography.headlineMedium,
+                textAlign = TextAlign.Center
             )
+            Spacer(modifier = Modifier.height(6.dp))
             TextUi(
+                modifier = Modifier.fillMaxWidth(),
                 text = stringResource(id = R.string.mafqud_help),
                 color = MaterialTheme.colorScheme.background,
-                style = MaterialTheme.typography.titleMedium
-
-
+                style = MaterialTheme.typography.titleSmall,
+                textAlign = TextAlign.Center
             )
+            Spacer(modifier = Modifier.height(8.dp))
             //login
             ButtonAuth(title = stringResource(id = R.string.login),
                 textColor = MaterialTheme.colorScheme.tertiary,

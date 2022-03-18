@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Mafqud</string>
-    <string name="google">Google</string>
-    <string name="facebook">Facebook</string>
+    <string name="google" translatable="false">Google</string>
+    <string name="facebook" translatable="false">Facebook</string>
     <string name="log_out">Log out</string>
     <string name="are_you_sure_logout">Are you sure to log out?</string>
     <string name="confirm">Confirm</string>
@@ -13,28 +13,28 @@
     <string name="try_again">Try again!</string>
     <string name="error_take_photo">Faild to take a photo, Try again !</string>
     <string name="note_release">Note: This version is unstable.</string>
-    <string name="notification_channel_FCM">101</string>
-    <string name="channel_name_upload">Upload</string>
-    <string name="channel_description_upload">For uploading</string>
-    <string name="channel_name_push">FCM</string>
-    <string name="channel_description">FCM receiver</string>
-    <string name="uploading">Uploading</string>
-    <string name="fcm_notification_channel_id">102</string>
-    <string name="permission_read_denied">Cann\'t access files.</string>
-    <string name="permission_needed">Permission needed</string>
-    <string name="open_setting">Open Setting</string>
-    <string name="camera_dialog">Camera and Storage permissions needed for tacking and accessing photos</string>
-    <string name="storage_dialog">Storage permission needed for accessing photos</string>
-    <string name="open_gps">Please, open your GPS to get your current location</string>
-    <string name="error_no_more_data">Can\'t load more data.. Check Internet connection!</string>
-    <string name="error_bad_gateway">Bad Getway</string>
-    <string name="error_unknown">Unknown Error</string>
-    <string name="error_not_found">Not found</string>
-    <string name="error_not_auth">Email or password are incorrect</string>
-    <string name="error_server_error">Server error</string>
-    <string name="error_forbidden">Forbidden</string>
-    <string name="error_bad_request">Bad request</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="notification_channel_FCM" translatable="false">101</string>
+    <string name="channel_name_upload" translatable="false">Upload</string>
+    <string name="channel_description_upload" translatable="false">For uploading</string>
+    <string name="channel_name_push" translatable="false">FCM</string>
+    <string name="channel_description" translatable="false">FCM receiver</string>
+    <string name="uploading" translatable="false">Uploading</string>
+    <string name="fcm_notification_channel_id" translatable="false">102</string>
+    <string name="permission_read_denied" translatable="false">Cann\'t access files.</string>
+    <string name="permission_needed" translatable="false">Permission needed</string>
+    <string name="open_setting" translatable="false">Open Setting</string>
+    <string name="camera_dialog" translatable="false">Camera and Storage permissions needed for tacking and accessing photos</string>
+    <string name="storage_dialog" translatable="false">Storage permission needed for accessing photos</string>
+    <string name="open_gps" translatable="false">Please, open your GPS to get your current location</string>
+    <string name="error_no_more_data" translatable="false">Can\'t load more data.. Check Internet connection!</string>
+    <string name="error_bad_gateway" translatable="false">Bad Getway</string>
+    <string name="error_unknown" translatable="false">Unknown Error</string>
+    <string name="error_not_found" translatable="false">Not found</string>
+    <string name="error_not_auth" translatable="false">Email or password are incorrect</string>
+    <string name="error_server_error" translatable="false">Server error</string>
+    <string name="error_forbidden" translatable="false">Forbidden</string>
+    <string name="error_bad_request" translatable="false">Bad request</string>
+    <string name="title_activity_main" translatable="false">MainActivity</string>
     <string name="welcome_mafqud">Welcome with mafqud</string>
     <string name="mafqud_help">Mafqud helps you to ...</string>
     <string name="login">Log in</string>
@@ -42,12 +42,12 @@
     <string name="login_title">Login</string>
     <string name="insert_phone_num">Insert phone number</string>
     <string name="next">Next</string>
-    <string name="egypt_code">+20</string>
+    <string name="egypt_code" translatable="false">+20</string>
     <string name="create_account">Create account</string>
     <string name="insert_email">Insert email</string>
     <string name="example_name">Ex: Osama Yasser</string>
     <string name="full_name">Full Name</string>
-    <string name="example_email">Ex: user@gmail.com</string>
+    <string name="example_email" translatable="false">Ex: user@gmail.com</string>
     <string name="title_home">Home</string>
     <string name="title_report">Report</string>
     <string name="title_map">Map</string>
@@ -68,5 +68,4 @@
     <string name="close">Close</string>
     <string name="error_code">Code not correct</string>
     <string name="code_time">Code expired after:</string>
-    <string name="secound">sec</string>
 </resources>

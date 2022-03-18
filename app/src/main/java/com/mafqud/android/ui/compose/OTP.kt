@@ -15,11 +15,13 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusOrder
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.ui.theme.RowUi
 import kotlinx.coroutines.delay
@@ -36,76 +38,80 @@ fun OTPCommon(
     onFilled: (String) -> Unit = {},
 ) {
 
-    // if the inserted mCode is filled so, call onFilled listener
-    // manual OTP
-    val otpState1 = remember {
-        mutableStateOf("")
-    }
-    val otpState2 = remember {
-        mutableStateOf("")
-    }
-    val otpState3 = remember {
-        mutableStateOf("")
-    }
-    val otpState4 = remember {
-        mutableStateOf("")
-    }
-    val otpState5 = remember {
-        mutableStateOf("")
-    }
-    val otpState6 = remember {
-        mutableStateOf("")
-    }
-    val localOTP =
-        otpState1.value + otpState2.value + otpState3.value + otpState4.value + otpState5.value + otpState6.value
-    // check fill state
-    /* var isValidate by remember {
-         mutableStateOf(false)
-     }*/
-    onFilled(localOTP)
-    /* isValidate = localOTP.length == otpLength
-     if (isValidate) {
-         onFilled(localOTP)
-         Log.i("OTPCommon: ", "send")
-     }*/
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr ) {
 
-    // auto otp fill
-    if (code.length == otpLength) {
-        LaunchedEffect(key1 = Unit, block = {
-            otpState1.value = code[0].toString()
-            delay(displayDelay)
-            otpState2.value = code[1].toString()
-            delay(displayDelay)
-            otpState3.value = code[2].toString()
-            delay(displayDelay)
-            otpState4.value = code[3].toString()
-            delay(displayDelay)
-            otpState5.value = code[4].toString()
-            delay(displayDelay)
-            otpState6.value = code[5].toString()
-        })
-
-    }
-
-    val focusRequesters: List<FocusRequester> = remember {
-        val temp = mutableListOf<FocusRequester>()
-        repeat(otpLength) {
-            temp.add(FocusRequester())
+        // if the inserted mCode is filled so, call onFilled listener
+        // manual OTP
+        val otpState1 = remember {
+            mutableStateOf("")
         }
-        temp
+        val otpState2 = remember {
+            mutableStateOf("")
+        }
+        val otpState3 = remember {
+            mutableStateOf("")
+        }
+        val otpState4 = remember {
+            mutableStateOf("")
+        }
+        val otpState5 = remember {
+            mutableStateOf("")
+        }
+        val otpState6 = remember {
+            mutableStateOf("")
+        }
+        val localOTP =
+            otpState1.value + otpState2.value + otpState3.value + otpState4.value + otpState5.value + otpState6.value
+        // check fill state
+        /* var isValidate by remember {
+             mutableStateOf(false)
+         }*/
+        onFilled(localOTP)
+        /* isValidate = localOTP.length == otpLength
+         if (isValidate) {
+             onFilled(localOTP)
+             Log.i("OTPCommon: ", "send")
+         }*/
+
+        // auto otp fill
+        if (code.length == otpLength) {
+            LaunchedEffect(key1 = Unit, block = {
+                otpState1.value = code[0].toString()
+                delay(displayDelay)
+                otpState2.value = code[1].toString()
+                delay(displayDelay)
+                otpState3.value = code[2].toString()
+                delay(displayDelay)
+                otpState4.value = code[3].toString()
+                delay(displayDelay)
+                otpState5.value = code[4].toString()
+                delay(displayDelay)
+                otpState6.value = code[5].toString()
+            })
+
+        }
+
+        val focusRequesters: List<FocusRequester> = remember {
+            val temp = mutableListOf<FocusRequester>()
+            repeat(otpLength) {
+                temp.add(FocusRequester())
+            }
+            temp
+        }
+        RowUi(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            CommonOtpTextField(otp = otpState1, focusRequesters, 0)
+            CommonOtpTextField(otp = otpState2, focusRequesters, 1)
+            CommonOtpTextField(otp = otpState3, focusRequesters, 2)
+            CommonOtpTextField(otp = otpState4, focusRequesters, 3)
+            CommonOtpTextField(otp = otpState5, focusRequesters, 4)
+            CommonOtpTextField(otp = otpState6, focusRequesters, 5)
+        }
     }
-    RowUi(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        CommonOtpTextField(otp = otpState1, focusRequesters, 0)
-        CommonOtpTextField(otp = otpState2, focusRequesters, 1)
-        CommonOtpTextField(otp = otpState3, focusRequesters, 2)
-        CommonOtpTextField(otp = otpState4, focusRequesters, 3)
-        CommonOtpTextField(otp = otpState5, focusRequesters, 4)
-        CommonOtpTextField(otp = otpState6, focusRequesters, 5)
-    }
+
 }
 
 @OptIn(ExperimentalComposeUiApi::class)

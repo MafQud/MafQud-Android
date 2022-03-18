@@ -68,10 +68,14 @@ fun SplashScreen(onAnimationFinished: () -> Unit = {}) {
             ) {
                 TextUi(
                     text = BuildConfig.VERSION_NAME.toLowerCase(),
-                    fontSize = 14.sp
-                )
+                    style = androidx.compose.material3.MaterialTheme.typography.titleSmall,
+                    )
                 if (!BuildConfig.IS_STABLE) {
-                    TextUi(text = stringResource(id = R.string.note_release), fontSize = 14.sp)
+                    TextUi(
+                        text = stringResource(id = R.string.note_release),
+                        style = androidx.compose.material3.MaterialTheme.typography.titleSmall,
+                        fontSize = 14.sp
+                    )
                 }
             }
 

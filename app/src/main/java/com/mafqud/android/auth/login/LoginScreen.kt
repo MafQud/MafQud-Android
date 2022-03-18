@@ -88,6 +88,9 @@ fun LoginScreen(
                 style = MaterialTheme.typography.headlineSmall
             )
 
+
+            SpacerUi(modifier = Modifier.height(12.dp))
+
             TextUi(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(id = R.string.insert_phone_num),

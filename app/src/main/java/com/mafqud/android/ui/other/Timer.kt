@@ -41,10 +41,5 @@ fun TimerUi(
             style = MaterialTheme.typography.titleSmall
         )
 
-        TextUi(
-            text = stringResource(id = R.string.secound),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            style = MaterialTheme.typography.titleSmall
-        )
     }
 }

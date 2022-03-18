@@ -1,6 +1,5 @@
 package com.mafqud.android.ui.compose
 
-import android.app.ProgressDialog
 import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -107,7 +106,10 @@ fun LoadingDialog(
                         color =
                         MaterialTheme.colorScheme.primary
                     )
-                    TextUi(text = title, color = MaterialTheme.colorScheme.primary)
+                    TextUi(
+                        text = title, color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.titleSmall,
+                    )
                 }
             }
         }
@@ -117,10 +119,11 @@ fun LoadingDialog(
 }
 
 
-
 fun Context.showAreYouSureDialog(onCloseClicked: () -> Unit) {
-    val alertDialog = MaterialAlertDialogBuilder(this,
-        R.style.MaterialAlertDialog_rounded)
+    val alertDialog = MaterialAlertDialogBuilder(
+        this,
+        R.style.MaterialAlertDialog_rounded
+    )
 
     // SettingsActivity Dialog Title
     alertDialog.setTitle(getString(R.string.are_you_sure_close))

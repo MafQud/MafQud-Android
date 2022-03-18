@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">مفقود</string>
+    <string name="log_out">تسجيل الخروج</string>
+    <string name="are_you_sure_logout">هل انت متاكد من تسجيل الخروج ؟</string>
+    <string name="confirm">تأكيد</string>
+    <string name="cancel">إلغاء</string>
+    <string name="please_wait">من فضلك إنتظر !</string>
+    <string name="pic_photo">اختار صورة</string>
+    <string name="see_more">روية المزيد...</string>
+    <string name="error_no_internet">لا يوجد انترنت</string>
+    <string name="try_again">حاول مرة اخري</string>
+    <string name="error_take_photo">فشل في التقاط الصورة</string>
+    <string name="note_release">ملحوظة: هذه النسخه غير مستقرة</string>
+    <string name="code_time">صلاحية الكود ستنتهي بعد</string>
+    <string name="error_code">الكود خطأ</string>
+    <string name="close">اغلق</string>
+    <string name="are_you_sure_close">هل انت متاكد من الاغلاق؟</string>
+    <string name="error_name">ادخل اسم صحيح</string>
+    <string name="insert_otp">ادخل رمز التأكيد الذي تم ارساله</string>
+    <string name="address">العنوان</string>
+    <string name="password">كلمة المرور</string>
+    <string name="password_confirm">تأكيد كلمة المرور</string>
+    <string name="register">تسجيل</string>
+    <string name="error_phone">ادخل رقم صالح</string>
+    <string name="error_password">ادخل رقم سري قوي</string>
+    <string name="insert_password">كلمة المرور</string>
+    <string name="report_found">إبلاغ عن معثور عليه</string>
+    <string name="report_lost">إبلاغ عن مفقود</string>
+    <string name="search_title">ابحث بالاسم</string>
+    <string name="title_more">المزيد</string>
+    <string name="title_map">الخريطة</string>
+    <string name="title_report">إبلاغ</string>
+    <string name="title_home">الرئيسية</string>
+    <string name="full_name">الأسم بالكامل</string>
+    <string name="example_name">مثل أسامة ياسر</string>
+    <string name="insert_email">البريد الإلكتروني</string>
+    <string name="create_account">إنشاء حساب</string>
+    <string name="next">التالي</string>
+    <string name="insert_phone_num">للتسجيل ادخل رقم الموبايل</string>
+    <string name="login_title">تسجيل الدخول</string>
+    <string name="sign_up">إنشاء حساب</string>
+    <string name="login">تسجيل الدخول</string>
+    <string name="mafqud_help">هو تطبيق يساعد في العثور على المفقودين عن طريق استخدام الذكاء الاصطناعي</string>
+    <string name="welcome_mafqud">أهلا بك في \"مفقود\"</string>
+</resources>
