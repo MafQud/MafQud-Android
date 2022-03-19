@@ -9,6 +9,8 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.mafqud.android.R
 import com.mafqud.android.auth.AuthActivity
 import com.mafqud.android.data.DataStoreManager
 import com.mafqud.android.di.MyServiceInterceptor
@@ -43,12 +45,16 @@ class MoreFragment : Fragment() {
                     MoreScreen(onReportedClicked = {
 
                     }, onAccountClicked = {
+                        findNavController().navigate(R.id.action_moreFragment_to_myAccountFragment)
 
                     }, onSettingClicked = {
+                        findNavController().navigate(R.id.action_moreFragment_to_settingFragment)
 
                     }, onHelpClicked = {
+                        findNavController().navigate(R.id.action_moreFragment_to_helpFragment)
 
                     }, onPhonesClicked = {
+                        findNavController().navigate(R.id.action_moreFragment_to_phonesFragment)
 
                     }, onLogoutClicked = {
                         logOutCurrentUser()

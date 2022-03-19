@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.mafqud.android.home.HomeActivity
+
 
 open class BaseFragment : Fragment() {
 
@@ -15,6 +17,13 @@ open class BaseFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+    fun showHomeBar() {
+        val activity = requireActivity()
+        if (activity is HomeActivity) {
+            activity.homeBarVisibility(isVisible = true)
+        }
     }
 
 }

@@ -27,9 +27,46 @@
     <fragment
         android:id="@+id/moreFragment"
         android:name="com.mafqud.android.more.MoreFragment"
-        android:label="MoreFragment" />
+        android:label="MoreFragment" >
+        <action
+            app:enterAnim="@anim/fade_in"
+            app:popEnterAnim="@anim/fade_in"
+            android:id="@+id/action_moreFragment_to_myAccountFragment"
+            app:destination="@id/myAccountFragment" />
+        <action
+            app:enterAnim="@anim/fade_in"
+            app:popEnterAnim="@anim/fade_in"
+            android:id="@+id/action_moreFragment_to_helpFragment"
+            app:destination="@id/helpFragment" />
+        <action
+            app:enterAnim="@anim/fade_in"
+            app:popEnterAnim="@anim/fade_in"
+            android:id="@+id/action_moreFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+        <action
+            app:enterAnim="@anim/fade_in"
+            app:popEnterAnim="@anim/fade_in"
+            android:id="@+id/action_moreFragment_to_phonesFragment"
+            app:destination="@id/phonesFragment" />
+    </fragment>
     <fragment
         android:id="@+id/notificationFragment"
         android:name="com.mafqud.android.notification.NotificationFragment"
         android:label="NotificationFragment" />
+    <fragment
+        android:id="@+id/helpFragment"
+        android:name="com.mafqud.android.more.HelpFragment"
+        android:label="HelpFragment" />
+    <fragment
+        android:id="@+id/myAccountFragment"
+        android:name="com.mafqud.android.more.MyAccountFragment"
+        android:label="MyAccountFragment" />
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.mafqud.android.more.SettingFragment"
+        android:label="SettingFragment" />
+    <fragment
+        android:id="@+id/phonesFragment"
+        android:name="com.mafqud.android.more.PhonesFragment"
+        android:label="PhonesFragment" />
 </navigation>
