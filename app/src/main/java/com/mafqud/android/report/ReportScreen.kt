@@ -43,7 +43,7 @@ fun ReportScreen(
         ) {
             ImageUi(
                 painter = painterResource(id = R.drawable.ic_report_case),
-                modifier = Modifier.size(215.dp, 222.dp)
+                modifier = Modifier.size(300.dp, 185.dp)
             )
 
             //lost

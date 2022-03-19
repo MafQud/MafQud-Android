@@ -1,6 +1,7 @@
 package com.mafqud.android.ui.compose
 
 import android.content.Context
+import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.size
@@ -118,6 +119,43 @@ fun LoadingDialog(
 
 }
 
+
+fun Context.logoutDialog(onConfirmClicked: () -> Unit) : AlertDialog {
+    val alertDialog = MaterialAlertDialogBuilder(
+        this,
+        R.style.MaterialAlertDialog_rounded
+    )
+
+    // SettingsActivity Dialog Title
+    alertDialog.setTitle(getString(R.string.are_you_sure_logout))
+
+    // SettingsActivity Dialog Message
+    alertDialog.setCancelable(true)
+    alertDialog.setPositiveButton(
+        getString(R.string.log_out)
+    ) { p0, p1 ->
+        onConfirmClicked()
+    }
+
+    alertDialog.setNegativeButton(
+        getString(R.string.cancel)
+    ) { p0, p1 ->
+        p0.dismiss()
+    }
+
+    val dialog = alertDialog.create()
+    //dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+    //2. now setup to change color of the button
+    dialog.setOnShowListener {
+        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE)
+            .setTextColor(resources.getColor(R.color.black))
+        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE)
+            .setTextColor(resources.getColor(R.color.red))
+    }
+    // Showing Alert Message
+    return  dialog
+}
 
 fun Context.showAreYouSureDialog(onCloseClicked: () -> Unit) {
     val alertDialog = MaterialAlertDialogBuilder(
