@@ -29,7 +29,12 @@ class HomeActivity : BaseActivity() {
         setContent {
             MafQudTheme {
                 ColumnUi {
-                    HomeAppBar()
+                    HomeAppBar(onNotificationClicked = {
+                        // open notification fragment
+                        if (::navHostFragment.isInitialized) {
+                            navHostFragment.navController.navigate(R.id.action_notification)
+                        }
+                    })
                     NavigationHostFragment()
                 }
             }

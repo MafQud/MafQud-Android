@@ -17,7 +17,11 @@ import com.mafqud.android.ui.theme.RowUi
 import com.mafqud.android.ui.theme.TextUi
 
 @Composable
-fun HomeAppBar(userName: String = "", notificationCount: Int = 0) {
+fun HomeAppBar(
+    userName: String = "",
+    notificationCount: Int = 0,
+    onNotificationClicked: () -> Unit ={}
+) {
     RowUi(
         modifier = Modifier
             .fillMaxWidth()
@@ -50,9 +54,8 @@ fun HomeAppBar(userName: String = "", notificationCount: Int = 0) {
                 style = MaterialTheme.typography.titleMedium
             )
         }
-        IconNotification {
+        IconNotification(onClick = onNotificationClicked)
 
-        }
     }
 
 }
