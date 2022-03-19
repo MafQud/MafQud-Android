@@ -26,4 +26,11 @@ open class BaseFragment : Fragment() {
         }
     }
 
+    fun hideHomeBar() {
+        val activity = requireActivity()
+        if (activity is HomeActivity) {
+            activity.homeBarVisibility(isVisible = false)
+        }
+    }
+
 }

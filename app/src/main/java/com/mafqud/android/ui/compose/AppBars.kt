@@ -1,10 +1,7 @@
 package com.mafqud.android.ui.compose
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -20,7 +17,7 @@ import com.mafqud.android.ui.theme.TextUi
 fun HomeAppBar(
     userName: String = "",
     notificationCount: Int = 0,
-    onNotificationClicked: () -> Unit ={}
+    onNotificationClicked: () -> Unit = {}
 ) {
     RowUi(
         modifier = Modifier
@@ -58,4 +55,47 @@ fun HomeAppBar(
 
     }
 
+}
+
+
+@Composable
+fun TitledAppBar(
+    title: String = "",
+    onBackClicked: (() -> Unit)? = null
+) {
+
+    BoxUi(
+        Modifier
+            .fillMaxWidth()
+            .height(70.dp)
+            .background(
+                MaterialTheme.colorScheme.surfaceVariant
+            )
+            .padding(
+                top = 16.dp, start = 16.dp, end = 16.dp,
+                bottom = 20.dp
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        TextUi(
+            modifier = Modifier
+                .align(Alignment.Center),
+            text = title,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            style = MaterialTheme.typography.titleLarge
+        )
+
+        BoxUi(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.Center),
+            contentAlignment = Alignment.CenterStart
+        ) {
+            if (onBackClicked != null) {
+                IconBack(onClick = {
+                    onBackClicked()
+                })
+            }
+        }
+    }
 }

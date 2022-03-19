@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
+import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.compose.logoutDialog
 import com.mafqud.android.ui.theme.*
 
@@ -30,62 +31,69 @@ fun MoreScreen(
     onPhonesClicked: () -> Unit,
     onLogoutClicked: () -> Unit,
 ) {
-    BoxUi(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.onPrimary)
-            .padding(16.dp),
+    ColumnUi {
 
-        ) {
-
-
-        ColumnUi(
+        TitledAppBar(
+            title = stringResource(id = R.string.title_more)
+        )
+        BoxUi(
             modifier = Modifier
-                .align(Alignment.TopCenter)
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
+                .fillMaxSize()
+                .weight(1f)
+                .background(MaterialTheme.colorScheme.onPrimary)
+                .padding(16.dp),
 
-            MoreItem(
-                title = stringResource(id = R.string.reported_people),
-                icon = R.drawable.ic_report,
-                onItemClicked = onReportedClicked,
-            )
-            HorizontalLine()
+            ) {
 
-            MoreItem(
-                title = stringResource(id = R.string.my_account),
-                icon = R.drawable.ic_account,
-                onItemClicked = onAccountClicked,
 
+            ColumnUi(
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+
+                MoreItem(
+                    title = stringResource(id = R.string.reported_people),
+                    icon = R.drawable.ic_report,
+                    onItemClicked = onReportedClicked,
                 )
-            HorizontalLine()
+                HorizontalLine()
 
-            MoreItem(
-                title = stringResource(id = R.string.settings),
-                icon = R.drawable.ic_setting,
-                onItemClicked = onSettingClicked,
+                MoreItem(
+                    title = stringResource(id = R.string.my_account),
+                    icon = R.drawable.ic_account,
+                    onItemClicked = onAccountClicked,
 
+                    )
+                HorizontalLine()
+
+                MoreItem(
+                    title = stringResource(id = R.string.settings),
+                    icon = R.drawable.ic_setting,
+                    onItemClicked = onSettingClicked,
+
+                    )
+                HorizontalLine()
+
+                MoreItem(
+                    title = stringResource(id = R.string.help),
+                    icon = R.drawable.ic_info,
+                    onItemClicked = onHelpClicked,
+
+                    )
+                HorizontalLine()
+
+                MoreItem(
+                    title = stringResource(id = R.string.phones),
+                    icon = R.drawable.ic_phone,
+                    onItemClicked = onPhonesClicked,
                 )
-            HorizontalLine()
+                HorizontalLine()
+                Logout(onConfirmClicked = onLogoutClicked)
 
-            MoreItem(
-                title = stringResource(id = R.string.help),
-                icon = R.drawable.ic_info,
-                onItemClicked = onHelpClicked,
-
-                )
-            HorizontalLine()
-
-            MoreItem(
-                title = stringResource(id = R.string.phones),
-                icon = R.drawable.ic_phone,
-                onItemClicked = onPhonesClicked,
-            )
-            HorizontalLine()
-            Logout(onConfirmClicked = onLogoutClicked)
-
+            }
         }
     }
 }

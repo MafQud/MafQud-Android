@@ -1,4 +1,4 @@
-package com.mafqud.android.notification
+package com.mafqud.android.report
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,27 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
-import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
-import com.mafqud.android.home.HomeActivity
+import com.mafqud.android.base.fragment.BaseFragment
 import com.mafqud.android.ui.theme.MafQudTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NotificationFragment : Fragment() {
+class ReportFoundFragment : BaseFragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val activity = requireActivity()
-        if (activity is HomeActivity) {
-            activity.homeBarVisibility(isVisible = false)
-        }
-    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        hideHomeBar()
         return ComposeView(requireContext()).apply {
             // @ref https://developer.android.com/jetpack/compose/interop/interop-apis#composition-strategy
             // Dispose the Composition when viewLifecycleOwner is destroyed
@@ -35,9 +27,7 @@ class NotificationFragment : Fragment() {
             )
             setContent {
                 MafQudTheme {
-                    NotificationScreen(onBack = {
-                        findNavController().popBackStack()
-                    })
+
                 }
             }
         }

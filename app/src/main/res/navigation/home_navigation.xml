@@ -23,7 +23,18 @@
     <fragment
         android:id="@+id/reportFragment"
         android:name="com.mafqud.android.report.ReportFragment"
-        android:label="ReportFragment" />
+        android:label="ReportFragment" >
+        <action
+            app:enterAnim="@anim/fade_in"
+            app:popEnterAnim="@anim/fade_in"
+            android:id="@+id/action_reportFragment_to_reportLostFragment"
+            app:destination="@id/reportLostFragment" />
+        <action
+            app:enterAnim="@anim/fade_in"
+            app:popEnterAnim="@anim/fade_in"
+            android:id="@+id/action_reportFragment_to_reportFoundFragment"
+            app:destination="@id/reportFoundFragment" />
+    </fragment>
     <fragment
         android:id="@+id/moreFragment"
         android:name="com.mafqud.android.more.MoreFragment"
@@ -69,4 +80,12 @@
         android:id="@+id/phonesFragment"
         android:name="com.mafqud.android.more.PhonesFragment"
         android:label="PhonesFragment" />
+    <fragment
+        android:id="@+id/reportFoundFragment"
+        android:name="com.mafqud.android.report.ReportFoundFragment"
+        android:label="ReportFoundFragment" />
+    <fragment
+        android:id="@+id/reportLostFragment"
+        android:name="com.mafqud.android.report.ReportLostFragment"
+        android:label="ReportLostFragment" />
 </navigation>

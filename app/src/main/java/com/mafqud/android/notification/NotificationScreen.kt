@@ -12,24 +12,36 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
+import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.theme.*
 
 
 @Composable
 @Preview
-fun NotificationScreen() {
-    BoxUi(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.onPrimary)
-            .padding(top = 16.dp, start = 16.dp, end = 16.dp),
-        contentAlignment = Alignment.TopCenter
-    ) {
-        BodyUi()
+fun NotificationScreen(onBack: () -> Unit = {}) {
+    ColumnUi {
+        TitledAppBar(
+            title = stringResource(id = R.string.notification),
+            onBackClicked = {
+                onBack()
+            }
+        )
+        BoxUi(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .background(MaterialTheme.colorScheme.onPrimary)
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+            contentAlignment = Alignment.TopCenter
+        ) {
+            BodyUi()
+        }
     }
+
 
 }
 
@@ -47,6 +59,16 @@ private fun BodyUi() {
         NotificationItem()
         NotificationItem()
         NotificationItem()
+        NotificationItem()
+        NotificationItem()
+        NotificationItem()
+        NotificationItem()
+        NotificationItem()
+        NotificationItem()
+        NotificationItem()
+        NotificationItem()
+        NotificationItem()
+        NotificationItem()
     }
 }
 
@@ -55,7 +77,6 @@ fun NotificationItem() {
     BoxUi(
         Modifier
             .fillMaxWidth()
-            .height(70.dp)
             .clip(RoundedCornerShape(12.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
             .clickable {
@@ -76,14 +97,14 @@ fun NotificationItem() {
                 TextUi(
                     text = "تم نشر بيانات المعثور عليه بنجاح انتظر منا اشعار اخر في حين الوصول لأي نتائج",
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.labelLarge
                 )
 
                 //date
                 TextUi(
                     text = "March,13, 2022 at 3:15 PM",
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.titleSmall
+                    style = MaterialTheme.typography.labelSmall
                 )
             }
             // icon
