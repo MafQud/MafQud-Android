@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -36,12 +37,17 @@ fun HomeScreen() {
             ),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        BoxUi(
-            Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-        ) {
-            SearchUi()
-        }
+        HeadSearchUi()
         BodyUi(Modifier.weight(1f))
+    }
+}
+
+@Composable
+fun HeadSearchUi() {
+    BoxUi(
+        Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
+    ) {
+        SearchUi()
     }
 }
 
@@ -102,17 +108,23 @@ private fun DropDownUi() {
         DropDownItems(
             items = listOf("Age"),
             selectedItemID = selectedItem,
-            modifier = Modifier.weight(1f).height(30.dp),
+            modifier = Modifier
+                .weight(1f)
+                .height(30.dp),
         )
         DropDownItems(
             items = listOf("Date"),
             selectedItemID = selectedItem,
-            modifier = Modifier.weight(1f).height(30.dp),
+            modifier = Modifier
+                .weight(1f)
+                .height(30.dp),
         )
         DropDownItems(
             items = listOf("City"),
             selectedItemID = selectedItem,
-            modifier = Modifier.weight(1f).height(30.dp),
+            modifier = Modifier
+                .weight(1f)
+                .height(30.dp),
         )
 
     }
@@ -136,6 +148,11 @@ private fun TapsUi() {
             Modifier
                 .height(30.dp)
                 .weight(1f)
+                .border(
+                    width = 1.dp,
+                    color = activeBackgroundColor,
+                    shape = RoundedCornerShape(topStart = 20.dp, bottomStart = 20.dp)
+                )
                 .clip(RoundedCornerShape(topStart = 20.dp, bottomStart = 20.dp))
                 .background(if (selectedItem.value == 0) activeBackgroundColor else disableBackgroundColor)
                 .clickable {
@@ -155,6 +172,11 @@ private fun TapsUi() {
             Modifier
                 .height(30.dp)
                 .weight(1f)
+                .border(
+                    width = 1.dp,
+                    color = activeBackgroundColor,
+                    shape = RectangleShape
+                )
                 .background(if (selectedItem.value == 1) activeBackgroundColor else disableBackgroundColor)
                 .clickable {
                     selectedItem.value = 1
@@ -174,6 +196,11 @@ private fun TapsUi() {
             Modifier
                 .height(30.dp)
                 .weight(1f)
+                .border(
+                    width = 1.dp,
+                    color = activeBackgroundColor,
+                    shape = RoundedCornerShape(topEnd = 20.dp, bottomEnd = 20.dp)
+                )
                 .clip(RoundedCornerShape(topEnd = 20.dp, bottomEnd = 20.dp))
                 .background(if (selectedItem.value == 2) activeBackgroundColor else disableBackgroundColor)
                 .clickable {
@@ -189,8 +216,6 @@ private fun TapsUi() {
         }
     }
 }
-
-
 
 
 @Composable
@@ -216,10 +241,12 @@ private fun CaseItem() {
     BoxUi(
         Modifier
             .fillMaxWidth()
-            .height(120.dp)
             .clip(RoundedCornerShape(12.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
-            .padding(4.dp)
+            .clickable {
+
+            }
+            .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
     ) {
         RowUi(
             Modifier
@@ -278,9 +305,10 @@ private fun CaseItem() {
                 TextUi(
                     text = "Lost",
                     color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleSmall
                 )
 
+                SpacerUi(modifier = Modifier.height(4.dp))
                 //date
                 TextUi(
                     text = "16/3/2022",

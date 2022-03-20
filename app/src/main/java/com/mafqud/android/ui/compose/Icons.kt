@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.ui.theme.BoxUi
@@ -24,12 +25,13 @@ private val mIconSize = 35.dp
 
 
 @Composable
+@Preview
 fun IconNotification(
     iconSize: Dp = mIconSize,
     iconColor: Color = MaterialTheme.colorScheme.primary,
     backgroundColor: Color = MaterialTheme.colorScheme.secondary,
     alpha: Float = 0.5f,
-    onClick: () -> Unit
+    onClick: () -> Unit = {}
 ) {
     BoxUi(
         modifier = Modifier
@@ -42,12 +44,25 @@ fun IconNotification(
             .padding(4.dp),
         contentAlignment = Alignment.Center
     ) {
-        IconUi(
-            imageVector = Icons.Filled.Notifications,
-            tint = iconColor,
-        )
+        BoxUi() {
+            IconUi(
+                imageVector = Icons.Filled.Notifications,
+                tint = iconColor,
+            )
+            BoxUi(
+                Modifier
+                    .size(6.dp)
+                    .clip(RoundedCornerShape(50))
+                    .background(MaterialTheme.colorScheme.error)
+                    .align(Alignment.TopEnd)
+                    .padding(8.dp)
+            ) {
+
+            }
+        }
     }
 }
+
 @Composable
 fun IconBack(
     iconSize: Dp = mIconSize,
