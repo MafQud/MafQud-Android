@@ -45,7 +45,7 @@ fun SplashScreen(onAnimationFinished: () -> Unit = {}) {
                 )
         ) {
 
-            /* LottieAnimation(
+           /* *//* LottieAnimation(
                  modifier = Modifier
                      .size(300.dp, 220.dp)
                      .align(Alignment.Center),

@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
+import com.mafqud.android.ui.compose.CaseItem
 import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.compose.logoutDialog
 import com.mafqud.android.ui.theme.*
@@ -44,8 +45,6 @@ fun MoreScreen(
                 .padding(16.dp),
 
             ) {
-
-
             ColumnUi(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
@@ -54,12 +53,32 @@ fun MoreScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
 
-                MoreItem(
+                ReportedItem(
                     title = stringResource(id = R.string.reported_people),
                     icon = R.drawable.ic_report,
                     onItemClicked = onReportedClicked,
                 )
-                HorizontalLine()
+
+
+                ColumnUi(
+                    Modifier
+                        .padding(),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    CaseItem(
+                        backgroundColor = MaterialTheme.colorScheme.primary.copy(
+                            alpha = 0.08f
+                        )
+                    )
+                    CaseItem(
+                        backgroundColor = MaterialTheme.colorScheme.primary.copy(
+                            alpha = 0.08f
+                        )
+                    )
+                }
+
+                SpacerUi(modifier = Modifier.height(20.dp))
+                //HorizontalLine()
 
                 MoreItem(
                     title = stringResource(id = R.string.my_account),
@@ -90,12 +109,45 @@ fun MoreScreen(
                     icon = R.drawable.ic_phone,
                     onItemClicked = onPhonesClicked,
                 )
-                HorizontalLine()
+                SpacerUi(modifier = Modifier.height(20.dp))
+
                 Logout(onConfirmClicked = onLogoutClicked)
 
             }
         }
     }
+}
+
+@Composable
+fun ReportedItem(title: String, icon: Int, onItemClicked: () -> Unit) {
+    RowUi(
+        modifier = Modifier
+            .clickable(onClick = onItemClicked),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        RowUi(
+            modifier = Modifier
+                .weight(1f)
+                .padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            LeftIcon(icon)
+            TextUi(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onTertiaryContainer
+            )
+
+        }
+        TextUi(
+            text = stringResource(id = R.string.see_all),
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.primary
+        )
+
+    }
+
 }
 
 @Composable

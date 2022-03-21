@@ -24,7 +24,7 @@ import com.mafqud.android.util.other.inAppUpdate
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-const val SPLASH_DELAY = 4000L
+const val SPLASH_DELAY = 4150L
 
 @SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint

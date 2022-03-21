@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.FmdGood
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -85,6 +86,24 @@ fun IconBack(
     ) {
         IconUi(
             imageVector = Icons.Filled.ArrowBack,
+            tint = iconColor,
+        )
+    }
+}
+
+@Composable
+fun IconMap(
+    iconColor: Color = MaterialTheme.colorScheme.secondaryContainer,
+    alpha: Float = 1f,
+) {
+    BoxUi(
+        modifier = Modifier
+            .size(12.dp, 14.dp)
+            .alpha(alpha),
+        contentAlignment = Alignment.Center
+    ) {
+        IconUi(
+            imageVector = Icons.Filled.FmdGood,
             tint = iconColor,
         )
     }

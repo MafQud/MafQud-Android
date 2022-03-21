@@ -1,8 +1,10 @@
 package com.mafqud.android.home
 
 import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -18,15 +20,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
+import com.mafqud.android.ui.compose.CaseItem
 import com.mafqud.android.ui.compose.DropDownItems
 import com.mafqud.android.ui.theme.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @Composable
 fun HomeScreen() {
@@ -233,120 +233,4 @@ private fun BodyUi(modifier: Modifier) {
         CaseItem()
         CaseItem()
     }
-}
-
-@Composable
-@Preview
-private fun CaseItem() {
-    BoxUi(
-        Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant)
-            .clickable {
-
-            }
-            .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
-    ) {
-        RowUi(
-            Modifier
-                .fillMaxSize(),
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-            verticalAlignment = Alignment.Top
-        ) {
-            CreateUserPhoto()
-            ColumnUi(
-                Modifier
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(2.dp)
-            ) {
-                // name
-                RowUi(
-                    Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.Top
-                ) {
-                    ColumnUi(
-                        verticalArrangement = Arrangement.spacedBy(2.dp)
-                    ) {
-                        TextUi(
-                            text = "Osama Ali",
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                        //address
-                        TextUi(
-                            text = "Cairo - Egypt",
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            style = MaterialTheme.typography.titleSmall
-                        )
-                    }
-
-                    BoxUi(
-                        Modifier
-                            .size(70.dp, 30.dp)
-                            .clip(RoundedCornerShape(12.dp))
-                            .background(MaterialTheme.colorScheme.error)
-                            .clickable {
-
-                            },
-                    ) {
-                        TextUi(
-                            // modifier = Modifier.padding(12.dp),
-                            text = "more",
-                            color = MaterialTheme.colorScheme.onSecondary,
-                            style = MaterialTheme.typography.titleSmall
-                        )
-                    }
-                }
-
-                // state
-                TextUi(
-                    text = "Lost",
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.titleSmall
-                )
-
-                SpacerUi(modifier = Modifier.height(4.dp))
-                //date
-                TextUi(
-                    text = "16/3/2022",
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.titleSmall
-                )
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalCoroutinesApi::class)
-@Composable
-private fun CreateUserPhoto(
-) {
-    CardUi(
-        modifier = Modifier
-            .size(45.dp)
-            .clip(CircleShape)
-            .border(
-                2.dp,
-                MaterialTheme.colorScheme.secondary,
-                CircleShape
-            )
-            .background(MaterialTheme.colorScheme.onSecondary)
-            .clickable {
-            }, elevation = 2.dp
-    ) {
-        ImageUi(
-            painter = painterResource(id = R.drawable.child),
-            modifier = Modifier.fillMaxSize()
-        )
-    }
-
-}
-
-@Composable
-fun HomeHostNavigation() {
-
-
 }
