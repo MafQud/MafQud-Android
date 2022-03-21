@@ -70,7 +70,7 @@
         android:label="HelpFragment" />
     <fragment
         android:id="@+id/myAccountFragment"
-        android:name="com.mafqud.android.more.MyAccountFragment"
+        android:name="com.mafqud.android.myAccount.MyAccountFragment"
         android:label="MyAccountFragment" />
     <fragment
         android:id="@+id/settingFragment"

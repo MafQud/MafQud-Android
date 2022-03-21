@@ -8,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.ui.theme.BoxUi
 import com.mafqud.android.ui.theme.RowUi
@@ -32,19 +34,7 @@ fun HomeAppBar(
     ) {
 
         RowUi(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            BoxUi(
-                Modifier
-                    .size(35.dp)
-                    .clip(RoundedCornerShape(50))
-                    .background(MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f)),
-                contentAlignment = Alignment.Center
-            ) {
-                TextUi(
-                    text = "M",
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    style = MaterialTheme.typography.titleMedium
-                )
-            }
+            LetterIcon("M", letterSize = MaterialTheme.typography.titleMedium)
             TextUi(
                 text = "Marwa Kamel",
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -55,6 +45,23 @@ fun HomeAppBar(
 
     }
 
+}
+
+@Composable
+fun LetterIcon(letter: String, size: Dp = 35.dp, letterSize: TextStyle) {
+    BoxUi(
+        Modifier
+            .size(size)
+            .clip(RoundedCornerShape(50))
+            .background(MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f)),
+        contentAlignment = Alignment.Center
+    ) {
+        TextUi(
+            text = letter,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            style = letterSize
+        )
+    }
 }
 
 

@@ -3,6 +3,7 @@ package com.mafqud.android.ui.compose
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -51,6 +52,38 @@ fun ButtonAuth(
     }
 }
 
+
+@Composable
+fun ButtonSmall(
+    title: String, height: Dp = mButtonHeight,
+    textColor: Color = MaterialTheme.colorScheme.background,
+    backgroundColor: Color = MaterialTheme.colorScheme.primary,
+    enabled: Boolean = true,
+    onClick: () -> Unit,
+) {
+    BoxUi {
+        ButtonUi(
+            enabled = enabled,
+            modifier = Modifier
+                .height(height)
+                .width(130.dp)
+                .clip(RoundedCornerShape(50)),
+            onClick = {
+                onClick()
+            },
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = backgroundColor
+            )
+        ) {
+            TextUi(
+                text = title,
+                color = textColor,
+                style = MaterialTheme.typography.labelLarge
+            )
+        }
+    }
+}
+
 @Composable
 fun GeneralButton(
     modifier: Modifier = Modifier.fillMaxWidth(),
@@ -66,7 +99,7 @@ fun GeneralButton(
             Modifier
                 .border(1.dp, borderColor, RoundedCornerShape(cornerSize))
                 .clip(RoundedCornerShape(cornerSize))
-                )
+        )
     ButtonUi(
         modifier = mModifier, onClick = onClicked,
         colors = ButtonDefaults.buttonColors(buttonColor)

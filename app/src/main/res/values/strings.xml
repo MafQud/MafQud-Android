@@ -75,4 +75,6 @@
     <string name="phones">Phones</string>
     <string name="notification">Notifications</string>
     <string name="see_all">See all</string>
+    <string name="edit">Edit</string>
+    <string name="edit_info">Edit Info</string>
 </resources>
