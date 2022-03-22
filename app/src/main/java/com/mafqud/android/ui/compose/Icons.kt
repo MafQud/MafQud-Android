@@ -74,6 +74,7 @@ fun IconBack(
 ) {
     BoxUi(
         modifier = Modifier
+            .mirror()
             .size(iconSize)
             .clip(RoundedCornerShape(50))
             .background(backgroundColor)
