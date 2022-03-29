@@ -77,4 +77,5 @@
     <string name="see_all">See all</string>
     <string name="edit">Edit</string>
     <string name="edit_info">Edit Info</string>
+    <string name="empty_notificaction">No notifications</string>
 </resources>

@@ -27,12 +27,15 @@
         android:theme="@style/Theme.Mafqud"
        >
         <activity
+            android:screenOrientation="portrait"
             android:name=".home.HomeActivity"
             android:exported="true" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".auth.AuthActivity"
             android:exported="true" />
         <activity
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.App.Starting"
             android:name=".splash.SplashActivity"
             android:exported="true">

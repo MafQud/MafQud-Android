@@ -1,6 +1,8 @@
 package com.mafqud.android.data
 
+import com.mafqud.android.notification.NotificationResponse
 import retrofit2.http.Field
+import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
@@ -42,6 +44,9 @@ interface RemoteDataManager {
         @Field("password") password: String,
         @Field("firebase_token") firebaseToken: String,
     ): String
+
+    @GET("auth/social_login")
+    suspend fun getNotifications(page: Int): NotificationResponse
 
 
 }
