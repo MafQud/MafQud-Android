@@ -1,6 +1,5 @@
 package com.mafqud.android.auth.login
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.mafqud.android.home.HomeActivity
+import com.mafqud.android.auth.openReportActivity
 import com.mafqud.android.ui.compose.LoadingDialog
 import com.mafqud.android.ui.theme.MafQudTheme
 import com.mafqud.android.util.network.ShowNetworkErrorSnakeBarUi
@@ -81,7 +80,7 @@ class LoginFragment : Fragment() {
 
         if (stateValue.isSuccess && stateValue.data != null) {
             requireActivity().apply {
-                openHomeActivity()
+                openReportActivity()
             }
         }
         if (stateValue.networkError != null) {
@@ -90,15 +89,6 @@ class LoginFragment : Fragment() {
             )
 
         }
-    }
-
-    private fun openHomeActivity() {
-        startActivity(
-            Intent(
-                requireContext(), HomeActivity::class.java
-            )
-        )
-        requireActivity().finish()
     }
 
 }

@@ -10,6 +10,12 @@
         <entry key="../../../../layout/compose-model-1647515787259.xml" value="0.264" />
         <entry key="../../../../layout/compose-model-1647686752705.xml" value="0.24722222222222223" />
         <entry key="../../../../layout/compose-model-1647687485182.xml" value="0.2710868652958456" />
+        <entry key="../../../../layout/compose-model-1648664381359.xml" value="0.2698279479647503" />
+        <entry key="../../../../layout/compose-model-1648664395242.xml" value="0.2698279479647503" />
+        <entry key="../../../../layout/compose-model-1648664523835.xml" value="0.2698279479647503" />
+        <entry key="../../../../layout/compose-model-1648664547644.xml" value="0.264" />
+        <entry key="../../../../layout/compose-model-1648664731826.xml" value="0.2698279479647503" />
+        <entry key="../../../../layout/compose-model-1648665492811.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_arrow.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_flash_off.xml" value="0.1815" />
         <entry key="app/src/main/res/drawable/ic_flash_on.xml" value="0.1815" />
@@ -24,6 +30,7 @@
         <entry key="app/src/main/res/layout/activity_auth.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2942708333333333" />
+        <entry key="app/src/main/res/layout/activity_report.xml" value="0.2921875" />
         <entry key="app/src/main/res/layout/view_custom_marker.xml" value="0.4" />
         <entry key="app/src/main/res/menu/menu_bottom_main.xml" value="0.1" />
       </map>

@@ -1,4 +1,4 @@
-package com.mafqud.android.report
+package com.mafqud.android.report.report
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize

@@ -78,4 +78,9 @@
     <string name="edit">Edit</string>
     <string name="edit_info">Edit Info</string>
     <string name="empty_notificaction">No notifications</string>
+    <string name="save">save</string>
+    <string name="open_app">Open app</string>
+    <string name="error_email">Insert a valid email</string>
+    <string name="error_pass_not_compat">The password not compatiable</string>
+    <string name="error_pass_less">Password is too short</string>
 </resources>

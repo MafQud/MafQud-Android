@@ -1,4 +1,4 @@
-package com.mafqud.android.report
+package com.mafqud.android.report.found
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,7 @@ import com.mafqud.android.ui.theme.MafQudTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ReportLostFragment : BaseFragment() {
+class ReportFoundFragment : BaseFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,

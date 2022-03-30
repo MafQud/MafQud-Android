@@ -56,7 +56,7 @@ fun SplashScreen(onAnimationFinished: () -> Unit = {}) {
                 modifier = Modifier
                     .size(300.dp, 220.dp)
                     .align(Alignment.Center),
-                imageID = R.drawable.animation_logo
+                imageID = R.drawable.animation
             )
 
             ColumnUi(

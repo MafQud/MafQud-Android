@@ -13,6 +13,7 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
+import com.mafqud.android.R
 import com.mafqud.android.auth.AuthActivity
 import com.mafqud.android.data.DataStoreManager
 import com.mafqud.android.data.DataStoreManager.Companion.IS_PASSED_INTRO
@@ -21,10 +22,11 @@ import com.mafqud.android.home.HomeActivity
 import com.mafqud.android.ui.theme.MafQudTheme
 import com.mafqud.android.util.other.changLanguage
 import com.mafqud.android.util.other.inAppUpdate
+import com.mafqud.android.util.other.statusBarColor
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-const val SPLASH_DELAY = 4150L
+const val SPLASH_DELAY = 3500L
 
 @SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
@@ -42,6 +44,7 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
+        statusBarColor(resources.getColor(R.color.white))
         initialSetup()
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {

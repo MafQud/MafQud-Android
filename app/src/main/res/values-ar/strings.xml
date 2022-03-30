@@ -41,6 +41,6 @@
     <string name="login_title">تسجيل الدخول</string>
     <string name="sign_up">إنشاء حساب</string>
     <string name="login">تسجيل الدخول</string>
-    <string name="mafqud_help">هو تطبيق يساعد في العثور على المفقودين عن طريق استخدام الذكاء الاصطناعي</string>
+    <string name="mafqud_help"> \"مفقود\" هو تطبيق يساعد في العثور على المفقودين عن طريق استخدام الذكاء الاصطناعي</string>
     <string name="welcome_mafqud">أهلا بك في \"مفقود\"</string>
 </resources>

@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
 import com.mafqud.android.ui.theme.*
 import com.mafqud.android.util.validation.PHONE_MAX_LENGTH
+import com.mafqud.android.util.validation.PassErrorType
 import com.mafqud.android.util.validation.PasswordError
 
 private val mTFHeight = 50.dp
@@ -45,47 +46,58 @@ fun TextFieldName(
     isNameError: MutableState<Boolean>
 ) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-
-        TextFieldUi(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            value = value.value,
-            onValueChange = {
-                value.value = it
-                isNameError.value = false
-            },
-            placeholder = {
-                TextUi(
-                    modifier = Modifier.alpha(0.5f),
-                    text = placeHolderTitle,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    style = MaterialTheme.typography.labelSmall
-                )
-
-            },
-            trailingIcon = {
-                if (isNameError.value)
-                    Icon(
-                        Icons.Filled.Error,
-                        stringResource(id = R.string.error_name),
-                        tint = MaterialTheme.colorScheme.error
+        ColumnUi {
+            TextFieldUi(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                value = value.value,
+                onValueChange = {
+                    value.value = it
+                    isNameError.value = false
+                },
+                placeholder = {
+                    TextUi(
+                        modifier = Modifier.alpha(0.5f),
+                        text = placeHolderTitle,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = MaterialTheme.typography.labelSmall
                     )
-            },
-            isError = isNameError.value,
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            shape = RoundedCornerShape(50),
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
-                unfocusedIndicatorColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                errorCursorColor = MaterialTheme.colorScheme.error,
-                errorIndicatorColor = MaterialTheme.colorScheme.error,
-                errorLeadingIconColor = MaterialTheme.colorScheme.error
-            )
-        )
 
+                },
+                trailingIcon = {
+                    if (isNameError.value)
+                        Icon(
+                            Icons.Filled.Error,
+                            stringResource(id = R.string.error_name),
+                            tint = MaterialTheme.colorScheme.error
+                        )
+                },
+                isError = isNameError.value,
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                shape = RoundedCornerShape(50),
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    errorCursorColor = MaterialTheme.colorScheme.error,
+                    errorIndicatorColor = Color.Transparent,
+                    errorLeadingIconColor = MaterialTheme.colorScheme.error
+                )
+            )
+
+            if (isNameError.value) {
+                //error message
+                TextUi(
+                    text = stringResource(id = R.string.error_name),
+                    textAlign = TextAlign.Start,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.titleSmall,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        }
     }
 }
 
@@ -94,46 +106,59 @@ fun TextFieldName(
 fun TextFieldEmail(value: MutableState<String>, isEmailError: MutableState<Boolean>) {
 
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-        TextFieldUi(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            value = value.value,
-            onValueChange = {
-                value.value = it
-                isEmailError.value = false
-            },
-            placeholder = {
-                TextUi(
-                    modifier = Modifier.alpha(0.5f),
-                    text = stringResource(id = R.string.example_email),
-                    color = MaterialTheme.colorScheme.onBackground,
-                    style = MaterialTheme.typography.labelSmall
-                )
-
-            },
-            trailingIcon = {
-                if (isEmailError.value)
-                    Icon(
-                        Icons.Filled.Error,
-                        stringResource(id = R.string.error_name),
-                        tint = MaterialTheme.colorScheme.error
+        ColumnUi {
+            TextFieldUi(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                value = value.value,
+                onValueChange = {
+                    value.value = it
+                    isEmailError.value = false
+                },
+                placeholder = {
+                    TextUi(
+                        modifier = Modifier.alpha(0.5f),
+                        text = stringResource(id = R.string.example_email),
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = MaterialTheme.typography.labelSmall
                     )
-            },
-            isError = isEmailError.value,
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            shape = RoundedCornerShape(50),
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
-                unfocusedIndicatorColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                errorCursorColor = MaterialTheme.colorScheme.error,
-                errorIndicatorColor = MaterialTheme.colorScheme.error,
-                errorLeadingIconColor = MaterialTheme.colorScheme.error
 
+                },
+                trailingIcon = {
+                    if (isEmailError.value)
+                        Icon(
+                            Icons.Filled.Error,
+                            stringResource(id = R.string.error_name),
+                            tint = MaterialTheme.colorScheme.error
+                        )
+                },
+                isError = isEmailError.value,
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                shape = RoundedCornerShape(50),
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    errorCursorColor = MaterialTheme.colorScheme.error,
+                    errorIndicatorColor = Color.Transparent,
+                    errorLeadingIconColor = MaterialTheme.colorScheme.error
+
+                )
             )
-        )
+
+            if (isEmailError.value) {
+                //error message
+                TextUi(
+                    text = stringResource(id = R.string.error_email),
+                    textAlign = TextAlign.Start,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.titleSmall,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        }
     }
 }
 
@@ -197,7 +222,7 @@ fun TextFieldPhone(
                     unfocusedIndicatorColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     errorCursorColor = MaterialTheme.colorScheme.error,
-                    errorIndicatorColor = MaterialTheme.colorScheme.error,
+                    errorIndicatorColor = Color.Transparent,
                     errorLeadingIconColor = MaterialTheme.colorScheme.error
                 )
             )
@@ -210,6 +235,18 @@ fun TextFieldPhone(
                 style = MaterialTheme.typography.titleSmall,
                 modifier = Modifier.fillMaxWidth()
             )
+
+            if (isPhoneError.value) {
+                //error message
+                TextUi(
+                    text = stringResource(id = R.string.error_phone),
+                    textAlign = TextAlign.Start,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.titleSmall,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
         }
     }
 }
@@ -227,56 +264,73 @@ fun TextFieldPassword(
         val passwordVisibility = remember { mutableStateOf(false) }
         val keyboardController = LocalSoftwareKeyboardController.current
 
-        TextFieldUi(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)
-                .focusRequester(focusRequester),
-            value = value.value,
-            onValueChange = {
-                value.value = it
-                isPasswordError.value.isError = false
-            },
-            trailingIcon = {
-                if (isPasswordError.value.isError)
-                    Icon(
-                        Icons.Filled.Error,
-                        stringResource(id = R.string.error_password),
-                        tint = MaterialTheme.colorScheme.error
-                    )
-                else {
-                    val image = if (passwordVisibility.value)
-                        Icons.Filled.Visibility
-                    else Icons.Filled.VisibilityOff
-                    IconButton(onClick = {
-                        passwordVisibility.value = !passwordVisibility.value
-                    }) {
-                        IconUi(
-                            imageVector = image,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-            },
-            isError = isPasswordError.value.isError,
-            visualTransformation = if (passwordVisibility.value)
-                VisualTransformation.None else PasswordVisualTransformation(),
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Password,
-                imeAction = ImeAction.Done
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = { keyboardController?.hide() }),
-            shape = RoundedCornerShape(50),
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
-                unfocusedIndicatorColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                errorCursorColor = MaterialTheme.colorScheme.error,
-                errorIndicatorColor = MaterialTheme.colorScheme.error,
-                errorLeadingIconColor = MaterialTheme.colorScheme.error
-            )
-        )
+       ColumnUi {
+           TextFieldUi(
+               modifier = Modifier
+                   .fillMaxWidth()
+                   .height(50.dp)
+                   .focusRequester(focusRequester),
+               value = value.value,
+               onValueChange = {
+                   value.value = it
+                   isPasswordError.value.isError = false
+               },
+               trailingIcon = {
+                   if (isPasswordError.value.isError)
+                       Icon(
+                           Icons.Filled.Error,
+                           stringResource(id = R.string.error_password),
+                           tint = MaterialTheme.colorScheme.error
+                       )
+                   else {
+                       val image = if (passwordVisibility.value)
+                           Icons.Filled.Visibility
+                       else Icons.Filled.VisibilityOff
+                       IconButton(onClick = {
+                           passwordVisibility.value = !passwordVisibility.value
+                       }) {
+                           IconUi(
+                               imageVector = image,
+                               tint = MaterialTheme.colorScheme.onSurfaceVariant
+                           )
+                       }
+                   }
+               },
+               isError = isPasswordError.value.isError,
+               visualTransformation = if (passwordVisibility.value)
+                   VisualTransformation.None else PasswordVisualTransformation(),
+               singleLine = true,
+               keyboardOptions = KeyboardOptions(
+                   keyboardType = KeyboardType.Password,
+                   imeAction = ImeAction.Done
+               ),
+               keyboardActions = KeyboardActions(
+                   onDone = { keyboardController?.hide() }),
+               shape = RoundedCornerShape(50),
+               colors = TextFieldDefaults.textFieldColors(
+                   backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+                   unfocusedIndicatorColor = Color.Transparent,
+                   focusedIndicatorColor = Color.Transparent,
+                   errorCursorColor = MaterialTheme.colorScheme.error,
+                   errorIndicatorColor = Color.Transparent,
+                   errorLeadingIconColor = MaterialTheme.colorScheme.error
+               )
+           )
+           if (isPasswordError.value.isError) {
+               //error message
+               val message = when(isPasswordError.value.type) {
+                   PassErrorType.INCOMPATIBLE -> stringResource(id = R.string.error_pass_not_compat)
+                   PassErrorType.LESS -> stringResource(id = R.string.error_pass_less)
+                   PassErrorType.NONE -> stringResource(id = R.string.error_password)
+               }
+               TextUi(
+                   text = message,
+                   textAlign = TextAlign.Start,
+                   color = MaterialTheme.colorScheme.error,
+                   style = MaterialTheme.typography.titleSmall,
+                   modifier = Modifier.fillMaxWidth()
+               )
+           }
+       }
     }
 }

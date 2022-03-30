@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.FmdGood
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.MaterialTheme
@@ -109,3 +110,32 @@ fun IconMap(
         )
     }
 }
+
+@Composable
+fun IconEdit(
+    iconSize: Dp = mIconSize,
+    iconColor: Color = MaterialTheme.colorScheme.onPrimary,
+    backgroundColor: Color = MaterialTheme.colorScheme.primary,
+    alpha: Float = 1f,
+    onClick: () -> Unit
+) {
+    BoxUi(
+        modifier = Modifier
+            .mirror()
+            .size(iconSize)
+            .clip(RoundedCornerShape(50))
+            .background(backgroundColor)
+            .alpha(alpha)
+            .clickable {
+                onClick()
+            }
+            .padding(4.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        IconUi(
+            imageVector = Icons.Filled.Edit,
+            tint = iconColor,
+        )
+    }
+}
+

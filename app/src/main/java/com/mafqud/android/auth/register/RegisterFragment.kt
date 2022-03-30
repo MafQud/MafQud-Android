@@ -1,6 +1,5 @@
 package com.mafqud.android.auth.register
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +18,7 @@ import com.google.firebase.auth.*
 import com.google.firebase.auth.PhoneAuthProvider.ForceResendingToken
 import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks
 import com.mafqud.android.R
-import com.mafqud.android.home.HomeActivity
+import com.mafqud.android.auth.openReportActivity
 import com.mafqud.android.ui.compose.LoadingDialog
 import com.mafqud.android.ui.compose.showAreYouSureDialog
 import com.mafqud.android.ui.other.showToast
@@ -200,7 +199,7 @@ class RegisterFragment : Fragment() {
 
         if (stateValue.isSuccess && stateValue.data != null) {
             requireActivity().apply {
-                openHomeActivity()
+                openReportActivity()
             }
         }
         if (stateValue.networkError != null) {
@@ -209,15 +208,6 @@ class RegisterFragment : Fragment() {
             )
 
         }
-    }
-
-    private fun openHomeActivity() {
-        startActivity(
-            Intent(
-                requireContext(), HomeActivity::class.java
-            )
-        )
-        requireActivity().finish()
     }
 
     /**

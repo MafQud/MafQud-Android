@@ -56,16 +56,6 @@ fun LoginScreen(
 
         val (focusRequester) = FocusRequester.createRefs()
 
-        // back arrow
-        BoxUi(
-            modifier = Modifier
-                .align(Alignment.TopStart)
-        ) {
-            IconBack(onClick = {
-                onBackPressed()
-            })
-        }
-
         ColumnUi(
             modifier = Modifier
                 .align(Alignment.TopCenter)
@@ -129,6 +119,16 @@ fun LoginScreen(
                     }
                 )
 
+            })
+        }
+
+        // back arrow
+        BoxUi(
+            modifier = Modifier
+                .align(Alignment.TopStart)
+        ) {
+            IconBack(onClick = {
+                onBackPressed()
             })
         }
     }

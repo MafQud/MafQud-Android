@@ -19,6 +19,7 @@ import com.mafqud.android.ui.compose.HomeAppBar
 import com.mafqud.android.ui.theme.ColumnUi
 import com.mafqud.android.ui.theme.CreateAndroidViewForXMLLayout
 import com.mafqud.android.ui.theme.MafQudTheme
+import com.mafqud.android.util.other.statusBarColor
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,6 +32,7 @@ class HomeActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        statusBarColor(resources.getColor(R.color.gray_status))
         setContent {
             MafQudTheme {
                 ColumnUi {

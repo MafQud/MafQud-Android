@@ -22,7 +22,7 @@
         android:label="MapFragment" />
     <fragment
         android:id="@+id/reportFragment"
-        android:name="com.mafqud.android.report.ReportFragment"
+        android:name="com.mafqud.android.report.report.ReportFragment"
         android:label="ReportFragment" >
         <action
             app:enterAnim="@anim/fade_in"
@@ -71,7 +71,13 @@
     <fragment
         android:id="@+id/myAccountFragment"
         android:name="com.mafqud.android.myAccount.MyAccountFragment"
-        android:label="MyAccountFragment" />
+        android:label="MyAccountFragment" >
+        <action
+            app:enterAnim="@anim/fade_in"
+            app:popEnterAnim="@anim/fade_in"
+            android:id="@+id/action_myAccountFragment_to_myAccountEditFragment"
+            app:destination="@id/myAccountEditFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingFragment"
         android:name="com.mafqud.android.more.SettingFragment"
@@ -82,10 +88,14 @@
         android:label="PhonesFragment" />
     <fragment
         android:id="@+id/reportFoundFragment"
-        android:name="com.mafqud.android.report.ReportFoundFragment"
+        android:name="com.mafqud.android.report.found.ReportFoundFragment"
         android:label="ReportFoundFragment" />
     <fragment
         android:id="@+id/reportLostFragment"
-        android:name="com.mafqud.android.report.ReportLostFragment"
+        android:name="com.mafqud.android.report.lost.ReportLostFragment"
         android:label="ReportLostFragment" />
+    <fragment
+        android:id="@+id/myAccountEditFragment"
+        android:name="com.mafqud.android.myAccountEdit.MyAccountEditFragment"
+        android:label="MyAccountEditFragment" />
 </navigation>

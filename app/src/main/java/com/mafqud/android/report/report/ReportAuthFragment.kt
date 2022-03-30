@@ -1,28 +1,28 @@
-package com.mafqud.android.myAccount
+package com.mafqud.android.report.report
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.material.Scaffold
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
-import androidx.compose.ui.res.stringResource
-import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.mafqud.android.R
-import com.mafqud.android.ui.compose.TitledAppBar
+import com.mafqud.android.base.fragment.BaseFragment
+import com.mafqud.android.home.HomeActivity
 import com.mafqud.android.ui.theme.MafQudTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyAccountFragment : Fragment() {
+class ReportAuthFragment : BaseFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        showHomeBar()
         return ComposeView(requireContext()).apply {
             // @ref https://developer.android.com/jetpack/compose/interop/interop-apis#composition-strategy
             // Dispose the Composition when viewLifecycleOwner is destroyed
@@ -31,17 +31,14 @@ class MyAccountFragment : Fragment() {
             )
             setContent {
                 MafQudTheme {
-                    Scaffold(topBar = {
-                        TitledAppBar(
-                            title = stringResource(id = R.string.my_account),
-                            onBackClicked = {
-                                findNavController().popBackStack()
-                            }
-                        )
-                    }, content = {
-                        AccountScreen(onEditClicked = {
-                            findNavController().navigate(R.id.action_myAccountFragment_to_myAccountEditFragment)
-                        })
+                    ReportAuthScreen(onReportLost = {
+                        findNavController().navigate(R.id.action_reportAuthFragment_to_reportLostFragment2)
+                    }, onReportFound = {
+                        findNavController().navigate(R.id.action_reportAuthFragment_to_reportFoundFragment2)
+
+                    }, onOpenApp = {
+                        startActivity(Intent(requireContext(), HomeActivity::class.java))
+                        requireActivity().finish()
                     })
                 }
             }

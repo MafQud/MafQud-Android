@@ -16,19 +16,11 @@ import com.mafqud.android.R
 import com.mafqud.android.ui.compose.ButtonAuth
 import com.mafqud.android.ui.compose.ButtonSmall
 import com.mafqud.android.ui.compose.LetterIcon
-import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.theme.*
 
 @Composable
-fun AccountScreen(onBackClicked: () -> Unit = {}) {
+fun AccountScreen(onEditClicked: () -> Unit) {
     ColumnUi {
-
-        TitledAppBar(
-            title = stringResource(id = R.string.my_account),
-            onBackClicked = {
-
-            }
-        )
         BoxUi(
             modifier = Modifier
                 .fillMaxSize()
@@ -44,7 +36,7 @@ fun AccountScreen(onBackClicked: () -> Unit = {}) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                AccountHead()
+                AccountHead(onEditClicked)
                 SpacerUi(modifier = Modifier.height(20.dp))
                 AccountBody()
                 SpacerUi(modifier = Modifier.height(8.dp))
@@ -121,7 +113,7 @@ fun AccountBody() {
 }
 
 @Composable
-fun AccountHead() {
+fun AccountHead(onEditClicked: () -> Unit) {
     BoxUi(
         modifier = Modifier
             .height(213.dp)
@@ -145,7 +137,7 @@ fun AccountHead() {
                 style = MaterialTheme.typography.titleMedium
             )
             ButtonSmall(title = stringResource(id = R.string.edit)) {
-
+                onEditClicked()
             }
         }
     }
