@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.material.Scaffold
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.navigation.fragment.findNavController
+import com.mafqud.android.R
 import com.mafqud.android.base.fragment.BaseFragment
+import com.mafqud.android.ui.compose.HomeAppBar
 import com.mafqud.android.ui.theme.MafQudTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,7 +26,6 @@ class HomeFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        showHomeBar()
         return ComposeView(requireContext()).apply {
             // @ref https://developer.android.com/jetpack/compose/interop/interop-apis#composition-strategy
             // Dispose the Composition when viewLifecycleOwner is destroyed
@@ -31,7 +34,16 @@ class HomeFragment : BaseFragment() {
             )
             setContent {
                 MafQudTheme {
-                    HomeScreen()
+                    Scaffold(topBar = {
+                        HomeAppBar(
+                            userName = "",
+                            onNotificationClicked = {
+                                findNavController().navigate(R.id.action_notification)
+                            }
+                        )
+                    }, content = {
+                        HomeScreen()
+                    })
                 }
             }
         }

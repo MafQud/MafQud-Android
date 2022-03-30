@@ -43,4 +43,19 @@
     <string name="login">تسجيل الدخول</string>
     <string name="mafqud_help"> \"مفقود\" هو تطبيق يساعد في العثور على المفقودين عن طريق استخدام الذكاء الاصطناعي</string>
     <string name="welcome_mafqud">أهلا بك في \"مفقود\"</string>
+    <string name="open_app">الدخول إالى التطبيق</string>
+    <string name="save">حفظ</string>
+    <string name="empty_notificaction">لا توجد اشعارات</string>
+    <string name="my_account">حسابي</string>
+    <string name="settings">الاعدادات</string>
+    <string name="reported_people">قمت بالإبلاغ عنهم</string>
+    <string name="help">مساعدة</string>
+    <string name="phones">أرقام الطوارئ</string>
+    <string name="edit">تعديل</string>
+    <string name="edit_info">تعديل البيانات</string>
+    <string name="see_all">عرض الكل</string>
+    <string name="notification">الإشعارات</string>
+    <string name="error_email">ادخل بريد الكتروني صحيح</string>
+    <string name="error_pass_not_compat">الرقم السري غير متطابق</string>
+    <string name="error_pass_less">الرقم السري قصير جدا</string>
 </resources>

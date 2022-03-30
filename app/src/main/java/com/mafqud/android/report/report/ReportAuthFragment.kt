@@ -22,7 +22,6 @@ class ReportAuthFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        showHomeBar()
         return ComposeView(requireContext()).apply {
             // @ref https://developer.android.com/jetpack/compose/interop/interop-apis#composition-strategy
             // Dispose the Composition when viewLifecycleOwner is destroyed
