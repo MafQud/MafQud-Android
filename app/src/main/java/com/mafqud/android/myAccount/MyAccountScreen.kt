@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
 import com.mafqud.android.ui.compose.ButtonAuth
@@ -19,7 +20,8 @@ import com.mafqud.android.ui.compose.LetterIcon
 import com.mafqud.android.ui.theme.*
 
 @Composable
-fun AccountScreen(onEditClicked: () -> Unit) {
+@Preview
+fun AccountScreen(onEditClicked: () -> Unit = {}) {
     ColumnUi {
         BoxUi(
             modifier = Modifier

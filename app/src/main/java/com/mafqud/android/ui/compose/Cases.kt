@@ -123,7 +123,7 @@ private fun CreateUserPhoto(
             .size(45.dp)
             .clip(CircleShape)
             .border(
-                2.dp,
+                1.dp,
                 MaterialTheme.colorScheme.secondary,
                 CircleShape
             )
