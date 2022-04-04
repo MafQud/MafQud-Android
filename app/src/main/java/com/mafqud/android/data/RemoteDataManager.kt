@@ -1,5 +1,6 @@
 package com.mafqud.android.data
 
+import com.mafqud.android.home.model.CasesDataResponse
 import com.mafqud.android.notification.NotificationResponse
 import retrofit2.http.Field
 import retrofit2.http.GET
@@ -48,5 +49,8 @@ interface RemoteDataManager {
     @GET("auth/social_login")
     suspend fun getNotifications(page: Int): NotificationResponse
 
+
+    @GET("auth/social_login")
+    suspend fun getCases(page: Int): CasesDataResponse
 
 }
