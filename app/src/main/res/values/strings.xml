@@ -87,4 +87,5 @@
     <string name="upload_image">Upload lost image</string>
     <string name="upload_image_des">You can upload more than photo</string>
     <string name="address_lost">Address lost</string>
+    <string name="privcy">Privcy policy</string>
 </resources>

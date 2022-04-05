@@ -96,7 +96,8 @@ fun Header() {
     TextUi(
         text = stringResource(id = R.string.sorry_for),
         style = MaterialTheme.typography.titleMedium,
-        color = MaterialTheme.colorScheme.primary
+        color = MaterialTheme.colorScheme.primary,
+        textAlign = TextAlign.Center
     )
 }
 

@@ -62,4 +62,6 @@
     <string name="upload_image">قم برفع صور المفقود</string>
     <string name="upload_image_des">يمكنك رفع اكتر من صورة</string>
     <string name="address_lost">عنوان منزل المفقود</string>
+    <string name="privcy">شروط وأحكام الاستخدام الخاصة بمفقود</string>
+    <string name="privcy">شروط وأحكام الاستخدام الخاصة بمفقود</string>
 </resources>
