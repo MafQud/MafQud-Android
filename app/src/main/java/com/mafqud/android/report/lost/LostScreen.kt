@@ -1,6 +1,7 @@
 package com.mafqud.android.report.lost
 
 import android.net.Uri
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.*
@@ -11,6 +12,7 @@ import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.ProgressIndicatorDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -27,14 +30,15 @@ import coil.compose.rememberImagePainter
 import com.mafqud.android.R
 import com.mafqud.android.ui.compose.ButtonAuth
 import com.mafqud.android.ui.compose.DropDownItems
+import com.mafqud.android.ui.compose.dashedBorder
 import com.mafqud.android.ui.theme.*
 
 
 @Composable
 @Preview
 fun LostScreen(
-    isPickedImagesEmpty: MutableState<Boolean> = mutableStateOf(false),
-    mPickedImagesUris: MutableState<Int> = mutableStateOf(0),
+    //mPickedImagesUris: MutableState<Int>,
+    maxPhotos: Int = 10,
     pickedImages: MutableList<Uri> = mutableStateListOf("".toUri()),
     openGalleryClicked: () -> Unit = {},
     onCloseClicked: (String) -> Unit = {},
@@ -55,26 +59,26 @@ fun LostScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            IconUi(
-                modifier = Modifier.size(77.dp),
-                painter = painterResource(id = R.drawable.ic_info),
-                tint = MaterialTheme.colorScheme.primary
-            )
-            TextUi(
-                text = stringResource(id = R.string.sorry_for),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.primary
-            )
+            var isFormActivated by remember {
+                mutableStateOf(false)
+            }
+            var progress by remember { mutableStateOf(0f) }
+            val currentPickedImages = pickedImages.size
+            progress = currentPickedImages.toFloat() / maxPhotos.toFloat()
+            isFormActivated = !(currentPickedImages < 3 || currentPickedImages > 10)
 
-            UploadImageButton()
-            UploadedImages(
-                mPickedImagesUris, pickedImages, openGalleryClicked, onCloseClicked,
-                openImagePreviewer, isPickedImagesEmpty
-            )
-
+            Header()
             SpacerUi(modifier = Modifier.height(20.dp))
-            LocationForm(onClicked = { i, x ->
-            })
+            UploadImageButton(openGalleryClicked)
+            UploadedImages(
+                pickedImages,
+                progress,
+                isFormActivated,
+                openImagePreviewer
+            )
+            SpacerUi(modifier = Modifier.height(20.dp))
+            LocationForm(isFormActivated) { i, x ->
+            }
 
         }
 
@@ -83,20 +87,35 @@ fun LostScreen(
 }
 
 @Composable
+fun Header() {
+    IconUi(
+        modifier = Modifier.size(77.dp),
+        painter = painterResource(id = R.drawable.ic_info),
+        tint = MaterialTheme.colorScheme.primary
+    )
+    TextUi(
+        text = stringResource(id = R.string.sorry_for),
+        style = MaterialTheme.typography.titleMedium,
+        color = MaterialTheme.colorScheme.primary
+    )
+}
+
+@Composable
 private fun UploadedImages(
-    mPickedImagesUris: MutableState<Int>,
     pickedImages: MutableList<Uri>,
-    openGalleryClicked: () -> Unit,
-    onCloseClicked: (String) -> Unit,
+    progress: Float,
+    isFormActivated: Boolean,
     openImagePreviewer: (List<Uri>, Int) -> Unit,
-    isPickedImagesEmpty: MutableState<Boolean>
 ) {
-    val pickedImagesUris = mPickedImagesUris
-    var progress by remember { mutableStateOf(0.1f) }
+    //val pickedImagesUris = mPickedImagesUris
     val animatedProgress = animateFloatAsState(
         targetValue = progress,
         animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
     ).value
+
+    val animatedColor = animateColorAsState(
+        if (isFormActivated) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+    )
 
     ColumnUi(
         verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -112,15 +131,32 @@ private fun UploadedImages(
             DisplayPickedImages(pickedImages, {
                 // remove selected image
                 pickedImages.remove(it)
-                pickedImagesUris.value = pickedImages.size
-            }, openGalleryClicked, openImagePreviewer)
+                //pickedImagesUris.value = pickedImages.size
+            }, openImagePreviewer)
         }
 
-        LinearProgressIndicator(
-            modifier = Modifier.width(280.dp).clip(RoundedCornerShape(50)),
-            progress = animatedProgress,
-            color = MaterialTheme.colorScheme.error
-        )
+        SpacerUi(modifier = Modifier.height(8.dp))
+
+        if (progress != 0f) {
+            RowUi(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                LinearProgressIndicator(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clip(RoundedCornerShape(50)),
+                    progress = animatedProgress,
+                    color = animatedColor.value
+                )
+
+                val photosCount = (progress * 10).toInt()
+                //counter message
+                TextUi(
+                    text = "$photosCount / 10",
+                    textAlign = TextAlign.End,
+                    color = animatedColor.value,
+                    style = MaterialTheme.typography.titleSmall,
+                )
+            }
+        }
     }
 
 }
@@ -129,11 +165,12 @@ private fun UploadedImages(
 @Composable
 private fun DisplayPickedImages(
     dataList: List<Uri>, onCloseClicked: (Uri) -> Unit,
-    openGalleryClicked: () -> Unit, openImagePreviewer: (List<Uri>, Int) -> Unit
+    openImagePreviewer: (List<Uri>, Int) -> Unit
 ) {
     LazyRowUi(
         modifier = Modifier,
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalAlignment = Alignment.CenterVertically
 
     ) {
         items(dataList) { data ->
@@ -186,8 +223,9 @@ private fun DrawImage(
 
         BoxUi(
             modifier = Modifier
-                .padding(4.dp)
-                .background(androidx.compose.material.MaterialTheme.colors.whiteAlways)
+                .padding(2.dp)
+                .clip(RoundedCornerShape(50))
+                .background(MaterialTheme.colorScheme.onSecondary)
                 .alpha(0.4f)
                 .clickable {
                     onCloseClicked(dataItem)
@@ -195,7 +233,7 @@ private fun DrawImage(
         ) {
             IconUi(
                 imageVector = Icons.Filled.Close,
-                tint = androidx.compose.material.MaterialTheme.colors.blackAlways
+                tint = MaterialTheme.colorScheme.error
             )
         }
     }
@@ -203,20 +241,25 @@ private fun DrawImage(
 
 
 @Composable
-fun UploadImageButton() {
+fun UploadImageButton(openGalleryClicked: () -> Unit) {
     BoxUi(
         modifier = Modifier
             .fillMaxWidth()
             .height(137.dp)
-            .clip(RoundedCornerShape(12.dp))
-            .border(2.dp, color = MaterialTheme.colorScheme.secondary, shape = RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(20.dp))
+            .dashedBorder(
+                width = 2.dp,
+                color = MaterialTheme.colorScheme.secondary,
+                shape = RoundedCornerShape(20.dp),
+                on = 4.dp, off = 4.dp
+            )
             .background(
                 MaterialTheme.colorScheme.primary.copy(
                     alpha = 0.08f
                 )
             )
             .clickable {
-
+                openGalleryClicked()
             }
             .padding(16.dp),
 
@@ -230,8 +273,8 @@ fun UploadImageButton() {
         ) {
 
             IconUi(
-                modifier = Modifier.size(25.dp),
-                painter = painterResource(id = R.drawable.ic_info),
+                modifier = Modifier.size(26.dp, 22.dp),
+                imageVector = Icons.Filled.Upload,
                 tint = MaterialTheme.colorScheme.primary
             )
             TextUi(
@@ -241,7 +284,7 @@ fun UploadImageButton() {
             )
 
             TextUi(
-                text = stringResource(id = R.string.upload_image),
+                text = stringResource(id = R.string.upload_image_des),
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -250,7 +293,7 @@ fun UploadImageButton() {
 }
 
 @Composable
-private fun LocationForm(onClicked: (Int, Int) -> Unit) {
+private fun LocationForm(isFormActivated: Boolean, onClicked: (Int, Int) -> Unit) {
     ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         val selectedItem = remember {
             mutableStateOf("")
@@ -258,7 +301,7 @@ private fun LocationForm(onClicked: (Int, Int) -> Unit) {
 
         TextUi(
             modifier = Modifier.fillMaxWidth(),
-            text = stringResource(id = R.string.address),
+            text = stringResource(id = R.string.address_lost),
             style = MaterialTheme.typography.titleMedium
 
         )
@@ -285,8 +328,11 @@ private fun LocationForm(onClicked: (Int, Int) -> Unit) {
             )
         }
         SpacerUi(modifier = Modifier.height(20.dp))
-        ButtonAuth(title = stringResource(id = R.string.next), onClick = {
-            onClicked(-1, -1)
-        })
+        ButtonAuth(
+            enabled = isFormActivated,
+            title = stringResource(id = R.string.next),
+            onClick = {
+                onClicked(-1, -1)
+            })
     }
 }

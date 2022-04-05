@@ -58,4 +58,8 @@
     <string name="error_email">ادخل بريد الكتروني صحيح</string>
     <string name="error_pass_not_compat">الرقم السري غير متطابق</string>
     <string name="error_pass_less">الرقم السري قصير جدا</string>
+    <string name="sorry_for">نأسف لمصابكم ونعدكم ببذل قصارى جهدنا للعثور على المفقود</string>
+    <string name="upload_image">قم برفع صور المفقود</string>
+    <string name="upload_image_des">يمكنك رفع اكتر من صورة</string>
+    <string name="address_lost">عنوان منزل المفقود</string>
 </resources>

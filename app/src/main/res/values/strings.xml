@@ -85,4 +85,6 @@
     <string name="error_pass_less">Password is too short</string>
     <string name="sorry_for">we are sorry for...</string>
     <string name="upload_image">Upload lost image</string>
+    <string name="upload_image_des">You can upload more than photo</string>
+    <string name="address_lost">Address lost</string>
 </resources>
