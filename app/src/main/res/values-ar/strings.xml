@@ -63,5 +63,10 @@
     <string name="upload_image_des">يمكنك رفع اكتر من صورة</string>
     <string name="address_lost">عنوان منزل المفقود</string>
     <string name="privcy">شروط وأحكام الاستخدام الخاصة بمفقود</string>
-    <string name="privcy">شروط وأحكام الاستخدام الخاصة بمفقود</string>
+    <string name="police">الشرطة</string>
+    <string name="ambulance">الإسعاف</string>
+    <string name="hotline_pepole">الخط الساخن لذوي الاحتياجات الخاصة</string>
+    <string name="hotline_druges">الخط الساخن لمكافحة المخدرات</string>
+    <string name="rapid_intervention">التدخل السريع</string>
+    <string name="baby_help">نجدة الطفل</string>
 </resources>

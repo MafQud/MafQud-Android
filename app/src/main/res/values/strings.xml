@@ -88,4 +88,10 @@
     <string name="upload_image_des">You can upload more than photo</string>
     <string name="address_lost">Address lost</string>
     <string name="privcy">Privcy policy</string>
+    <string name="police">Police</string>
+    <string name="ambulance">ambulance</string>
+    <string name="hotline_pepole">Hotline for people with special needs</string>
+    <string name="hotline_druges">Anti-drug hotline</string>
+    <string name="rapid_intervention">rapid intervention</string>
+    <string name="baby_help">baby help</string>
 </resources>

@@ -97,6 +97,7 @@ fun HelpScreen() {
                 CircularProgressIndicator(
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
+                        //.background(MaterialTheme.colorScheme.surfaceVariant)
                         .wrapContentSize()
                 )
             }
