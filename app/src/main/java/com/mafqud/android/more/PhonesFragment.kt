@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
@@ -81,6 +82,13 @@ class PhonesFragment : Fragment() {
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
+                TextUi(
+                    text = stringResource(id = R.string.press_call),
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
                 PhoneItem(stringResource(id = R.string.police), "122", onItemClicked)
                 PhoneItem(stringResource(id = R.string.ambulance), "123", onItemClicked)
                 PhoneItem(stringResource(id = R.string.hotline_pepole), "15044", onItemClicked)
