@@ -16,6 +16,6 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/report_navigation" />
+        app:navGraph="@navigation/report_auth_navigation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

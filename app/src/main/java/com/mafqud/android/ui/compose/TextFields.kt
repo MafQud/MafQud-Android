@@ -1,6 +1,7 @@
 package com.mafqud.android.ui.compose
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -17,6 +18,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -28,6 +30,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
@@ -40,6 +43,87 @@ private val mTFHeight = 50.dp
 
 
 @Composable
+@Preview
+fun DateUi(
+    onClick: () -> Unit = {}
+) {
+    BoxUi(modifier = Modifier
+        .fillMaxWidth()
+        .clip(RoundedCornerShape(50))
+        .background(MaterialTheme.colorScheme.secondaryContainer)
+        .clickable {
+            onClick()
+        }
+        .padding(12.dp)
+    ) {
+        RowUi {
+            TextUi(
+                modifier = Modifier.weight(1f),
+                text = "",
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.labelSmall,
+                textAlign = TextAlign.Start
+            )
+            IconCalender()
+        }
+    }
+}
+
+
+@Composable
+fun TextFieldDescription(
+    value: MutableState<String>,
+    isTextError: MutableState<Boolean>
+) {
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+        ColumnUi {
+            TextFieldUi(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(130.dp),
+                value = value.value,
+                onValueChange = {
+                    value.value = it
+                    isTextError.value = false
+                },
+                trailingIcon = {
+                    if (isTextError.value)
+                        Icon(
+                            Icons.Filled.Error,
+                            stringResource(id = R.string.error_name),
+                            tint = MaterialTheme.colorScheme.error
+                        )
+                },
+                isError = isTextError.value,
+                singleLine = false,
+                maxLines = 5,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                shape = RoundedCornerShape(16.dp),
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    errorCursorColor = MaterialTheme.colorScheme.error,
+                    errorIndicatorColor = Color.Transparent,
+                    errorLeadingIconColor = MaterialTheme.colorScheme.error
+                )
+            )
+
+            if (isTextError.value) {
+                //error message
+                TextUi(
+                    text = stringResource(id = R.string.error_name),
+                    textAlign = TextAlign.Start,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.titleSmall,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        }
+    }
+}
+
+@Composable
 fun TextFieldName(
     placeHolderTitle: String,
     value: MutableState<String>,
@@ -50,7 +134,7 @@ fun TextFieldName(
             TextFieldUi(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(50.dp),
+                    .height(mTFHeight),
                 value = value.value,
                 onValueChange = {
                     value.value = it
@@ -110,7 +194,7 @@ fun TextFieldEmail(value: MutableState<String>, isEmailError: MutableState<Boole
             TextFieldUi(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(50.dp),
+                    .height(mTFHeight),
                 value = value.value,
                 onValueChange = {
                     value.value = it
@@ -177,7 +261,7 @@ fun TextFieldPhone(
             TextFieldUi(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(50.dp),
+                    .height(mTFHeight),
                 value = phone.value,
                 onValueChange = {
                     if (it.length <= maxPhoneLength) phone.value = it
@@ -264,73 +348,73 @@ fun TextFieldPassword(
         val passwordVisibility = remember { mutableStateOf(false) }
         val keyboardController = LocalSoftwareKeyboardController.current
 
-       ColumnUi {
-           TextFieldUi(
-               modifier = Modifier
-                   .fillMaxWidth()
-                   .height(50.dp)
-                   .focusRequester(focusRequester),
-               value = value.value,
-               onValueChange = {
-                   value.value = it
-                   isPasswordError.value.isError = false
-               },
-               trailingIcon = {
-                   if (isPasswordError.value.isError)
-                       Icon(
-                           Icons.Filled.Error,
-                           stringResource(id = R.string.error_password),
-                           tint = MaterialTheme.colorScheme.error
-                       )
-                   else {
-                       val image = if (passwordVisibility.value)
-                           Icons.Filled.Visibility
-                       else Icons.Filled.VisibilityOff
-                       IconButton(onClick = {
-                           passwordVisibility.value = !passwordVisibility.value
-                       }) {
-                           IconUi(
-                               imageVector = image,
-                               tint = MaterialTheme.colorScheme.onSurfaceVariant
-                           )
-                       }
-                   }
-               },
-               isError = isPasswordError.value.isError,
-               visualTransformation = if (passwordVisibility.value)
-                   VisualTransformation.None else PasswordVisualTransformation(),
-               singleLine = true,
-               keyboardOptions = KeyboardOptions(
-                   keyboardType = KeyboardType.Password,
-                   imeAction = ImeAction.Done
-               ),
-               keyboardActions = KeyboardActions(
-                   onDone = { keyboardController?.hide() }),
-               shape = RoundedCornerShape(50),
-               colors = TextFieldDefaults.textFieldColors(
-                   backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
-                   unfocusedIndicatorColor = Color.Transparent,
-                   focusedIndicatorColor = Color.Transparent,
-                   errorCursorColor = MaterialTheme.colorScheme.error,
-                   errorIndicatorColor = Color.Transparent,
-                   errorLeadingIconColor = MaterialTheme.colorScheme.error
-               )
-           )
-           if (isPasswordError.value.isError) {
-               //error message
-               val message = when(isPasswordError.value.type) {
-                   PassErrorType.INCOMPATIBLE -> stringResource(id = R.string.error_pass_not_compat)
-                   PassErrorType.LESS -> stringResource(id = R.string.error_pass_less)
-                   PassErrorType.NONE -> stringResource(id = R.string.error_password)
-               }
-               TextUi(
-                   text = message,
-                   textAlign = TextAlign.Start,
-                   color = MaterialTheme.colorScheme.error,
-                   style = MaterialTheme.typography.titleSmall,
-                   modifier = Modifier.fillMaxWidth()
-               )
-           }
-       }
+        ColumnUi {
+            TextFieldUi(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(mTFHeight)
+                    .focusRequester(focusRequester),
+                value = value.value,
+                onValueChange = {
+                    value.value = it
+                    isPasswordError.value.isError = false
+                },
+                trailingIcon = {
+                    if (isPasswordError.value.isError)
+                        Icon(
+                            Icons.Filled.Error,
+                            stringResource(id = R.string.error_password),
+                            tint = MaterialTheme.colorScheme.error
+                        )
+                    else {
+                        val image = if (passwordVisibility.value)
+                            Icons.Filled.Visibility
+                        else Icons.Filled.VisibilityOff
+                        IconButton(onClick = {
+                            passwordVisibility.value = !passwordVisibility.value
+                        }) {
+                            IconUi(
+                                imageVector = image,
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                },
+                isError = isPasswordError.value.isError,
+                visualTransformation = if (passwordVisibility.value)
+                    VisualTransformation.None else PasswordVisualTransformation(),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { keyboardController?.hide() }),
+                shape = RoundedCornerShape(50),
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    errorCursorColor = MaterialTheme.colorScheme.error,
+                    errorIndicatorColor = Color.Transparent,
+                    errorLeadingIconColor = MaterialTheme.colorScheme.error
+                )
+            )
+            if (isPasswordError.value.isError) {
+                //error message
+                val message = when (isPasswordError.value.type) {
+                    PassErrorType.INCOMPATIBLE -> stringResource(id = R.string.error_pass_not_compat)
+                    PassErrorType.LESS -> stringResource(id = R.string.error_pass_less)
+                    PassErrorType.NONE -> stringResource(id = R.string.error_password)
+                }
+                TextUi(
+                    text = message,
+                    textAlign = TextAlign.Start,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.titleSmall,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        }
     }
 }

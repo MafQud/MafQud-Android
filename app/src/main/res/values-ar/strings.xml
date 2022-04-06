@@ -70,4 +70,14 @@
     <string name="rapid_intervention">التدخل السريع</string>
     <string name="baby_help">نجدة الطفل</string>
     <string name="press_call">إضغط للاتصال</string>
+    <string name="insert_more">من فضلك قم بملئ أكبر عدد ممكن من بيانات الاستمارة لتساعدنا في سرعة الوصول إلى المفقود</string>
+    <string name="lost_name">اسم المفقود</string>
+    <string name="address_lost_where">عنوان المكان الذي فُقد فيه</string>
+    <string name="gender_age">تحديد الجنس والسن</string>
+    <string name="lost_date">تاريخ التغيب</string>
+    <string name="lost_des">موصفات المفقود</string>
+    <string name="search_losts">بحث عن المفقود</string>
+    <string name="lost_date_title">أقرب وقت لحدوث الواقعة</string>
+    <string name="lost_des_title">وصف الملابس والعلامات الجسدية بالتفصيل</string>
+
 </resources>

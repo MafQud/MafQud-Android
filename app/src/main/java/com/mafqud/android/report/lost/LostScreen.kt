@@ -42,14 +42,14 @@ fun LostScreen(
     pickedImages: MutableList<Uri> = mutableStateListOf("".toUri()),
     openGalleryClicked: () -> Unit = {},
     onCloseClicked: (String) -> Unit = {},
-    openImagePreviewer: (List<Uri>, Int) -> Unit = { it, _it -> }
+    openImagePreviewer: (List<Uri>, Int) -> Unit = { it, _it -> },
+    onNextClicked: () -> Unit = {},
 ) {
     BoxUi(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.onPrimary)
-            .padding(16.dp)
-            .padding(top = 0.dp),
+            .padding(start = 16.dp, end = 16.dp),
 
         ) {
         ColumnUi(
@@ -67,6 +67,7 @@ fun LostScreen(
             progress = currentPickedImages.toFloat() / maxPhotos.toFloat()
             isFormActivated = !(currentPickedImages < 3 || currentPickedImages > 10)
 
+            SpacerUi(modifier = Modifier.height(16.dp))
             Header()
             SpacerUi(modifier = Modifier.height(20.dp))
             UploadImageButton(openGalleryClicked)
@@ -78,7 +79,9 @@ fun LostScreen(
             )
             SpacerUi(modifier = Modifier.height(20.dp))
             LocationForm(isFormActivated) { i, x ->
+                onNextClicked()
             }
+            SpacerUi(modifier = Modifier.height(16.dp))
 
         }
 

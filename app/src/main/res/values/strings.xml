@@ -95,4 +95,13 @@
     <string name="rapid_intervention">rapid intervention</string>
     <string name="baby_help">baby help</string>
     <string name="press_call">Press to call</string>
+    <string name="insert_more">Insert more details ...</string>
+    <string name="lost_name">Lost name</string>
+    <string name="address_lost_where">"Address lost "</string>
+    <string name="gender_age">Select gender and age</string>
+    <string name="lost_date">Lost date</string>
+    <string name="lost_des">Lost description</string>
+    <string name="search_losts">Search in losts</string>
+    <string name="lost_date_title">Lost date timme</string>
+    <string name="lost_des_title">Lost des fff</string>
 </resources>

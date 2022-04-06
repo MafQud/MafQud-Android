@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.compose.material.Scaffold
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.navigation.NavGraph
 import androidx.navigation.findNavController
 import com.mafqud.android.R
 import com.mafqud.android.base.fragment.BaseFragment
@@ -39,10 +40,13 @@ class ReportFragment : BaseFragment() {
                         )
                     }, content = {
                         ReportScreen(onReportLost = {
-                            findNavController().navigate(R.id.action_reportFragment_to_reportLostFragment)
+                            findNavController().navigate(R.id.action_reportFragment_to_report_graph)
                         }, onReportFound = {
-                            findNavController().navigate(R.id.action_reportFragment_to_reportFoundFragment)
-
+                            val graph = findNavController().graph.findNode(R.id.report_graph)
+                            if (graph is NavGraph) {
+                                graph.setStartDestination(R.id.reportFoundFragment)
+                                findNavController().navigate(R.id.action_reportFragment_to_report_graph)
+                            }
                         })
                     })
 

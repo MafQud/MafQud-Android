@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/report_navigation.xml"
+    app:startDestination="@id/reportAuthFragment">
+
+    <fragment
+        android:id="@+id/reportAuthFragment"
+        android:name="com.mafqud.android.report.report.ReportAuthFragment"
+        android:label="ReportAuthFragment" >
+        <action
+            android:id="@+id/action_reportAuthFragment_to_report_graph"
+            app:destination="@id/report_graph" />
+    </fragment>
+    <include app:graph="@navigation/report_graph"  />
+</navigation>

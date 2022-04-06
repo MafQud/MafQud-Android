@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/report_graph"
+    app:startDestination="@id/reportLostFragment">
+
+    <fragment
+        android:id="@+id/reportLostFragment"
+        android:name="com.mafqud.android.report.lost.ReportLostFragment"
+        android:label="ReportLostFragment" >
+        <action
+            android:id="@+id/action_reportLostFragment_to_reportLostSecondFragment"
+            app:destination="@id/reportLostSecondFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reportFoundFragment"
+        android:name="com.mafqud.android.report.found.ReportFoundFragment"
+        android:label="ReportFoundFragment" />
+    <fragment
+        android:id="@+id/reportLostSecondFragment"
+        android:name="com.mafqud.android.report.lost.ReportLostSecondFragment"
+        android:label="ReportLostSecondFragment" />
+
+</navigation>

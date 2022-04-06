@@ -6,10 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.FmdGood
-import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -139,3 +136,21 @@ fun IconEdit(
     }
 }
 
+
+@Composable
+fun IconCalender(
+    iconSize: Dp = mIconSize,
+    iconColor: Color = MaterialTheme.colorScheme.onTertiaryContainer,
+) {
+    BoxUi(
+        modifier = Modifier
+            .size(iconSize)
+            .padding(4.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        IconUi(
+            imageVector = Icons.Filled.DateRange,
+            tint = iconColor,
+        )
+    }
+}

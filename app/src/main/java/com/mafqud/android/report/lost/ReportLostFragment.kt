@@ -100,7 +100,9 @@ class ReportLostFragment : BaseFragment() {
             //mPickedImagesUris = pickedImagesUris,
             openGalleryClicked = {
                 openGallery(galleryLauncher)
-            },
+            }, onNextClicked = {
+                findNavController().navigate(R.id.action_reportLostFragment_to_reportLostSecondFragment)
+            }
         )
 
     }
