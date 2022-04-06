@@ -7,7 +7,6 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
@@ -15,31 +14,20 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.mafqud.android.R
 import com.mafqud.android.auth.AuthActivity
-import com.mafqud.android.data.DataStoreManager
+import com.mafqud.android.base.activity.BaseActivity
 import com.mafqud.android.data.DataStoreManager.Companion.IS_PASSED_INTRO
-import com.mafqud.android.data.DataStoreManager.Companion.LANGUAGE
 import com.mafqud.android.home.HomeActivity
 import com.mafqud.android.ui.theme.MafQudTheme
-import com.mafqud.android.util.other.changLanguage
 import com.mafqud.android.util.other.inAppUpdate
 import com.mafqud.android.util.other.statusBarColor
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 const val SPLASH_DELAY = 3500L
 
 @SuppressLint("CustomSplashScreen")
-@AndroidEntryPoint
-class SplashActivity : AppCompatActivity() {
-
-    @Inject
-    lateinit var dataStoreManager: DataStoreManager
+class SplashActivity : BaseActivity() {
 
     private var isPassed: Boolean = true
 
-    enum class LangType {
-        AR, EN
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
@@ -72,7 +60,6 @@ class SplashActivity : AppCompatActivity() {
         // Handle the splash screen transition.
         val splashScreen = installSplashScreen()
         checkIfUserPassedIntro()
-        changeApplicationLanguage()
         //getHashKey()
         setContent {
             MafQudTheme {
@@ -84,14 +71,6 @@ class SplashActivity : AppCompatActivity() {
         }
         // check google play for our app update
         inAppUpdate()
-    }
-
-    private fun changeApplicationLanguage() {
-        // To change app lang
-        lifecycleScope.launchWhenCreated {
-            val lang = dataStoreManager.read(LANGUAGE, LangType.AR.toString())
-            changLanguage(lang)
-        }
     }
 
     private fun checkIfUserPassedIntro() {

@@ -92,14 +92,6 @@ fun String.wordCount(): Int {
     }
 }
 
-fun Context.changLanguage(lang: String) {
-    if (lang.equals("ar", ignoreCase = true)) {
-        Localization.setLanguage(this, "ar")
-    } else {
-        Localization.setLanguage(this, "en")
-    }
-
-}
 
 fun Activity.restartApplication() {
     startActivity(Intent(this, SplashActivity::class.java))
