@@ -4,7 +4,7 @@ import android.net.Uri
 import com.mafqud.android.util.network.Result
 
 
-data class LostViewState(
+data class ReportViewState(
     val isLoading: Boolean = false,
     val errorFieldMessage: String? = null,
     val imagesUri: List<Uri> = emptyList(),

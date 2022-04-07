@@ -31,7 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class ReportLostFragment : BaseFragment() {
 
 
-    private val viewModel: LostViewModel by viewModels()
+    private val viewModel: ReportViewModel by viewModels()
 
 
     init {
@@ -103,13 +103,13 @@ class ReportLostFragment : BaseFragment() {
 
     private fun removeImageUri(uri: Uri) {
         lifecycleScope.launchWhenCreated {
-            viewModel.intentChannel.send(LostIntent.RemoveImageUri(uri))
+            viewModel.intentChannel.send(ReportIntent.RemoveImageUri(uri))
         }
     }
 
     private fun sendImagesIntent(mImageUri: List<Uri>) {
         lifecycleScope.launchWhenCreated {
-            viewModel.intentChannel.send(LostIntent.SaveImagesUri(mImageUri))
+            viewModel.intentChannel.send(ReportIntent.SaveImagesUri(mImageUri))
         }
     }
 
