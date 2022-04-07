@@ -39,9 +39,9 @@ import com.mafqud.android.ui.theme.*
 fun LostScreen(
     //mPickedImagesUris: MutableState<Int>,
     maxPhotos: Int = 10,
-    pickedImages: MutableList<Uri> = mutableStateListOf("".toUri()),
+    pickedImages: List<Uri> = mutableStateListOf("".toUri()),
     openGalleryClicked: () -> Unit = {},
-    onCloseClicked: (String) -> Unit = {},
+    onCloseClicked: (Uri) -> Unit = {},
     openImagePreviewer: (List<Uri>, Int) -> Unit = { it, _it -> },
     onNextClicked: () -> Unit = {},
 ) {
@@ -75,7 +75,8 @@ fun LostScreen(
                 pickedImages,
                 progress,
                 isFormActivated,
-                openImagePreviewer
+                openImagePreviewer,
+                onCloseClicked
             )
             SpacerUi(modifier = Modifier.height(20.dp))
             LocationForm(isFormActivated) { i, x ->
@@ -106,12 +107,12 @@ fun Header() {
 
 @Composable
 private fun UploadedImages(
-    pickedImages: MutableList<Uri>,
+    pickedImages: List<Uri>,
     progress: Float,
     isFormActivated: Boolean,
     openImagePreviewer: (List<Uri>, Int) -> Unit,
+    onCloseClicked: (Uri) -> Unit,
 ) {
-    //val pickedImagesUris = mPickedImagesUris
     val animatedProgress = animateFloatAsState(
         targetValue = progress,
         animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
@@ -134,9 +135,10 @@ private fun UploadedImages(
 
             DisplayPickedImages(pickedImages, {
                 // remove selected image
-                pickedImages.remove(it)
-                //pickedImagesUris.value = pickedImages.size
+                //pickedImages.remove(it)
+                onCloseClicked(it)
             }, openImagePreviewer)
+
         }
 
         SpacerUi(modifier = Modifier.height(8.dp))

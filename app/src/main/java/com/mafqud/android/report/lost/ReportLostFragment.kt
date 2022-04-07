@@ -2,7 +2,6 @@ package com.mafqud.android.report.lost
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +10,12 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.mafqud.android.R
 import com.mafqud.android.base.fragment.BaseFragment
@@ -30,7 +30,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ReportLostFragment : BaseFragment() {
 
-    private val PICKED_IMAGE_SIZE = "pick_size"
+
+    private val viewModel: LostViewModel by viewModels()
 
 
     init {
@@ -43,15 +44,6 @@ class ReportLostFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val size = savedInstanceState?.getInt(PICKED_IMAGE_SIZE, 0) ?: 0
-        Log.i("onCreateView: ", size.toString())
-        //pickedImagesUris = mutableStateOf(size)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        //Log.i("onCreateView: pickedImagesUris.value ", pickedImagesUris.value.toString())
-        //outState.putInt(PICKED_IMAGE_SIZE, pickedImagesUris.value)
     }
 
     override fun onCreateView(
@@ -84,27 +76,41 @@ class ReportLostFragment : BaseFragment() {
 
     @Composable
     private fun ListenToChanges() {
-        val pickedImages = remember {
+        val state = viewModel.stateChannel.collectAsState().value
+        /*val pickedImages = remember {
             mutableStateListOf<Uri>()
-        }
+        }*/
         val galleryLauncher =
             rememberLauncherForActivityResult(ActivityResultContracts.GetMultipleContents()) {
                 val imagesUri = it
                 val mImageUri = imagesUri.toList()
-                pickedImages.addAll(mImageUri)
-                //pickedImagesUris.value = pickedImages.size
-                //Log.i("pickedImages.size: ", pickedImagesUris.value.toString())
+                sendImagesIntent(mImageUri)
+                //pickedImages.addAll(mImageUri)
             }
         LostScreen(
-            pickedImages = pickedImages,
+            pickedImages = state.imagesUri,
             //mPickedImagesUris = pickedImagesUris,
             openGalleryClicked = {
                 openGallery(galleryLauncher)
             }, onNextClicked = {
                 findNavController().navigate(R.id.action_reportLostFragment_to_reportLostSecondFragment)
+            }, onCloseClicked = {
+                removeImageUri(it)
             }
         )
 
+    }
+
+    private fun removeImageUri(uri: Uri) {
+        lifecycleScope.launchWhenCreated {
+            viewModel.intentChannel.send(LostIntent.RemoveImageUri(uri))
+        }
+    }
+
+    private fun sendImagesIntent(mImageUri: List<Uri>) {
+        lifecycleScope.launchWhenCreated {
+            viewModel.intentChannel.send(LostIntent.SaveImagesUri(mImageUri))
+        }
     }
 
 
