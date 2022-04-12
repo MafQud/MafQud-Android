@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.compose.runtime.MutableState
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -73,6 +74,10 @@ class HomeActivity : BaseActivity() {
 
     fun homeBarVisibility(isVisible: Boolean) {
         //isHomeBarVisible.value = isVisible
+    }
+
+    fun bottomBarNavigationVisibility(isVisible: Boolean) {
+        bottomNavigationView.isVisible = isVisible
     }
 
     fun bottomNavigationBarVisibility(isVisible: Boolean = true) {

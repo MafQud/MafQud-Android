@@ -79,5 +79,11 @@
     <string name="search_losts">بحث عن المفقود</string>
     <string name="lost_date_title">أقرب وقت لحدوث الواقعة</string>
     <string name="lost_des_title">وصف الملابس والعلامات الجسدية بالتفصيل</string>
+    <string name="about_us">عن مفقود</string>
+    <string name="thanks_for_report">شكرًا لاجابيتك ورغبتك في المساعدة</string>
+    <string name="camera">الكاميرا</string>
+    <string name="gallery">المعرض</string>
+    <string name="upload_image_found">قم برفع صور المعثور عليه</string>
+    <string name="done">حفظ</string>
 
 </resources>

@@ -9,6 +9,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -24,7 +26,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.mafqud.android.R
 import com.mafqud.android.base.fragment.BaseFragment
-import com.mafqud.android.report.lost.LostScreen
+import com.mafqud.android.home.HomeActivity
 import com.mafqud.android.report.lost.ReportIntent
 import com.mafqud.android.report.lost.ReportViewModel
 import com.mafqud.android.ui.compose.TitledAppBar
@@ -44,8 +46,8 @@ class ReportFoundFragment : BaseFragment() {
     private val viewModel: ReportViewModel by viewModels()
 
     @OptIn(ExperimentalMaterialApi::class)
-    var state: ModalBottomSheetState? = null
-    var scope: CoroutineScope? = null
+    var bottomSheetState: ModalBottomSheetState? = null
+    var bottomSheetScope: CoroutineScope? = null
 
     init {
         PermissionManager.from(
@@ -70,19 +72,19 @@ class ReportFoundFragment : BaseFragment() {
             )
             setContent {
                 MafQudTheme {
-                    state = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
-                    scope = rememberCoroutineScope()
+                    bottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+                    bottomSheetScope = rememberCoroutineScope()
                     val color =
                         androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer.copy(
                             0.2f
                         )
                     ModalBottomSheetLayout(
-                        sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-                        modifier = Modifier,
-                           // .background(color),
-                        //.padding(bottom = 12.dp)
+                        sheetShape = RoundedCornerShape(16.dp),
+                        modifier = Modifier
+                            .background(color)
+                            .padding(bottom = if (bottomSheetState!!.isVisible) 12.dp else 0.dp),
                         scrimColor = color,
-                        sheetState = state!!,
+                        sheetState = bottomSheetState!!,
                         sheetContent = {
                             val galleryLauncher =
                                 rememberLauncherForActivityResult(ActivityResultContracts.GetMultipleContents()) {
@@ -93,11 +95,15 @@ class ReportFoundFragment : BaseFragment() {
 
                             //sheetContent
                             BoxUi() {
-                                FilterContent(scope, state, onCameraClicked = {
-                                    openCamera()
-                                }, onGalleryClicked = {
-                                    openGallery(galleryLauncher)
-                                })
+                                FilterContent(
+                                    bottomSheetScope,
+                                    bottomSheetState,
+                                    onCameraClicked = {
+                                        openCamera()
+                                    },
+                                    onGalleryClicked = {
+                                        openGallery(galleryLauncher)
+                                    })
                             }
                         },
                     ) {
@@ -126,9 +132,9 @@ class ReportFoundFragment : BaseFragment() {
 
     @OptIn(ExperimentalMaterialApi::class)
     private fun handleBack() {
-        state?.let {
+        bottomSheetState?.let {
             if (it.isVisible) {
-                scope?.launch {
+                bottomSheetScope?.launch {
                     it.hide()
                 }
             } else {
@@ -138,7 +144,19 @@ class ReportFoundFragment : BaseFragment() {
     }
 
     private fun openCamera() {
-        // TODO open camera activity
+        findNavController().navigate(R.id.action_reportFoundFragment_to_cameraFragment)
+        val currentActivity = activity
+        if (currentActivity is HomeActivity) {
+            currentActivity.bottomBarNavigationVisibility(isVisible = false)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val currentActivity = activity
+        if (currentActivity is HomeActivity) {
+            currentActivity.bottomBarNavigationVisibility(isVisible = true)
+        }
     }
 
     @Composable
@@ -160,15 +178,15 @@ class ReportFoundFragment : BaseFragment() {
     private fun ListenToChanges() {
         val mState = viewModel.stateChannel.collectAsState().value
 
-        LostScreen(
+        FoundScreen(
             pickedImages = mState.imagesUri,
             openGalleryClicked = {
                 // open bottom sheet
                 PermissionManager.requestPermission(onDenied = {
                     /* requireContext().showToast(getString(R.string.permission_read_denied))*/
                 }, onGranted = {
-                    scope?.launch {
-                        state?.show()
+                    bottomSheetScope?.launch {
+                        bottomSheetState?.show()
                     }
                 })
 

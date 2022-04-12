@@ -113,7 +113,7 @@ dependencies {
     def lifecycle_version = "2.3.1"
     def hilt_version = "2.37"
     def okhttp = "4.5.0"
-    def camerax_version = "1.0.1"
+    def camerax_version = "1.1.0-beta03"
     def splash_screen = "1.0.0-beta01"
     def retrofit = "2.9.0"
     def moshi = "2.4.0"
@@ -200,7 +200,7 @@ dependencies {
     // CameraX Lifecycle Library
     implementation "androidx.camera:camera-lifecycle:$camerax_version"
     // CameraX View class
-    implementation "androidx.camera:camera-view:1.0.0-alpha28"
+    implementation "androidx.camera:camera-view:1.1.0-beta03"
 
     /**
      * Dagger Hilt
@@ -293,6 +293,8 @@ dependencies {
     //circleimageview
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
+    //Permissions
+    implementation("com.google.accompanist:accompanist-permissions:0.18.0")
     // youtube player api
     //implementation files("libs\\YouTubeAndroidPlayerApi.jar")
 

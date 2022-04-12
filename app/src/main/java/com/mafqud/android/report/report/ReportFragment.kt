@@ -40,7 +40,11 @@ class ReportFragment : BaseFragment() {
                         )
                     }, content = {
                         ReportScreen(onReportLost = {
-                            findNavController().navigate(R.id.action_reportFragment_to_report_graph)
+                            val graph = findNavController().graph.findNode(R.id.report_graph)
+                            if (graph is NavGraph) {
+                                graph.setStartDestination(R.id.reportLostFragment)
+                                findNavController().navigate(R.id.action_reportFragment_to_report_graph)
+                            }
                         }, onReportFound = {
                             val graph = findNavController().graph.findNode(R.id.report_graph)
                             if (graph is NavGraph) {

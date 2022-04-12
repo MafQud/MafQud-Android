@@ -15,10 +15,18 @@
     <fragment
         android:id="@+id/reportFoundFragment"
         android:name="com.mafqud.android.report.found.ReportFoundFragment"
-        android:label="ReportFoundFragment" />
+        android:label="ReportFoundFragment" >
+        <action
+            android:id="@+id/action_reportFoundFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+    </fragment>
     <fragment
         android:id="@+id/reportLostSecondFragment"
         android:name="com.mafqud.android.report.lost.ReportLostSecondFragment"
         android:label="ReportLostSecondFragment" />
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.mafqud.android.camera.CameraFragment"
+        android:label="CameraFragment" />
 
 </navigation>

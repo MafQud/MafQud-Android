@@ -105,8 +105,10 @@
     <string name="lost_date_title">Lost date timme</string>
     <string name="lost_des_title">Lost des fff</string>
     <string name="about_us">About MafQud</string>
-    <string name="google_console_api">AIzaSyCb2s9O7_FWlGJ5sNOzs0UuVP21_mI8FTc</string>
+    <string name="google_console_api" translatable="false">AIzaSyCb2s9O7_FWlGJ5sNOzs0UuVP21_mI8FTc</string>
     <string name="thanks_for_report">Thanks for report...</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
+    <string name="upload_image_found">Upload found image</string>
+    <string name="done">Done</string>
 </resources>

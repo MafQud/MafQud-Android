@@ -90,6 +90,30 @@ fun IconBack(
     }
 }
 
+
+@Composable
+fun IconDone(
+    iconSize: Dp = mIconSize,
+    iconColor: Color = MaterialTheme.colorScheme.tertiary,
+    backgroundColor: Color = MaterialTheme.colorScheme.tertiaryContainer,
+    alpha: Float = 1f,
+) {
+    BoxUi(
+        modifier = Modifier
+            .size(iconSize)
+            .clip(RoundedCornerShape(50))
+            .background(backgroundColor)
+            .alpha(alpha)
+            .padding(4.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        IconUi(
+            imageVector = Icons.Filled.Done,
+            tint = iconColor,
+        )
+    }
+}
+
 @Composable
 fun IconMap(
     iconColor: Color = MaterialTheme.colorScheme.secondaryContainer,

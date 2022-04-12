@@ -285,7 +285,7 @@ fun UploadImageButton(openGalleryClicked: () -> Unit) {
                 tint = MaterialTheme.colorScheme.primary
             )
             TextUi(
-                text = stringResource(id = R.string.upload_image),
+                text = stringResource(id = R.string.upload_image_found),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.primary
             )
