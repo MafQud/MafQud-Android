@@ -1,4 +1,4 @@
-package com.mafqud.android.report.lost
+package com.mafqud.android.report.found
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,7 +16,7 @@ import com.mafqud.android.ui.theme.MafQudTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ReportLostSecondFragment : BaseFragment() {
+class ReportfoundSecondFragment : BaseFragment() {
 
 
     override fun onCreateView(
@@ -34,13 +34,13 @@ class ReportLostSecondFragment : BaseFragment() {
                 MafQudTheme {
                     Scaffold(topBar = {
                         TitledAppBar(
-                            title = stringResource(id = R.string.report_lost),
+                            title = stringResource(id = R.string.report_found),
                             onBackClicked = {
                                 findNavController().popBackStack()
                             }
                         )
                     }, content = {
-                        requireActivity().LostScreenTwo()
+                        requireActivity().FoundScreenTwo()
                     })
                 }
             }

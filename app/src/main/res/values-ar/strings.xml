@@ -85,5 +85,13 @@
     <string name="gallery">المعرض</string>
     <string name="upload_image_found">قم برفع صور المعثور عليه</string>
     <string name="done">حفظ</string>
+    <string name="age">السن</string>
+    <string name="male">ذكر</string>
+    <string name="female">انثي</string>
+    <string name="gender">الجنس</string>
+    <string name="insert_more_found">من فضلك قم بملئ أكبر عدد ممكن من بيانات الاستمارة لتساعدنا في سرعة الوصول إلى أهل المعثور عليه</string>
+    <string name="found_name">اسم المعثور عليه</string>
+    <string name="found_des">موصفات المعثور عليه</string>
+    <string name="address_found_where">عنوان المكان الذي تم العثور عليه فيه</string>
 
 </resources>

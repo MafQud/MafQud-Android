@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_reportFoundFragment_to_cameraFragment"
             app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_reportFoundFragment_to_reportfoundSecondFragment"
+            app:destination="@id/reportfoundSecondFragment" />
     </fragment>
     <fragment
         android:id="@+id/reportLostSecondFragment"
@@ -28,5 +31,9 @@
         android:id="@+id/cameraFragment"
         android:name="com.mafqud.android.camera.CameraFragment"
         android:label="CameraFragment" />
+    <fragment
+        android:id="@+id/reportfoundSecondFragment"
+        android:name="com.mafqud.android.report.found.ReportfoundSecondFragment"
+        android:label="ReportfoundSecondFragment" />
 
 </navigation>

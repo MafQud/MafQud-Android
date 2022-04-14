@@ -45,6 +45,7 @@ private val mTFHeight = 50.dp
 @Composable
 @Preview
 fun DateUi(
+    dataString : String = "",
     onClick: () -> Unit = {}
 ) {
     BoxUi(modifier = Modifier
@@ -59,9 +60,9 @@ fun DateUi(
         RowUi {
             TextUi(
                 modifier = Modifier.weight(1f),
-                text = "",
+                text = dataString,
                 color = MaterialTheme.colorScheme.onBackground,
-                style = MaterialTheme.typography.labelSmall,
+                style = MaterialTheme.typography.labelMedium,
                 textAlign = TextAlign.Start
             )
             IconCalender()
@@ -105,7 +106,8 @@ fun TextFieldDescription(
                     focusedIndicatorColor = Color.Transparent,
                     errorCursorColor = MaterialTheme.colorScheme.error,
                     errorIndicatorColor = Color.Transparent,
-                    errorLeadingIconColor = MaterialTheme.colorScheme.error
+                    errorLeadingIconColor = MaterialTheme.colorScheme.error,
+                    cursorColor = MaterialTheme.colorScheme.primary
                 )
             )
 
@@ -167,7 +169,9 @@ fun TextFieldName(
                     focusedIndicatorColor = Color.Transparent,
                     errorCursorColor = MaterialTheme.colorScheme.error,
                     errorIndicatorColor = Color.Transparent,
-                    errorLeadingIconColor = MaterialTheme.colorScheme.error
+                    errorLeadingIconColor = MaterialTheme.colorScheme.error,
+                    cursorColor = MaterialTheme.colorScheme.primary
+
                 )
             )
 
@@ -227,7 +231,9 @@ fun TextFieldEmail(value: MutableState<String>, isEmailError: MutableState<Boole
                     focusedIndicatorColor = Color.Transparent,
                     errorCursorColor = MaterialTheme.colorScheme.error,
                     errorIndicatorColor = Color.Transparent,
-                    errorLeadingIconColor = MaterialTheme.colorScheme.error
+                    errorLeadingIconColor = MaterialTheme.colorScheme.error,
+                    cursorColor = MaterialTheme.colorScheme.primary
+
 
                 )
             )
@@ -307,7 +313,9 @@ fun TextFieldPhone(
                     focusedIndicatorColor = Color.Transparent,
                     errorCursorColor = MaterialTheme.colorScheme.error,
                     errorIndicatorColor = Color.Transparent,
-                    errorLeadingIconColor = MaterialTheme.colorScheme.error
+                    errorLeadingIconColor = MaterialTheme.colorScheme.error,
+                    cursorColor = MaterialTheme.colorScheme.primary
+
                 )
             )
 
@@ -397,7 +405,9 @@ fun TextFieldPassword(
                     focusedIndicatorColor = Color.Transparent,
                     errorCursorColor = MaterialTheme.colorScheme.error,
                     errorIndicatorColor = Color.Transparent,
-                    errorLeadingIconColor = MaterialTheme.colorScheme.error
+                    errorLeadingIconColor = MaterialTheme.colorScheme.error,
+                    cursorColor = MaterialTheme.colorScheme.primary
+
                 )
             )
             if (isPasswordError.value.isError) {

@@ -235,3 +235,31 @@ fun IconGallery(
     }
 }
 
+
+@Composable
+fun IconDown(
+    iconSize: Dp = mIconSize,
+    iconColor: Color = MaterialTheme.colorScheme.tertiary,
+    backgroundColor: Color = MaterialTheme.colorScheme.tertiaryContainer,
+    alpha: Float = 1f,
+    onClick: () -> Unit
+) {
+    BoxUi(
+        modifier = Modifier
+            .size(iconSize)
+            .clip(RoundedCornerShape(50))
+            .background(backgroundColor)
+            .alpha(alpha)
+            .clickable {
+                onClick()
+            }
+            .padding(4.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        IconUi(
+            imageVector = Icons.Filled.ExpandMore,
+            tint = iconColor,
+        )
+    }
+}
+

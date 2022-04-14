@@ -1,4 +1,4 @@
-package com.mafqud.android.report.lost
+package com.mafqud.android.report.found
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import com.mafqud.android.R
+import com.mafqud.android.report.lost.Gender
 import com.mafqud.android.ui.compose.*
 import com.mafqud.android.ui.picker.datePicker
 import com.mafqud.android.ui.theme.*
@@ -25,17 +26,13 @@ import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 
-enum class Gender {
-    MALE, FEMALE, NONE
-}
-
 val ages = (1..100)
 val genders = listOf(Gender.NONE, Gender.MALE, Gender.FEMALE)
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 @Preview
-fun FragmentActivity.LostScreenTwo() {
+fun FragmentActivity.FoundScreenTwo() {
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
     var scrollToPosition by remember { mutableStateOf(0F) }
@@ -71,10 +68,10 @@ fun FragmentActivity.LostScreenTwo() {
         ) {
             SpacerUi(modifier = Modifier.height(16.dp))
             HeaderTwo()
-            LostName()
-            LostGenderAndAge(selectedgender, selectedAge)
-            LostDate(selectedDate, this@LostScreenTwo)
-            LostDescription()
+            FoundName()
+            FoundGenderAndAge(selectedgender, selectedAge)
+            FoundDate(selectedDate, this@FoundScreenTwo)
+            FoundDescription()
             LocationForm()
 
             BoxUi(modifier = Modifier
@@ -119,7 +116,7 @@ fun FragmentActivity.LostScreenTwo() {
 }
 
 @Composable
-fun LostDescription() {
+fun FoundDescription() {
     val description = remember {
         mutableStateOf("")
     }
@@ -131,7 +128,7 @@ fun LostDescription() {
         // full name
         TextUi(
             modifier = Modifier.fillMaxWidth(),
-            text = stringResource(id = R.string.lost_des),
+            text = stringResource(id = R.string.found_des),
             style = MaterialTheme.typography.titleMedium
 
         )
@@ -149,7 +146,7 @@ fun LostDescription() {
 }
 
 @Composable
-fun LostDate(selectedDate: MutableState<String>, activity: FragmentActivity) {
+fun FoundDate(selectedDate: MutableState<String>, activity: FragmentActivity) {
     ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         // full name
         val datePicker = datePicker(updatedDate = { long, string ->
@@ -177,7 +174,7 @@ fun LostDate(selectedDate: MutableState<String>, activity: FragmentActivity) {
 
 
 @Composable
-private fun LostGenderAndAge(gender: MutableState<Gender>, age: MutableState<String>) {
+private fun FoundGenderAndAge(gender: MutableState<Gender>, age: MutableState<String>) {
     ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
 
 
@@ -230,7 +227,7 @@ private fun LostGenderAndAge(gender: MutableState<Gender>, age: MutableState<Str
 }
 
 @Composable
-private fun LostName() {
+private fun FoundName() {
     val fullName = remember {
         mutableStateOf("")
     }
@@ -243,7 +240,7 @@ private fun LostName() {
         // full name
         TextUi(
             modifier = Modifier.fillMaxWidth(),
-            text = stringResource(id = R.string.lost_name),
+            text = stringResource(id = R.string.found_name),
             style = MaterialTheme.typography.titleMedium
 
         )
@@ -259,7 +256,7 @@ private fun HeaderTwo() {
         tint = MaterialTheme.colorScheme.primary
     )
     TextUi(
-        text = stringResource(id = R.string.insert_more),
+        text = stringResource(id = R.string.insert_more_found),
         style = MaterialTheme.typography.titleMedium,
         color = MaterialTheme.colorScheme.primary,
         textAlign = TextAlign.Center
@@ -275,7 +272,7 @@ private fun LocationForm() {
 
         TextUi(
             modifier = Modifier.fillMaxWidth(),
-            text = stringResource(id = R.string.address_lost_where),
+            text = stringResource(id = R.string.address_found_where),
             style = MaterialTheme.typography.titleMedium
 
         )

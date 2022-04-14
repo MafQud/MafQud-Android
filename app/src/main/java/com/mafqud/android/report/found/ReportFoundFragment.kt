@@ -191,7 +191,7 @@ class ReportFoundFragment : BaseFragment() {
                 })
 
             }, onNextClicked = {
-                findNavController().navigate(R.id.action_reportLostFragment_to_reportLostSecondFragment)
+                findNavController().navigate(R.id.action_reportFoundFragment_to_reportfoundSecondFragment)
             }, onCloseClicked = {
                 removeImageUri(it)
             }

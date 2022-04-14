@@ -111,4 +111,12 @@
     <string name="gallery">Gallery</string>
     <string name="upload_image_found">Upload found image</string>
     <string name="done">Done</string>
+    <string name="age">Age</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="gender">Gender</string>
+    <string name="insert_more_found">Insert more...</string>
+    <string name="found_name">Found name</string>
+    <string name="found_des">Found des</string>
+    <string name="address_found_where">Address found</string>
 </resources>
