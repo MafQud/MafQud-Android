@@ -363,12 +363,15 @@ fun FilterContent(
             horizontalArrangement = Arrangement.SpaceAround,
         ) {
             ColumnUi(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(2.dp))
+                    .clickable {
+                        onCameraClicked()
+                    },
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                IconCamera {
-                    onCameraClicked()
-                }
+                IconCamera()
                 TextUi(
                     text = stringResource(id = R.string.camera),
                     style = MaterialTheme.typography.titleSmall,
@@ -376,12 +379,16 @@ fun FilterContent(
                 )
             }
 
-            ColumnUi(verticalArrangement = Arrangement.spacedBy(4.dp),
+            ColumnUi(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(2.dp))
+                    .clickable {
+                        onGalleryClicked()
+                    },
+                verticalArrangement = Arrangement.spacedBy(4.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                IconGallery {
-                    onGalleryClicked()
-                }
+                IconGallery()
                 TextUi(
                     text = stringResource(id = R.string.gallery),
                     style = MaterialTheme.typography.titleSmall,

@@ -12,15 +12,17 @@ import com.mafqud.android.R
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.Executors
+import java.util.concurrent.ExecutorService
 
 private const val FILENAME = "yyyy-MM-dd-HH-mm-ss-SSS"
 private const val PHOTO_EXTENSION = ".jpg"
 
 
+
 fun ImageCapture.takePicture(
     context: Context,
     lensFacing: Int,
+    cameraExecutor: ExecutorService,
     onImageCaptured: (Uri, Boolean) -> Unit,
     onError: (ImageCaptureException) -> Unit
 ) {
@@ -31,7 +33,7 @@ fun ImageCapture.takePicture(
 
     this.takePicture(
         outputFileOptions,
-        Executors.newSingleThreadExecutor(),
+        cameraExecutor,
         object : ImageCapture.OnImageSavedCallback {
             override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                 val savedUri = output.savedUri ?: Uri.fromFile(photoFile)

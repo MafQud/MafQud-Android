@@ -1,9 +1,13 @@
 package com.mafqud.android.ui.compose
 
 import android.content.Context
+import android.net.Uri
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
@@ -14,15 +18,16 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import coil.compose.rememberImagePainter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mafqud.android.R
-import com.mafqud.android.ui.theme.BoxUi
-import com.mafqud.android.ui.theme.ColumnUi
-import com.mafqud.android.ui.theme.TextUi
+import com.mafqud.android.ui.theme.*
 
 
 @Composable
@@ -66,6 +71,82 @@ fun LogoutDialog(isOpened: MutableState<Boolean>, onConfirmClicked: () -> Unit) 
                         textColor = MaterialTheme.colorScheme.primary,
                     )
                 }
+            )
+
+        }
+    }
+
+}
+
+@Composable
+fun PhotoDialog(
+    imageUri: Uri,
+    isOpened: MutableState<Boolean>,
+    onCancelClicked: () -> Unit,
+    onConfirmClicked: () -> Unit,
+    height: Dp,
+    width: Dp,
+) {
+    ColumnUi {
+
+        if (isOpened.value) {
+            Dialog(
+                onDismissRequest = {
+                    // Dismiss the dialog when the user clicks outside the dialog or on the back
+                    // button. If you want to disable that functionality, simply use an empty
+                    // onCloseRequest.
+                    isOpened.value = false
+                },
+                content = {
+                    BoxUi {
+                        ImageUi(
+                            painter = rememberImagePainter(imageUri),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(width, height)
+                                .clip(RoundedCornerShape(4.dp)),
+                            contentScale = ContentScale.Crop
+                        )
+                        RowUi(
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                                .fillMaxWidth()
+                                .padding(bottom = 12.dp)
+                        ) {
+                            TextUi(
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(4.dp))
+                                    .background(MaterialTheme.colorScheme.onSecondary)
+                                    .clickable {
+                                        isOpened.value = false
+                                        onConfirmClicked()
+                                    }
+                                    .padding(8.dp),
+                                text = stringResource(id = R.string.confirm),
+                                color = MaterialTheme.colorScheme.primary,
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                            TextUi(
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(4.dp))
+                                    .background(MaterialTheme.colorScheme.onSecondary)
+                                    .clickable {
+                                        isOpened.value = false
+                                        onCancelClicked()
+                                    }
+                                    .padding(8.dp),
+                                text = stringResource(id = R.string.cancel),
+                                color = MaterialTheme.colorScheme.error,
+                                style = MaterialTheme.typography.titleMedium
+                            )
+
+                        }
+                    }
+                }, properties = DialogProperties(
+                    dismissOnBackPress = false,
+                    dismissOnClickOutside = false
+                )
             )
 
         }
@@ -120,7 +201,7 @@ fun LoadingDialog(
 }
 
 
-fun Context.logoutDialog(onConfirmClicked: () -> Unit) : AlertDialog {
+fun Context.logoutDialog(onConfirmClicked: () -> Unit): AlertDialog {
     val alertDialog = MaterialAlertDialogBuilder(
         this,
         R.style.MaterialAlertDialog_rounded
@@ -154,7 +235,7 @@ fun Context.logoutDialog(onConfirmClicked: () -> Unit) : AlertDialog {
             .setTextColor(resources.getColor(R.color.red))
     }
     // Showing Alert Message
-    return  dialog
+    return dialog
 }
 
 fun Context.showAreYouSureDialog(onCloseClicked: () -> Unit) {

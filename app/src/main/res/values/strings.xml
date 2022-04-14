@@ -119,4 +119,6 @@
     <string name="found_name">Found name</string>
     <string name="found_des">Found des</string>
     <string name="address_found_where">Address found</string>
+    <string name="flip">Flip</string>
+    <string name="flash">Flash</string>
 </resources>

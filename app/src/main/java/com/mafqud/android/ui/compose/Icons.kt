@@ -186,7 +186,6 @@ fun IconCamera(
     iconColor: Color = MaterialTheme.colorScheme.tertiary,
     backgroundColor: Color = MaterialTheme.colorScheme.tertiaryContainer,
     alpha: Float = 1f,
-    onClick: () -> Unit
 ) {
     BoxUi(
         modifier = Modifier
@@ -194,9 +193,6 @@ fun IconCamera(
             .clip(RoundedCornerShape(50))
             .background(backgroundColor)
             .alpha(alpha)
-            .clickable {
-                onClick()
-            }
             .padding(4.dp),
         contentAlignment = Alignment.Center
     ) {
@@ -214,7 +210,6 @@ fun IconGallery(
     iconColor: Color = MaterialTheme.colorScheme.tertiary,
     backgroundColor: Color = MaterialTheme.colorScheme.tertiaryContainer,
     alpha: Float = 1f,
-    onClick: () -> Unit
 ) {
     BoxUi(
         modifier = Modifier
@@ -222,9 +217,6 @@ fun IconGallery(
             .clip(RoundedCornerShape(50))
             .background(backgroundColor)
             .alpha(alpha)
-            .clickable {
-                onClick()
-            }
             .padding(4.dp),
         contentAlignment = Alignment.Center
     ) {

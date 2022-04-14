@@ -21,11 +21,14 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.mafqud.android.R
 import com.mafqud.android.base.fragment.BaseFragment
+import com.mafqud.android.camera.CameraFragment
 import com.mafqud.android.home.HomeActivity
 import com.mafqud.android.report.lost.ReportIntent
 import com.mafqud.android.report.lost.ReportViewModel
@@ -99,10 +102,16 @@ class ReportFoundFragment : BaseFragment() {
                                     bottomSheetScope,
                                     bottomSheetState,
                                     onCameraClicked = {
-                                        openCamera()
+                                        bottomSheetScope?.launch {
+                                            bottomSheetState?.hide()
+                                            openCamera()
+                                        }
                                     },
                                     onGalleryClicked = {
-                                        openGallery(galleryLauncher)
+                                        bottomSheetScope?.launch {
+                                            bottomSheetState?.hide()
+                                            openGallery(galleryLauncher)
+                                        }
                                     })
                             }
                         },
@@ -143,7 +152,21 @@ class ReportFoundFragment : BaseFragment() {
         }
     }
 
+    @OptIn(ExperimentalMaterialApi::class)
     private fun openCamera() {
+        // Step 1. Listen for fragment results
+        setFragmentResultListener(CameraFragment.REQUEST_KEY) { key, bundle ->
+            // read from the bundle
+            if (key == CameraFragment.REQUEST_KEY) {
+                val imagesList = bundle.getStringArray("data")?.map {
+                    it.toUri()
+                }
+                imagesList?.let {
+                    sendImagesIntent(imagesList.toList())
+                }
+
+            }
+        }
         findNavController().navigate(R.id.action_reportFoundFragment_to_cameraFragment)
         val currentActivity = activity
         if (currentActivity is HomeActivity) {
