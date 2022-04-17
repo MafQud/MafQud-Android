@@ -52,6 +52,9 @@
             app:popEnterAnim="@anim/fade_in"
             android:id="@+id/action_moreFragment_to_phonesFragment"
             app:destination="@id/phonesFragment" />
+        <action
+            android:id="@+id/action_moreFragment_to_reportedCasesFragment"
+            app:destination="@id/reportedCasesFragment" />
     </fragment>
     <fragment
         android:id="@+id/notificationFragment"
@@ -70,6 +73,9 @@
             app:popEnterAnim="@anim/fade_in"
             android:id="@+id/action_myAccountFragment_to_myAccountEditFragment"
             app:destination="@id/myAccountEditFragment" />
+        <action
+            android:id="@+id/action_myAccountFragment_to_myAccountEditInfoFragment"
+            app:destination="@id/myAccountEditInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
@@ -84,4 +90,12 @@
         android:name="com.mafqud.android.myAccountEdit.MyAccountEditFragment"
         android:label="MyAccountEditFragment" />
     <include app:graph="@navigation/report_graph" />
+    <fragment
+        android:id="@+id/reportedCasesFragment"
+        android:name="com.mafqud.android.reportedCases.ReportedCasesFragment"
+        android:label="ReportedCasesFragment" />
+    <fragment
+        android:id="@+id/myAccountEditInfoFragment"
+        android:name="com.mafqud.android.myAccountEdit.MyAccountEditInfoFragment"
+        android:label="MyAccountEditInfoFragment" />
 </navigation>

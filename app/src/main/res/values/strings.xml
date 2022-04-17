@@ -123,4 +123,7 @@
     <string name="upload_inst1">Upload almost 2 photos</string>
     <string name="upload_inst2">Only lost photo</string>
     <string name="search_founds">Seahc founds</string>
+    <string name="email">Email</string>
+    <string name="phone_number">Phone number</string>
+    <string name="save_data">Save data</string>
 </resources>

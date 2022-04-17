@@ -1,4 +1,4 @@
-package com.mafqud.android.myAccount
+package com.mafqud.android.reportedCases
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,15 +8,15 @@ import androidx.compose.material.Scaffold
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
-import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.mafqud.android.R
+import com.mafqud.android.base.fragment.BaseFragment
 import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.theme.MafQudTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyAccountFragment : Fragment() {
+class ReportedCasesFragment : BaseFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,19 +33,15 @@ class MyAccountFragment : Fragment() {
                 MafQudTheme {
                     Scaffold(topBar = {
                         TitledAppBar(
-                            title = stringResource(id = R.string.my_account),
+                           title = stringResource(id = R.string.reported_people),
                             onBackClicked = {
-                                findNavController().popBackStack()
+                                findNavController().navigateUp()
                             }
                         )
                     }, content = {
-                        AccountScreen(onEditClicked = {
-                            findNavController().navigate(R.id.action_myAccountFragment_to_myAccountEditFragment)
-                        }, onEditInfoClicked = {
-                            findNavController().navigate(R.id.action_myAccountFragment_to_myAccountEditInfoFragment)
 
-                        })
                     })
+
                 }
             }
         }

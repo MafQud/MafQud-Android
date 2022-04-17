@@ -73,7 +73,8 @@ fun DropDownItems(
                     }) {
                         TextUi(
                             modifier = Modifier.padding(4.dp),
-                            text = label
+                            text = label,
+                            style = MaterialTheme.typography.titleSmall,
                         )
                     }
                 }
@@ -137,7 +138,8 @@ fun DropDownGender(
                     }) {
                         TextUi(
                             modifier = Modifier.padding(4.dp),
-                            text = label
+                            text = label,
+                            style = MaterialTheme.typography.titleSmall,
                         )
                     }
                 }

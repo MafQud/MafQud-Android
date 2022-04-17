@@ -67,7 +67,7 @@ fun FragmentActivity.LostScreenTwo() {
                 .align(Alignment.TopCenter)
                 .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+            verticalArrangement = Arrangement.spacedBy(25.dp)
         ) {
             SpacerUi(modifier = Modifier.height(16.dp))
             HeaderTwo()

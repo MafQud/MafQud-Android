@@ -21,7 +21,10 @@ import com.mafqud.android.ui.theme.*
 
 @Composable
 @Preview
-fun AccountScreen(onEditClicked: () -> Unit = {}) {
+fun AccountScreen(
+    onEditClicked: () -> Unit = {},
+    onEditInfoClicked: () -> Unit = {},
+) {
     ColumnUi {
         BoxUi(
             modifier = Modifier
@@ -42,7 +45,7 @@ fun AccountScreen(onEditClicked: () -> Unit = {}) {
                 SpacerUi(modifier = Modifier.height(20.dp))
                 AccountBody()
                 SpacerUi(modifier = Modifier.height(8.dp))
-                AccountButton()
+                AccountButton(onEditInfoClicked)
 
             }
         }
@@ -50,9 +53,9 @@ fun AccountScreen(onEditClicked: () -> Unit = {}) {
 }
 
 @Composable
-fun AccountButton() {
+fun AccountButton(onEditInfoClicked: () -> Unit) {
     ButtonAuth(title = stringResource(id = R.string.edit_info)) {
-
+        onEditInfoClicked()
     }
 
 }
@@ -67,7 +70,7 @@ fun AccountBody() {
             // full name
             TextUi(
                 modifier = Modifier.weight(1f),
-                text = "Full name",
+                text = stringResource(id = R.string.full_name),
                 color = MaterialTheme.colorScheme.outline,
                 style = MaterialTheme.typography.titleMedium
             )
@@ -84,7 +87,7 @@ fun AccountBody() {
             //Email
             TextUi(
                 modifier = Modifier.weight(1f),
-                text = "Email",
+                text = stringResource(id = R.string.email),
                 color = MaterialTheme.colorScheme.outline,
                 style = MaterialTheme.typography.titleMedium
             )
@@ -100,7 +103,7 @@ fun AccountBody() {
             //address
             TextUi(
                 modifier = Modifier.weight(1f),
-                text = "Address",
+                text = stringResource(id = R.string.address),
                 color = MaterialTheme.colorScheme.outline,
                 style = MaterialTheme.typography.titleMedium
             )

@@ -43,6 +43,7 @@ class MoreFragment : Fragment() {
             setContent {
                 MafQudTheme {
                     MoreScreen(onReportedClicked = {
+                        findNavController().navigate(R.id.action_moreFragment_to_reportedCasesFragment)
 
                     }, onAccountClicked = {
                         findNavController().navigate(R.id.action_moreFragment_to_myAccountFragment)

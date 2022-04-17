@@ -97,5 +97,8 @@
     <string name="flip">اقلب</string>
     <string name="flash">الفلاش</string>
     <string name="search_founds">بحث في المفقودين</string>
+    <string name="email">البريد الإلكتروني</string>
+    <string name="phone_number">رقم الموبايل</string>
+    <string name="save_data">حفظ البيانات</string>
 
 </resources>

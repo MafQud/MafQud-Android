@@ -1,4 +1,4 @@
-package com.mafqud.android.myAccount
+package com.mafqud.android.myAccountEdit
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,7 +16,7 @@ import com.mafqud.android.ui.theme.MafQudTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyAccountFragment : Fragment() {
+class MyAccountEditInfoFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,12 +39,7 @@ class MyAccountFragment : Fragment() {
                             }
                         )
                     }, content = {
-                        AccountScreen(onEditClicked = {
-                            findNavController().navigate(R.id.action_myAccountFragment_to_myAccountEditFragment)
-                        }, onEditInfoClicked = {
-                            findNavController().navigate(R.id.action_myAccountFragment_to_myAccountEditInfoFragment)
-
-                        })
+                        MyAccountInfo()
                     })
                 }
             }
