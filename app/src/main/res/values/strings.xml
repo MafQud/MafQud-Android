@@ -85,7 +85,6 @@
     <string name="error_pass_less">Password is too short</string>
     <string name="sorry_for">we are sorry for...</string>
     <string name="upload_image">Upload lost image</string>
-    <string name="upload_image_des">You can upload more than photo</string>
     <string name="address_lost">Address lost</string>
     <string name="privcy">Privcy policy</string>
     <string name="police">Police</string>
@@ -121,4 +120,7 @@
     <string name="address_found_where">Address found</string>
     <string name="flip">Flip</string>
     <string name="flash">Flash</string>
+    <string name="upload_inst1">Upload almost 2 photos</string>
+    <string name="upload_inst2">Only lost photo</string>
+    <string name="search_founds">Seahc founds</string>
 </resources>

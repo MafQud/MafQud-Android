@@ -3,21 +3,21 @@
 
     <item
         android:id="@+id/homeFragment"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/ic_home_state"
         android:title="@string/title_home" />
     <item
         android:id="@+id/reportFragment"
-        android:icon="@drawable/ic_report_animte"
+        android:icon="@drawable/ic_report_state"
         android:title="@string/title_report" />
 
     <item
         android:id="@+id/mapFragment"
-        android:icon="@drawable/ic_map"
+        android:icon="@drawable/ic_map_state"
         android:title="@string/title_map" />
 
     <item
         android:id="@+id/moreFragment"
-        android:icon="@drawable/ic_more"
+        android:icon="@drawable/ic_more_state"
         android:title="@string/title_more" />
 
 

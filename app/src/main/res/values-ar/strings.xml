@@ -60,7 +60,6 @@
     <string name="error_pass_less">الرقم السري قصير جدا</string>
     <string name="sorry_for">نأسف لمصابكم ونعدكم ببذل قصارى جهدنا للعثور على المفقود</string>
     <string name="upload_image">قم برفع صور المفقود</string>
-    <string name="upload_image_des">يمكنك رفع اكتر من صورة</string>
     <string name="address_lost">عنوان منزل المفقود</string>
     <string name="privcy">شروط وأحكام الاستخدام الخاصة بمفقود</string>
     <string name="police">الشرطة</string>
@@ -93,5 +92,10 @@
     <string name="found_name">اسم المعثور عليه</string>
     <string name="found_des">موصفات المعثور عليه</string>
     <string name="address_found_where">عنوان المكان الذي تم العثور عليه فيه</string>
+    <string name="upload_inst1">يجب رفع صورتين على الأقل</string>
+    <string name="upload_inst2">يجب رفع صور تحتوي على المفقود فقط</string>
+    <string name="flip">اقلب</string>
+    <string name="flash">الفلاش</string>
+    <string name="search_founds">بحث في المفقودين</string>
 
 </resources>

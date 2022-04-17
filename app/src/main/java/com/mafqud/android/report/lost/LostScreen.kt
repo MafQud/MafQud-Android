@@ -71,6 +71,7 @@ fun LostScreen(
             Header()
             SpacerUi(modifier = Modifier.height(20.dp))
             UploadImageButton(openGalleryClicked)
+            UploadingPhotosInfo()
             UploadedImages(
                 pickedImages,
                 progress,
@@ -88,6 +89,45 @@ fun LostScreen(
 
     }
 
+}
+
+@Composable
+fun UploadingPhotosInfo() {
+    RowUi(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        DotText(stringResource(id = R.string.upload_inst1))
+        DotText(stringResource(id = R.string.upload_inst2))
+
+    }
+}
+
+@Composable
+fun DotText(text: String) {
+    RowUi(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+        CircleDot()
+        TextUi(
+            text = text,
+            color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.5f),
+            style = MaterialTheme.typography.titleSmall
+        )
+    }
+}
+
+@Composable
+fun CircleDot() {
+    BoxUi(
+        modifier = Modifier
+            .size(10.dp)
+            .clip(
+                RoundedCornerShape(50)
+            )
+            .background(MaterialTheme.colorScheme.error)
+
+    ) {
+
+    }
 }
 
 @Composable
@@ -251,7 +291,7 @@ fun UploadImageButton(openGalleryClicked: () -> Unit) {
     BoxUi(
         modifier = Modifier
             .fillMaxWidth()
-            .height(137.dp)
+            .height(100.dp)
             .clip(RoundedCornerShape(20.dp))
             .dashedBorder(
                 width = 2.dp,
@@ -275,11 +315,11 @@ fun UploadImageButton(openGalleryClicked: () -> Unit) {
                 .fillMaxHeight()
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
+            verticalArrangement = Arrangement.SpaceAround
         ) {
 
             IconUi(
-                modifier = Modifier.size(26.dp, 22.dp),
+                modifier = Modifier.size(30.dp, 27.dp),
                 imageVector = Icons.Filled.Upload,
                 tint = MaterialTheme.colorScheme.primary
             )
@@ -287,12 +327,6 @@ fun UploadImageButton(openGalleryClicked: () -> Unit) {
                 text = stringResource(id = R.string.upload_image),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.primary
-            )
-
-            TextUi(
-                text = stringResource(id = R.string.upload_image_des),
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }

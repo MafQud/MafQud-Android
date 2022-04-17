@@ -14,7 +14,7 @@ import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ProgressIndicatorDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Upload
+import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -252,7 +252,7 @@ fun UploadImageButton(openGalleryClicked: () -> Unit) {
     BoxUi(
         modifier = Modifier
             .fillMaxWidth()
-            .height(137.dp)
+            .height(100.dp)
             .clip(RoundedCornerShape(20.dp))
             .dashedBorder(
                 width = 2.dp,
@@ -276,24 +276,18 @@ fun UploadImageButton(openGalleryClicked: () -> Unit) {
                 .fillMaxHeight()
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
+            verticalArrangement = Arrangement.SpaceAround
         ) {
 
             IconUi(
-                modifier = Modifier.size(26.dp, 22.dp),
-                imageVector = Icons.Filled.Upload,
+                modifier = Modifier.size(30.dp, 27.dp),
+                imageVector = Icons.Filled.PhotoCamera,
                 tint = MaterialTheme.colorScheme.primary
             )
             TextUi(
                 text = stringResource(id = R.string.upload_image_found),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.primary
-            )
-
-            TextUi(
-                text = stringResource(id = R.string.upload_image_des),
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }

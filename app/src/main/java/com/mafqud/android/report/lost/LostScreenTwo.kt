@@ -67,7 +67,7 @@ fun FragmentActivity.LostScreenTwo() {
                 .align(Alignment.TopCenter)
                 .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             SpacerUi(modifier = Modifier.height(16.dp))
             HeaderTwo()
@@ -142,7 +142,7 @@ fun LostDescription() {
             text = stringResource(id = R.string.lost_des_title),
             style = MaterialTheme.typography.titleSmall,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.secondaryContainer
+            color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.5f)
         )
 
     }
@@ -170,7 +170,7 @@ fun LostDate(selectedDate: MutableState<String>, activity: FragmentActivity) {
             text = stringResource(id = R.string.lost_date_title),
             style = MaterialTheme.typography.titleSmall,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.secondaryContainer
+            color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.5f)
         )
     }
 }
