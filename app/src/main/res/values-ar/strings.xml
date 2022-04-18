@@ -100,5 +100,9 @@
     <string name="email">البريد الإلكتروني</string>
     <string name="phone_number">رقم الموبايل</string>
     <string name="save_data">حفظ البيانات</string>
+    <string name="upload_inst22">يجب رفع صور تحتوي على المعثور عليه فقط</string>
+    <string name="found_data">تاريخ العثور عليه</string>
+    <string name="phone_contact">رقم للتواصل</string>
+    <string name="loading">جاري رفع الصور</string>
 
 </resources>

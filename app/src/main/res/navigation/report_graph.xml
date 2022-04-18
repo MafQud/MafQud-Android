@@ -26,7 +26,11 @@
     <fragment
         android:id="@+id/reportLostSecondFragment"
         android:name="com.mafqud.android.report.lost.ReportLostSecondFragment"
-        android:label="ReportLostSecondFragment" />
+        android:label="ReportLostSecondFragment" >
+        <action
+            android:id="@+id/action_reportLostSecondFragment_to_uploadingImagesFragment"
+            app:destination="@id/uploadingImagesFragment" />
+    </fragment>
     <fragment
         android:id="@+id/cameraFragment"
         android:name="com.mafqud.android.camera.CameraFragment"
@@ -34,6 +38,14 @@
     <fragment
         android:id="@+id/reportfoundSecondFragment"
         android:name="com.mafqud.android.report.found.ReportfoundSecondFragment"
-        android:label="ReportfoundSecondFragment" />
+        android:label="ReportfoundSecondFragment" >
+        <action
+            android:id="@+id/action_reportfoundSecondFragment_to_uploadingImagesFragment"
+            app:destination="@id/uploadingImagesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/uploadingImagesFragment"
+        android:name="com.mafqud.android.report.uploading.UploadingImagesFragment"
+        android:label="UploadingImagesFragment" />
 
 </navigation>

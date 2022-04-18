@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import com.mafqud.android.R
+import com.mafqud.android.report.PhoneReportForm
 import com.mafqud.android.ui.compose.*
 import com.mafqud.android.ui.picker.datePicker
 import com.mafqud.android.ui.theme.*
@@ -35,7 +36,7 @@ val genders = listOf(Gender.NONE, Gender.MALE, Gender.FEMALE)
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 @Preview
-fun FragmentActivity.LostScreenTwo() {
+fun FragmentActivity.LostScreenTwo(onNext: () -> Unit = {}) {
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
     var scrollToPosition by remember { mutableStateOf(0F) }
@@ -76,7 +77,7 @@ fun FragmentActivity.LostScreenTwo() {
             LostDate(selectedDate, this@LostScreenTwo)
             LostDescription()
             LocationForm()
-
+            PhoneReportForm()
             BoxUi(modifier = Modifier
                 .fillMaxWidth()
                 .onGloballyPositioned { coordinates ->
@@ -86,7 +87,7 @@ fun FragmentActivity.LostScreenTwo() {
                     enabled = true,
                     title = stringResource(id = R.string.search_losts),
                     onClick = {
-
+                        onNext()
                     })
             }
 

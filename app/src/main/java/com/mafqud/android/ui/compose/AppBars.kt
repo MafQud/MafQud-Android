@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
@@ -71,6 +72,7 @@ fun LetterIcon(letter: String, size: Dp = 35.dp, letterSize: TextStyle) {
 @Composable
 fun TitledAppBar(
     title: String = "",
+    backgroundColor: Color = MaterialTheme.colorScheme.surfaceVariant,
     onBackClicked: (() -> Unit)? = null
 ) {
 
@@ -79,7 +81,7 @@ fun TitledAppBar(
             .fillMaxWidth()
             .height(70.dp)
             .background(
-                MaterialTheme.colorScheme.surfaceVariant
+                backgroundColor
             )
             .padding(
                 top = 16.dp, start = 16.dp, end = 16.dp,

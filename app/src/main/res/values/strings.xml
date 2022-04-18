@@ -126,4 +126,8 @@
     <string name="email">Email</string>
     <string name="phone_number">Phone number</string>
     <string name="save_data">Save data</string>
+    <string name="upload_inst22">Upload found photo</string>
+    <string name="found_data">Found data</string>
+    <string name="phone_contact">Phone contact</string>
+    <string name="loading">Images loading</string>
 </resources>

@@ -1,22 +1,23 @@
-package com.mafqud.android.report.lost
+package com.mafqud.android.report.uploading
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.fragment.findNavController
 import com.mafqud.android.R
 import com.mafqud.android.base.fragment.BaseFragment
 import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.theme.MafQudTheme
+import com.mafqud.android.util.other.statusBarColor
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ReportLostSecondFragment : BaseFragment() {
+class UploadingImagesFragment : BaseFragment() {
 
 
     override fun onCreateView(
@@ -24,6 +25,8 @@ class ReportLostSecondFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        requireActivity().statusBarColor(resources.getColor(R.color.white))
+
         return ComposeView(requireContext()).apply {
             // @ref https://developer.android.com/jetpack/compose/interop/interop-apis#composition-strategy
             // Dispose the Composition when viewLifecycleOwner is destroyed
@@ -34,18 +37,17 @@ class ReportLostSecondFragment : BaseFragment() {
                 MafQudTheme {
                     Scaffold(topBar = {
                         TitledAppBar(
-                            title = stringResource(id = R.string.report_lost),
                             onBackClicked = {
                                 findNavController().popBackStack()
-                            }
+                            },
+                            backgroundColor = MaterialTheme.colors.onPrimary
                         )
                     }, content = {
-                        requireActivity().LostScreenTwo(onNext = {
-                            findNavController().navigate(R.id.action_reportLostSecondFragment_to_uploadingImagesFragment)
-                        })
+                        UploadingScreen()
                     })
                 }
             }
         }
     }
+
 }

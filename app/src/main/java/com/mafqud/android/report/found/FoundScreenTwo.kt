@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import com.mafqud.android.R
+import com.mafqud.android.report.PhoneReportForm
 import com.mafqud.android.report.lost.Gender
 import com.mafqud.android.ui.compose.*
 import com.mafqud.android.ui.picker.datePicker
@@ -73,7 +74,7 @@ fun FragmentActivity.FoundScreenTwo() {
             FoundDate(selectedDate, this@FoundScreenTwo)
             FoundDescription()
             LocationForm()
-
+            PhoneReportForm()
             BoxUi(modifier = Modifier
                 .fillMaxWidth()
                 .onGloballyPositioned { coordinates ->
@@ -154,7 +155,7 @@ fun FoundDate(selectedDate: MutableState<String>, activity: FragmentActivity) {
         })
         TextUi(
             modifier = Modifier.fillMaxWidth(),
-            text = stringResource(id = R.string.lost_date),
+            text = stringResource(id = R.string.found_data),
             style = MaterialTheme.typography.titleMedium
 
         )
@@ -171,6 +172,7 @@ fun FoundDate(selectedDate: MutableState<String>, activity: FragmentActivity) {
         )
     }
 }
+
 
 
 @Composable

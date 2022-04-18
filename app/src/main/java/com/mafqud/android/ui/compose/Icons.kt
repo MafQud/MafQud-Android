@@ -255,3 +255,21 @@ fun IconDown(
     }
 }
 
+
+@Composable
+fun IconLogout(
+    iconSize: Dp = 20.dp,
+    iconColor: Color = MaterialTheme.colorScheme.tertiary,
+) {
+    BoxUi(
+        modifier = Modifier
+            .size(iconSize),
+        contentAlignment = Alignment.Center
+    ) {
+        IconUi(
+            imageVector = Icons.Filled.Logout,
+            tint = iconColor,
+        )
+    }
+}
+

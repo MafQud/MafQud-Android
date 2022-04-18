@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
 import com.mafqud.android.ui.compose.CaseItem
+import com.mafqud.android.ui.compose.IconLogout
 import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.compose.logoutDialog
 import com.mafqud.android.ui.theme.*
@@ -42,7 +43,7 @@ fun MoreScreen(
                 .fillMaxSize()
                 .weight(1f)
                 .background(MaterialTheme.colorScheme.onPrimary)
-                .padding(16.dp),
+                .padding(start = 16.dp, end = 16.dp),
 
             ) {
             ColumnUi(
@@ -53,6 +54,7 @@ fun MoreScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
 
+                SpacerUi(modifier = Modifier.height(16.dp))
                 ReportedItem(
                     title = stringResource(id = R.string.reported_people),
                     icon = R.drawable.ic_report,
@@ -113,6 +115,7 @@ fun MoreScreen(
 
                 Logout(onConfirmClicked = onLogoutClicked)
 
+                SpacerUi(modifier = Modifier.height(16.dp))
             }
         }
     }
@@ -156,18 +159,29 @@ private fun Logout(onConfirmClicked: () -> Unit) {
     val dialog = context.logoutDialog {
         onConfirmClicked()
     }
-    TextUi(
+
+    RowUi(
         modifier = Modifier
-            .fillMaxWidth()
             .clickable {
                 dialog.show()
             }
             .padding(8.dp),
-        textAlign = TextAlign.Center,
-        text = stringResource(id = R.string.log_out),
-        style = MaterialTheme.typography.titleMedium,
-        color = MaterialTheme.colorScheme.error
-    )
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+        IconLogout(
+            iconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            iconSize = 24.dp
+        )
+        TextUi(
+            textAlign = TextAlign.Center,
+            text = stringResource(id = R.string.log_out),
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.error
+        )
+    }
+
 }
 
 @Composable

@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import coil.compose.rememberImagePainter
 import com.mafqud.android.R
+import com.mafqud.android.report.UploadingPhotosInfo
 import com.mafqud.android.ui.compose.ButtonAuth
 import com.mafqud.android.ui.compose.DropDownItems
 import com.mafqud.android.ui.compose.dashedBorder
@@ -91,44 +92,6 @@ fun LostScreen(
 
 }
 
-@Composable
-fun UploadingPhotosInfo() {
-    RowUi(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        DotText(stringResource(id = R.string.upload_inst1))
-        DotText(stringResource(id = R.string.upload_inst2))
-
-    }
-}
-
-@Composable
-fun DotText(text: String) {
-    RowUi(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-        CircleDot()
-        TextUi(
-            text = text,
-            color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.5f),
-            style = MaterialTheme.typography.titleSmall
-        )
-    }
-}
-
-@Composable
-fun CircleDot() {
-    BoxUi(
-        modifier = Modifier
-            .size(10.dp)
-            .clip(
-                RoundedCornerShape(50)
-            )
-            .background(MaterialTheme.colorScheme.error)
-
-    ) {
-
-    }
-}
 
 @Composable
 fun Header() {

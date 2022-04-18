@@ -16,10 +16,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
 import com.mafqud.android.ui.compose.ButtonAuth
-import com.mafqud.android.ui.theme.BoxUi
-import com.mafqud.android.ui.theme.ColumnUi
-import com.mafqud.android.ui.theme.ImageUi
-import com.mafqud.android.ui.theme.TextUi
+import com.mafqud.android.ui.compose.IconLogout
+import com.mafqud.android.ui.theme.*
 
 @Composable
 @Preview
@@ -70,17 +68,24 @@ fun ReportAuthScreen(
                 })
 
 
-            TextUi(
+            RowUi(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .clickable {
                         onOpenApp()
-                    }.padding(8.dp),
-                text = stringResource(id = R.string.open_app),
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.Center
-            )
+                    }
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                IconLogout(iconColor = MaterialTheme.colorScheme.onPrimaryContainer)
+                TextUi(
+                    text = stringResource(id = R.string.open_app),
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.titleLarge,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
 
     }

@@ -30,6 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import coil.compose.rememberImagePainter
 import com.mafqud.android.R
+import com.mafqud.android.report.StateType
+import com.mafqud.android.report.UploadingPhotosInfo
 import com.mafqud.android.ui.compose.*
 import com.mafqud.android.ui.theme.*
 import kotlinx.coroutines.CoroutineScope
@@ -72,6 +74,7 @@ fun FoundScreen(
             Header()
             SpacerUi(modifier = Modifier.height(20.dp))
             UploadImageButton(openGalleryClicked)
+            UploadingPhotosInfo(StateType.FOUND)
             UploadedImages(
                 pickedImages,
                 progress,
