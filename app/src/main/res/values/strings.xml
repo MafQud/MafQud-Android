@@ -138,4 +138,6 @@
     <string name="exit">Exit</string>
     <string name="warn_dailog_title1">Only one step ...</string>
     <string name="warn_dailog_title2">Do u want to exit?</string>
+    <string name="search_lost">Search losts ...</string>
+    <string name="search_lost_2">we our ....</string>
 </resources>

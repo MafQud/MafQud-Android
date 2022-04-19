@@ -112,5 +112,7 @@
     <string name="exit">مغادرة</string>
     <string name="warn_dailog_title1">متبقي خطوة واحدة لأظهار المعثور عليهم</string>
     <string name="warn_dailog_title2">هل تريد المغادرة؟</string>
+    <string name="search_lost">جاري البحث عن المفقود وسنقوم بإبلاغك في حالة الوصول لأي نتائج</string>
+    <string name="search_lost_2">نُقدر مدى قلقك ونعدك ببذل قصارى جهدنا للعثور على المفقود</string>
 
 </resources>
