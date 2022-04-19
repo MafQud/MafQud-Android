@@ -5,11 +5,10 @@ import android.net.Uri
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -19,7 +18,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -140,6 +141,116 @@ fun PhotoDialog(
                                 color = MaterialTheme.colorScheme.error,
                                 style = MaterialTheme.typography.titleMedium
                             )
+
+                        }
+                    }
+                }, properties = DialogProperties(
+                    dismissOnBackPress = false,
+                    dismissOnClickOutside = false
+                )
+            )
+
+        }
+    }
+
+}
+
+@Composable
+fun WarningDialog(
+    isOpened: MutableState<Boolean>,
+    onCancelClicked: () -> Unit,
+    onConfirmClicked: () -> Unit,
+) {
+    ColumnUi {
+
+        if (isOpened.value) {
+            Dialog(
+                onDismissRequest = {
+                    // Dismiss the dialog when the user clicks outside the dialog or on the back
+                    // button. If you want to disable that functionality, simply use an empty
+                    // onCloseRequest.
+                    isOpened.value = false
+                },
+                content = {
+                    BoxUi(
+                        Modifier
+                            .padding(8.dp)
+                            .clip(
+                                RoundedCornerShape(12.dp)
+                            )
+                            .background(MaterialTheme.colorScheme.onPrimary)
+
+                    ) {
+                        ColumnUi(
+                            Modifier
+                                .verticalScroll(rememberScrollState()),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(16.dp),
+                        ) {
+                            BoxUi(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(MaterialTheme.colorScheme.error)
+                                    .padding(8.dp)
+                            ) {
+                                IconUi(
+                                    painter = painterResource(id = R.drawable.ic_warning),
+                                    tint = MaterialTheme.colorScheme.onSecondary
+                                )
+                            }
+
+                            TextUi(
+                                modifier = Modifier.fillMaxWidth(),
+                                text = stringResource(id = R.string.warn_dailog_title1),
+                                color = MaterialTheme.colorScheme.onTertiaryContainer,
+                                style = MaterialTheme.typography.titleMedium,
+                                textAlign = TextAlign.Center
+                            )
+
+                            TextUi(
+                                modifier = Modifier.fillMaxWidth(),
+                                text = stringResource(id = R.string.warn_dailog_title2),
+                                color = MaterialTheme.colorScheme.onTertiaryContainer,
+                                style = MaterialTheme.typography.titleMedium,
+                                textAlign = TextAlign.Center
+                            )
+
+                            // next
+                            TextUi(
+                                modifier = Modifier
+                                    .width(150.dp)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .background(MaterialTheme.colorScheme.primary)
+                                    .clickable {
+                                        isOpened.value = false
+                                        onConfirmClicked()
+                                    }
+                                    .padding(8.dp),
+                                text = stringResource(id = R.string.follow),
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                style = MaterialTheme.typography.titleMedium,
+                                textAlign = TextAlign.Center
+                            )
+
+                            //cancel
+                            TextUi(
+                                modifier = Modifier
+                                    .width(150.dp)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    //.background(MaterialTheme.colorScheme.onSecondary)
+                                    .clickable {
+                                        isOpened.value = false
+                                        onCancelClicked()
+                                    }
+                                    .padding(8.dp),
+                                text = stringResource(id = R.string.exit),
+                                color = MaterialTheme.colorScheme.onTertiaryContainer.copy(
+                                    alpha = 0.5f
+                                ),
+                                style = MaterialTheme.typography.titleMedium,
+                                textAlign = TextAlign.Center
+                            )
+                            SpacerUi(modifier = Modifier.height(12.dp))
 
                         }
                     }

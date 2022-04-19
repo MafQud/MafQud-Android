@@ -62,7 +62,7 @@ class ReportLostFragment : BaseFragment() {
                     Scaffold(topBar = {
                         TitledAppBar(
                             title = stringResource(id = R.string.report_lost),
-                            onBackClicked = {
+                            onIconClicked = {
                                 findNavController().popBackStack()
                             }
                         )

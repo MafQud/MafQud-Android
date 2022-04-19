@@ -34,7 +34,7 @@ class ReportedCasesFragment : BaseFragment() {
                     Scaffold(topBar = {
                         TitledAppBar(
                            title = stringResource(id = R.string.reported_people),
-                            onBackClicked = {
+                            onIconClicked = {
                                 findNavController().navigateUp()
                             }
                         )

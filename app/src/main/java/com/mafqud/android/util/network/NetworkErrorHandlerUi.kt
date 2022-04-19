@@ -26,10 +26,16 @@ fun Result.NetworkError.ShowNetworkErrorUi(onTryBtnClicked: () -> Unit, view: Vi
 }
 
 @Composable
-fun HandlePagingError(loadState: CombinedLoadStates, onNoInternet: @Composable () -> Unit = {}) {
+fun HandlePagingError(
+    loadState: CombinedLoadStates, onNoInternet: @Composable () -> Unit = {},
+    onEmptyView: @Composable () -> Unit = {}
+) {
     when {
         loadState.refresh is LoadState.Loading -> {
             CircleLoading(loadingState = true, circleSize = 20.dp)
+        }
+        loadState.append is LoadState.NotLoading && loadState.append.endOfPaginationReached -> {
+            onEmptyView()
         }
         loadState.append is LoadState.Loading -> {
             CircleLoading(loadingState = true, circleSize = 20.dp)

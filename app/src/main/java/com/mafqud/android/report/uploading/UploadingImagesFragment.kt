@@ -9,11 +9,9 @@ import androidx.compose.material.Scaffold
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.navigation.fragment.findNavController
-import com.mafqud.android.R
 import com.mafqud.android.base.fragment.BaseFragment
 import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.theme.MafQudTheme
-import com.mafqud.android.util.other.statusBarColor
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,8 +23,6 @@ class UploadingImagesFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        requireActivity().statusBarColor(resources.getColor(R.color.white))
-
         return ComposeView(requireContext()).apply {
             // @ref https://developer.android.com/jetpack/compose/interop/interop-apis#composition-strategy
             // Dispose the Composition when viewLifecycleOwner is destroyed
@@ -37,7 +33,7 @@ class UploadingImagesFragment : BaseFragment() {
                 MafQudTheme {
                     Scaffold(topBar = {
                         TitledAppBar(
-                            onBackClicked = {
+                            onIconClicked = {
                                 findNavController().popBackStack()
                             },
                             backgroundColor = MaterialTheme.colors.onPrimary

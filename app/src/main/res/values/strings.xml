@@ -130,4 +130,12 @@
     <string name="found_data">Found data</string>
     <string name="phone_contact">Phone contact</string>
     <string name="loading">Images loading</string>
+    <string name="success_results_lost">Success lost ...</string>
+    <string name="insert_id">Insert national ID</string>
+    <string name="follow">Follow</string>
+    <string name="error_national_id">Insert valid national id</string>
+    <string name="national_id">National ID</string>
+    <string name="exit">Exit</string>
+    <string name="warn_dailog_title1">Only one step ...</string>
+    <string name="warn_dailog_title2">Do u want to exit?</string>
 </resources>

@@ -34,6 +34,13 @@
         <entry key="../../../../layout/compose-model-1650281008639.xml" value="0.26944444444444443" />
         <entry key="../../../../layout/compose-model-1650282695359.xml" value="0.16" />
         <entry key="../../../../layout/compose-model-1650282868359.xml" value="0.26944444444444443" />
+        <entry key="../../../../layout/compose-model-1650369445663.xml" value="0.264" />
+        <entry key="../../../../layout/compose-model-1650369615808.xml" value="0.287962962962963" />
+        <entry key="../../../../layout/compose-model-1650370255470.xml" value="0.2698279479647503" />
+        <entry key="../../../../layout/compose-model-1650370531588.xml" value="0.287962962962963" />
+        <entry key="../../../../layout/compose-model-1650370569542.xml" value="0.264" />
+        <entry key="../../../../layout/compose-model-1650370610667.xml" value="0.287962962962963" />
+        <entry key="../../../../layout/compose-model-1650371280367.xml" value="0.287962962962963" />
         <entry key="app/src/main/res/drawable/ic_arrow.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_flash_off.xml" value="0.1815" />
         <entry key="app/src/main/res/drawable/ic_flash_on.xml" value="0.1815" />
@@ -51,6 +58,7 @@
         <entry key="app/src/main/res/drawable/ic_report.xml" value="0.162" />
         <entry key="app/src/main/res/drawable/ic_report_animte.xml" value="0.162" />
         <entry key="app/src/main/res/drawable/ic_report_off.xml" value="0.124" />
+        <entry key="app/src/main/res/drawable/ic_state_success.xml" value="0.1555" />
         <entry key="app/src/main/res/drawable/ic_success.xml" value="0.162" />
         <entry key="app/src/main/res/drawable/my_color_state_list.xml" value="0.1815" />
         <entry key="app/src/main/res/drawable/tab_color.xml" value="0.1645" />

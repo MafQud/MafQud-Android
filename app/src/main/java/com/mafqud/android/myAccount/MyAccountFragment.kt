@@ -34,7 +34,7 @@ class MyAccountFragment : Fragment() {
                     Scaffold(topBar = {
                         TitledAppBar(
                             title = stringResource(id = R.string.my_account),
-                            onBackClicked = {
+                            onIconClicked = {
                                 findNavController().popBackStack()
                             }
                         )

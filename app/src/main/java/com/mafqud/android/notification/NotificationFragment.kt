@@ -55,7 +55,7 @@ class NotificationFragment : Fragment() {
                     Scaffold(topBar = {
                         TitledAppBar(
                             title = stringResource(id = R.string.notification),
-                            onBackClicked = {
+                            onIconClicked = {
                                 findNavController().popBackStack()
                             }
                         )
@@ -91,7 +91,9 @@ class NotificationFragment : Fragment() {
                     refreshDataIntent()
                 }, requireView())
             }
-            NotificationScreen(data = stateValue.notifications)
+            NotificationScreen(data = stateValue.notifications, onSuccessNotificationClicked = {
+                findNavController().navigate(R.id.action_notificationFragment_to_successLostFragment)
+            })
         }
     }
 

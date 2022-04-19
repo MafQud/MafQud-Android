@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
 import com.mafqud.android.ui.compose.ButtonAuth
-import com.mafqud.android.ui.compose.IconLogout
+import com.mafqud.android.ui.compose.IconLogin
 import com.mafqud.android.ui.theme.*
 
 @Composable
@@ -78,7 +78,7 @@ fun ReportAuthScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
-                IconLogout(iconColor = MaterialTheme.colorScheme.onPrimaryContainer)
+                IconLogin(iconColor = MaterialTheme.colorScheme.onPrimaryContainer)
                 TextUi(
                     text = stringResource(id = R.string.open_app),
                     color = MaterialTheme.colorScheme.primary,

@@ -13,18 +13,28 @@ class NotificationSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, NotificationResponse.Data> {
         return try {
             val currentPage = params.key ?: INITIAL_PAGE
-            val notifications = remoteData.getNotifications(
+            /*val notifications = remoteData.getNotifications(
                 page = currentPage,
             )
 
 
             val nextPage: Int? = if (notifications.data.isEmpty()) null else currentPage + 1
 
+*/
+            val noty = listOf(
+                NotificationResponse.Data(),
+                NotificationResponse.Data(),
+                NotificationResponse.Data(),
+            )
 
             LoadResult.Page(
-                data = notifications.data,
+                //TODO
+                //data = notifications.data,
+                data = noty,
                 prevKey = if (currentPage == INITIAL_PAGE) null else currentPage - 1,
-                nextKey = nextPage
+                //TODO
+                //nextKey = nextPage
+                nextKey = null
             )
         } catch (e: Exception) {
             LoadResult.Error(e)

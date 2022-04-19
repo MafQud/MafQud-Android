@@ -1,22 +1,23 @@
-package com.mafqud.android.more
+package com.mafqud.android.results
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
-import androidx.compose.ui.res.stringResource
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.mafqud.android.R
+import com.mafqud.android.base.fragment.BaseFragment
+import com.mafqud.android.ui.compose.IconType
 import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.theme.MafQudTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HelpFragment : Fragment() {
+class SuccessLostFragment : BaseFragment() {
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,13 +34,14 @@ class HelpFragment : Fragment() {
                 MafQudTheme {
                     Scaffold(topBar = {
                         TitledAppBar(
-                            title = stringResource(id = R.string.help),
                             onIconClicked = {
-                                findNavController().popBackStack()
-                            }
+                                findNavController().navigateUp()
+                            },
+                            backgroundColor = MaterialTheme.colors.onPrimary,
+                            iconType = IconType.CLOSE
                         )
                     }, content = {
-                        HelpScreen()
+                        SuccessLostScreen()
                     })
                 }
             }

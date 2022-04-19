@@ -104,5 +104,13 @@
     <string name="found_data">تاريخ العثور عليه</string>
     <string name="phone_contact">رقم للتواصل</string>
     <string name="loading">جاري رفع الصور</string>
+    <string name="success_results_lost">تمكنا من الوصول لبعض المعثور عليهم المشابهين للمفقود</string>
+    <string name="insert_id">نرجوا منك ادخال رقمك القومي لكي نتمكن من رؤية النتائج</string>
+    <string name="follow">متابعة</string>
+    <string name="national_id">الرقم القومي</string>
+    <string name="error_national_id">برجاء ادخال رقم قومي صالح</string>
+    <string name="exit">مغادرة</string>
+    <string name="warn_dailog_title1">متبقي خطوة واحدة لأظهار المعثور عليهم</string>
+    <string name="warn_dailog_title2">هل تريد المغادرة؟</string>
 
 </resources>

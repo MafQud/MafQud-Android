@@ -4,9 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,7 +26,8 @@ import kotlinx.coroutines.flow.Flow
 @Composable
 @Preview
 fun NotificationScreen(
-    data: Flow<PagingData<NotificationResponse.Data>>? = null
+    data: Flow<PagingData<NotificationResponse.Data>>? = null,
+    onSuccessNotificationClicked: (NotificationResponse.Data) -> Unit = {}
 ) {
     BoxUi(
         modifier = Modifier
@@ -44,10 +43,9 @@ fun NotificationScreen(
 
             val dataFlow = data.collectAsLazyPagingItems()
 
-            if (dataFlow.itemCount == 0) {
+           /* if (dataFlow.itemCount == 0) {
                 EmptyNotificationState()
-            }
-
+            }*/
             LazyColumnUi(
                 state = listState,
                 //modifier = Modifier.fillMaxSize(),
@@ -57,12 +55,16 @@ fun NotificationScreen(
             {
 
                 items(dataFlow) { item ->
-                    NotificationItem(item)
+                    item?.let {
+                        NotificationItem(item, onSuccessNotificationClicked)
+                    }
                 }
 
                 // for adding footer indicator for state
                 item {
-                    HandlePagingError(dataFlow.loadState)
+                    HandlePagingError(dataFlow.loadState, onEmptyView = {
+                        EmptyNotificationState()
+                    })
                 }
             }
         }
@@ -76,8 +78,8 @@ fun EmptyNotificationState() {
         contentAlignment = Alignment.Center
     ) {
         ColumnUi(
-            modifier = Modifier
-                .verticalScroll(rememberScrollState()),
+           /* modifier = Modifier
+                .verticalScroll(rememberScrollState()),*/
             verticalArrangement = Arrangement.spacedBy(20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -96,14 +98,17 @@ fun EmptyNotificationState() {
 }
 
 @Composable
-fun NotificationItem(item: NotificationResponse.Data?) {
+fun NotificationItem(
+    item: NotificationResponse.Data,
+    onSuccessNotificationClicked: (NotificationResponse.Data) -> Unit
+) {
     BoxUi(
         Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
             .clickable {
-
+                onSuccessNotificationClicked(item)
             }
             .padding(8.dp)
     ) {
@@ -132,7 +137,7 @@ fun NotificationItem(item: NotificationResponse.Data?) {
             }
             // icon
             IconUi(
-                painter = painterResource(id = R.drawable.ic_success),
+                painter = painterResource(id = R.drawable.ic_state_success),
                 modifier = Modifier.size(24.dp)
             )
 

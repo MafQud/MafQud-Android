@@ -19,6 +19,11 @@ import com.mafqud.android.ui.theme.BoxUi
 import com.mafqud.android.ui.theme.RowUi
 import com.mafqud.android.ui.theme.TextUi
 
+enum class IconType {
+    BACK,
+    CLOSE
+}
+
 @Composable
 fun HomeAppBar(
     userName: String = "",
@@ -73,7 +78,8 @@ fun LetterIcon(letter: String, size: Dp = 35.dp, letterSize: TextStyle) {
 fun TitledAppBar(
     title: String = "",
     backgroundColor: Color = MaterialTheme.colorScheme.surfaceVariant,
-    onBackClicked: (() -> Unit)? = null
+    iconType: IconType = IconType.BACK,
+    onIconClicked: (() -> Unit)? = null
 ) {
 
     BoxUi(
@@ -103,10 +109,19 @@ fun TitledAppBar(
                 .align(Alignment.Center),
             contentAlignment = Alignment.CenterStart
         ) {
-            if (onBackClicked != null) {
-                IconBack(onClick = {
-                    onBackClicked()
-                })
+            if (onIconClicked != null) {
+                when(iconType) {
+                    IconType.BACK -> {
+                        IconBack(onClick = {
+                            onIconClicked()
+                        })
+                    }
+                    IconType.CLOSE -> {
+                        IconClose(onClick = {
+                            onIconClicked()
+                        })
+                    }
+                }
             }
         }
     }

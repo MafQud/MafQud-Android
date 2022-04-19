@@ -52,7 +52,7 @@ class PhonesFragment : Fragment() {
                     Scaffold(topBar = {
                         TitledAppBar(
                             title = stringResource(id = R.string.phones),
-                            onBackClicked = {
+                            onIconClicked = {
                                 findNavController().popBackStack()
                             }
                         )

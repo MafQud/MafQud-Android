@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
 import com.mafqud.android.ui.theme.*
+import com.mafqud.android.util.validation.NATIONAL_ID_MAX_LENGTH
 import com.mafqud.android.util.validation.PHONE_MAX_LENGTH
 import com.mafqud.android.util.validation.PassErrorType
 import com.mafqud.android.util.validation.PasswordError
@@ -45,7 +46,7 @@ private val mTFHeight = 50.dp
 @Composable
 @Preview
 fun DateUi(
-    dataString : String = "",
+    dataString: String = "",
     onClick: () -> Unit = {}
 ) {
     BoxUi(modifier = Modifier
@@ -332,6 +333,89 @@ fun TextFieldPhone(
                 //error message
                 TextUi(
                     text = stringResource(id = R.string.error_phone),
+                    textAlign = TextAlign.Start,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.titleSmall,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
+        }
+    }
+}
+
+@Composable
+fun TextFieldNationalID(
+    nationalId: MutableState<String>,
+    isIdError: MutableState<Boolean>,
+    focusRequester: FocusRequester,
+    maxPhoneLength: Int = NATIONAL_ID_MAX_LENGTH,
+) {
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+
+        ColumnUi {
+
+            TextFieldUi(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(mTFHeight),
+                value = nationalId.value,
+                onValueChange = {
+                    if (it.length <= maxPhoneLength) nationalId.value = it
+                    isIdError.value = false
+                },
+                singleLine = true,
+                trailingIcon = {
+                    if (isIdError.value)
+                        Icon(
+                            Icons.Filled.Error,
+                            stringResource(id = R.string.error_national_id),
+                            tint = MaterialTheme.colorScheme.error
+                        )
+                },
+                placeholder = {
+                    TextUi(
+                        modifier = Modifier.alpha(0.5f),
+                        text = stringResource(id = R.string.national_id),
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = MaterialTheme.typography.labelSmall
+                    )
+
+
+                },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Number
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = { focusRequester.requestFocus() }),
+                isError = isIdError.value,
+                shape = RoundedCornerShape(50),
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    errorCursorColor = MaterialTheme.colorScheme.error,
+                    errorIndicatorColor = Color.Transparent,
+                    errorLeadingIconColor = MaterialTheme.colorScheme.error,
+                    cursorColor = MaterialTheme.colorScheme.primary
+
+                )
+            )
+
+            //counter message
+            TextUi(
+                text = "${nationalId.value.length} / $maxPhoneLength",
+                textAlign = TextAlign.End,
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.titleSmall,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            if (isIdError.value) {
+                //error message
+                TextUi(
+                    text = stringResource(id = R.string.error_national_id),
                     textAlign = TextAlign.Start,
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.titleSmall,

@@ -359,7 +359,7 @@ class CameraFragment : Fragment() {
                 Icons.Sharp.Cameraswitch,
                 R.string.flip,
                 modifier = Modifier
-                    .size(35.dp)
+                    .size(50.dp)
                     .padding(2.dp),
                 onClick = { cameraUIAction(CameraUIAction.OnSwitchCameraClick) }
             )
@@ -384,7 +384,7 @@ class CameraFragment : Fragment() {
                 currentFlashIcon,
                 R.string.flash,
                 modifier = Modifier
-                    .size(35.dp)
+                    .size(50.dp)
                     .padding(2.dp),
                 onClick = {
                     flashState.value = when (flashState.value) {

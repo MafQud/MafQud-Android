@@ -187,7 +187,7 @@ class ReportFoundFragment : BaseFragment() {
         Scaffold(topBar = {
             TitledAppBar(
                 title = stringResource(id = R.string.report_found),
-                onBackClicked = {
+                onIconClicked = {
                     handleBack()
                 }
             )
