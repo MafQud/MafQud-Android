@@ -5,7 +5,7 @@ import android.util.Patterns
 import androidx.compose.runtime.MutableState
 
 const val PHONE_MAX_LENGTH = 10
-const val NATIONAL_ID_MAX_LENGTH = 16
+const val NATIONAL_ID_MAX_LENGTH = 14
 
 data class PasswordError(
     var isError: Boolean = false,

@@ -53,7 +53,7 @@ fun SuccessLostScreen() {
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(id = R.string.success_results_lost),
                 color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.headlineSmall,
+                style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Center,
             )
 
@@ -61,7 +61,7 @@ fun SuccessLostScreen() {
             TextUi(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(id = R.string.insert_id),
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onTertiaryContainer,
                 textAlign = TextAlign.Center,
             )

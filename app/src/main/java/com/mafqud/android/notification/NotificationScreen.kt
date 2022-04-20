@@ -1,5 +1,6 @@
 package com.mafqud.android.notification
 
+import androidx.annotation.Keep
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -14,6 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
@@ -23,17 +25,26 @@ import com.mafqud.android.util.network.HandlePagingError
 import kotlinx.coroutines.flow.Flow
 
 
+@Keep
+enum class NotificationType {
+    SUCCESS,
+    FAILED_LOST,
+    FAILED_FOUND,
+    OTHER
+}
+
+
 @Composable
 @Preview
 fun NotificationScreen(
     data: Flow<PagingData<NotificationResponse.Data>>? = null,
-    onSuccessNotificationClicked: (NotificationResponse.Data) -> Unit = {}
+    onNotificationClicked: (NotificationResponse.Data, NotificationType) -> Unit = { it, _it -> },
 ) {
     BoxUi(
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.onPrimary)
-            .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+            .padding(start = 16.dp, end = 16.dp),
         contentAlignment = Alignment.TopCenter
     ) {
 
@@ -41,11 +52,15 @@ fun NotificationScreen(
             // Remember our own LazyListState
             val listState = rememberLazyListState()
 
-            val dataFlow = data.collectAsLazyPagingItems()
+            val lazyPagingItems = data.collectAsLazyPagingItems()
 
-           /* if (dataFlow.itemCount == 0) {
-                EmptyNotificationState()
-            }*/
+            val loadState = lazyPagingItems.loadState
+            val finishedLoading =
+                loadState.refresh !is LoadState.Loading &&
+                        loadState.prepend !is LoadState.Loading &&
+                        loadState.append !is LoadState.Loading &&
+                        loadState.refresh !is LoadState.Error
+
             LazyColumnUi(
                 state = listState,
                 //modifier = Modifier.fillMaxSize(),
@@ -53,34 +68,46 @@ fun NotificationScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             )
             {
+                if (lazyPagingItems.itemCount == 0 && finishedLoading) {
+                    item {
+                        EmptyNotificationState(Modifier.fillParentMaxSize())
+                    }
+                }
 
-                items(dataFlow) { item ->
+                items(lazyPagingItems) { item ->
                     item?.let {
-                        NotificationItem(item, onSuccessNotificationClicked)
+                        NotificationItem(item, onNotificationClicked)
                     }
                 }
 
                 // for adding footer indicator for state
+
                 item {
-                    HandlePagingError(dataFlow.loadState, onEmptyView = {
-                        EmptyNotificationState()
-                    })
+                    HandlePagingError(
+                        loadState = lazyPagingItems.loadState,
+                        modifier = Modifier.fillParentMaxSize(),
+                        onRetry = {
+                            lazyPagingItems.retry()
+                        }
+                    )
                 }
+
             }
+
         }
     }
 }
 
 @Composable
-fun EmptyNotificationState() {
+fun EmptyNotificationState(fillParentMaxSize: Modifier) {
     BoxUi(
-        modifier = Modifier.fillMaxSize(),
+        modifier = fillParentMaxSize,
         contentAlignment = Alignment.Center
     ) {
         ColumnUi(
-           /* modifier = Modifier
-                .verticalScroll(rememberScrollState()),*/
-            verticalArrangement = Arrangement.spacedBy(20.dp),
+            /* modifier = Modifier
+                 .verticalScroll(rememberScrollState()),*/
+            verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             ImageUi(
@@ -100,7 +127,7 @@ fun EmptyNotificationState() {
 @Composable
 fun NotificationItem(
     item: NotificationResponse.Data,
-    onSuccessNotificationClicked: (NotificationResponse.Data) -> Unit
+    onSuccessNotificationClicked: (NotificationResponse.Data, NotificationType) -> Unit
 ) {
     BoxUi(
         Modifier
@@ -108,7 +135,13 @@ fun NotificationItem(
             .clip(RoundedCornerShape(12.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
             .clickable {
-                onSuccessNotificationClicked(item)
+                // TODO change NotificationType
+                if (listOf(false, true).random()) {
+                    onSuccessNotificationClicked(item, NotificationType.FAILED_LOST)
+                } else {
+                    onSuccessNotificationClicked(item, NotificationType.SUCCESS)
+
+                }
             }
             .padding(8.dp)
     ) {

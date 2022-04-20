@@ -3,6 +3,7 @@ package com.mafqud.android.notification
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.mafqud.android.data.RemoteDataManager
+import kotlinx.coroutines.delay
 
 const val INITIAL_PAGE = 1
 
@@ -26,7 +27,7 @@ class NotificationSource(
                 NotificationResponse.Data(),
                 NotificationResponse.Data(),
             )
-
+            delay(2000)
             LoadResult.Page(
                 //TODO
                 //data = notifications.data,

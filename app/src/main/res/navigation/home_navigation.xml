@@ -63,6 +63,9 @@
         <action
             android:id="@+id/action_notificationFragment_to_successLostFragment"
             app:destination="@id/successLostFragment" />
+        <action
+            android:id="@+id/action_notificationFragment_to_failedFragment"
+            app:destination="@id/failedFragment" />
     </fragment>
     <fragment
         android:id="@+id/helpFragment"
@@ -106,4 +109,13 @@
         android:id="@+id/successLostFragment"
         android:name="com.mafqud.android.results.SuccessLostFragment"
         android:label="SuccessLostFragment" />
+    <fragment
+        android:id="@+id/failedFragment"
+        android:name="com.mafqud.android.results.FailedFragment"
+        android:label="FailedFragment" >
+        <argument
+            android:name="failureType"
+            app:argType="com.mafqud.android.results.FailureType"
+            android:defaultValue="NONE" />
+    </fragment>
 </navigation>

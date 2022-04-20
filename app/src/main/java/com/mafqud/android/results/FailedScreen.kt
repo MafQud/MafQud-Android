@@ -1,5 +1,6 @@
 package com.mafqud.android.results
 
+import androidx.annotation.Keep
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -17,9 +18,17 @@ import com.mafqud.android.R
 import com.mafqud.android.ui.compose.ButtonAuth
 import com.mafqud.android.ui.theme.*
 
+
+@Keep
+enum class FailureType {
+    LOST,
+    FOUND,
+    NONE
+}
+
 @Composable
 @Preview
-fun FailedScreen() {
+fun FailedScreen(failureType: FailureType = FailureType.NONE) {
     BoxUi(
         modifier = Modifier
             .fillMaxSize()
@@ -34,36 +43,61 @@ fun FailedScreen() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            SpacerUi(modifier = Modifier.height(20.dp))
+            SpacerUi(modifier = Modifier.height(25.dp))
 
-            ImageUi(
-                painter = painterResource(id = R.drawable.ic_success),
-                modifier = Modifier.size(286.dp, 252.dp)
-            )
+            RobotImage()
 
-            TextUi(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.success_results_lost),
-                color = MaterialTheme.colorScheme.onPrimary,
-                style = MaterialTheme.typography.headlineSmall,
-                textAlign = TextAlign.Center,
-            )
+            // create the rest of ui fragment if not FailureType.NONE
+            if (failureType != FailureType.NONE) {
+                FirstString()
 
+                SecondString(failureType)
 
-            TextUi(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.insert_id),
-                style = MaterialTheme.typography.headlineSmall,
-                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                textAlign = TextAlign.Center,
-            )
+                ButtonAuth(
+                    title = stringResource(id = R.string.publish_lost_data),
+                    backgroundColor = MaterialTheme.colorScheme.onTertiaryContainer
+                ) {
 
-            ButtonAuth(title = stringResource(id = R.string.follow)) {
-
+                }
             }
 
 
         }
     }
 
+}
+
+@Composable
+fun SecondString(failureType: FailureType) {
+    val secondString = when (failureType) {
+        FailureType.LOST -> stringResource(id = R.string.sorry_results_lost_2)
+        FailureType.FOUND -> stringResource(id = R.string.sorry_results_found_2)
+        FailureType.NONE -> stringResource(id = R.string.sorry_results_lost_2)
+    }
+    TextUi(
+        modifier = Modifier.fillMaxWidth(),
+        text = secondString,
+        style = MaterialTheme.typography.titleMedium,
+        color = MaterialTheme.colorScheme.primary,
+        textAlign = TextAlign.Center,
+    )
+}
+
+@Composable
+fun FirstString() {
+    TextUi(
+        modifier = Modifier.fillMaxWidth(),
+        text = stringResource(id = R.string.sorry_results_lost),
+        color = MaterialTheme.colorScheme.onTertiaryContainer,
+        style = MaterialTheme.typography.titleMedium,
+        textAlign = TextAlign.Center,
+    )
+}
+
+@Composable
+fun RobotImage() {
+    ImageUi(
+        painter = painterResource(id = R.drawable.ic_failure_robot),
+        modifier = Modifier.size(287.dp, 188.dp)
+    )
 }

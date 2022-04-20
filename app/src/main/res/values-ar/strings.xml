@@ -114,5 +114,9 @@
     <string name="warn_dailog_title2">هل تريد المغادرة؟</string>
     <string name="search_lost">جاري البحث عن المفقود وسنقوم بإبلاغك في حالة الوصول لأي نتائج</string>
     <string name="search_lost_2">نُقدر مدى قلقك ونعدك ببذل قصارى جهدنا للعثور على المفقود</string>
+    <string name="sorry_results_lost">نأسف لإبلاغكم اننا لم نتمكن من الوصول لأي نتائج</string>
+    <string name="sorry_results_lost_2">ولكن يمكنك نشر بيانات المفقود في نطاق اوسع لتزيد احتمالية العثور عليه</string>
+    <string name="sorry_results_found_2">ولكن يمكنك نشر بيانات المعثور عليه في نطاق اوسع لتزيد احتمالية الوصول للأهله</string>
+    <string name="publish_lost_data">نشر بيانات المفقود</string>
 
 </resources>
