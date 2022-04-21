@@ -27,10 +27,12 @@ import kotlinx.coroutines.flow.Flow
 
 @Keep
 enum class NotificationType {
-    SUCCESS,
+    SUCCESS_FINDING_LOST,
+    SUCCESS_FINDING_FOUND,
     FAILED_LOST,
     FAILED_FOUND,
-    OTHER
+    OTHER,
+    NONE
 }
 
 
@@ -137,10 +139,9 @@ fun NotificationItem(
             .clickable {
                 // TODO change NotificationType
                 if (listOf(false, true).random()) {
-                    onSuccessNotificationClicked(item, NotificationType.FAILED_LOST)
+                    onSuccessNotificationClicked(item, NotificationType.SUCCESS_FINDING_FOUND)
                 } else {
-                    onSuccessNotificationClicked(item, NotificationType.SUCCESS)
-
+                    onSuccessNotificationClicked(item, NotificationType.SUCCESS_FINDING_LOST)
                 }
             }
             .padding(8.dp)

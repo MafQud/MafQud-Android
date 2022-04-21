@@ -18,7 +18,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mafqud.android.R
 import com.mafqud.android.home.HomeActivity
-import com.mafqud.android.results.FailureType
+import com.mafqud.android.results.states.FailureType
 import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.status.loading.CircleLoading
 import com.mafqud.android.ui.theme.MafQudTheme
@@ -96,16 +96,15 @@ class NotificationFragment : Fragment() {
                 data = stateValue.notifications,
                 onNotificationClicked = { notificationData, notificationType ->
                     when (notificationType) {
-                        NotificationType.SUCCESS -> openSuccessFragment(notificationData)
-                        NotificationType.FAILED_LOST -> openFailureFragment(
+                        NotificationType.SUCCESS_FINDING_LOST,
+                        NotificationType.SUCCESS_FINDING_FOUND -> openSuccessFragment(
                             notificationData,
                             notificationType
                         )
-                        NotificationType.FAILED_FOUND -> openFailureFragment(
-                            notificationData,
-                            notificationType
-                        )
-                        NotificationType.OTHER -> openFailureFragment(
+                        NotificationType.FAILED_LOST,
+                        NotificationType.FAILED_FOUND,
+                        NotificationType.OTHER,
+                        -> openFailureFragment(
                             notificationData,
                             notificationType
                         )
@@ -121,14 +120,16 @@ class NotificationFragment : Fragment() {
         when (notificationType) {
             NotificationType.FAILED_LOST -> {
                 val action =
-                    NotificationFragmentDirections.actionNotificationFragmentToFailedFragment()
-                action.failureType = FailureType.LOST
+                    NotificationFragmentDirections.actionNotificationFragmentToFailedFragment(
+                        FailureType.LOST
+                    )
                 findNavController().navigate(action)
             }
             NotificationType.FAILED_FOUND -> {
                 val action =
-                    NotificationFragmentDirections.actionNotificationFragmentToFailedFragment()
-                action.failureType = FailureType.FOUND
+                    NotificationFragmentDirections.actionNotificationFragmentToFailedFragment(
+                        FailureType.FOUND
+                    )
                 findNavController().navigate(action)
             }
             NotificationType.OTHER -> {
@@ -141,8 +142,15 @@ class NotificationFragment : Fragment() {
 
     }
 
-    private fun openSuccessFragment(notificationData: NotificationResponse.Data) {
-        findNavController().navigate(R.id.action_notificationFragment_to_successLostFragment)
+    private fun openSuccessFragment(
+        notificationData: NotificationResponse.Data,
+        notificationType: NotificationType
+    ) {
+        val actionToSuccess =
+            NotificationFragmentDirections.actionNotificationFragmentToSuccessLostFragment(
+                notificationType
+            )
+        findNavController().navigate(actionToSuccess)
     }
 
 

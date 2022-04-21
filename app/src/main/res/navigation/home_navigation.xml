@@ -107,15 +107,40 @@
         android:label="MyAccountEditInfoFragment" />
     <fragment
         android:id="@+id/successLostFragment"
-        android:name="com.mafqud.android.results.SuccessLostFragment"
-        android:label="SuccessLostFragment" />
+        android:name="com.mafqud.android.results.states.SuccessReportingFragment"
+        android:label="SuccessLostFragment" >
+        <argument
+            android:name="notificationType"
+            app:argType="com.mafqud.android.notification.NotificationType" />
+        <action
+            android:id="@+id/action_successLostFragment_to_resultsCasesFragment"
+            app:destination="@id/resultsCasesFragment" />
+    </fragment>
     <fragment
         android:id="@+id/failedFragment"
-        android:name="com.mafqud.android.results.FailedFragment"
+        android:name="com.mafqud.android.results.states.FailedFragment"
         android:label="FailedFragment" >
         <argument
             android:name="failureType"
-            app:argType="com.mafqud.android.results.FailureType"
-            android:defaultValue="NONE" />
+            app:argType="com.mafqud.android.results.states.FailureType" />
+    </fragment>
+    <fragment
+        android:id="@+id/resultsCasesFragment"
+        android:name="com.mafqud.android.results.cases.ResultsCasesFragment"
+        android:label="ResultsCasesFragment" >
+        <argument
+            android:name="notificationType"
+            app:argType="com.mafqud.android.notification.NotificationType" />
+        <action
+            android:id="@+id/action_resultsCasesFragment_to_publishCaseFragment"
+            app:destination="@id/publishCaseFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/publishCaseFragment"
+        android:name="com.mafqud.android.results.publishCase.PublishCaseFragment"
+        android:label="PublishCaseFragment" >
+        <argument
+            android:name="notificationtype"
+            app:argType="com.mafqud.android.notification.NotificationType" />
     </fragment>
 </navigation>

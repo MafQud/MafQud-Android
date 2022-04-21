@@ -1,4 +1,4 @@
-package com.mafqud.android.results
+package com.mafqud.android.results.states
 
 import androidx.annotation.Keep
 import androidx.compose.foundation.background

@@ -27,7 +27,7 @@ class NotificationSource(
                 NotificationResponse.Data(),
                 NotificationResponse.Data(),
             )
-            delay(2000)
+            delay(1000)
             //throw Exception()
             LoadResult.Page(
                 //TODO

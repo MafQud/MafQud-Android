@@ -1,26 +1,26 @@
-package com.mafqud.android.results
+package com.mafqud.android.results.cases
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.mafqud.android.R
 import com.mafqud.android.base.fragment.BaseFragment
-import com.mafqud.android.ui.compose.IconType
+import com.mafqud.android.notification.NotificationType
 import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.theme.MafQudTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FailedFragment : BaseFragment() {
+class ResultsCasesFragment : BaseFragment() {
 
-
-    private val args : FailedFragmentArgs by navArgs()
+    private val args: ResultsCasesFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,16 +35,30 @@ class FailedFragment : BaseFragment() {
             )
             setContent {
                 MafQudTheme {
+                    val appbarTitle = when (args.notificationType) {
+                        NotificationType.SUCCESS_FINDING_LOST ->
+                            stringResource(id = R.string.title_losts)
+                        NotificationType.SUCCESS_FINDING_FOUND ->
+                            stringResource(id = R.string.title_founds)
+                        else -> {
+                            ""
+                        }
+                    }
                     Scaffold(topBar = {
                         TitledAppBar(
                             onIconClicked = {
                                 findNavController().navigateUp()
                             },
-                            backgroundColor = MaterialTheme.colors.onPrimary,
-                            iconType = IconType.CLOSE
+                            title = appbarTitle
                         )
                     }, content = {
-                        FailedScreen(args.failureType)
+                        ResultsCasesScreen(args.notificationType, onNotFoundButton = {
+                            val actionToPublish =
+                                ResultsCasesFragmentDirections.actionResultsCasesFragmentToPublishCaseFragment(
+                                    args.notificationType
+                                )
+                            findNavController().navigate(actionToPublish)
+                        })
                     })
                 }
             }

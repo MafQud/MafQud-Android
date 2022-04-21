@@ -157,6 +157,7 @@ fun PhotoDialog(
 
 @Composable
 fun WarningDialog(
+    titleHead: String,
     isOpened: MutableState<Boolean>,
     onCancelClicked: () -> Unit,
     onConfirmClicked: () -> Unit,
@@ -201,7 +202,7 @@ fun WarningDialog(
 
                             TextUi(
                                 modifier = Modifier.fillMaxWidth(),
-                                text = stringResource(id = R.string.warn_dailog_title1),
+                                text = titleHead,
                                 color = MaterialTheme.colorScheme.onTertiaryContainer,
                                 style = MaterialTheme.typography.titleMedium,
                                 textAlign = TextAlign.Center

@@ -1,4 +1,4 @@
-package com.mafqud.android.results
+package com.mafqud.android.results.states
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
+import com.mafqud.android.notification.NotificationType
 import com.mafqud.android.ui.compose.ButtonAuth
 import com.mafqud.android.ui.compose.TextFieldNationalID
 import com.mafqud.android.ui.compose.WarningDialog
@@ -25,7 +26,10 @@ import com.mafqud.android.ui.theme.*
 
 @Composable
 @Preview
-fun SuccessLostScreen() {
+fun SuccessScreen(
+    notificationType: NotificationType = NotificationType.NONE,
+    showResults: () -> Unit = {}
+) {
     val successDialog = remember {
         mutableStateOf(false)
     }
@@ -49,9 +53,16 @@ fun SuccessLostScreen() {
                 modifier = Modifier.size(286.dp, 252.dp)
             )
 
+            val firstString = when (notificationType) {
+                NotificationType.SUCCESS_FINDING_LOST -> stringResource(id = R.string.success_results_lost)
+                NotificationType.SUCCESS_FINDING_FOUND -> stringResource(id = R.string.success_results_found)
+                else -> {
+                    stringResource(id = R.string.error_unknown)
+                }
+            }
             TextUi(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.success_results_lost),
+                text = firstString,
                 color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Center,
@@ -69,16 +80,24 @@ fun SuccessLostScreen() {
             NationalIdField()
 
             ButtonAuth(title = stringResource(id = R.string.follow)) {
-                successDialog.value  = true
+                successDialog.value = true
             }
 
             SpacerUi(modifier = Modifier.height(20.dp))
 
         }
+        val dialogTitle = when (notificationType) {
+            NotificationType.SUCCESS_FINDING_LOST -> stringResource(id = R.string.warn_dailog_title_lost)
+            NotificationType.SUCCESS_FINDING_FOUND -> stringResource(id = R.string.warn_dailog_title_found)
+            else -> {
+                stringResource(id = R.string.error_unknown)
+            }
+        }
         WarningDialog(
+            titleHead = dialogTitle,
             isOpened = successDialog,
             onConfirmClicked = {
-
+                showResults()
             },
             onCancelClicked = {
 

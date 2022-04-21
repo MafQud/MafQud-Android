@@ -1,4 +1,4 @@
-package com.mafqud.android.results
+package com.mafqud.android.results.states
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +9,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.mafqud.android.base.fragment.BaseFragment
 import com.mafqud.android.ui.compose.IconType
 import com.mafqud.android.ui.compose.TitledAppBar
@@ -16,8 +17,9 @@ import com.mafqud.android.ui.theme.MafQudTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SuccessLostFragment : BaseFragment() {
+class SuccessReportingFragment : BaseFragment() {
 
+    private val args: SuccessReportingFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,7 +43,13 @@ class SuccessLostFragment : BaseFragment() {
                             iconType = IconType.CLOSE
                         )
                     }, content = {
-                        SuccessLostScreen()
+                        SuccessScreen(args.notificationType, showResults = {
+                            val actionToPublish =
+                                SuccessReportingFragmentDirections.actionSuccessLostFragmentToResultsCasesFragment(
+                                    args.notificationType
+                                )
+                            findNavController().navigate(actionToPublish)
+                        })
                     })
                 }
             }

@@ -110,7 +110,7 @@
     <string name="national_id">الرقم القومي</string>
     <string name="error_national_id">برجاء ادخال رقم قومي صالح</string>
     <string name="exit">مغادرة</string>
-    <string name="warn_dailog_title1">متبقي خطوة واحدة لأظهار المعثور عليهم</string>
+    <string name="warn_dailog_title_lost">متبقي خطوة واحدة لأظهار المعثور عليهم</string>
     <string name="warn_dailog_title2">هل تريد المغادرة؟</string>
     <string name="search_lost">جاري البحث عن المفقود وسنقوم بإبلاغك في حالة الوصول لأي نتائج</string>
     <string name="search_lost_2">نُقدر مدى قلقك ونعدك ببذل قصارى جهدنا للعثور على المفقود</string>
@@ -118,5 +118,15 @@
     <string name="sorry_results_lost_2">ولكن يمكنك نشر بيانات المفقود في نطاق اوسع لتزيد احتمالية العثور عليه</string>
     <string name="sorry_results_found_2">ولكن يمكنك نشر بيانات المعثور عليه في نطاق اوسع لتزيد احتمالية الوصول للأهله</string>
     <string name="publish_lost_data">نشر بيانات المفقود</string>
+    <string name="success_results_found">تمكنا من الوصول لبعض المفقودين المشابهين للمعثور عليه</string>
+    <string name="warn_dailog_title_found">متبقي خطوة واحدة لأظهار المفقودين</string>
+    <string name="title_losts">معثور عليهم</string>
+    <string name="title_founds">مفقودين</string>
+    <string name="title_founds_not_found">لم تجد المعثور عليه في المفقودين</string>
+    <string name="publish_lost">نشر بيانات المعثور عليه</string>
+    <string name="publish_found">نشر بيانات المفقود</string>
+    <string name="title_losts_not_found">لم تجد المفقود في المعثور عليهم</string>
+    <string name="publish_found2">يمكنك نشر بيانات المفقود في نطاق اوسع لتزيد احتمالية العثور عليه</string>
+    <string name="publish_lost2">يمكنك نشر بيانات المعثور عليه في نطاق اوسع لتزيد احتمالية الوصول للأهل</string>
 
 </resources>
