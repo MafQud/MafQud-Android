@@ -1,14 +1,6 @@
 package com.mafqud.android.util.formatter.phone
 
-import android.telephony.PhoneNumberUtils
-import android.text.Selection
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.input.OffsetMapping
-import androidx.compose.ui.text.input.TransformedText
-import androidx.compose.ui.text.input.VisualTransformation
-import com.google.i18n.phonenumbers.PhoneNumberUtil
-import java.util.*
-
+/*
 class PhoneNumberVisualTransformation(
     countryCode: String = Locale.getDefault().country
 ) : VisualTransformation {
@@ -83,4 +75,4 @@ class PhoneNumberVisualTransformation(
         val originalToTransformed: List<Int>,
         val transformedToOriginal: List<Int>
     )
-}
+}*/

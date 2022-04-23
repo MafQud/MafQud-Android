@@ -9,6 +9,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.mafqud.android.R
 import com.mafqud.android.base.fragment.BaseFragment
 import com.mafqud.android.ui.compose.TitledAppBar
@@ -18,6 +19,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ReportLostSecondFragment : BaseFragment() {
 
+
+    private val args: ReportLostSecondFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,7 +44,11 @@ class ReportLostSecondFragment : BaseFragment() {
                         )
                     }, content = {
                         requireActivity().LostScreenTwo(onNext = {
-                            findNavController().navigate(R.id.action_reportLostSecondFragment_to_uploadingImagesFragment)
+                            val actonToUploading =
+                                ReportLostSecondFragmentDirections.actionReportLostSecondFragmentToUploadingImagesFragment(
+                                    args.imagesUrisPicked
+                                )
+                            findNavController().navigate(actonToUploading)
                         })
                     })
                 }

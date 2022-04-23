@@ -93,7 +93,11 @@ class ReportLostFragment : BaseFragment() {
             openGalleryClicked = {
                 openGallery(galleryLauncher)
             }, onNextClicked = {
-                findNavController().navigate(R.id.action_reportLostFragment_to_reportLostSecondFragment)
+                val actionToSecond =
+                    ReportLostFragmentDirections.actionReportLostFragmentToReportLostSecondFragment(
+                        state.imagesUri.map { it.toString() }.toTypedArray()
+                    )
+                findNavController().navigate(actionToSecond)
             }, onCloseClicked = {
                 removeImageUri(it)
             }

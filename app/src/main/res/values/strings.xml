@@ -154,4 +154,9 @@
     <string name="publish_found">publi fpind</string>
     <string name="publish_found2">Found dsd d.....</string>
     <string name="publish_lost2">pubb;l dlfd  v...</string>
+    <string name="loading_case">Loading case</string>
+    <string name="failed_loading_images">Failed to load images</string>
+    <string name="failed_loading_case">Failed loading case</string>
+    <string name="success_uploading_images">Success</string>
+    <string name="success_uploading_case">Succes case</string>
 </resources>

@@ -30,6 +30,9 @@
         <action
             android:id="@+id/action_reportLostSecondFragment_to_uploadingImagesFragment"
             app:destination="@id/uploadingImagesFragment" />
+        <argument
+            android:name="imagesUrisPicked"
+            app:argType="string[]" />
     </fragment>
     <fragment
         android:id="@+id/cameraFragment"
@@ -46,6 +49,10 @@
     <fragment
         android:id="@+id/uploadingImagesFragment"
         android:name="com.mafqud.android.report.uploading.UploadingImagesFragment"
-        android:label="UploadingImagesFragment" />
+        android:label="UploadingImagesFragment" >
+        <argument
+            android:name="imagesUrisPicked"
+            app:argType="string[]" />
+    </fragment>
 
 </navigation>

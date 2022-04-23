@@ -112,7 +112,6 @@
     <string name="exit">مغادرة</string>
     <string name="warn_dailog_title_lost">متبقي خطوة واحدة لأظهار المعثور عليهم</string>
     <string name="warn_dailog_title2">هل تريد المغادرة؟</string>
-    <string name="search_lost">جاري البحث عن المفقود وسنقوم بإبلاغك في حالة الوصول لأي نتائج</string>
     <string name="search_lost_2">نُقدر مدى قلقك ونعدك ببذل قصارى جهدنا للعثور على المفقود</string>
     <string name="sorry_results_lost">نأسف لإبلاغكم اننا لم نتمكن من الوصول لأي نتائج</string>
     <string name="sorry_results_lost_2">ولكن يمكنك نشر بيانات المفقود في نطاق اوسع لتزيد احتمالية العثور عليه</string>
@@ -128,5 +127,11 @@
     <string name="title_losts_not_found">لم تجد المفقود في المعثور عليهم</string>
     <string name="publish_found2">يمكنك نشر بيانات المفقود في نطاق اوسع لتزيد احتمالية العثور عليه</string>
     <string name="publish_lost2">يمكنك نشر بيانات المعثور عليه في نطاق اوسع لتزيد احتمالية الوصول للأهل</string>
+    <string name="success_uploading_images">تم رفع الصور بنجاح</string>
+    <string name="success_uploading_case">تم رفع الحالة بنجاح</string>
+    <string name="failed_loading_case">فشل في رفع الحالة</string>
+    <string name="failed_loading_images">فشل في رفع الصور</string>
+    <string name="loading_case">جاري رفع الحالة</string>
+    <string name="search_lost">تم رفع الحالة وجاري البحث عن المفقود وسنقوم بإبلاغك في حالة الوصول لأي نتائج</string>
 
 </resources>
