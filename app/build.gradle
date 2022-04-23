@@ -295,8 +295,8 @@ dependencies {
 
     //Permissions
     implementation("com.google.accompanist:accompanist-permissions:0.18.0")
-    // youtube player api
-    //implementation files("libs\\YouTubeAndroidPlayerApi.jar")
+    //google libphonenumber
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
 }
 
