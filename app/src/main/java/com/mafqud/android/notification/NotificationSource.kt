@@ -32,7 +32,7 @@ class NotificationSource(
             LoadResult.Page(
                 //TODO
                 //data = notifications.data,
-                data = noty,
+                data = emptyList(),
                 prevKey = if (currentPage == INITIAL_PAGE) null else currentPage - 1,
                 //TODO
                 //nextKey = nextPage

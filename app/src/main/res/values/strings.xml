@@ -166,4 +166,5 @@
     <string name="title_camera_1">Camera ttile 11</string>
     <string name="allow">Allow</string>
     <string name="discard">Discard</string>
+    <string name="empty_data">No data</string>
 </resources>

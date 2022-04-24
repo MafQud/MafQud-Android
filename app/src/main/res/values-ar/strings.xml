@@ -140,5 +140,6 @@
     <string name="title_camera_1">"برجاء السماح لمفقود باستخدام الكاميرا و الوصول الي الملفات لتتمكن من رفع الصور "</string>
     <string name="allow">سماح</string>
     <string name="discard">رفض</string>
+    <string name="empty_data">لا يوجد بيانات لعرضها</string>
 
 </resources>

@@ -1,10 +1,7 @@
 package com.mafqud.android.home
 
 import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -20,10 +17,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
+import com.mafqud.android.notification.EmptyNotificationState
 import com.mafqud.android.ui.compose.CaseItem
 import com.mafqud.android.ui.compose.DropDownItems
 import com.mafqud.android.ui.theme.*
@@ -222,15 +221,47 @@ private fun TapsUi() {
 private fun BodyUi(modifier: Modifier) {
     ColumnUi(
         modifier
-            .verticalScroll(rememberScrollState())
-            .background(MaterialTheme.colorScheme.onSecondary)
-            .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+            //.verticalScroll(rememberScrollState())
+            //.background(MaterialTheme.colorScheme.onSecondary)
+            //.padding(top = 16.dp, start = 16.dp, end = 16.dp)
+        ,
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        CaseItem()
-        CaseItem()
-        CaseItem()
-        CaseItem()
-        CaseItem()
+        BoxUi(modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center) {
+            EmptyCasesState()
+
+        }
+
+        /*  CaseItem()
+          CaseItem()
+          CaseItem()
+          CaseItem()
+          CaseItem()*/
+    }
+}
+
+@Composable
+fun EmptyCasesState() {
+    BoxUi(
+        contentAlignment = Alignment.Center
+    ) {
+        ColumnUi(
+            /* modifier = Modifier
+                 .verticalScroll(rememberScrollState()),*/
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            ImageUi(
+                painter = painterResource(id = R.drawable.ic_feed_empty),
+                modifier = Modifier.size(290.dp, 190.dp)
+            )
+
+            TextUi(
+                text = stringResource(id = R.string.empty_data),
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                style = MaterialTheme.typography.headlineSmall
+            )
+        }
     }
 }
