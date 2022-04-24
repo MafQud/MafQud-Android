@@ -141,5 +141,6 @@
     <string name="allow">سماح</string>
     <string name="discard">رفض</string>
     <string name="empty_data">لا يوجد بيانات لعرضها</string>
+    <string name="publish_found_data">نشر بيانات المعثور عليه</string>
 
 </resources>

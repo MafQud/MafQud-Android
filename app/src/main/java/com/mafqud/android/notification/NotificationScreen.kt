@@ -141,7 +141,7 @@ fun NotificationItem(
                 if (listOf(false, true).random()) {
                     onSuccessNotificationClicked(item, NotificationType.SUCCESS_FINDING_FOUND)
                 } else {
-                    onSuccessNotificationClicked(item, NotificationType.SUCCESS_FINDING_LOST)
+                    onSuccessNotificationClicked(item, NotificationType.FAILED_FOUND)
                 }
             }
             .padding(8.dp)

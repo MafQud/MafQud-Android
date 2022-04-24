@@ -51,10 +51,15 @@ fun FailedScreen(failureType: FailureType = FailureType.NONE) {
             if (failureType != FailureType.NONE) {
                 FirstString()
 
+                val buttonTitle = when(failureType) {
+                    FailureType.LOST -> stringResource(id = R.string.publish_lost_data)
+                    FailureType.FOUND -> stringResource(id = R.string.publish_found_data)
+                    else -> ""
+                }
                 SecondString(failureType)
 
                 ButtonAuth(
-                    title = stringResource(id = R.string.publish_lost_data),
+                    title = buttonTitle,
                     backgroundColor = MaterialTheme.colorScheme.onTertiaryContainer
                 ) {
 
