@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
@@ -49,6 +50,7 @@ import androidx.navigation.fragment.findNavController
 import coil.compose.rememberImagePainter
 import com.mafqud.android.R
 import com.mafqud.android.ui.compose.CameraAppBar
+import com.mafqud.android.ui.compose.DismissDialog
 import com.mafqud.android.ui.compose.PhotoDialog
 import com.mafqud.android.ui.theme.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -79,7 +81,11 @@ class CameraFragment : Fragment() {
             setViewCompositionStrategy(
                 ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner)
             )
+
             setContent {
+                val isDialogOpened = remember {
+                    mutableStateOf(false)
+                }
                 MafQudTheme {
                     val scaffoldState = rememberScaffoldState()
                     val pickedImages = remember {
@@ -90,7 +96,8 @@ class CameraFragment : Fragment() {
                         topBar = {
                             CameraAppBar(
                                 onBackClicked = {
-                                    findNavController().popBackStack()
+                                    // Handle the back button event
+                                    handleBackPressed(isDialogOpened)
                                 },
                                 onDoneClicked = {
                                     val imagesString = pickedImages.map {
@@ -130,9 +137,32 @@ class CameraFragment : Fragment() {
                         backgroundColor = Color.Transparent,
                         contentColor = Color.Transparent,
                     )
-
+                    DismissDialog(isOpened = isDialogOpened, onConfirmClicked = {
+                        findNavController().popBackStack()
+                    }, description = stringResource(id = R.string.camera_des_dialog))
+                    customBackStackButton(isDialogOpened)
                 }
             }
+        }
+    }
+
+    private fun customBackStackButton(
+        isDialogOpened: MutableState<Boolean>,
+    ) {
+        // This callback will only be called when MyFragment is at least Started.
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true /* enabled by default */) {
+                override fun handleOnBackPressed() {
+                    // Handle the back button event
+                    handleBackPressed(isDialogOpened)
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+    }
+
+    private fun handleBackPressed(isDialogOpened: MutableState<Boolean>) {
+        if (!isDialogOpened.value) {
+            isDialogOpened.value = true
         }
     }
 

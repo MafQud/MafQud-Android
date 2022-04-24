@@ -1,8 +1,11 @@
 package com.mafqud.android.util.permission
 
 import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.mafqud.android.ui.dialog.openDialogForPermission
 
@@ -64,6 +67,21 @@ object PermissionManager {
         this.onDenied = onDenied
         this.onGranted = onGranted
         permissionLauncher.launch(permissions)
+    }
+
+    fun isPermissionsGranted(context: Context, permissions: Array<String>): Boolean {
+        val isAllGranted = true
+        permissions.forEach {
+            if (ContextCompat.checkSelfPermission(
+                    context,
+                    it
+                )
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                return false
+            }
+        }
+        return isAllGranted
     }
 
 

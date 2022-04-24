@@ -19,6 +19,7 @@ import com.google.firebase.auth.PhoneAuthProvider.ForceResendingToken
 import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks
 import com.mafqud.android.R
 import com.mafqud.android.auth.openReportActivity
+import com.mafqud.android.ui.compose.DismissDialog
 import com.mafqud.android.ui.compose.LoadingDialog
 import com.mafqud.android.ui.compose.showAreYouSureDialog
 import com.mafqud.android.ui.other.showToast
@@ -64,6 +65,9 @@ class RegisterFragment : Fragment() {
                 ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner)
             )
             setContent {
+                val isDialogOpened = remember {
+                    mutableStateOf(false)
+                }
                 val registerFormData = remember {
                     mutableStateOf(RegisterIntent.Signup())
                 }
@@ -114,34 +118,42 @@ class RegisterFragment : Fragment() {
 
                         }
                     ) {
-                        handleBackWithCurrentStep(activeStep)
+                        handleBackWithCurrentStep(activeStep, isDialogOpened)
                     }
                     ListenToChanges(activeStep)
+
+                    DismissDialog(isOpened = isDialogOpened, onConfirmClicked = {
+                        findNavController().popBackStack()
+                    })
+                    customBackStackButton(activeStep, isDialogOpened)
                 }
 
-                customBackStackButton(activeStep)
             }
         }
     }
 
-    private fun customBackStackButton(activeStep: MutableState<StepCount>) {
+    private fun customBackStackButton(
+        activeStep: MutableState<StepCount>,
+        isDialogOpened: MutableState<Boolean>
+    ) {
         // This callback will only be called when MyFragment is at least Started.
         val callback: OnBackPressedCallback =
             object : OnBackPressedCallback(true /* enabled by default */) {
                 override fun handleOnBackPressed() {
                     // Handle the back button event
-                    handleBackWithCurrentStep(activeStep)
+                    handleBackWithCurrentStep(activeStep, isDialogOpened)
                 }
             }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
-    private fun handleBackWithCurrentStep(activeStep: MutableState<StepCount>) {
+    private fun handleBackWithCurrentStep(
+        activeStep: MutableState<StepCount>,
+        isDialogOpened: MutableState<Boolean>
+    ) {
         when (activeStep.value) {
             StepCount.One -> {
-                requireContext().showAreYouSureDialog {
-                    findNavController().popBackStack()
-                }
+                isDialogOpened.value = true
             }
             StepCount.Two -> activeStep.value = StepCount.One
             StepCount.Three -> activeStep.value = StepCount.Two

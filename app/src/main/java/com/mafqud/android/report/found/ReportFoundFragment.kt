@@ -13,9 +13,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
@@ -32,6 +30,7 @@ import com.mafqud.android.camera.CameraFragment
 import com.mafqud.android.home.HomeActivity
 import com.mafqud.android.report.lost.ReportIntent
 import com.mafqud.android.report.lost.ReportViewModel
+import com.mafqud.android.ui.compose.CameraDialog
 import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.theme.BoxUi
 import com.mafqud.android.ui.theme.MafQudTheme
@@ -200,19 +199,33 @@ class ReportFoundFragment : BaseFragment() {
     @Composable
     private fun ListenToChanges() {
         val mState = viewModel.stateChannel.collectAsState().value
+        val cameraDialog = remember {
+            mutableStateOf(false)
+        }
+        CameraDialog(isOpened = cameraDialog, onConfirmClicked = {
+            // open bottom sheet
+            if (PermissionManager.isPermissionsGranted(
+                    requireContext(),
+                    CAMERA_READ_FILES__PERMISSIONS
+            )) {
+                openBottomSheet()
+            } else {
+                requestPermissionsFirst()
+            }
+        })
 
         FoundScreen(
             pickedImages = mState.imagesUri,
             openGalleryClicked = {
-                // open bottom sheet
-                PermissionManager.requestPermission(onDenied = {
-                    /* requireContext().showToast(getString(R.string.permission_read_denied))*/
-                }, onGranted = {
-                    bottomSheetScope?.launch {
-                        bottomSheetState?.show()
-                    }
-                })
-
+                if (PermissionManager.isPermissionsGranted(
+                        requireContext(),
+                        CAMERA_READ_FILES__PERMISSIONS
+                    )) {
+                    openBottomSheet()
+                } else {
+                    // open our dialog
+                    cameraDialog.value = true
+                }
             }, onNextClicked = {
                 findNavController().navigate(R.id.action_reportFoundFragment_to_reportfoundSecondFragment)
             }, onCloseClicked = {
@@ -220,6 +233,21 @@ class ReportFoundFragment : BaseFragment() {
             }
         )
 
+    }
+
+    private fun requestPermissionsFirst() {
+        PermissionManager.requestPermission(onDenied = {
+            /* requireContext().showToast(getString(R.string.permission_read_denied))*/
+        }, onGranted = {
+            openBottomSheet()
+        })
+    }
+
+    @OptIn(ExperimentalMaterialApi::class)
+    private fun openBottomSheet() {
+        bottomSheetScope?.launch {
+            bottomSheetState?.show()
+        }
     }
 
     private fun removeImageUri(uri: Uri) {

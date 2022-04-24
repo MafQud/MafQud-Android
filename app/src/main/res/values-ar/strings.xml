@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">مفقود</string>
-    <string name="log_out">تسجيل الخروج</string>
-    <string name="are_you_sure_logout">هل انت متاكد من تسجيل الخروج ؟</string>
+    <string name="log_out">تسجيل خروج</string>
+    <string name="are_you_sure_logout">هل انت متأكد من تسجيل الخروج؟</string>
     <string name="confirm">تأكيد</string>
     <string name="cancel">إلغاء</string>
     <string name="please_wait">من فضلك إنتظر !</string>
@@ -133,5 +133,12 @@
     <string name="failed_loading_images">فشل في رفع الصور</string>
     <string name="loading_case">جاري رفع الحالة</string>
     <string name="search_lost">تم رفع الحالة وجاري البحث عن المفقود وسنقوم بإبلاغك في حالة الوصول لأي نتائج</string>
+    <string name="title_dialog_leave">هل تريد المغادرة؟</string>
+    <string name="title_des_leave">إذا قمت بمغادرة هذه الصفحة قد لا يتم حفظ بياناتك التي أدخلتها</string>
+    <string name="leave">مغادرة</string>
+    <string name="camera_des_dialog">إذا قمت بمغادرة هذه الصفحة قد لا يتم حفظ الصور التي تم التقاطها</string>
+    <string name="title_camera_1">"برجاء السماح لمفقود باستخدام الكاميرا و الوصول الي الملفات لتتمكن من رفع الصور "</string>
+    <string name="allow">سماح</string>
+    <string name="discard">رفض</string>
 
 </resources>

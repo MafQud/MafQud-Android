@@ -8,6 +8,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -18,10 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
-import com.mafqud.android.ui.compose.CaseItem
-import com.mafqud.android.ui.compose.IconLogout
-import com.mafqud.android.ui.compose.TitledAppBar
-import com.mafqud.android.ui.compose.logoutDialog
+import com.mafqud.android.ui.compose.*
 import com.mafqud.android.ui.theme.*
 
 @Composable
@@ -155,15 +154,20 @@ fun ReportedItem(title: String, icon: Int, onItemClicked: () -> Unit) {
 
 @Composable
 private fun Logout(onConfirmClicked: () -> Unit) {
-    val context = LocalContext.current
-    val dialog = context.logoutDialog {
-        onConfirmClicked()
+    val isOpened = remember {
+        mutableStateOf(false)
     }
+    LogoutDialog(
+        titleHead = stringResource(id = R.string.are_you_sure_logout),
+        isOpened = isOpened, onConfirmClicked = {
+            onConfirmClicked()
+        }
+    )
 
     RowUi(
         modifier = Modifier
             .clickable {
-                dialog.show()
+                isOpened.value = true
             }
             .padding(8.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp),

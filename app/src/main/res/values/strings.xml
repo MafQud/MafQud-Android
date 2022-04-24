@@ -159,4 +159,11 @@
     <string name="failed_loading_case">Failed loading case</string>
     <string name="success_uploading_images">Success</string>
     <string name="success_uploading_case">Succes case</string>
+    <string name="title_dialog_leave">Are u want to leave</string>
+    <string name="title_des_leave">title_des_leave</string>
+    <string name="leave">Leave</string>
+    <string name="camera_des_dialog">Camera dialog</string>
+    <string name="title_camera_1">Camera ttile 11</string>
+    <string name="allow">Allow</string>
+    <string name="discard">Discard</string>
 </resources>
