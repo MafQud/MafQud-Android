@@ -123,6 +123,7 @@ dependencies {
     def color_picker = "2.0"
     def lottie = "4.1.0"
     def swipe_refresh = "0.18.0"
+    def nav_version_compose = "2.4.2"
 
 
     /**
@@ -298,6 +299,8 @@ dependencies {
     //google libphonenumber
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    //Navigating with Compose
+    implementation("androidx.navigation:navigation-compose:$nav_version_compose")
 }
 
 

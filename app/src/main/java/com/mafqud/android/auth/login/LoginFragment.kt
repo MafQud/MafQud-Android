@@ -52,7 +52,7 @@ class LoginFragment : Fragment() {
         }, onNextPressed = {
             // login after done clicked in keypad
             loginIntent(phone = it.phone, password = it.password)
-        })
+        }, viewModel = viewModel)
     }
 
     private fun loginIntent(

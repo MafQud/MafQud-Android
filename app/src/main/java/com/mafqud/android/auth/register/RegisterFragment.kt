@@ -75,7 +75,7 @@ class RegisterFragment : Fragment() {
                     mutableStateOf(StepCount.One)
                 }
                 MafQudTheme {
-                    RegisterScreen(
+                    /*RegisterScreen(
                         registerFormData,
                         activeStep,
                         otpState,
@@ -125,7 +125,7 @@ class RegisterFragment : Fragment() {
                     DismissDialog(isOpened = isDialogOpened, onConfirmClicked = {
                         findNavController().popBackStack()
                     })
-                    customBackStackButton(activeStep, isDialogOpened)
+                    customBackStackButton(activeStep, isDialogOpened)*/
                 }
 
             }

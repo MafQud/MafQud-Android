@@ -4,10 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -17,9 +14,11 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
+import com.mafqud.android.auth.openReportActivity
 import com.mafqud.android.ui.compose.*
 import com.mafqud.android.ui.other.TimerUi
 import com.mafqud.android.ui.theme.*
+import com.mafqud.android.util.network.ShowNetworkErrorSnakeBarUi
 import com.mafqud.android.util.validation.PasswordError
 import com.mafqud.android.util.validation.validateNAmeAndEmailForm
 import com.mafqud.android.util.validation.validatePassAndConfirm
@@ -40,6 +39,7 @@ enum class StepCount {
 
 @Composable
 fun RegisterScreen(
+    registerViewModel: RegisterViewModel = RegisterViewModel(RegisterRepository()),
     registerFormData: MutableState<RegisterIntent.Signup>,
     activeStep: MutableState<StepCount>,
     otpState: MutableState<String>,
@@ -49,7 +49,42 @@ fun RegisterScreen(
     onStepFour: (Int, Int) -> Unit,
     onStepFive: (String) -> Unit,
     onBackPressed: () -> Unit,
+    onSuccessRegister: () -> Unit = {} ,
+    sendVerificationCode: (String, MutableState<StepCount>) -> Unit = {_it, it ->} ,
 ) {
+    /**
+     * ui states
+     *
+     */
+    val state = registerViewModel.stateChannel.collectAsState()
+    val stateValue = state.value
+
+
+    LoadingDialog(stateValue.isLoading)
+
+    if (stateValue.isValidPhone) {
+        if (stateValue.phone != null) {
+            sendVerificationCode(stateValue.phone, activeStep)
+        }
+
+    }
+    if (stateValue.isValidEmail) {
+        activeStep.value = StepCount.Four
+    }
+
+
+    if (stateValue.isSuccess && stateValue.data != null) {
+        onSuccessRegister()
+    }
+    if (stateValue.networkError != null) {
+       /* stateValue.networkError.ShowNetworkErrorSnakeBarUi(
+            view = requireView()
+        )*/
+
+    }
+    /**
+     * ui data
+     */
     // create variable for isTimerRunning
     val isTimerRunning = remember {
         mutableStateOf(false)
