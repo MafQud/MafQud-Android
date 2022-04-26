@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.compose.BackHandler
 import androidx.compose.material.Scaffold
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
@@ -32,17 +35,30 @@ class ReportfoundSecondFragment : BaseFragment() {
             )
             setContent {
                 MafQudTheme {
-                    Scaffold(topBar = {
-                        TitledAppBar(
-                            title = stringResource(id = R.string.report_found),
-                            onIconClicked = {
+                    val isDialogOpened = remember {
+                        mutableStateOf(false)
+                    }
+                    Scaffold(
+                        topBar = {
+                            TitledAppBar(
+                                title = stringResource(id = R.string.report_found),
+                                onIconClicked = {
+                                    isDialogOpened.value = true
+                                }
+                            )
+                        },
+                        content = {
+                            requireActivity().FoundScreenTwo(onBack = {
                                 findNavController().popBackStack()
-                            }
-                        )
-                    }, content = {
-                        requireActivity().FoundScreenTwo()
-                    })
+
+                            }, isDialogOpened)
+                        },
+                    )
+                    BackHandler {
+                        isDialogOpened.value = true
+                    }
                 }
+
             }
         }
     }

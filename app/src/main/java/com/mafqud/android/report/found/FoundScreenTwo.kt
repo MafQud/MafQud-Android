@@ -1,5 +1,6 @@
 package com.mafqud.android.report.found
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -33,7 +34,7 @@ val genders = listOf(Gender.NONE, Gender.MALE, Gender.FEMALE)
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 @Preview
-fun FragmentActivity.FoundScreenTwo() {
+fun FragmentActivity.FoundScreenTwo(onBack: () -> Unit, isDialogOpened: MutableState<Boolean>) {
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
     var scrollToPosition by remember { mutableStateOf(0F) }
@@ -114,6 +115,10 @@ fun FragmentActivity.FoundScreenTwo() {
         }
 
     }
+    DismissDialog(isOpened = isDialogOpened, onConfirmClicked = {
+        onBack()
+    })
+
 }
 
 @Composable

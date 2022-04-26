@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.compose.BackHandler
 import androidx.compose.material.Scaffold
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
@@ -35,11 +38,14 @@ class ReportLostSecondFragment : BaseFragment() {
             )
             setContent {
                 MafQudTheme {
+                    val isDialogOpened = remember {
+                        mutableStateOf(false)
+                    }
                     Scaffold(topBar = {
                         TitledAppBar(
                             title = stringResource(id = R.string.report_lost),
                             onIconClicked = {
-                                findNavController().popBackStack()
+                                isDialogOpened.value = true
                             }
                         )
                     }, content = {
@@ -49,8 +55,13 @@ class ReportLostSecondFragment : BaseFragment() {
                                     args.imagesUrisPicked
                                 )
                             findNavController().navigate(actonToUploading)
-                        })
+                        }, onBack = {
+                            findNavController().popBackStack()
+                        }, isDialogOpened)
                     })
+                    BackHandler {
+                        isDialogOpened.value = true
+                    }
                 }
             }
         }

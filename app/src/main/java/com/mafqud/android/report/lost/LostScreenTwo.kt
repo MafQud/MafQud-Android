@@ -1,5 +1,6 @@
 package com.mafqud.android.report.lost
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -17,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
+import androidx.navigation.fragment.findNavController
 import com.mafqud.android.R
 import com.mafqud.android.report.PhoneReportForm
 import com.mafqud.android.ui.compose.*
@@ -36,7 +38,11 @@ val genders = listOf(Gender.NONE, Gender.MALE, Gender.FEMALE)
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 @Preview
-fun FragmentActivity.LostScreenTwo(onNext: () -> Unit = {}) {
+fun FragmentActivity.LostScreenTwo(
+    onNext: () -> Unit = {},
+    onBack: () -> Unit = {},
+    isDialogOpened: MutableState<Boolean> = mutableStateOf(true)
+) {
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
     var scrollToPosition by remember { mutableStateOf(0F) }
@@ -117,6 +123,10 @@ fun FragmentActivity.LostScreenTwo(onNext: () -> Unit = {}) {
         }
 
     }
+
+    DismissDialog(isOpened = isDialogOpened, onConfirmClicked = {
+        onBack()
+    })
 }
 
 @Composable

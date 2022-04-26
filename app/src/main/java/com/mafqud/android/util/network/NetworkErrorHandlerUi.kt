@@ -14,10 +14,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import com.mafqud.android.R
+import com.mafqud.android.ui.compose.ButtonSmall
 import com.mafqud.android.ui.other.snakeBarMessage
 import com.mafqud.android.ui.status.loading.CircleLoading
 import com.mafqud.android.ui.theme.BoxUi
@@ -126,8 +128,9 @@ fun ErrorEndItem(message: String, onClickRetry: () -> Unit) {
 }
 
 @Composable
+@Preview
 fun ErrorItem(
-    message: String,
+    message: String = "aaa",
     onClickRetry: () -> Unit = {}
 ) {
     ColumnUi(
@@ -135,30 +138,34 @@ fun ErrorItem(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         ImageUi(
-            painter = painterResource(id = R.drawable.ic_failure_robot),
-            modifier = Modifier.size(287.dp, 188.dp)
+            painter = painterResource(id = R.drawable.ic_no_internet),
+            modifier = Modifier.size(243.dp, 236.dp)
         )
         TextUi(
             text = message,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.error,
+            color = MaterialTheme.colorScheme.onTertiaryContainer,
             style = MaterialTheme.typography.titleMedium
         )
         // next
-        TextUi(
+        ButtonSmall(title = stringResource(id = R.string.try_it)) {
+            onClickRetry()
+        }
+        /*TextUi(
             modifier = Modifier
-                .width(150.dp)
+                .width(170.dp)
+                .height(50.dp )
                 .clip(RoundedCornerShape(12.dp))
                 .background(MaterialTheme.colorScheme.primary)
                 .clickable {
                     onClickRetry()
                 }
                 .padding(8.dp),
-            text = stringResource(id = R.string.try_again),
+            text = stringResource(id = R.string.try_it),
             color = MaterialTheme.colorScheme.onPrimary,
             style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.Center
-        )
+        )*/
     }
 }
 
