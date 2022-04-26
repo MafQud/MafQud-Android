@@ -301,6 +301,10 @@ dependencies {
 
     //Navigating with Compose
     implementation("androidx.navigation:navigation-compose:$nav_version_compose")
+
+    //System UI Controller for Jetpack Compose¶
+    //implementation "com.google.accompanist:accompanist-systemuicontroller:0.24.7-alpha"
+
 }
 
 

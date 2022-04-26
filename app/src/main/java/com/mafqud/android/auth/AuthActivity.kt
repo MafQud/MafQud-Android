@@ -6,10 +6,10 @@ import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -58,9 +58,14 @@ class AuthActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         statusBarColor(resources.getColor(R.color.blue))
-        //setContentView(R.layout.activity_auth)
         setContent {
             MafQudTheme {
+              /*  // Update the status bars to be translucent
+                val systemUiController = rememberSystemUiController()
+                val useDarkIcons = isSystemInDarkTheme()
+                SideEffect {
+                    systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = useDarkIcons)
+                }*/
                 val navController = rememberNavController()
                 NavigationAuth(navController)
             }

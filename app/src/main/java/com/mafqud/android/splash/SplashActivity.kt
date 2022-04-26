@@ -7,6 +7,10 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
@@ -53,7 +57,7 @@ class SplashActivity : BaseActivity() {
         // to have a seamless transition from the system splash screen.
         // This is done in onResume() so we are sure that our Activity is attached
         // to its window.
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+        //WindowCompat.setDecorFitsSystemWindows(window, false)
     }
 
     private fun initialSetup() {
@@ -62,6 +66,12 @@ class SplashActivity : BaseActivity() {
         checkIfUserPassedIntro()
         //getHashKey()
         setContent {
+            /*// Update the system bars to be translucent
+            val systemUiController = rememberSystemUiController()
+            val useDarkIcons = isSystemInDarkTheme()
+            SideEffect {
+                systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = useDarkIcons)
+            }*/
             MafQudTheme {
                 SplashScreen {}
                 Handler(Looper.getMainLooper()).postDelayed({
