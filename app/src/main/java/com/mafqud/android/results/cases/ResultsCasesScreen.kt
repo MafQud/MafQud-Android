@@ -26,7 +26,8 @@ import com.mafqud.android.ui.theme.SpacerUi
 @Preview
 fun ResultsCasesScreen(
     notificationType: NotificationType = NotificationType.NONE,
-    onNotFoundButton: () -> Unit = {}
+    onNotFoundButton: () -> Unit = {},
+    onCaseClicked: () -> Unit = {},
 ) {
     BoxUi(
         modifier = Modifier
@@ -43,7 +44,7 @@ fun ResultsCasesScreen(
                 ),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            BodyUi(Modifier.weight(1f))
+            BodyUi(Modifier.weight(1f), onCaseClicked)
         }
 
         val bottomTitle = when (notificationType) {
@@ -60,8 +61,7 @@ fun ResultsCasesScreen(
             Modifier
                 .fillMaxSize()
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 20.dp)
-        , contentAlignment = Alignment.BottomCenter
+                .padding(bottom = 20.dp), contentAlignment = Alignment.BottomCenter
         ) {
             ButtonAuth(
                 title = bottomTitle, backgroundColor = MaterialTheme.colorScheme.error,
@@ -76,21 +76,29 @@ fun ResultsCasesScreen(
 }
 
 @Composable
-private fun BodyUi(modifier: Modifier) {
+private fun BodyUi(
+    modifier: Modifier,
+    onCaseClicked: () -> Unit
+) {
     ColumnUi(
         modifier
             .verticalScroll(rememberScrollState())
             .background(MaterialTheme.colorScheme.onSecondary),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        CaseItem()
-        CaseItem()
-        CaseItem()
-        CaseItem()
-        CaseItem()
-        CaseItem()
-        CaseItem()
-        CaseItem()
+        CaseItem(onCaseClicked = onCaseClicked)
+        CaseItem(onCaseClicked = onCaseClicked)
+        CaseItem(onCaseClicked = onCaseClicked)
+        CaseItem(onCaseClicked = onCaseClicked)
+        CaseItem(onCaseClicked = onCaseClicked)
+        CaseItem(onCaseClicked = onCaseClicked)
+        CaseItem(onCaseClicked = onCaseClicked)
+        CaseItem(onCaseClicked = onCaseClicked)
+        CaseItem(onCaseClicked = onCaseClicked)
+        CaseItem(onCaseClicked = onCaseClicked)
+        CaseItem(onCaseClicked = onCaseClicked)
+        CaseItem(onCaseClicked = onCaseClicked)
+        CaseItem(onCaseClicked = onCaseClicked)
         SpacerUi(modifier = Modifier.height(100.dp))
     }
 }

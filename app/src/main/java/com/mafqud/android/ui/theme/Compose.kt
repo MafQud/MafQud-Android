@@ -584,9 +584,11 @@ fun SpacerSmallLine() {
     ) {
         SpacerUi(
             modifier = Modifier
-                .width(50.dp)
+                .fillMaxWidth()
                 .height(2.dp)
-                .background(MaterialTheme.colors.redBoldToLight)
+                .background(androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                    alpha = 0.2f
+                ))
                 .align(Alignment.CenterHorizontally)
                 .clip(RoundedCornerShape(2.dp))
         )

@@ -1,10 +1,12 @@
 package com.mafqud.android.ui.theme
 
 import androidx.compose.material.Colors
+import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import com.google.android.gms.common.SignInButton
 
-val redBold = Color(0xFFFF6B6B)
+val redBold = Color(0xFFFF623E)
 val white = Color(0xFFffffff)
 val redLight = Color(0xFFFFEAEA)
 val blueLight = Color(0xFFA3B6C4)
@@ -18,14 +20,17 @@ val purpleLight = Color(0xFFF0E9FA)
 val blue = Color(0xFF3B5999)
 val white100 = Color(0xFFFAFAFA)
 val greenLight = Color(0xFFD9FFE3)
-val greenBold = Color(0xFF28B446)
+val greenBold = Color(0xFF47B866)
 val yellowBold = Color(0xFFFFB800)
 val yellow500 = Color(0xFFEFA802)
 val yellowLight = Color(0xFFFFF8E5)
 val gray800 = Color(0xFF555555)
 
-val Colors.redBoldToGray: Color
-    @Composable get() = if (isLight) redBold else gray
+val ColorScheme.green: Color
+    @Composable get() = greenBold
+
+val ColorScheme.red: Color
+    @Composable get() = redBold
 
 val Colors.purpleAlways: Color
     @Composable get() = if (isLight) purple else purple

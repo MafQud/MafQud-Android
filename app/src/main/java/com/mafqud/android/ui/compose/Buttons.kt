@@ -1,6 +1,7 @@
 package com.mafqud.android.ui.compose
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -12,10 +13,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.ui.theme.BoxUi
 import com.mafqud.android.ui.theme.ButtonUi
+import com.mafqud.android.ui.theme.RowUi
 import com.mafqud.android.ui.theme.TextUi
 
 private val mButtonHeight = 50.dp
@@ -27,7 +30,8 @@ fun ButtonAuth(
     textColor: Color = MaterialTheme.colorScheme.background,
     backgroundColor: Color = MaterialTheme.colorScheme.primary,
     enabled: Boolean = true,
-    onClick: () -> Unit,
+    icon: ImageVector? = null,
+    onClick: () -> Unit = {},
 ) {
     BoxUi {
         ButtonUi(
@@ -43,11 +47,16 @@ fun ButtonAuth(
                 backgroundColor = backgroundColor
             )
         ) {
-            TextUi(
-                text = title,
-                color = textColor,
-                style = MaterialTheme.typography.labelLarge
-            )
+            RowUi(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                if (icon != null) {
+                    IconGeneral(iconSize = 22.dp, icon = icon)
+                }
+                TextUi(
+                    text = title,
+                    color = textColor,
+                    style = MaterialTheme.typography.labelLarge
+                )
+            }
         }
     }
 }

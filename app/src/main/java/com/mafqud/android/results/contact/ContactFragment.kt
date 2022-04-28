@@ -1,4 +1,4 @@
-package com.mafqud.android.results.cases
+package com.mafqud.android.results.contact
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,14 +13,17 @@ import androidx.navigation.fragment.navArgs
 import com.mafqud.android.R
 import com.mafqud.android.base.fragment.BaseFragment
 import com.mafqud.android.notification.NotificationType
+import com.mafqud.android.results.caseDetails.CaseDetailsFragmentArgs
+import com.mafqud.android.results.caseDetails.CaseDetailsScreen
+import com.mafqud.android.results.cases.ResultsCasesFragmentArgs
 import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.theme.MafQudTheme
+import com.mafqud.android.util.other.openDialer
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ResultsCasesFragment : BaseFragment() {
+class ContactFragment : BaseFragment() {
 
-    private val args: ResultsCasesFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,35 +38,20 @@ class ResultsCasesFragment : BaseFragment() {
             )
             setContent {
                 MafQudTheme {
-                    val appbarTitle = when (args.notificationType) {
-                        NotificationType.SUCCESS_FINDING_LOST ->
-                            stringResource(id = R.string.title_losts)
-                        NotificationType.SUCCESS_FINDING_FOUND ->
-                            stringResource(id = R.string.title_founds)
-                        else -> {
-                            ""
-                        }
-                    }
                     Scaffold(topBar = {
                         TitledAppBar(
                             onIconClicked = {
                                 findNavController().navigateUp()
                             },
-                            title = appbarTitle
+                            title = stringResource(id = R.string.contact_another)
                         )
                     }, content = {
-                        ResultsCasesScreen(args.notificationType, onNotFoundButton = {
-                            val actionToPublish =
-                                ResultsCasesFragmentDirections.actionResultsCasesFragmentToPublishCaseFragment(
-                                    args.notificationType
-                                )
-                            findNavController().navigate(actionToPublish)
-                        }, onCaseClicked = {
-                            val actionToCaseDetails =
-                                ResultsCasesFragmentDirections.actionResultsCasesFragmentToCaseDetailsFragment(
-                                    args.notificationType
-                                )
-                            findNavController().navigate(actionToCaseDetails)
+                        ContactScreen(openDialer = { number ->
+                            requireContext().openDialer(number)
+                        }, onContactFailed = {
+                            findNavController().navigate(R.id.action_contactFragment_to_contactFailedFragment)
+                        }, onContactSuccess = {
+
                         })
                     })
                 }

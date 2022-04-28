@@ -3,15 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/home_navigation.xml"
     app:startDestination="@id/homeFragment">
-
-
     <action
-        app:launchSingleTop="true"
-        android:id="@+id/action_notification"
-        app:destination="@id/notificationFragment"
-        app:enterAnim="@anim/fade_in"
-        app:popEnterAnim="@anim/fade_in"
-         />
+        android:id="@+id/actionToNotificationGraph"
+        app:destination="@+id/notifications_graph" />
+
+    <include app:graph="@navigation/notifications_graph" />
+
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.mafqud.android.home.HomeFragment"
@@ -23,7 +20,7 @@
     <fragment
         android:id="@+id/reportFragment"
         android:name="com.mafqud.android.report.report.ReportFragment"
-        android:label="ReportFragment" >
+        android:label="ReportFragment">
         <action
             android:id="@+id/action_reportFragment_to_report_graph"
             app:destination="@id/report_graph" />
@@ -31,41 +28,30 @@
     <fragment
         android:id="@+id/moreFragment"
         android:name="com.mafqud.android.more.MoreFragment"
-        android:label="MoreFragment" >
+        android:label="MoreFragment">
         <action
-            app:enterAnim="@anim/fade_in"
-            app:popEnterAnim="@anim/fade_in"
             android:id="@+id/action_moreFragment_to_myAccountFragment"
-            app:destination="@id/myAccountFragment" />
-        <action
+            app:destination="@id/myAccountFragment"
             app:enterAnim="@anim/fade_in"
-            app:popEnterAnim="@anim/fade_in"
+            app:popEnterAnim="@anim/fade_in" />
+        <action
             android:id="@+id/action_moreFragment_to_helpFragment"
-            app:destination="@id/helpFragment" />
-        <action
+            app:destination="@id/helpFragment"
             app:enterAnim="@anim/fade_in"
-            app:popEnterAnim="@anim/fade_in"
+            app:popEnterAnim="@anim/fade_in" />
+        <action
             android:id="@+id/action_moreFragment_to_settingFragment"
-            app:destination="@id/settingFragment" />
-        <action
+            app:destination="@id/settingFragment"
             app:enterAnim="@anim/fade_in"
-            app:popEnterAnim="@anim/fade_in"
+            app:popEnterAnim="@anim/fade_in" />
+        <action
             android:id="@+id/action_moreFragment_to_phonesFragment"
-            app:destination="@id/phonesFragment" />
+            app:destination="@id/phonesFragment"
+            app:enterAnim="@anim/fade_in"
+            app:popEnterAnim="@anim/fade_in" />
         <action
             android:id="@+id/action_moreFragment_to_reportedCasesFragment"
             app:destination="@id/reportedCasesFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/notificationFragment"
-        android:name="com.mafqud.android.notification.NotificationFragment"
-        android:label="NotificationFragment" >
-        <action
-            android:id="@+id/action_notificationFragment_to_successLostFragment"
-            app:destination="@id/successLostFragment" />
-        <action
-            android:id="@+id/action_notificationFragment_to_failedFragment"
-            app:destination="@id/failedFragment" />
     </fragment>
     <fragment
         android:id="@+id/helpFragment"
@@ -74,12 +60,12 @@
     <fragment
         android:id="@+id/myAccountFragment"
         android:name="com.mafqud.android.myAccount.MyAccountFragment"
-        android:label="MyAccountFragment" >
+        android:label="MyAccountFragment">
         <action
-            app:enterAnim="@anim/fade_in"
-            app:popEnterAnim="@anim/fade_in"
             android:id="@+id/action_myAccountFragment_to_myAccountEditFragment"
-            app:destination="@id/myAccountEditFragment" />
+            app:destination="@id/myAccountEditFragment"
+            app:enterAnim="@anim/fade_in"
+            app:popEnterAnim="@anim/fade_in" />
         <action
             android:id="@+id/action_myAccountFragment_to_myAccountEditInfoFragment"
             app:destination="@id/myAccountEditInfoFragment" />
@@ -105,42 +91,4 @@
         android:id="@+id/myAccountEditInfoFragment"
         android:name="com.mafqud.android.myAccountEdit.MyAccountEditInfoFragment"
         android:label="MyAccountEditInfoFragment" />
-    <fragment
-        android:id="@+id/successLostFragment"
-        android:name="com.mafqud.android.results.states.SuccessReportingFragment"
-        android:label="SuccessLostFragment" >
-        <argument
-            android:name="notificationType"
-            app:argType="com.mafqud.android.notification.NotificationType" />
-        <action
-            android:id="@+id/action_successLostFragment_to_resultsCasesFragment"
-            app:destination="@id/resultsCasesFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/failedFragment"
-        android:name="com.mafqud.android.results.states.FailedFragment"
-        android:label="FailedFragment" >
-        <argument
-            android:name="failureType"
-            app:argType="com.mafqud.android.results.states.FailureType" />
-    </fragment>
-    <fragment
-        android:id="@+id/resultsCasesFragment"
-        android:name="com.mafqud.android.results.cases.ResultsCasesFragment"
-        android:label="ResultsCasesFragment" >
-        <argument
-            android:name="notificationType"
-            app:argType="com.mafqud.android.notification.NotificationType" />
-        <action
-            android:id="@+id/action_resultsCasesFragment_to_publishCaseFragment"
-            app:destination="@id/publishCaseFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/publishCaseFragment"
-        android:name="com.mafqud.android.results.publishCase.PublishCaseFragment"
-        android:label="PublishCaseFragment" >
-        <argument
-            android:name="notificationtype"
-            app:argType="com.mafqud.android.notification.NotificationType" />
-    </fragment>
 </navigation>

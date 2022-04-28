@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -313,6 +314,26 @@ fun IconLogin(
     ) {
         IconUi(
             imageVector = Icons.Filled.Login,
+            tint = iconColor,
+        )
+    }
+}
+
+
+@Composable
+fun IconGeneral(
+    icon: ImageVector,
+    iconSize: Dp = mIconSize,
+    iconColor: Color = MaterialTheme.colorScheme.onPrimary,
+) {
+    BoxUi(
+        modifier = Modifier
+            .size(iconSize)
+            .padding(2.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        IconUi(
+            imageVector = icon,
             tint = iconColor,
         )
     }

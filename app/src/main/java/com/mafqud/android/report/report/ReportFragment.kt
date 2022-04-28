@@ -35,7 +35,7 @@ class ReportFragment : BaseFragment() {
                         HomeAppBar(
                             userName = "",
                             onNotificationClicked = {
-                                findNavController().navigate(R.id.action_notification)
+                                findNavController().navigate(R.id.actionToNotificationGraph)
                             }
                         )
                     }, content = {

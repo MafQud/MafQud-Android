@@ -143,5 +143,16 @@
     <string name="empty_data">لا يوجد بيانات لعرضها</string>
     <string name="publish_found_data">نشر بيانات المعثور عليه</string>
     <string name="try_it">إعادة المحاولة</string>
+    <string name="title_losts_data">بيانات المعثور عليه</string>
+    <string name="title_founds_data">بيانات المفقود</string>
+    <string name="data_founded">تاريخ العثور</string>
+    <string name="address_founded">عنوان المكان الذي تم العثور عليه فيه</string>
+    <string name="contact">تواصل</string>
+    <string name="contact_another">التواصل مع الطرف الأخر</string>
+    <string name="name">الأسم</string>
+    <string name="contact_phone">رقم التواصل</string>
+    <string name="contact_success">تم التواصل</string>
+    <string name="contact_failed">لم أتمكن من التواصل</string>
+    <string name="will_send_notification">سوف نقوم بإرسال اشعار للطرف الأخر</string>
 
 </resources>

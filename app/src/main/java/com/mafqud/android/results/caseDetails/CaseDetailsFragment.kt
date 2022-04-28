@@ -1,4 +1,4 @@
-package com.mafqud.android.results.cases
+package com.mafqud.android.results.caseDetails
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,14 +13,16 @@ import androidx.navigation.fragment.navArgs
 import com.mafqud.android.R
 import com.mafqud.android.base.fragment.BaseFragment
 import com.mafqud.android.notification.NotificationType
+import com.mafqud.android.results.cases.ResultsCasesFragmentArgs
+import com.mafqud.android.results.cases.ResultsCasesFragmentDirections
 import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.theme.MafQudTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ResultsCasesFragment : BaseFragment() {
+class CaseDetailsFragment : BaseFragment() {
 
-    private val args: ResultsCasesFragmentArgs by navArgs()
+    private val args: CaseDetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,9 +39,9 @@ class ResultsCasesFragment : BaseFragment() {
                 MafQudTheme {
                     val appbarTitle = when (args.notificationType) {
                         NotificationType.SUCCESS_FINDING_LOST ->
-                            stringResource(id = R.string.title_losts)
+                            stringResource(id = R.string.title_losts_data)
                         NotificationType.SUCCESS_FINDING_FOUND ->
-                            stringResource(id = R.string.title_founds)
+                            stringResource(id = R.string.title_founds_data)
                         else -> {
                             ""
                         }
@@ -52,18 +54,10 @@ class ResultsCasesFragment : BaseFragment() {
                             title = appbarTitle
                         )
                     }, content = {
-                        ResultsCasesScreen(args.notificationType, onNotFoundButton = {
-                            val actionToPublish =
-                                ResultsCasesFragmentDirections.actionResultsCasesFragmentToPublishCaseFragment(
-                                    args.notificationType
-                                )
-                            findNavController().navigate(actionToPublish)
-                        }, onCaseClicked = {
-                            val actionToCaseDetails =
-                                ResultsCasesFragmentDirections.actionResultsCasesFragmentToCaseDetailsFragment(
-                                    args.notificationType
-                                )
-                            findNavController().navigate(actionToCaseDetails)
+                        CaseDetailsScreen(onContact = {
+                            val actionToContact =
+                                CaseDetailsFragmentDirections.actionCaseDetailsFragmentToContactFragment()
+                            findNavController().navigate(actionToContact)
                         })
                     })
                 }
