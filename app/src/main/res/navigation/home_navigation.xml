@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/home_navigation.xml"
     app:startDestination="@id/homeFragment">
+
     <action
         android:id="@+id/actionToNotificationGraph"
         app:destination="@+id/notifications_graph" />

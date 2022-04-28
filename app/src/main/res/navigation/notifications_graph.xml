@@ -5,6 +5,12 @@
     android:id="@+id/notifications_graph">
 
 
+    <action android:id="@+id/action_pop_out_of_game"
+        app:destination="@+id/homeFragment"
+        app:launchSingleTop="true"
+        app:popUpTo="@id/notifications_graph"
+        app:popUpToInclusive="true" />
+
     <action
         android:id="@+id/action_contactFragment_to_contactFailedFragment"
         app:destination="@id/contactFailedFragment" />

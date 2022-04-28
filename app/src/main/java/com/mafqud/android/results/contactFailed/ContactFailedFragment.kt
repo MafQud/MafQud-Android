@@ -29,6 +29,7 @@ import com.mafqud.android.notification.NotificationType
 import com.mafqud.android.results.caseDetails.CaseDetailsFragmentArgs
 import com.mafqud.android.results.caseDetails.CaseDetailsScreen
 import com.mafqud.android.results.cases.ResultsCasesFragmentArgs
+import com.mafqud.android.ui.compose.ButtonSmall
 import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.theme.*
 import com.mafqud.android.util.other.openDialer
@@ -86,6 +87,13 @@ class ContactFailedFragment : BaseFragment() {
                     style = MaterialTheme.typography.headlineSmall,
                     textAlign = TextAlign.Center
                 )
+
+                // next
+                ButtonSmall(title = stringResource(id = R.string.confirm)) {
+                    findNavController().navigate(
+                        R.id.action_pop_out_of_game,
+                    )
+                }
             }
         }
     }
