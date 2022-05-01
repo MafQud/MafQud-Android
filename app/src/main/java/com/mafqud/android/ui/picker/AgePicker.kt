@@ -163,11 +163,12 @@ fun AgePickerDialog(
                                 valueRange = startAge.toFloat()..endAge.toFloat(),
                                 //steps = 100,
                                 colors = SliderDefaults.colors(
-                                    activeTickColor = MaterialTheme.colorScheme.primary,
+                                    activeTickColor = MaterialTheme.colorScheme.error,
                                     inactiveTrackColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(
                                         alpha = 0.2f
                                     ),
                                     thumbColor = MaterialTheme.colorScheme.primary,
+                                    activeTrackColor = MaterialTheme.colorScheme.primary
                                 ), modifier = Modifier.padding(
                                     bottom = 8.dp,
                                     start = 8.dp, end = 8.dp
