@@ -154,5 +154,8 @@
     <string name="contact_success">تم التواصل</string>
     <string name="contact_failed">لم أتمكن من التواصل</string>
     <string name="will_send_notification">سوف نقوم بإرسال اشعار للطرف الأخر</string>
+    <string name="range_age">البحث حسب العمر</string>
+    <string name="from">من</string>
+    <string name="to">الي</string>
 
 </resources>

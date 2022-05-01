@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
@@ -25,6 +26,7 @@ import com.mafqud.android.R
 import com.mafqud.android.notification.EmptyNotificationState
 import com.mafqud.android.ui.compose.CaseItem
 import com.mafqud.android.ui.compose.DropDownItems
+import com.mafqud.android.ui.picker.AgePickerDialog
 import com.mafqud.android.ui.theme.*
 
 @Composable
@@ -105,13 +107,6 @@ private fun DropDownUi() {
             mutableStateOf("")
         }
         DropDownItems(
-            items = listOf("Age"),
-            selectedItemID = selectedItem,
-            modifier = Modifier
-                .weight(1f)
-                .height(30.dp),
-        )
-        DropDownItems(
             items = listOf("Date"),
             selectedItemID = selectedItem,
             modifier = Modifier
@@ -125,8 +120,54 @@ private fun DropDownUi() {
                 .weight(1f)
                 .height(30.dp),
         )
+        AgeTextPicker(
+            Modifier
+                .weight(1f)
+                .height(30.dp)
+        )
+
 
     }
+}
+
+@Composable
+fun AgeTextPicker(modifier: Modifier) {
+    val isOpened = remember {
+        mutableStateOf(false)
+    }
+    val startSlider = remember {
+        mutableStateOf(0f)
+    }
+    val endSlider = remember {
+        mutableStateOf(20f)
+    }
+    BoxUi(
+        modifier = modifier
+            .clip(RoundedCornerShape(50))
+            .background(MaterialTheme.colorScheme.primary)
+            .padding(horizontal = 4.dp)
+            .clickable {
+                isOpened.value = true
+            },
+        contentAlignment = Alignment.Center
+    ) {
+        val ageRange =
+            startSlider.value.toInt().toString() + " : " + endSlider.value.toInt().toString()
+        TextUi(
+            modifier = Modifier.padding(start = 4.dp),
+            text =
+            stringResource(id = R.string.age) + " " + ageRange,
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.onPrimary,
+        ) // City name label
+    }
+
+
+    AgePickerDialog(
+        startPickedAge = startSlider,
+        endPickedAge = endSlider,
+        isOpened = isOpened,
+    )
 }
 
 @Composable
@@ -220,15 +261,16 @@ private fun TapsUi() {
 @Composable
 private fun BodyUi(modifier: Modifier) {
     ColumnUi(
-        modifier
-            //.verticalScroll(rememberScrollState())
-            //.background(MaterialTheme.colorScheme.onSecondary)
-            //.padding(top = 16.dp, start = 16.dp, end = 16.dp)
-        ,
+        modifier,
+        //.verticalScroll(rememberScrollState())
+        //.background(MaterialTheme.colorScheme.onSecondary)
+        //.padding(top = 16.dp, start = 16.dp, end = 16.dp)
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        BoxUi(modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center) {
+        BoxUi(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
             EmptyCasesState()
 
         }
