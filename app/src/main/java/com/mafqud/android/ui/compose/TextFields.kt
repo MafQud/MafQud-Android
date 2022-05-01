@@ -8,6 +8,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Error
@@ -15,6 +16,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -39,6 +41,7 @@ import com.mafqud.android.util.validation.NATIONAL_ID_MAX_LENGTH
 import com.mafqud.android.util.validation.PHONE_MAX_LENGTH
 import com.mafqud.android.util.validation.PassErrorType
 import com.mafqud.android.util.validation.PasswordError
+import java.lang.Exception
 
 private val mTFHeight = 50.dp
 
@@ -511,4 +514,94 @@ fun TextFieldPassword(
             }
         }
     }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun TextFieldAge(
+    age: MutableState<String>,
+    modifier: Modifier,
+    minAge: Int = 1,
+    maxAge: Int = 99,
+) {
+    val ageNumber = remember {
+        mutableStateOf(0)
+    }
+    BoxUi(
+        modifier = modifier
+            .clip(RoundedCornerShape(50))
+            .background(MaterialTheme.colorScheme.secondaryContainer)
+            .padding(horizontal = 4.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        RowUi(
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            modifier = Modifier.padding(horizontal = 4.dp)
+        ) {
+            TextUi(
+                text = stringResource(id = R.string.age),
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onTertiaryContainer
+            )
+            IconPlus {
+                if (age.value.isEmpty()) {
+                    age.value = "0"
+                }
+                if (ageNumber.value < maxAge) {
+                    val convertedString = age.value.toIntOrNull()
+                    if (convertedString != null) {
+                        ageNumber.value = convertedString.toInt() + 1
+                        age.value = ageNumber.value.toString()
+                    }
+                }
+
+            }
+            val keyboardController = LocalSoftwareKeyboardController.current
+
+            TextFieldUi(
+                modifier = Modifier
+                    .height(mTFHeight)
+                    .weight(1f),
+                value = age.value.toString(),
+                onValueChange = {
+                    if (it.length <= 2) {
+                        age.value = it
+                    }
+                },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        keyboardController?.hide()
+                    }
+                ),
+                shape = RoundedCornerShape(50),
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    errorCursorColor = MaterialTheme.colorScheme.error,
+                    errorIndicatorColor = Color.Transparent,
+                    errorLeadingIconColor = MaterialTheme.colorScheme.error,
+                    cursorColor = MaterialTheme.colorScheme.primary
+
+                )
+            )
+
+            IconMinus {
+                if (ageNumber.value >= minAge) {
+                    val convertedString = age.value.toIntOrNull()
+                    if (convertedString != null) {
+                        ageNumber.value = convertedString.toInt() - 1
+                        age.value = ageNumber.value.toString()
+                    }
+                }
+
+            }
+        }
+    }
+
 }

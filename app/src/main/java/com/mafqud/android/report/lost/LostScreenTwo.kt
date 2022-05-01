@@ -1,6 +1,5 @@
 package com.mafqud.android.report.lost
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -18,7 +17,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
-import androidx.navigation.fragment.findNavController
 import com.mafqud.android.R
 import com.mafqud.android.report.PhoneReportForm
 import com.mafqud.android.ui.compose.*
@@ -224,17 +222,13 @@ private fun LostGenderAndAge(gender: MutableState<Gender>, age: MutableState<Str
                 }
             )
 
-            DropDownItems(
-                items = agesList,
-                selectedItemID = age,
+
+            TextFieldAge(
                 modifier = Modifier
                     .weight(1f)
                     .height(50.dp),
-                iconColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
-                textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                age = age
             )
-
 
         }
     }
