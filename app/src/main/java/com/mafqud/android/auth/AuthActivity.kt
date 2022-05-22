@@ -1,15 +1,10 @@
 package com.mafqud.android.auth
 
 import android.os.Bundle
-import androidx.activity.OnBackPressedCallback
-import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.*
-import androidx.compose.ui.graphics.Color
-import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -31,7 +26,7 @@ import com.mafqud.android.base.activity.BaseActivity
 import com.mafqud.android.ui.compose.DismissDialog
 import com.mafqud.android.ui.other.showToast
 import com.mafqud.android.ui.theme.MafQudTheme
-import com.mafqud.android.util.other.Logger
+import com.mafqud.android.util.other.LogMe
 import com.mafqud.android.util.other.statusBarColor
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -237,7 +232,7 @@ class AuthActivity : BaseActivity() {
                     }
                     // Show a message and update the UI
                     // ...
-                    Logger.i("onVeriFailed", message)
+                    LogMe.i("onVeriFailed", message)
                     showToast(message)
                 }
             }) // OnVerificationStateChangedCallbacks

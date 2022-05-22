@@ -1,5 +1,5 @@
 package com.mafqud.android.util.constants
 
-const val BASE_URL = "http://127.0.0.1:8000/"
+const val BASE_URL = "https://ec2-15-161-158-189.eu-south-1.compute.amazonaws.com/"
 const val SPLASH_DELAY = 1200L
 const val PAGE_SIZE_PAGING = 20

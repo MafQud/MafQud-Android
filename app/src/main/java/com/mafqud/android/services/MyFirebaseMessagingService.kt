@@ -4,7 +4,7 @@ package com.mafqud.android.services
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.mafqud.android.util.notification.Notifier
-import com.mafqud.android.util.other.Logger
+import com.mafqud.android.util.other.LogMe
 
 
 class MyFirebaseMessagingService  : FirebaseMessagingService() {
@@ -22,7 +22,7 @@ class MyFirebaseMessagingService  : FirebaseMessagingService() {
     private fun pushFCMNotification(remoteMessage: RemoteMessage) {
         // Check if message contains a notification payload.
         remoteMessage.notification?.let {
-            Logger.e("Message Notification Body:", it.body!!)
+            LogMe.e("Message Notification Body:", it.body!!)
             Notifier.fcmNotification(
                 context = baseContext,
                 title = it.title,

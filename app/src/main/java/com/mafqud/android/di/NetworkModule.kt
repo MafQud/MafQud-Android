@@ -15,8 +15,14 @@ import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.security.SecureRandom
+import java.security.cert.X509Certificate
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
+import javax.net.ssl.HostnameVerifier
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
 
 @Module
@@ -41,7 +47,8 @@ class NetworkModule {
         logging.level = if (BuildConfig.DEBUG) Level.BODY else Level.NONE
 
         val okHttpClient = OkHttpClient.Builder()
-        val okHttpClientBuilder = okHttpClient.apply {
+
+        okHttpClient.apply {
             retryOnConnectionFailure(true)
             readTimeout(1, TimeUnit.MINUTES)
             connectTimeout(1, TimeUnit.MINUTES)
@@ -49,7 +56,29 @@ class NetworkModule {
             addInterceptor(myServiceInterceptor)
             addInterceptor(logging)
         }.build()
-        return okHttpClientBuilder
+        try {
+            // Create a trust manager that does not validate certificate chains
+            val trustAllCerts:  Array<TrustManager> = arrayOf(object : X509TrustManager {
+                override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?){}
+                override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
+                override fun getAcceptedIssuers(): Array<X509Certificate>  = arrayOf()
+            })
+
+            // Install the all-trusting trust manager
+            val  sslContext = SSLContext.getInstance("SSL")
+            sslContext.init(null, trustAllCerts, SecureRandom())
+
+            // Create an ssl socket factory with our all-trusting manager
+            val sslSocketFactory = sslContext.socketFactory
+            if (trustAllCerts.isNotEmpty() &&  trustAllCerts.first() is X509TrustManager) {
+                okHttpClient.sslSocketFactory(sslSocketFactory, trustAllCerts.first() as X509TrustManager)
+                okHttpClient.hostnameVerifier {  str, ssl -> true  }
+            }
+
+            return okHttpClient.build()
+        } catch (e: Exception) {
+            return okHttpClient.build()
+        }
     }
 
     @Provides

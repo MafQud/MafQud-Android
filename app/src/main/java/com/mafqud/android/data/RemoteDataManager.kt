@@ -1,11 +1,10 @@
 package com.mafqud.android.data
 
+import com.mafqud.android.auth.login.models.LoginBody
+import com.mafqud.android.auth.login.models.LoginResponse
 import com.mafqud.android.home.model.CasesDataResponse
 import com.mafqud.android.notification.NotificationResponse
-import retrofit2.http.Field
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.POST
+import retrofit2.http.*
 
 
 const val NO_AUTH_HEADER = "No-Auth"
@@ -38,13 +37,11 @@ interface RemoteDataManager {
     ): GeneralResponse*/
 
 
-    @POST("auth/social_login")
+    @POST("api/auth/token/")
     @Headers(AUTH_NOT_REQUIRED)
     suspend fun login(
-        @Field("username") username: String,
-        @Field("password") password: String,
-        @Field("firebase_token") firebaseToken: String,
-    ): String
+        @Body loginBody: LoginBody
+    ): LoginResponse
 
     @GET("auth/social_login")
     suspend fun getNotifications(page: Int): NotificationResponse

@@ -11,7 +11,6 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
@@ -19,13 +18,11 @@ import com.google.firebase.auth.PhoneAuthProvider.ForceResendingToken
 import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks
 import com.mafqud.android.R
 import com.mafqud.android.auth.openReportActivity
-import com.mafqud.android.ui.compose.DismissDialog
 import com.mafqud.android.ui.compose.LoadingDialog
-import com.mafqud.android.ui.compose.showAreYouSureDialog
 import com.mafqud.android.ui.other.showToast
 import com.mafqud.android.ui.theme.MafQudTheme
 import com.mafqud.android.util.network.ShowNetworkErrorSnakeBarUi
-import com.mafqud.android.util.other.Logger
+import com.mafqud.android.util.other.LogMe
 import com.mafqud.android.util.other.hideKeypad
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -292,7 +289,7 @@ class RegisterFragment : Fragment() {
                     }
                     // Show a message and update the UI
                     // ...
-                    Logger.i("onVeriFailed", message)
+                    LogMe.i("onVeriFailed", message)
                     requireContext().showToast(
                         message,
                     )

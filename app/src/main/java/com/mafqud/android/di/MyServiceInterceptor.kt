@@ -2,6 +2,7 @@ package com.mafqud.android.di
 
 import com.mafqud.android.data.DataStoreManager
 import com.mafqud.android.data.NO_AUTH_HEADER
+import com.mafqud.android.util.other.LogMe
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Request
@@ -18,7 +19,7 @@ class MyServiceInterceptor @Inject constructor(dataStoreManager: DataStoreManage
 
     init {
         runBlocking {
-            sessionToken = dataStoreManager.readUserToken()
+            sessionToken = dataStoreManager.readUserAccessToken()
         }
     }
 
@@ -30,14 +31,17 @@ class MyServiceInterceptor @Inject constructor(dataStoreManager: DataStoreManage
         val request: Request = chain.request()
         val requestBuilder: Request.Builder = request.newBuilder()
         // @required  -> (Accept) header
-        requestBuilder.addHeader("Accept", "application/json")
+        //requestBuilder.addHeader("Accept", "application/json")
 
         // adding Bearer token as needed
         val bearer = BEARER
         if (request.header(NO_AUTH_HEADER) == null) {
+            LogMe.i("AuthorizationHeader", "is Added")
             if (sessionToken.isNotEmpty()) {
                 requestBuilder.addHeader("Authorization", "$bearer $sessionToken")
             }
+        } else {
+            LogMe.i("AuthorizationHeader", "Not Added")
         }
         return chain.proceed(requestBuilder.build())
     }

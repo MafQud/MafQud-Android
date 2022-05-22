@@ -59,7 +59,7 @@ android {
         release {
             // to sign the release apk
             signingConfig signingConfigs.release
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             //buildConfigField "String", "BUILDTYPE_AND_PRE_RELEASE", "\"release.${getPreRelease()}\""
 

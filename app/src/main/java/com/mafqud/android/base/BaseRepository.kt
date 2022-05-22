@@ -20,7 +20,7 @@ open class BaseRepository() {
     lateinit var fcmManager: FCMManager
 
     suspend fun getUserToken(): String {
-        return dataStoreManager.readUserToken()
+        return dataStoreManager.readUserAccessToken()
     }
 
   /*  *//**
@@ -34,6 +34,16 @@ open class BaseRepository() {
         //dataStoreManager.writeUserDataWithFlag(user)
         // update interceptor token header value
         //myServiceInterceptor.setSessionToken(user.token)
+    }
+
+    suspend fun saveUserTokens(
+       accessToken: String,
+       refreshToken: String,
+    ) {
+        // save user data to data store
+        dataStoreManager.saveUserTokens(accessToken, refreshToken)
+        // update interceptor token header value
+        myServiceInterceptor.setSessionToken(accessToken)
     }
 
     /**

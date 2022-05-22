@@ -1,5 +1,6 @@
 package com.mafqud.android.auth.login
 
+import com.mafqud.android.auth.login.models.LoginResponse
 import com.mafqud.android.base.viewModel.BaseViewModel
 import com.mafqud.android.util.network.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,7 +26,7 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
             when (result) {
                 is Result.NetworkError.Generic -> emitGenericFailedState(result.copy())
                 Result.NetworkError.NoInternet -> emitInternetFailedState(result as Result.NetworkError.NoInternet)
-                is Result.Success -> emitSuccessState(result.data)
+                is Result.Success -> emitSuccessState()
             }
         }
     }
@@ -58,7 +59,7 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
         }
     }
 
-    private fun emitSuccessState(data: String) {
+    private fun emitSuccessState() {
         launchViewModelScope {
             saveUserData()
             _stateChannel.emit(
@@ -67,7 +68,7 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
                     errorFieldMessage = null,
                     networkError = null,
                     isSuccess = true,
-                    data = data
+                    data = "success"
                 )
             )
         }

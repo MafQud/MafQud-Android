@@ -22,7 +22,8 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         /**
          * user info
          */
-        const val USER_TOKEN = "userToken"
+        const val USER_TOKEN_ACCESS = "userTokenAccess"
+        const val USER_TOKEN_REFRESH = "userTokenRefresh"
         const val USER_NAME = "userName"
         const val USER_ID = "userId"
         const val USER_FOLLOWERS = "userFollowers"
@@ -42,17 +43,17 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
     /**
      * for writing user token to datastore and mark user as logged in
      */
-    suspend fun writeUserTokenAndMarkAsLoggedIn(userToken: String) {
+    /*suspend fun writeUserTokenAndMarkAsLoggedIn(userToken: String) {
         mDataStore.edit { settings ->
             settings[booleanPreferencesKey(IS_LOGGED_IN)] = true
             settings[stringPreferencesKey(USER_TOKEN)] = userToken
         }
-    }
+    }*/
 
     /**
      * for reading user token from datastore
      */
-    suspend fun readUserToken(): String {
+    suspend fun readUserAccessToken(): String {
         /*val fakeToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvbGltZWVpbnQuY29tXC9iYXNlXC9wdWJsaWNcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDE3MTAwODQsImV4cCI6MTY3MzI0NjA4NCwibmJmIjoxNjQxNzEwMDg0LCJqdGkiOiI3Mkt5Tno1MUgzdHJTYUJGIiwic3ViIjozLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.UbsWTkZCYWE1yNnOxLG7zPchi4-9iFvNIJYTeA46xpM"
         val token = if(BuildConfig.DEBUG) fakeToken else {
             mDataStore.data.map { settings ->
@@ -61,7 +62,23 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         }*/
         val token =
             mDataStore.data.map { settings ->
+                settings[stringPreferencesKey(USER_TOKEN_ACCESS)] ?: ""
+            }.first().toString()
+        return token
+    }
+    /**
+     * for reading user token from datastore
+     */
+    suspend fun readUserRefreshToken(): String {
+        /*val fakeToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvbGltZWVpbnQuY29tXC9iYXNlXC9wdWJsaWNcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDE3MTAwODQsImV4cCI6MTY3MzI0NjA4NCwibmJmIjoxNjQxNzEwMDg0LCJqdGkiOiI3Mkt5Tno1MUgzdHJTYUJGIiwic3ViIjozLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.UbsWTkZCYWE1yNnOxLG7zPchi4-9iFvNIJYTeA46xpM"
+        val token = if(BuildConfig.DEBUG) fakeToken else {
+            mDataStore.data.map { settings ->
                 settings[stringPreferencesKey(USER_TOKEN)] ?: ""
+            }.first().toString()
+        }*/
+        val token =
+            mDataStore.data.map { settings ->
+                settings[stringPreferencesKey(USER_TOKEN_REFRESH)] ?: ""
             }.first().toString()
         return token
     }
@@ -164,7 +181,7 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
 
     suspend fun isUserLoggedIn(): Boolean {
         val isLogged = read(IS_LOGGED_IN, false)
-        val userToken = readUserToken()
+        val userToken = readUserAccessToken()
         return isLogged && userToken.trim().isNotEmpty()
     }
 
@@ -227,6 +244,13 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
 
     suspend fun clearDataStore() {
         mDataStore.edit { it.clear() }
+    }
+
+    suspend fun saveUserTokens(accessToken: String, refreshToken: String) {
+        mDataStore.edit { settings ->
+            settings[stringPreferencesKey(USER_TOKEN_ACCESS)] = accessToken
+            settings[stringPreferencesKey(USER_TOKEN_REFRESH)] = refreshToken
+        }
     }
 
 }
