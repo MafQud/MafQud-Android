@@ -4,6 +4,9 @@ import android.os.Bundle
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
@@ -55,35 +58,42 @@ class AuthActivity : BaseActivity() {
         statusBarColor(resources.getColor(R.color.blue))
         setContent {
             MafQudTheme {
-              /*  // Update the status bars to be translucent
-                val systemUiController = rememberSystemUiController()
-                val useDarkIcons = isSystemInDarkTheme()
-                SideEffect {
-                    systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = useDarkIcons)
-                }*/
-                val navController = rememberNavController()
-                NavigationAuth(navController)
+                /*  // Update the status bars to be translucent
+                  val systemUiController = rememberSystemUiController()
+                  val useDarkIcons = isSystemInDarkTheme()
+                  SideEffect {
+                      systemUiController.setSystemBarsColor(Color.Transparent, darkIcons = useDarkIcons)
+                  }*/
+                val scaffoldState = rememberScaffoldState()
+                Scaffold(
+                    scaffoldState = scaffoldState,
+                ) {
+                    val navController = rememberNavController()
+                    NavigationAuth(navController, scaffoldState)
+                }
+
+
             }
         }
     }
 
     @Composable
-    private fun NavigationAuth(navController: NavHostController) {
+    private fun NavigationAuth(navController: NavHostController, scaffoldState: ScaffoldState) {
         NavHost(navController = navController, startDestination = AuthScreen.Intro.route) {
             composable(AuthScreen.Intro.route) {
                 IntroRouter(navController)
             }
             composable(AuthScreen.Login.route) {
-                LoginRouter(navController)
+                LoginRouter(navController, scaffoldState)
             }
             composable(AuthScreen.Register.route) {
-                RegisterRouter(navController)
+                RegisterRouter(navController, scaffoldState)
             }
         }
     }
 
     @Composable
-    private fun RegisterRouter(navController: NavHostController) {
+    private fun RegisterRouter(navController: NavHostController, scaffoldState: ScaffoldState) {
         val registerViewModel: RegisterViewModel by viewModels()
 
         // variable for FirebaseAuth class
@@ -337,9 +347,9 @@ class AuthActivity : BaseActivity() {
 
 
     @Composable
-    private fun LoginRouter(navController: NavHostController) {
+    private fun LoginRouter(navController: NavHostController, scaffoldState: ScaffoldState) {
         val loginViewModel: LoginViewModel by viewModels()
-        LoginScreen(viewModel = loginViewModel,
+        LoginScreen(scaffoldState = scaffoldState,viewModel = loginViewModel,
             onBackPressed = {
                 navController.popBackStack()
             }, onNextPressed = {

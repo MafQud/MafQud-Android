@@ -4,6 +4,7 @@ import com.mafqud.android.data.DataStoreManager
 import com.mafqud.android.data.FCMManager
 import com.mafqud.android.data.RemoteDataManager
 import com.mafqud.android.di.MyServiceInterceptor
+import com.mafqud.android.util.other.UserPayload
 import javax.inject.Inject
 
 open class BaseRepository() {
@@ -27,13 +28,11 @@ open class BaseRepository() {
      *  this fun to add two fields to data store->[local DB] (IS_LOGGED_IN, USER_TOKEN)
      */
 
-    suspend fun saveUserDataAndLogFlag(
-       /* user: AuthResponseSuccess.User,*/
-    ) {
+    suspend fun saveUserDataAndLogFlag(user: UserPayload, accessToken: String) {
         // save user data to data store
-        //dataStoreManager.writeUserDataWithFlag(user)
+        dataStoreManager.writeUserDataWithFlag(user)
         // update interceptor token header value
-        //myServiceInterceptor.setSessionToken(user.token)
+        myServiceInterceptor.setSessionToken(accessToken)
     }
 
     suspend fun saveUserTokens(

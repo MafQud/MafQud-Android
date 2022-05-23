@@ -82,7 +82,7 @@
     <string name="open_app">Open app</string>
     <string name="error_email">Insert a valid email</string>
     <string name="error_pass_not_compat">The password not compatiable</string>
-    <string name="error_pass_less">Password is too short</string>
+    <string name="error_pass_less">Password is too short \n Should contain at least one character</string>
     <string name="sorry_for">we are sorry for...</string>
     <string name="upload_image">Upload lost image</string>
     <string name="address_lost">Address lost</string>

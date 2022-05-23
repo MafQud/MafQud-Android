@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
 import com.mafqud.android.ui.theme.*
+import com.mafqud.android.util.other.LogMe
 import com.mafqud.android.util.validation.NATIONAL_ID_MAX_LENGTH
 import com.mafqud.android.util.validation.PHONE_MAX_LENGTH
 import com.mafqud.android.util.validation.PassErrorType

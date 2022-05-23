@@ -6,8 +6,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -178,6 +180,18 @@ fun Result.NetworkError.ShowNetworkErrorSnakeBarUi(view: View) {
             stringResource(id = R.string.error_no_internet)
         )
     }
+}
+
+@Composable
+fun Result.NetworkError.ShowNetworkErrorSnakeBar(scaffoldState: ScaffoldState) {
+    val errorMessage = when (this) {
+        is Result.NetworkError.Generic -> getErrorType(this.type)
+        Result.NetworkError.NoInternet -> stringResource(id = R.string.error_no_internet)
+    }
+    LaunchedEffect(key1 = null, block = {
+        scaffoldState.snackbarHostState.showSnackbar(errorMessage)
+    })
+
 }
 
 fun Result.NetworkError.ShowNetworkErrorSnakeBarUi(view: View, context: Context) {

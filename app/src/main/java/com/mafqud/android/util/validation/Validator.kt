@@ -3,6 +3,8 @@ package com.mafqud.android.util.validation
 import android.text.TextUtils
 import android.util.Patterns
 import androidx.compose.runtime.MutableState
+import com.google.zxing.common.StringUtils
+import com.mafqud.android.util.other.LogMe
 
 const val PHONE_MAX_LENGTH = 10
 const val NATIONAL_ID_MAX_LENGTH = 14
@@ -34,9 +36,10 @@ fun isValidPhone(phone: String): Boolean {
     }
 }
 
-//TODO pass regex
+
 fun isValidPassword(password: String): Boolean {
-    return password.length >= 8 && password.isNotEmpty()
+    val isNumeric = password.toIntOrNull() != null
+    return password.length > 8 && password.isNotEmpty() && !isNumeric
 }
 
 fun isValidPasswordConfirm(password1: String, password2: String): Boolean {
@@ -82,10 +85,12 @@ fun validateLoginForm(
     }
 
     if (!isValidPassword(password)) {
-        isPasswordError.value.isError = true
+        LogMe.i("pass", "true")
+        isPasswordError.value = PasswordError(isError = true, type = PassErrorType.LESS)
         return
     } else {
-        isPasswordError.value.isError = false
+        LogMe.i("pass", "false")
+        isPasswordError.value = PasswordError(isError = false)
     }
     onSuccessValidation(phone, password)
 

@@ -4,7 +4,9 @@ import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import com.auth0.android.jwt.DecodeException
 import com.mafqud.android.R
+import com.mafqud.android.util.other.LogMe
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -60,6 +62,7 @@ fun getNetworkErrorFromThrowable(throwable: Throwable): Result.NetworkError {
         is HttpException -> {
             val code = throwable.code()
             val errorResponse = convertErrorBody(throwable)
+            LogMe.i("statusCode", code.toString())
             val httpErrorType = when (code) {
                 400 -> HttpErrorType.BadRequest
                 401 -> HttpErrorType.NotAuthorized
@@ -93,6 +96,7 @@ private fun convertErrorBody(throwable: HttpException): ErrorResponseModel {
 
 @Composable
 fun getErrorType(type: HttpErrorType): String {
+    LogMe.i("errorType", type.toString())
     return when (type) {
         HttpErrorType.BadGateway -> stringResource(id = R.string.error_bad_gateway)
         HttpErrorType.BadRequest -> stringResource(id = R.string.error_bad_request)

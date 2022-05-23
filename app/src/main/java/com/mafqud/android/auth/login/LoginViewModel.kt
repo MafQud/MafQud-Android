@@ -1,8 +1,8 @@
 package com.mafqud.android.auth.login
 
-import com.mafqud.android.auth.login.models.LoginResponse
 import com.mafqud.android.base.viewModel.BaseViewModel
 import com.mafqud.android.util.network.Result
+import com.mafqud.android.util.other.LogMe
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -32,50 +32,40 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
     }
 
     private fun emitInternetFailedState(result: Result.NetworkError.NoInternet) {
-        launchViewModelScope {
-            _stateChannel.emit(
-                stateChannel.value.copy(
-                    isLoading = false,
-                    errorFieldMessage = null,
-                    networkError = result,
-                    isSuccess = false,
-                    data = null
-                )
+        _stateChannel.tryEmit(
+            stateChannel.value.copy(
+                isLoading = false,
+                errorFieldMessage = null,
+                networkError = result,
+                isSuccess = false,
+                data = null
             )
-        }
+        )
     }
 
     private fun emitGenericFailedState(error: Result.NetworkError.Generic) {
-        launchViewModelScope {
-            _stateChannel.emit(
-                stateChannel.value.copy(
-                    isLoading = false,
-                    errorFieldMessage = "",
-                    networkError = error,
-                    isSuccess = false,
-                    data = null
-                )
+        LogMe.i("genericError", error.error.message.toString())
+        _stateChannel.tryEmit(
+            stateChannel.value.copy(
+                errorFieldMessage = error.error.message,
+                isLoading = false,
+                networkError = error,
+                isSuccess = false,
+                data = null,
             )
-        }
+        )
     }
 
     private fun emitSuccessState() {
-        launchViewModelScope {
-            saveUserData()
-            _stateChannel.emit(
-                stateChannel.value.copy(
-                    isLoading = false,
-                    errorFieldMessage = null,
-                    networkError = null,
-                    isSuccess = true,
-                    data = "success"
-                )
+        _stateChannel.tryEmit(
+            stateChannel.value.copy(
+                isLoading = false,
+                errorFieldMessage = null,
+                networkError = null,
+                isSuccess = true,
+                data = "success"
             )
-        }
-    }
-
-    private suspend fun saveUserData(/*user: AuthResponseSuccess.User*/) {
-        loginRepository.saveUser()
+        )
     }
 
 
@@ -93,8 +83,5 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-    }
 
 }

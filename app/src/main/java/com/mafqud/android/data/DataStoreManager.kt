@@ -3,6 +3,7 @@ package com.mafqud.android.data
 import android.content.Context
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
+import com.mafqud.android.util.other.UserPayload
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -25,7 +26,10 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         const val USER_TOKEN_ACCESS = "userTokenAccess"
         const val USER_TOKEN_REFRESH = "userTokenRefresh"
         const val USER_NAME = "userName"
+        const val USER_PHONE = "userPhone"
         const val USER_ID = "userId"
+        const val USER_NATIONAL_ID = "userNationalId"
+        const val USER_FCM_TOKEN = "fcmToken"
         const val USER_FOLLOWERS = "userFollowers"
         const val USER_FOLLOWING = "userFollowing"
         const val USER_IMAGE = "userImage"
@@ -86,26 +90,23 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
     /**
      * for storing user info (name, image_url,...)
      */
-    /*suspend fun writeUserDataWithFlag(user: AuthResponseSuccess.User) {
+    suspend fun writeUserDataWithFlag(user: UserPayload) {
         val name = user.name
-        val imageUrl = user.image
-        val email = user.email
-        val id = user.id
-        val token = user.token
-        val followers = user.followers ?: 0
-        val following = user.following ?: 0
+        val id = user.userId
+        val fcm = user.firebaseToken
+        val nationalId = user.nationalId
+        val phone = user.phone
+
 
         mDataStore.edit { settings ->
             settings[stringPreferencesKey(USER_NAME)] = name
-            settings[stringPreferencesKey(USER_TOKEN)] = token
-            settings[stringPreferencesKey(USER_IMAGE)] = imageUrl
-            settings[stringPreferencesKey(USER_EMAIL)] = email
+            settings[stringPreferencesKey(USER_PHONE)] = phone
             settings[intPreferencesKey(USER_ID)] = id
-            settings[intPreferencesKey(USER_FOLLOWERS)] = followers
-            settings[intPreferencesKey(USER_FOLLOWING)] = following
+            settings[stringPreferencesKey(USER_NATIONAL_ID)] = nationalId
+            settings[stringPreferencesKey(USER_FCM_TOKEN)] = fcm
             settings[booleanPreferencesKey(IS_LOGGED_IN)] = true
         }
-    }*/
+    }
 
     /**
      * for storing user info (name, image_url,...)

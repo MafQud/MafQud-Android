@@ -66,6 +66,6 @@ class RegisterRepository @Inject constructor() : BaseRepository() {
 
     //TODO request user data and save it
     suspend fun saveUser() {
-        saveUserDataAndLogFlag()
+        //saveUserDataAndLogFlag(user)
     }
 }

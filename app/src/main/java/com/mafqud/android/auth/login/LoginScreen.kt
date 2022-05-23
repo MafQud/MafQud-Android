@@ -4,11 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -20,7 +18,9 @@ import com.mafqud.android.R
 import com.mafqud.android.auth.openReportActivity
 import com.mafqud.android.ui.compose.*
 import com.mafqud.android.ui.theme.*
+import com.mafqud.android.util.network.ShowNetworkErrorSnakeBar
 import com.mafqud.android.util.network.ShowNetworkErrorSnakeBarUi
+import com.mafqud.android.util.network.getErrorType
 import com.mafqud.android.util.validation.PasswordError
 import com.mafqud.android.util.validation.validateLoginForm
 
@@ -36,6 +36,7 @@ fun LoginScreen(
     onLoginSuccess: () -> Unit = {},
     onBackPressed: () -> Unit = {},
     onNextPressed: (LoginUiData) -> Unit = {},
+    scaffoldState: ScaffoldState,
 ) {
     // ui state
     val state = viewModel.stateChannel.collectAsState()
@@ -48,16 +49,13 @@ fun LoginScreen(
         onLoginSuccess()
     }
     if (stateValue.networkError != null) {
-        /*  stateValue.networkError.ShowNetworkErrorSnakeBarUi(
-              view = requireView()
-          )*/
-
+        stateValue.networkError.ShowNetworkErrorSnakeBar(scaffoldState = scaffoldState)
     }
     /**
      * ui data
      */
     val phone = remember {
-        mutableStateOf("")
+        mutableStateOf("1111111111")
     }
     val isPasswordError = remember { mutableStateOf(PasswordError()) }
 

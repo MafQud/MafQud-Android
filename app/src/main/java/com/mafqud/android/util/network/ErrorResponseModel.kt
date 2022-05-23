@@ -6,10 +6,13 @@ import com.squareup.moshi.Json
 
 @Keep
 data class ErrorResponseModel(
-    @field:Json(name = "data")
-    val `data`: Any? = null, // null
+    @field:Json(name = "detail")
+    val detail: Detail? = Detail(),
     @field:Json(name = "message")
-    val message: String? = null, // The email must be a valid email address.
-    @field:Json(name = "status")
-    val status: Int? = null // 422
-)
+    val message: String? = "", // No active account found with the given credentials
+    @field:Json(name = "status_code")
+    val statusCode: Int? = 0 // 401
+) {
+    @Keep
+    class Detail
+}
