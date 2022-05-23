@@ -86,7 +86,7 @@ class SplashActivity : BaseActivity() {
     private fun checkIfUserPassedIntro() {
         lifecycleScope.launchWhenCreated {
             //read data from data store
-            isPassed = dataStoreManager.read(IS_PASSED_INTRO, false)
+            isPassed = dataStoreManager.isLoggedIn()
         }
     }
 

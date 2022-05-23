@@ -70,6 +70,7 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
             }.first().toString()
         return token
     }
+
     /**
      * for reading user token from datastore
      */
@@ -233,6 +234,22 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         return mDataStore.data.map { settings ->
             settings[booleanPreferencesKey(key)] ?: defaultValue
         }.first()
+
+    }
+
+    suspend fun isLoggedIn(): Boolean {
+        val isLoggedIn = mDataStore.data.map { settings ->
+            settings[booleanPreferencesKey(IS_LOGGED_IN)] ?: false
+        }.first()
+
+        val isHasRefreshToken = mDataStore.data.map { settings ->
+            settings[stringPreferencesKey(USER_TOKEN_REFRESH)] ?: ""
+        }.first()
+
+        val isHasAccessToken = mDataStore.data.map { settings ->
+            settings[stringPreferencesKey(USER_TOKEN_REFRESH)] ?: ""
+        }.first()
+        return isLoggedIn && isHasRefreshToken.isNotEmpty() && isHasAccessToken.isNotEmpty()
 
     }
 
