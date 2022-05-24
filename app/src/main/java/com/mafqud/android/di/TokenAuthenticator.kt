@@ -29,12 +29,8 @@ class TokenAuthenticator @Inject constructor() : Authenticator {
     lateinit var myServiceInterceptor: MyServiceInterceptor
 
     override fun authenticate(route: Route?, response: Response): Request? {
-        val requestBody =
-            "Not authorized user".toResponseBody("plain/text".toMediaTypeOrNull())
-
         val currentAccessToken = myServiceInterceptor.sessionAccessToken
 
-        var body: Request? = null
         if (response.request.header(REFRESH_HEADER) != null && response.code == 401)
             return null
 
@@ -73,34 +69,8 @@ class TokenAuthenticator @Inject constructor() : Authenticator {
             } catch (E: Exception) {
                 return null
             }
-            /*when (newAccessTokenCall) {
-                is Result.NetworkError.Generic -> {
-                    LogMe.i("TokenAuthennewToken", "newToken")
-                    //body = HttpException(retrofit2.Response.error<String>(401, requestBody))
-
-                }
-                Result.NetworkError.NoInternet -> {
-                    LogMe.i("TokenAuthennewToken", "newToken")
-                    //body = HttpException(retrofit2.Response.error<String>(401, requestBody))
-                }
-                is Result.Success -> {
-                    val newToken = newAccessTokenCall.data?.access ?: throw HttpException(
-                        retrofit2.Response.error<String>(
-                            401,
-                            requestBody
-                        )
-                    )
-                    LogMe.i("TokenAuthennewToken", newToken)
-                    myServiceInterceptor.setSessionToken(newToken)
-                    // Add new header to rejected request and retry it
-                    body = response.request.newBuilder()
-                        .header("Authorization", "$bearer $newToken")
-                        .build()
-                }
-            }*/
 
         } else return null
-        //return body
     }
 
 }
