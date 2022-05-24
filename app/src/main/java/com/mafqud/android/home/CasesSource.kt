@@ -6,33 +6,41 @@ import com.mafqud.android.data.RemoteDataManager
 import com.mafqud.android.home.model.CasesDataResponse
 
 const val INITIAL_PAGE = 1
+const val PAGE_SIZE_PAGING = 10
 
 class CasesSource(
     private val remoteData: RemoteDataManager,
-) : PagingSource<Int, CasesDataResponse.Data>() {
+    private val casesType: CasesType
+) : PagingSource<Int, CasesDataResponse.Case>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CasesDataResponse.Data> {
+    override suspend fun load(params: LoadParams<Int>): PagingSource.LoadResult<Int, CasesDataResponse.Case> {
         return try {
             val currentPage = params.key ?: INITIAL_PAGE
-            val cases = remoteData.getCases(
+            val type = when(casesType) {
+                CasesType.ALL -> ""
+                CasesType.MISSING -> "M"
+                CasesType.FOUND -> "F"
+            }
+            val casesResponse = remoteData.getCases(
                 page = currentPage,
+                limit = PAGE_SIZE_PAGING,
+                type = type
             )
 
+            val nextPage: Int? = if (casesResponse.cases.isEmpty()) null else currentPage + 1
 
-            val nextPage: Int? = if (cases.data.isEmpty()) null else currentPage + 1
 
-
-            LoadResult.Page(
-                data = cases.data,
+            PagingSource.LoadResult.Page(
+                data = casesResponse.cases,
                 prevKey = if (currentPage == INITIAL_PAGE) null else currentPage - 1,
                 nextKey = nextPage
             )
         } catch (e: Exception) {
-            LoadResult.Error(e)
+            PagingSource.LoadResult.Error(e)
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, CasesDataResponse.Data>): Int {
+    override fun getRefreshKey(state: PagingState<Int, CasesDataResponse.Case>): Int {
         return 0
     }
 

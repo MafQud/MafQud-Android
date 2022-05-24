@@ -2,10 +2,10 @@ package com.mafqud.android.home
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
@@ -22,15 +22,30 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
+import androidx.paging.PagingData
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import com.mafqud.android.R
-import com.mafqud.android.notification.EmptyNotificationState
+import com.mafqud.android.home.model.CasesDataResponse
 import com.mafqud.android.ui.compose.CaseItem
 import com.mafqud.android.ui.compose.DropDownItems
 import com.mafqud.android.ui.picker.AgePickerDialog
 import com.mafqud.android.ui.theme.*
+import com.mafqud.android.util.network.HandlePagingError
+import kotlinx.coroutines.flow.Flow
+
+enum class CasesType {
+    ALL,
+    MISSING,
+    FOUND
+}
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    onTapClicked: (CasesType) -> Unit = {},
+    cases: Flow<PagingData<CasesDataResponse.Case>>?
+) {
     ColumnUi(
         Modifier
             .background(
@@ -38,25 +53,25 @@ fun HomeScreen() {
             ),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        HeadSearchUi()
-        BodyUi(Modifier.weight(1f))
+        HeadSearchUi(onTapClicked)
+        CasesUi(Modifier.weight(1f), cases)
     }
 }
 
 @Composable
-fun HeadSearchUi() {
+fun HeadSearchUi(onTapClicked: (CasesType) -> Unit = {}) {
     BoxUi(
         Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
     ) {
-        SearchUi()
+        SearchUi(onTapClicked)
     }
 }
 
 
 @Composable
-private fun SearchUi() {
+private fun SearchUi(onTapClicked: (CasesType) -> Unit) {
     ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        TapsUi()
+        TapsUi(onTapClicked)
         DropDownUi()
         SearchNameUi()
     }
@@ -171,10 +186,10 @@ fun AgeTextPicker(modifier: Modifier) {
 }
 
 @Composable
-private fun TapsUi() {
+private fun TapsUi(onTapClicked: (CasesType) -> Unit) {
     RowUi {
         val selectedItem = remember {
-            mutableStateOf(0)
+            mutableStateOf(CasesType.ALL)
         }
 
         val activeTextColor = MaterialTheme.colorScheme.onSecondary
@@ -194,15 +209,16 @@ private fun TapsUi() {
                     shape = RoundedCornerShape(topStart = 20.dp, bottomStart = 20.dp)
                 )
                 .clip(RoundedCornerShape(topStart = 20.dp, bottomStart = 20.dp))
-                .background(if (selectedItem.value == 0) activeBackgroundColor else disableBackgroundColor)
+                .background(if (selectedItem.value == CasesType.ALL) activeBackgroundColor else disableBackgroundColor)
                 .clickable {
-                    selectedItem.value = 0
+                    selectedItem.value = CasesType.ALL
+                    onTapClicked(selectedItem.value)
                 },
             contentAlignment = Alignment.Center
         ) {
             TextUi(
                 text = "All",
-                color = if (selectedItem.value == 0) activeTextColor else disableTextColor,
+                color = if (selectedItem.value == CasesType.ALL) activeTextColor else disableTextColor,
                 style = MaterialTheme.typography.titleSmall
             )
         }
@@ -217,16 +233,16 @@ private fun TapsUi() {
                     color = activeBackgroundColor,
                     shape = RectangleShape
                 )
-                .background(if (selectedItem.value == 1) activeBackgroundColor else disableBackgroundColor)
+                .background(if (selectedItem.value == CasesType.MISSING) activeBackgroundColor else disableBackgroundColor)
                 .clickable {
-                    selectedItem.value = 1
-
+                    selectedItem.value = CasesType.MISSING
+                    onTapClicked(selectedItem.value)
                 },
             contentAlignment = Alignment.Center
         ) {
             TextUi(
                 text = "Lost",
-                color = if (selectedItem.value == 1) activeTextColor else disableTextColor,
+                color = if (selectedItem.value == CasesType.MISSING) activeTextColor else disableTextColor,
                 style = MaterialTheme.typography.titleSmall
             )
         }
@@ -242,15 +258,16 @@ private fun TapsUi() {
                     shape = RoundedCornerShape(topEnd = 20.dp, bottomEnd = 20.dp)
                 )
                 .clip(RoundedCornerShape(topEnd = 20.dp, bottomEnd = 20.dp))
-                .background(if (selectedItem.value == 2) activeBackgroundColor else disableBackgroundColor)
+                .background(if (selectedItem.value == CasesType.FOUND) activeBackgroundColor else disableBackgroundColor)
                 .clickable {
-                    selectedItem.value = 2
+                    selectedItem.value = CasesType.FOUND
+                    onTapClicked(selectedItem.value)
                 },
             contentAlignment = Alignment.Center
         ) {
             TextUi(
                 text = "Found",
-                color = if (selectedItem.value == 2) activeTextColor else disableTextColor,
+                color = if (selectedItem.value == CasesType.FOUND) activeTextColor else disableTextColor,
                 style = MaterialTheme.typography.titleSmall
             )
         }
@@ -259,33 +276,69 @@ private fun TapsUi() {
 
 
 @Composable
-private fun BodyUi(modifier: Modifier) {
-    ColumnUi(
-        modifier,
-        //.verticalScroll(rememberScrollState())
-        //.background(MaterialTheme.colorScheme.onSecondary)
-        //.padding(top = 16.dp, start = 16.dp, end = 16.dp)
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+private fun CasesUi(
+    modifier: Modifier, cases: Flow<PagingData<CasesDataResponse.Case>>?,
+    onCaseClicked: (CasesDataResponse.Case) -> Unit = {}) {
+
+    BoxUi(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.onPrimary)
+            .padding(start = 16.dp, end = 16.dp),
+        contentAlignment = Alignment.TopCenter
     ) {
-        BoxUi(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            EmptyCasesState()
 
+        cases?.let {
+            // Remember our own LazyListState
+            val listState = rememberLazyListState()
+
+            val lazyPagingItems = cases.collectAsLazyPagingItems()
+
+            val loadState = lazyPagingItems.loadState
+            val finishedLoading =
+                loadState.refresh !is LoadState.Loading &&
+                        loadState.prepend !is LoadState.Loading &&
+                        loadState.append !is LoadState.Loading &&
+                        loadState.refresh !is LoadState.Error
+
+            LazyColumnUi(
+                state = listState,
+                //modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(horizontal = 4.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            )
+            {
+                if (lazyPagingItems.itemCount == 0 && finishedLoading) {
+                    item {
+                        EmptyCasesState((Modifier.fillParentMaxSize()))
+                    }
+                }
+
+                items(lazyPagingItems) { item ->
+                    item?.let {
+                        CaseItem(caseData = item, onCaseClicked = onCaseClicked)
+                    }
+                }
+
+                // for adding footer indicator for state
+                item {
+                    HandlePagingError(
+                        loadState = lazyPagingItems.loadState,
+                        modifier = Modifier.fillParentMaxSize(),
+                        onRetry = {
+                            lazyPagingItems.retry()
+                        }
+                    )
+                }
+            }
         }
-
-        /*  CaseItem()
-          CaseItem()
-          CaseItem()
-          CaseItem()
-          CaseItem()*/
     }
 }
 
 @Composable
-fun EmptyCasesState() {
+fun EmptyCasesState(fillParentMaxSize: Modifier = Modifier) {
     BoxUi(
+        modifier = fillParentMaxSize,
         contentAlignment = Alignment.Center
     ) {
         ColumnUi(

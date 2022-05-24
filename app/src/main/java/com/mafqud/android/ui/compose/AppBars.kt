@@ -43,9 +43,13 @@ fun HomeAppBar(
     ) {
 
         RowUi(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            LetterIcon("M", letterSize = MaterialTheme.typography.titleMedium)
+            val char  = userName.firstOrNull()?.let {
+                return@let it
+            } ?: ""
+
+            LetterIcon(char.toString(), letterSize = MaterialTheme.typography.titleMedium)
             TextUi(
-                text = "Marwa Kamel",
+                text = userName,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 style = MaterialTheme.typography.titleMedium
             )

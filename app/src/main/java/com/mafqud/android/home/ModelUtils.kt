@@ -11,8 +11,3 @@ data class AgeRange(
     val title: String = "",
 )
 
-enum class CaseType {
-    ALL,
-    LOST,
-    FOUND
-}

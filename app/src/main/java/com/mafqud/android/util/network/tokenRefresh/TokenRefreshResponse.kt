@@ -1,0 +1,9 @@
+package com.mafqud.android.util.network.tokenRefresh
+import androidx.annotation.Keep
+import com.squareup.moshi.Json
+
+@Keep
+data class TokenRefreshResponse(
+    @field:Json(name = "access")
+    val access: String? = "" // eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjUzMzA1MTA4LCJpYXQiOjE2NTMzMDQ3NjgsImp0aSI6ImE1Mjk0OTkwODFkMzRjZGZiOTVjNjc3YmUyMmNhZDk0IiwidXNlcl9pZCI6MywibmFtZSI6IkFobWVkIHNoZWhhdGEiLCJwaG9uZSI6IjExMTExMTExMTEiLCJuYXRpb25hbF9pZCI6bnVsbCwiZmlyZWJhc2VfdG9rZW4iOiJzYWR0b2tlbi8vIiwiZ292IjoiXHUwNjI3XHUwNjQ0XHUwNjQyXHUwNjI3XHUwNjQ3XHUwNjMxXHUwNjI5IiwiY2l0eSI6IjE1IFx1MDY0NVx1MDYyN1x1MDY0YVx1MDY0OCJ9.eDA9CnNhxJO-o_4rEBXT3VnkMyMLcOVupqWyWT9sbxc
+)

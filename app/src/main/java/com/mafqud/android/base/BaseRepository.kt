@@ -24,7 +24,11 @@ open class BaseRepository() {
         return dataStoreManager.readUserAccessToken()
     }
 
-  /*  *//**
+    suspend fun getDisplayUserName(): String {
+        return dataStoreManager.getUserName()
+    }
+
+    /*  *//**
      *  this fun to add two fields to data store->[local DB] (IS_LOGGED_IN, USER_TOKEN)
      */
 

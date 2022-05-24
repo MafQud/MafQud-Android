@@ -1,14 +1,17 @@
 package com.mafqud.android.di
 
 
+import android.content.Context
 import com.mafqud.android.BuildConfig
 import com.mafqud.android.MyApp
+import com.mafqud.android.data.DataStoreManager
 import com.mafqud.android.data.RemoteDataManager
 import com.mafqud.android.util.constants.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Authenticator
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -37,7 +40,12 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun getOkHttpClient(myApp: MyApp, myServiceInterceptor: MyServiceInterceptor): OkHttpClient {
+    fun getOkHttpClient(
+//        authenticator: Authenticator? = null,
+        myApp: MyApp,
+        tokenAuthenticator: TokenAuthenticator,
+        myServiceInterceptor: MyServiceInterceptor
+    ): OkHttpClient {
         val logging = HttpLoggingInterceptor()
         /**
          * @NONE : Use this log level for
@@ -45,34 +53,46 @@ class NetworkModule {
          *  apps performance by skipping any logging operation.
          */
         logging.level = if (BuildConfig.DEBUG) Level.BODY else Level.NONE
-
         val okHttpClient = OkHttpClient.Builder()
-
         okHttpClient.apply {
             retryOnConnectionFailure(true)
             readTimeout(1, TimeUnit.MINUTES)
             connectTimeout(1, TimeUnit.MINUTES)
             writeTimeout(5, TimeUnit.MINUTES)
+            authenticator(tokenAuthenticator)
             addInterceptor(myServiceInterceptor)
             addInterceptor(logging)
         }.build()
         try {
             // Create a trust manager that does not validate certificate chains
-            val trustAllCerts:  Array<TrustManager> = arrayOf(object : X509TrustManager {
-                override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?){}
-                override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
-                override fun getAcceptedIssuers(): Array<X509Certificate>  = arrayOf()
+            val trustAllCerts: Array<TrustManager> = arrayOf(object : X509TrustManager {
+                override fun checkClientTrusted(
+                    chain: Array<out X509Certificate>?,
+                    authType: String?
+                ) {
+                }
+
+                override fun checkServerTrusted(
+                    chain: Array<out X509Certificate>?,
+                    authType: String?
+                ) {
+                }
+
+                override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
             })
 
             // Install the all-trusting trust manager
-            val  sslContext = SSLContext.getInstance("SSL")
+            val sslContext = SSLContext.getInstance("SSL")
             sslContext.init(null, trustAllCerts, SecureRandom())
 
             // Create an ssl socket factory with our all-trusting manager
             val sslSocketFactory = sslContext.socketFactory
-            if (trustAllCerts.isNotEmpty() &&  trustAllCerts.first() is X509TrustManager) {
-                okHttpClient.sslSocketFactory(sslSocketFactory, trustAllCerts.first() as X509TrustManager)
-                okHttpClient.hostnameVerifier {  str, ssl -> true  }
+            if (trustAllCerts.isNotEmpty() && trustAllCerts.first() is X509TrustManager) {
+                okHttpClient.sslSocketFactory(
+                    sslSocketFactory,
+                    trustAllCerts.first() as X509TrustManager
+                )
+                okHttpClient.hostnameVerifier { str, ssl -> true }
             }
 
             return okHttpClient.build()
@@ -101,8 +121,15 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideApi(retrofit: Retrofit): RemoteDataManager {
-        return retrofit.create(RemoteDataManager::class.java)
+    fun provideApi(
+        retrofit: Retrofit,
+        myServiceInterceptor: MyServiceInterceptor,
+        tokenAuthenticator: TokenAuthenticator
+    ): RemoteDataManager {
+        val api = retrofit.create(RemoteDataManager::class.java)
+        myServiceInterceptor.remoteDataManager = api
+        tokenAuthenticator.remoteDataManager = api
+        return api
     }
 
 }

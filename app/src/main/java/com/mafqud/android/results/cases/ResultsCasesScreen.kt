@@ -86,6 +86,7 @@ private fun BodyUi(
             .background(MaterialTheme.colorScheme.onSecondary),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
+       /* CaseItem(onCaseClicked = onCaseClicked)
         CaseItem(onCaseClicked = onCaseClicked)
         CaseItem(onCaseClicked = onCaseClicked)
         CaseItem(onCaseClicked = onCaseClicked)
@@ -97,8 +98,7 @@ private fun BodyUi(
         CaseItem(onCaseClicked = onCaseClicked)
         CaseItem(onCaseClicked = onCaseClicked)
         CaseItem(onCaseClicked = onCaseClicked)
-        CaseItem(onCaseClicked = onCaseClicked)
-        CaseItem(onCaseClicked = onCaseClicked)
+        CaseItem(onCaseClicked = onCaseClicked)*/
         SpacerUi(modifier = Modifier.height(100.dp))
     }
 }

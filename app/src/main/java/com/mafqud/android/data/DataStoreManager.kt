@@ -58,12 +58,6 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
      * for reading user token from datastore
      */
     suspend fun readUserAccessToken(): String {
-        /*val fakeToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvbGltZWVpbnQuY29tXC9iYXNlXC9wdWJsaWNcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDE3MTAwODQsImV4cCI6MTY3MzI0NjA4NCwibmJmIjoxNjQxNzEwMDg0LCJqdGkiOiI3Mkt5Tno1MUgzdHJTYUJGIiwic3ViIjozLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.UbsWTkZCYWE1yNnOxLG7zPchi4-9iFvNIJYTeA46xpM"
-        val token = if(BuildConfig.DEBUG) fakeToken else {
-            mDataStore.data.map { settings ->
-                settings[stringPreferencesKey(USER_TOKEN)] ?: ""
-            }.first().toString()
-        }*/
         val token =
             mDataStore.data.map { settings ->
                 settings[stringPreferencesKey(USER_TOKEN_ACCESS)] ?: ""
@@ -75,12 +69,6 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
      * for reading user token from datastore
      */
     suspend fun readUserRefreshToken(): String {
-        /*val fakeToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvbGltZWVpbnQuY29tXC9iYXNlXC9wdWJsaWNcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDE3MTAwODQsImV4cCI6MTY3MzI0NjA4NCwibmJmIjoxNjQxNzEwMDg0LCJqdGkiOiI3Mkt5Tno1MUgzdHJTYUJGIiwic3ViIjozLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.UbsWTkZCYWE1yNnOxLG7zPchi4-9iFvNIJYTeA46xpM"
-        val token = if(BuildConfig.DEBUG) fakeToken else {
-            mDataStore.data.map { settings ->
-                settings[stringPreferencesKey(USER_TOKEN)] ?: ""
-            }.first().toString()
-        }*/
         val token =
             mDataStore.data.map { settings ->
                 settings[stringPreferencesKey(USER_TOKEN_REFRESH)] ?: ""
@@ -271,4 +259,27 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         }
     }
 
+    suspend fun saveUserAccessToken(accessToken: String) {
+        mDataStore.edit { settings ->
+            settings[stringPreferencesKey(USER_TOKEN_ACCESS)] = accessToken
+        }
+    }
+
+    suspend fun getUserName(): String {
+        return mDataStore.data.map { settings ->
+            settings[stringPreferencesKey(USER_NAME)] ?: ""
+        }.first()
+    }
+
+    suspend fun getUserAccessToken(): String {
+        return mDataStore.data.map { settings ->
+            settings[stringPreferencesKey(USER_TOKEN_ACCESS)] ?: ""
+        }.first()
+    }
+
+    suspend fun getUserRefreshToken(): String {
+        return mDataStore.data.map { settings ->
+            settings[stringPreferencesKey(USER_TOKEN_REFRESH)] ?: ""
+        }.first()
+    }
 }

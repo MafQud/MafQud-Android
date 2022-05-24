@@ -55,7 +55,7 @@ fun LoginScreen(
      * ui data
      */
     val phone = remember {
-        mutableStateOf("1111111111")
+        mutableStateOf("")
     }
     val isPasswordError = remember { mutableStateOf(PasswordError()) }
 

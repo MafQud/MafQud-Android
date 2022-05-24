@@ -1,0 +1,10 @@
+package com.mafqud.android.util.network.tokenRefresh
+import androidx.annotation.Keep
+import com.squareup.moshi.Json
+
+
+@Keep
+data class TokenVerifyBody(
+    @field:Json(name = "token")
+    val token: String? = "" // eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY1MzM5MTE2OCwiaWF0IjoxNjUzMzA0NzY4LCJqdGkiOiI5MzUxMGYzODFkNTg0NDU0YTI0ZTRkNThlMGY2MGMzZiIsInVzZXJfaWQiOjMsIm5hbWUiOiJBaG1lZCBzaGVoYXRhIiwicGhvbmUiOiIxMTExMTExMTExIiwibmF0aW9uYWxfaWQiOm51bGwsImZpcmViYXNlX3Rva2VuIjoic2FkdG9rZW4vLyIsImdvdiI6Ilx1MDYyN1x1MDY0NFx1MDY0Mlx1MDYyN1x1MDY0N1x1MDYzMVx1MDYyOSIsImNpdHkiOiIxNSBcdTA2NDVcdTA2MjdcdTA2NGFcdTA2NDgifQ.9ZvuxrRmWk020aGXrNEHlVBgMgpiQIUwyKj2E40QJkk
+)

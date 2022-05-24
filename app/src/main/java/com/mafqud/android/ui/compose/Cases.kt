@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
+import com.mafqud.android.home.model.CasesDataResponse
 import com.mafqud.android.ui.theme.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -25,96 +26,100 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Preview
 fun CaseItem(
     backgroundColor: Color = MaterialTheme.colorScheme.surfaceVariant,
-    onCaseClicked: () -> Unit = {},
+    caseData: CasesDataResponse.Case? = null,
+    onCaseClicked: (CasesDataResponse.Case) -> Unit = {},
 ) {
-    BoxUi(
-        Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
-            .background(backgroundColor)
-            .clickable {
-                onCaseClicked()
-            }
-            .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
-    ) {
-        RowUi(
+    caseData?.let {
+        BoxUi(
             Modifier
-                .fillMaxSize(),
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-            verticalAlignment = Alignment.Top
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(12.dp))
+                .background(backgroundColor)
+                .clickable {
+                    onCaseClicked(it)
+                }
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
         ) {
-            UserPhoto()
-            ColumnUi(
+            RowUi(
                 Modifier
                     .fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(2.dp)
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                verticalAlignment = Alignment.Top
             ) {
-                // name
-                RowUi(
+                UserPhoto()
+                ColumnUi(
                     Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.Top
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(2.dp)
                 ) {
-                    ColumnUi(
-                        verticalArrangement = Arrangement.spacedBy(2.dp)
+                    // name
+                    RowUi(
+                        Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.Top
                     ) {
-                        TextUi(
-                            text = "Osama Ali",
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                            style = MaterialTheme.typography.titleMedium
-                        )
-
-                        //address
-                        RowUi(
-                            horizontalArrangement = Arrangement.spacedBy(2.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                        ColumnUi(
+                            verticalArrangement = Arrangement.spacedBy(2.dp)
                         ) {
-
-                            IconMap()
                             TextUi(
-                                text = "Cairo - Egypt",
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                text = it.name ?: "",
+                                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                style = MaterialTheme.typography.titleMedium
+                            )
+
+                            //address
+                            RowUi(
+                                horizontalArrangement = Arrangement.spacedBy(2.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+
+                                IconMap()
+                                TextUi(
+                                    text = it.location?.city ?: "",
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    style = MaterialTheme.typography.titleSmall
+                                )
+                            }
+                        }
+
+                        BoxUi(
+                            Modifier
+                                .size(70.dp, 30.dp)
+                                .clip(RoundedCornerShape(12.dp))
+                                .background(MaterialTheme.colorScheme.error)
+                                .clickable {
+                                    onCaseClicked(it)
+                                },
+                        ) {
+                            TextUi(
+                                // modifier = Modifier.padding(12.dp),
+                                text = "more",
+                                color = MaterialTheme.colorScheme.onSecondary,
                                 style = MaterialTheme.typography.titleSmall
                             )
                         }
                     }
 
-                    BoxUi(
-                        Modifier
-                            .size(70.dp, 30.dp)
-                            .clip(RoundedCornerShape(12.dp))
-                            .background(MaterialTheme.colorScheme.error)
-                            .clickable {
-                                onCaseClicked()
-                            },
-                    ) {
-                        TextUi(
-                            // modifier = Modifier.padding(12.dp),
-                            text = "more",
-                            color = MaterialTheme.colorScheme.onSecondary,
-                            style = MaterialTheme.typography.titleSmall
-                        )
-                    }
+                    // state
+                    TextUi(
+                        text = "Lost",
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.titleSmall
+                    )
+
+                    SpacerUi(modifier = Modifier.height(4.dp))
+                    //date
+                    TextUi(
+                        text = it.lastSeen ?: "",
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.titleSmall
+                    )
                 }
-
-                // state
-                TextUi(
-                    text = "Lost",
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.titleSmall
-                )
-
-                SpacerUi(modifier = Modifier.height(4.dp))
-                //date
-                TextUi(
-                    text = "16/3/2022",
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.titleSmall
-                )
             }
         }
     }
+
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)

@@ -4,11 +4,17 @@ import com.mafqud.android.auth.login.models.LoginBody
 import com.mafqud.android.auth.login.models.LoginResponse
 import com.mafqud.android.home.model.CasesDataResponse
 import com.mafqud.android.notification.NotificationResponse
+import com.mafqud.android.util.network.tokenRefresh.TokenRefreshBody
+import com.mafqud.android.util.network.tokenRefresh.TokenRefreshResponse
+import com.mafqud.android.util.network.tokenRefresh.TokenVerifyBody
+import retrofit2.Call
 import retrofit2.http.*
 
 
 const val NO_AUTH_HEADER = "No-Auth"
+const val REFRESH_HEADER = "No-Refresh"
 const val AUTH_NOT_REQUIRED = "$NO_AUTH_HEADER: true"
+const val REFRESH_TOKEN = "$REFRESH_HEADER: true"
 
 interface RemoteDataManager {
 
@@ -43,11 +49,24 @@ interface RemoteDataManager {
         @Body loginBody: LoginBody
     ): LoginResponse
 
-    @GET("auth/social_login")
-    suspend fun getNotifications(page: Int): NotificationResponse
 
+    @GET("/api/cases")
+    suspend fun getCases(
+        @Query("offset") page: Int,
+        @Query("type") type: String,
+        @Query("limit") limit: Int,
+    ): CasesDataResponse
 
-    @GET("auth/social_login")
-    suspend fun getCases(page: Int): CasesDataResponse
+    @POST("/api/auth/token/refresh/")
+    @Headers(AUTH_NOT_REQUIRED, REFRESH_TOKEN)
+    fun refreshAccessToken(
+       @Body refreshToken: TokenRefreshBody
+    ): Call<TokenRefreshResponse>
+
+    @POST("/api/auth/token/verify/")
+    @Headers(AUTH_NOT_REQUIRED)
+    suspend fun verifyAccessToken(
+        @Body verifyBody: TokenVerifyBody
+    ): Any
 
 }
