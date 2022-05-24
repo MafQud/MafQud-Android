@@ -54,8 +54,10 @@ class TokenAuthenticator @Inject constructor() : Authenticator {
             }
 
             //try refresh token
+            //TODO you can fake that refresh token is invalid
+            // (currentRefreshToken + "1")
             val newAccessTokenCall = remoteDataManager?.refreshAccessToken(
-                TokenRefreshBody(refresh = currentRefreshToken + "1")
+                TokenRefreshBody(refresh = currentRefreshToken)
             )
             LogMe.i("newAccessTokenCall", "newAccessTokenCall")
 

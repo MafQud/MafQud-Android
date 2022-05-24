@@ -30,7 +30,9 @@ class MyServiceInterceptor @Inject constructor(
 
     init {
         runBlocking {
-            sessionAccessToken = dataStoreManager.readUserAccessToken() + "1"
+            //TODO you can fake that access token is invalid
+            // (dataStoreManager.readUserAccessToken() + "1")
+            sessionAccessToken = dataStoreManager.readUserAccessToken()
             sessionRefreshToken = dataStoreManager.readUserRefreshToken()
         }
     }
