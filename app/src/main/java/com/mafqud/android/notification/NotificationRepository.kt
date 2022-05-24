@@ -3,15 +3,16 @@ package com.mafqud.android.notification
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import com.mafqud.android.data.RemoteDataManager
+import com.mafqud.android.notification.models.NotificationsResponse
 import com.mafqud.android.util.network.Result
 import com.mafqud.android.util.network.safeApiCall
 import javax.inject.Inject
 
-const val PAGE_SIZE_PAGING_EXPLORE = 10
+const val PAGE_SIZE_PAGING_EXPLORE = 15
 
 class NotificationRepository @Inject constructor (private val remoteData: RemoteDataManager) {
 
-    suspend fun getNotifications(): Result<Pager<Int, NotificationResponse.Data>> {
+    suspend fun getNotifications(): Result<Pager<Int, NotificationsResponse.Notification>> {
         return safeApiCall {
             return@safeApiCall Pager(config = PagingConfig(
                 pageSize = PAGE_SIZE_PAGING_EXPLORE,

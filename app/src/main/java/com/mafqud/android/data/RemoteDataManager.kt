@@ -4,6 +4,7 @@ import com.mafqud.android.auth.login.models.LoginBody
 import com.mafqud.android.auth.login.models.LoginResponse
 import com.mafqud.android.home.model.CasesDataResponse
 import com.mafqud.android.notification.NotificationResponse
+import com.mafqud.android.notification.models.NotificationsResponse
 import com.mafqud.android.reportedCases.models.ReportedCasesResponseItem
 import com.mafqud.android.util.network.tokenRefresh.TokenRefreshBody
 import com.mafqud.android.util.network.tokenRefresh.TokenRefreshResponse
@@ -76,4 +77,12 @@ interface RemoteDataManager {
         @Query("offset") page: Int,
         @Query("limit") limit: Int,
     ): ReportedCasesResponseItem
+
+
+    @GET("/api/notifications/")
+    // TODO change response model
+    suspend fun getNotifications(
+        @Query("offset") page: Int,
+    ): NotificationsResponse
+
 }

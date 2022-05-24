@@ -20,6 +20,8 @@ import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.mafqud.android.R
+import com.mafqud.android.notification.models.NotificationIconType
+import com.mafqud.android.notification.models.NotificationsResponse
 import com.mafqud.android.ui.theme.*
 import com.mafqud.android.util.network.HandlePagingError
 import kotlinx.coroutines.flow.Flow
@@ -39,7 +41,7 @@ enum class NotificationType {
 @Composable
 @Preview
 fun NotificationScreen(
-    data: Flow<PagingData<NotificationResponse.Data>>? = null,
+    data: Flow<PagingData<NotificationsResponse.Notification>>? = null,
     onNotificationClicked: (NotificationResponse.Data, NotificationType) -> Unit = { it, _it -> },
 ) {
     BoxUi(
@@ -128,7 +130,7 @@ fun EmptyNotificationState(fillParentMaxSize: Modifier) {
 
 @Composable
 fun NotificationItem(
-    item: NotificationResponse.Data,
+    notification: NotificationsResponse.Notification,
     onSuccessNotificationClicked: (NotificationResponse.Data, NotificationType) -> Unit
 ) {
     BoxUi(
@@ -139,9 +141,9 @@ fun NotificationItem(
             .clickable {
                 // TODO change NotificationType
                 if (listOf(false, true).random()) {
-                    onSuccessNotificationClicked(item, NotificationType.SUCCESS_FINDING_FOUND)
+                    //onSuccessNotificationClicked(notification, NotificationType.SUCCESS_FINDING_FOUND)
                 } else {
-                    onSuccessNotificationClicked(item, NotificationType.SUCCESS_FINDING_LOST)
+                    //onSuccessNotificationClicked(notification, NotificationType.SUCCESS_FINDING_LOST)
                 }
             }
             .padding(8.dp)
@@ -157,24 +159,33 @@ fun NotificationItem(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 TextUi(
-                    text = "تم نشر بيانات المعثور عليه بنجاح انتظر منا اشعار اخر في حين الوصول لأي نتائج",
+                    text = notification.body ?: "",
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     style = MaterialTheme.typography.labelLarge
                 )
 
                 //date
                 TextUi(
-                    text = "March,13, 2022 at 3:15 PM",
+                    text = notification.createdAt ?: "",
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.labelSmall
                 )
             }
             // icon
-            IconUi(
-                painter = painterResource(id = R.drawable.ic_state_success),
-                modifier = Modifier.size(24.dp)
-            )
+            val iconRes = when(notification.iconType) {
+                NotificationIconType.SUCCESS -> R.drawable.ic_state_success
+                NotificationIconType.WARNING -> R.drawable.ic_warning
+                NotificationIconType.INFO -> R.drawable.ic_info
+                NotificationIconType.ERROR -> R.drawable.ic_error
+                NotificationIconType.NONE -> null
+            }
 
+            iconRes?.let {
+                IconUi(
+                    painter = painterResource(id = iconRes),
+                    modifier = Modifier.size(24.dp)
+                )
+            }
         }
     }
 

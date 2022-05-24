@@ -3,47 +3,34 @@ package com.mafqud.android.notification
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.mafqud.android.data.RemoteDataManager
+import com.mafqud.android.notification.models.NotificationsResponse
 import kotlinx.coroutines.delay
 
 const val INITIAL_PAGE = 1
 
 class NotificationSource(
     private val remoteData: RemoteDataManager,
-) : PagingSource<Int, NotificationResponse.Data>() {
+) : PagingSource<Int, NotificationsResponse.Notification>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, NotificationResponse.Data> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, NotificationsResponse.Notification> {
         return try {
             val currentPage = params.key ?: INITIAL_PAGE
-            /*val notifications = remoteData.getNotifications(
+            val notificationsResponse = remoteData.getNotifications(
                 page = currentPage,
             )
 
-
-            val nextPage: Int? = if (notifications.data.isEmpty()) null else currentPage + 1
-
-*/
-            val noty = listOf(
-                NotificationResponse.Data(),
-                NotificationResponse.Data(),
-                NotificationResponse.Data(),
-            )
-            delay(1000)
-            //throw Exception()
+            val nextPage: Int? = if (notificationsResponse.notifications.isEmpty()) null else currentPage + 1
             LoadResult.Page(
-                //TODO
-                //data = notifications.data,
-                data = noty,
+                data = notificationsResponse.notifications,
                 prevKey = if (currentPage == INITIAL_PAGE) null else currentPage - 1,
-                //TODO
-                //nextKey = nextPage
-                nextKey = null
+                nextKey = nextPage
             )
         } catch (e: Exception) {
             LoadResult.Error(e)
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, NotificationResponse.Data>): Int {
+    override fun getRefreshKey(state: PagingState<Int, NotificationsResponse.Notification>): Int {
         return 0
     }
 

@@ -93,23 +93,23 @@ class NotificationFragment : Fragment() {
                 }, requireView())
             }
             NotificationScreen(
-                data = stateValue.notifications,
-                onNotificationClicked = { notificationData, notificationType ->
-                    when (notificationType) {
-                        NotificationType.SUCCESS_FINDING_LOST,
-                        NotificationType.SUCCESS_FINDING_FOUND -> openSuccessFragment(
-                            notificationData,
-                            notificationType
-                        )
-                        NotificationType.FAILED_LOST,
-                        NotificationType.FAILED_FOUND,
-                        NotificationType.OTHER,
-                        -> openFailureFragment(
-                            notificationData,
-                            notificationType
-                        )
-                    }
-                })
+                data = stateValue.notifications
+            ) { notificationData, notificationType ->
+                when (notificationType) {
+                    NotificationType.SUCCESS_FINDING_LOST,
+                    NotificationType.SUCCESS_FINDING_FOUND -> openSuccessFragment(
+                        notificationData,
+                        notificationType
+                    )
+                    NotificationType.FAILED_LOST,
+                    NotificationType.FAILED_FOUND,
+                    NotificationType.OTHER,
+                    -> openFailureFragment(
+                        notificationData,
+                        notificationType
+                    )
+                }
+            }
         }
     }
 
