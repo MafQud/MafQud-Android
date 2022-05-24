@@ -89,7 +89,6 @@ class HomeFragment : BaseFragment() {
                 })
 
             if (stateValue.networkError != null) {
-                Toast.makeText(requireContext(), "dd", Toast.LENGTH_SHORT).show()
                 stateValue.networkError.ShowNetworkErrorSnakeBar(scaffoldState)
             }
         }

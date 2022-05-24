@@ -109,8 +109,8 @@ private fun Throwable.getErrorMessage(): String {
 
 @Composable
 private fun Throwable.isUnauthorized(): Boolean {
-    return when (getNetworkErrorFromThrowable(throwable = this)) {
-        is Result.NetworkError.Generic -> true
+    return when (val res = getNetworkErrorFromThrowable(throwable = this)) {
+        is Result.NetworkError.Generic  -> res.type == HttpErrorType.NotAuthorized
         else -> false
     }
 }

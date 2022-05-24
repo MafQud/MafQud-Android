@@ -27,16 +27,20 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 fun CaseItem(
     backgroundColor: Color = MaterialTheme.colorScheme.surfaceVariant,
     caseData: CasesDataResponse.Case? = null,
-    onCaseClicked: (CasesDataResponse.Case) -> Unit = {},
+    onCaseClicked: ((CasesDataResponse.Case) -> Unit)? = {},
 ) {
-    caseData?.let {
+
+
+    caseData?.let { case ->
         BoxUi(
             Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(12.dp))
                 .background(backgroundColor)
                 .clickable {
-                    onCaseClicked(it)
+                    if (onCaseClicked != null) {
+                        onCaseClicked(case)
+                    }
                 }
                 .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
         ) {
@@ -63,7 +67,7 @@ fun CaseItem(
                             verticalArrangement = Arrangement.spacedBy(2.dp)
                         ) {
                             TextUi(
-                                text = it.name ?: "",
+                                text = case.name ?: "",
                                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                                 style = MaterialTheme.typography.titleMedium
                             )
@@ -76,7 +80,7 @@ fun CaseItem(
 
                                 IconMap()
                                 TextUi(
-                                    text = it.location?.city ?: "",
+                                    text = case.location?.city ?: "",
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     style = MaterialTheme.typography.titleSmall
                                 )
@@ -89,8 +93,9 @@ fun CaseItem(
                                 .clip(RoundedCornerShape(12.dp))
                                 .background(MaterialTheme.colorScheme.error)
                                 .clickable {
-                                    onCaseClicked(it)
-                                },
+                                    if (onCaseClicked != null) {
+                                        onCaseClicked(case)
+                                    }                                },
                         ) {
                             TextUi(
                                 // modifier = Modifier.padding(12.dp),
@@ -111,7 +116,7 @@ fun CaseItem(
                     SpacerUi(modifier = Modifier.height(4.dp))
                     //date
                     TextUi(
-                        text = it.lastSeen ?: "",
+                        text = case.lastSeen ?: "",
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.titleSmall
                     )
