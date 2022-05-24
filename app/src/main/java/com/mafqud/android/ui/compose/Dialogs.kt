@@ -540,6 +540,107 @@ fun LogoutDialog(
 }
 
 @Composable
+fun ShouldLogoutDialog(
+    titleHead: String,
+    isOpened: MutableState<Boolean> = remember {
+        mutableStateOf(false)
+    },
+    onCancelClicked: () -> Unit = {},
+    onConfirmClicked: () -> Unit = {},
+) {
+    ColumnUi {
+
+        if (isOpened.value) {
+            Dialog(
+                onDismissRequest = {
+                    // Dismiss the dialog when the user clicks outside the dialog or on the back
+                    // button. If you want to disable that functionality, simply use an empty
+                    // onCloseRequest.
+                    isOpened.value = false
+                },
+                content = {
+                    BoxUi(
+                        Modifier
+                            .padding(8.dp)
+                            .clip(
+                                RoundedCornerShape(12.dp)
+                            )
+                            .background(MaterialTheme.colorScheme.onPrimary)
+
+                    ) {
+                        ColumnUi(
+                            Modifier
+                                .verticalScroll(rememberScrollState()),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(16.dp),
+                        ) {
+                            BoxUi(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(MaterialTheme.colorScheme.error)
+                                    .padding(8.dp)
+                            ) {
+                                IconUi(
+                                    painter = painterResource(id = R.drawable.ic_warning),
+                                    tint = MaterialTheme.colorScheme.onSecondary
+                                )
+                            }
+
+                            TextUi(
+                                modifier = Modifier.fillMaxWidth(),
+                                text = titleHead,
+                                color = MaterialTheme.colorScheme.onTertiaryContainer,
+                                style = MaterialTheme.typography.titleMedium,
+                                textAlign = TextAlign.Center
+                            )
+
+                            // cancel
+                            TextUi(
+                                modifier = Modifier
+                                    .width(150.dp)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .background(MaterialTheme.colorScheme.primary)
+                                    .clickable {
+                                        isOpened.value = false
+                                        onCancelClicked()
+                                    }
+                                    .padding(8.dp),
+                                text = stringResource(id = R.string.cancel),
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                style = MaterialTheme.typography.titleMedium,
+                                textAlign = TextAlign.Center
+                            )
+
+                            //exit
+                            TextUi(
+                                modifier = Modifier
+                                    .width(150.dp)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .clickable {
+                                        onConfirmClicked()
+                                    }
+                                    .padding(8.dp),
+                                text = stringResource(id = R.string.log_out),
+                                color = MaterialTheme.colorScheme.error,
+                                style = MaterialTheme.typography.titleMedium,
+                                textAlign = TextAlign.Center
+                            )
+                            SpacerUi(modifier = Modifier.height(12.dp))
+
+                        }
+                    }
+                }, properties = DialogProperties(
+                    dismissOnBackPress = false,
+                    dismissOnClickOutside = false
+                )
+            )
+
+        }
+    }
+
+}
+
+@Composable
 fun LoadingDialog(
     isOpened: Boolean,
     title: String = stringResource(id = R.string.please_wait)

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
@@ -82,13 +83,15 @@ class HomeFragment : BaseFragment() {
             }
             CircleLoading(stateValue.isLoading)
 
-            if (stateValue.networkError != null) {
-                stateValue.networkError.ShowNetworkErrorSnakeBar(scaffoldState)
-            }
             HomeScreen(cases = stateValue.cases,
                 onTapClicked = {
                     requestCasesIntent(it)
                 })
+
+            if (stateValue.networkError != null) {
+                Toast.makeText(requireContext(), "dd", Toast.LENGTH_SHORT).show()
+                stateValue.networkError.ShowNetworkErrorSnakeBar(scaffoldState)
+            }
         }
     }
 

@@ -30,7 +30,7 @@ class MyServiceInterceptor @Inject constructor(
 
     init {
         runBlocking {
-            sessionAccessToken = dataStoreManager.readUserAccessToken()
+            sessionAccessToken = dataStoreManager.readUserAccessToken() + "1"
             sessionRefreshToken = dataStoreManager.readUserRefreshToken()
         }
     }

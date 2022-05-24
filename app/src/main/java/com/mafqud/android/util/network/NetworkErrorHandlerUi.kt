@@ -10,6 +10,8 @@ import androidx.compose.material.ScaffoldState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,6 +24,7 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import com.mafqud.android.R
 import com.mafqud.android.ui.compose.ButtonSmall
+import com.mafqud.android.ui.compose.ShouldLogoutDialog
 import com.mafqud.android.ui.other.snakeBarMessage
 import com.mafqud.android.ui.status.loading.CircleLoading
 import com.mafqud.android.ui.theme.BoxUi
@@ -33,7 +36,11 @@ import com.mafqud.android.ui.theme.TextUi
 @Composable
 fun Result.NetworkError.ShowNetworkErrorUi(onTryBtnClicked: () -> Unit, view: View) {
     when (this) {
-        is Result.NetworkError.Generic -> snakeBarMessage(view, getErrorType(this.type))
+        is Result.NetworkError.Generic -> snakeBarMessage(
+            view, getErrorType(
+                this.type
+            )
+        )
         Result.NetworkError.NoInternet -> NoInternet(onTryBtnClicked)
     }
 }
@@ -42,8 +49,12 @@ fun Result.NetworkError.ShowNetworkErrorUi(onTryBtnClicked: () -> Unit, view: Vi
 fun HandlePagingError(
     loadState: CombinedLoadStates,
     modifier: Modifier,
+    shouldShowLogoutDialog: Boolean = true,
     onRetry: () -> Unit,
 ) {
+    val isDialogOpened = remember {
+        mutableStateOf(false)
+    }
     when {
         loadState.refresh is LoadState.Loading -> {
             BoxUi(modifier = modifier) {
@@ -61,6 +72,17 @@ fun HandlePagingError(
                         message = e.error.getErrorMessage(),
                         onClickRetry = { onRetry() }
                     )
+
+                    val isUnauthorized = e.error.isUnauthorized()
+                    if (isUnauthorized) {
+                        isDialogOpened.value = true
+                    }
+                    if (shouldShowLogoutDialog) {
+                        ShouldLogoutDialog(
+                            titleHead = stringResource(id = R.string.should_logout),
+                            isOpened = isDialogOpened
+                        )
+                    }
                 }
             }
         }
@@ -78,16 +100,24 @@ fun HandlePagingError(
 
 @Composable
 private fun Throwable.getErrorMessage(): String {
-    val networkError  = getNetworkErrorFromThrowable(throwable = this)
-    return when(networkError) {
+    val networkError = getNetworkErrorFromThrowable(throwable = this)
+    return when (networkError) {
         is Result.NetworkError.Generic -> getMessageFromGeneric(networkError)
         Result.NetworkError.NoInternet -> stringResource(id = R.string.error_no_internet)
     }
 }
 
 @Composable
-fun getMessageFromGeneric(networkError: Result.NetworkError.Generic) : String {
-    return when(networkError.type) {
+private fun Throwable.isUnauthorized(): Boolean {
+    return when (getNetworkErrorFromThrowable(throwable = this)) {
+        is Result.NetworkError.Generic -> true
+        else -> false
+    }
+}
+
+@Composable
+fun getMessageFromGeneric(networkError: Result.NetworkError.Generic): String {
+    return when (networkError.type) {
         HttpErrorType.BadGateway -> stringResource(id = R.string.error_bad_gateway)
         HttpErrorType.BadRequest -> stringResource(id = R.string.error_bad_request)
         is HttpErrorType.DataInvalid -> stringResource(id = R.string.error_unknown)
@@ -174,7 +204,11 @@ fun ErrorItem(
 @Composable
 fun Result.NetworkError.ShowNetworkErrorSnakeBarUi(view: View) {
     when (this) {
-        is Result.NetworkError.Generic -> snakeBarMessage(view, getErrorType(this.type))
+        is Result.NetworkError.Generic -> snakeBarMessage(
+            view, getErrorType(
+                this.type
+            )
+        )
         Result.NetworkError.NoInternet -> snakeBarMessage(
             view,
             stringResource(id = R.string.error_no_internet)
@@ -183,7 +217,9 @@ fun Result.NetworkError.ShowNetworkErrorSnakeBarUi(view: View) {
 }
 
 @Composable
-fun Result.NetworkError.ShowNetworkErrorSnakeBar(scaffoldState: ScaffoldState) {
+fun Result.NetworkError.ShowNetworkErrorSnakeBar(
+    scaffoldState: ScaffoldState,
+) {
     val errorMessage = when (this) {
         is Result.NetworkError.Generic -> getErrorType(this.type)
         Result.NetworkError.NoInternet -> stringResource(id = R.string.error_no_internet)

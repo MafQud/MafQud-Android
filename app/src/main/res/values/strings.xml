@@ -183,4 +183,5 @@
     <string name="range_age">select range age</string>
     <string name="from">From</string>
     <string name="to">To</string>
+    <string name="should_logout">Session expired , you should login again.</string>
 </resources>

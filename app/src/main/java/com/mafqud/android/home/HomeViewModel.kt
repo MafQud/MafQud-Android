@@ -6,6 +6,7 @@ import androidx.paging.cachedIn
 import com.mafqud.android.base.viewModel.BaseViewModel
 import com.mafqud.android.home.model.CasesDataResponse
 import com.mafqud.android.util.network.Result
+import com.mafqud.android.util.other.LogMe
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import javax.inject.Inject
@@ -83,8 +84,6 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
         val result = homeRepository.getCases(getSelectedCasesType())
         when (result) {
             is Result.Success -> emitNotificationsData(result.data)
-            is Result.NetworkError.Generic -> emitGenericFailedState(result)
-            Result.NetworkError.NoInternet -> emitInternetFailedState(result as Result.NetworkError.NoInternet)
         }
     }
 
@@ -119,16 +118,15 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
     }
 
     private fun emitGenericFailedState(error: Result.NetworkError.Generic) {
-        launchViewModelScope {
-            _stateChannel.emit(
-                stateChannel.value.copy(
-                    isLoading = false,
-                    errorMessage = "May be",
-                    networkError = error,
-                    isRefreshing = false,
-                )
+        _stateChannel.tryEmit(
+            stateChannel.value.copy(
+                isLoading = false,
+                errorMessage = "May be",
+                networkError = error,
+                isRefreshing = false,
             )
-        }
+        )
+
     }
 
     private fun emitInternetFailedState(result: Result.NetworkError.NoInternet) {

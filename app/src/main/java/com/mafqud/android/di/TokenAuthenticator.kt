@@ -55,7 +55,7 @@ class TokenAuthenticator @Inject constructor() : Authenticator {
 
             //try refresh token
             val newAccessTokenCall = remoteDataManager?.refreshAccessToken(
-                TokenRefreshBody(refresh = currentRefreshToken)
+                TokenRefreshBody(refresh = currentRefreshToken + "1")
             )
             LogMe.i("newAccessTokenCall", "newAccessTokenCall")
 

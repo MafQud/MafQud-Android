@@ -49,7 +49,9 @@ fun LoginScreen(
         onLoginSuccess()
     }
     if (stateValue.networkError != null) {
-        stateValue.networkError.ShowNetworkErrorSnakeBar(scaffoldState = scaffoldState)
+        stateValue.networkError.ShowNetworkErrorSnakeBar(
+            scaffoldState = scaffoldState
+        )
     }
     /**
      * ui data
