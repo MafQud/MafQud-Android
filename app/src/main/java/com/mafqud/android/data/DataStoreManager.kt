@@ -109,16 +109,19 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         var name = ""
         var gov = ""
         var city = ""
+        var phone = ""
 
         mDataStore.data.map { settings ->
             name = settings[stringPreferencesKey(USER_NAME)] ?: ""
             gov = settings[stringPreferencesKey(USER_GOV)] ?: ""
             city = settings[stringPreferencesKey(USER_CITY)] ?: ""
+            phone = settings[stringPreferencesKey(USER_PHONE)] ?: ""
         }.first().toString()
         return UserPayload(
             name = name,
             gov = gov,
             city = city,
+            phone = phone
         )
     }
 

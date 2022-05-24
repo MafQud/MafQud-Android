@@ -69,10 +69,14 @@ class MyAccountFragment : Fragment() {
                         val address = remember {
                             mutableStateOf("")
                         }
-                        loadUserData(userName, address)
+                        val phone = remember {
+                            mutableStateOf("")
+                        }
+                        loadUserData(userName, address, phone)
                         AccountScreen(
                             userName = userName.value,
                             address = address.value,
+                            phone = phone.value,
                             onEditClicked = {
                             findNavController().navigate(R.id.action_myAccountFragment_to_myAccountEditFragment)
                         }, onEditInfoClicked = {
@@ -85,13 +89,18 @@ class MyAccountFragment : Fragment() {
         }
     }
 
-    private fun loadUserData(userName: MutableState<String>, address: MutableState<String>) {
+    private fun loadUserData(
+        userName: MutableState<String>,
+        address: MutableState<String>,
+        phone: MutableState<String>
+    ) {
         lifecycleScope.launchWhenCreated {
             if (userPayload == null)
                 readUserData()
 
             userName.value = userPayload?.name ?: ""
             address.value = userPayload?.address ?: ""
+            phone.value = userPayload?.phone ?: ""
         }
 
     }

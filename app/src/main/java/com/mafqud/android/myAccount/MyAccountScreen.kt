@@ -26,6 +26,7 @@ fun AccountScreen(
     onEditInfoClicked: () -> Unit = {},
     userName: String = "",
     address: String = "",
+    phone: String = "",
 ) {
     ColumnUi {
         BoxUi(
@@ -45,7 +46,7 @@ fun AccountScreen(
             ) {
                 AccountHead(userName, onEditClicked)
                 SpacerUi(modifier = Modifier.height(20.dp))
-                AccountBody(userName,address)
+                AccountBody(userName, address, phone)
                 SpacerUi(modifier = Modifier.height(8.dp))
                 AccountButton(onEditInfoClicked)
 
@@ -63,7 +64,7 @@ fun AccountButton(onEditInfoClicked: () -> Unit) {
 }
 
 @Composable
-fun AccountBody(userName: String, address: String) {
+fun AccountBody(userName: String, address: String, phone: String) {
     ColumnUi(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -89,13 +90,13 @@ fun AccountBody(userName: String, address: String) {
             //Email
             TextUi(
                 modifier = Modifier.weight(1f),
-                text = stringResource(id = R.string.email),
+                text = stringResource(id = R.string.phone_number),
                 color = MaterialTheme.colorScheme.outline,
                 style = MaterialTheme.typography.titleMedium
             )
             TextUi(
                 modifier = Modifier.weight(2f),
-                text = "",
+                text = "$phone 20+",
                 color = MaterialTheme.colorScheme.onTertiaryContainer,
                 style = MaterialTheme.typography.titleMedium
             )
