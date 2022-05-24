@@ -24,6 +24,8 @@ import com.mafqud.android.ui.theme.*
 fun AccountScreen(
     onEditClicked: () -> Unit = {},
     onEditInfoClicked: () -> Unit = {},
+    userName: String = "",
+    address: String = "",
 ) {
     ColumnUi {
         BoxUi(
@@ -41,9 +43,9 @@ fun AccountScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                AccountHead(onEditClicked)
+                AccountHead(userName, onEditClicked)
                 SpacerUi(modifier = Modifier.height(20.dp))
-                AccountBody()
+                AccountBody(userName,address)
                 SpacerUi(modifier = Modifier.height(8.dp))
                 AccountButton(onEditInfoClicked)
 
@@ -61,7 +63,7 @@ fun AccountButton(onEditInfoClicked: () -> Unit) {
 }
 
 @Composable
-fun AccountBody() {
+fun AccountBody(userName: String, address: String) {
     ColumnUi(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -76,7 +78,7 @@ fun AccountBody() {
             )
             TextUi(
                 modifier = Modifier.weight(2f),
-                text = "Marwa Kamel",
+                text = userName,
                 color = MaterialTheme.colorScheme.onTertiaryContainer,
                 style = MaterialTheme.typography.titleMedium
             )
@@ -93,7 +95,7 @@ fun AccountBody() {
             )
             TextUi(
                 modifier = Modifier.weight(2f),
-                text = "user@gmail.com",
+                text = "",
                 color = MaterialTheme.colorScheme.onTertiaryContainer,
                 style = MaterialTheme.typography.titleMedium
             )
@@ -109,7 +111,7 @@ fun AccountBody() {
             )
             TextUi(
                 modifier = Modifier.weight(2f),
-                text = "الدقهلية - المنصورة",
+                text = address,
                 color = MaterialTheme.colorScheme.onTertiaryContainer,
                 style = MaterialTheme.typography.titleMedium
             )
@@ -118,7 +120,7 @@ fun AccountBody() {
 }
 
 @Composable
-fun AccountHead(onEditClicked: () -> Unit) {
+fun AccountHead(userName: String, onEditClicked: () -> Unit) {
     BoxUi(
         modifier = Modifier
             .height(213.dp)
@@ -135,9 +137,16 @@ fun AccountHead(onEditClicked: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            LetterIcon(letter = "M", size = 76.dp, letterSize = MaterialTheme.typography.titleLarge)
+            val char = userName.firstOrNull()?.let {
+                return@let it
+            } ?: ""
+            LetterIcon(
+                letter = char.toString(),
+                size = 76.dp,
+                letterSize = MaterialTheme.typography.titleLarge
+            )
             TextUi(
-                text = "Marwa Kamel",
+                text = userName,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 style = MaterialTheme.typography.titleMedium
             )

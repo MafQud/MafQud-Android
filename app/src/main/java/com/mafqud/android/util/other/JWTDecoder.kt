@@ -12,13 +12,13 @@ import retrofit2.Response
 @Keep
 data class UserPayload(
     @field:Json(name = "city")
-    val city: String? = "", // البساتين
+    val city: String = "", // البساتين
     @field:Json(name = "exp")
     val exp: Int? = 0, // 1653333848
     @field:Json(name = "firebase_token")
     val firebaseToken: String = "", // sadtoken
     @field:Json(name = "gov")
-    val gov: String? = "", // القاهرة
+    val gov: String = "", // القاهرة
     @field:Json(name = "iat")
     val iat: Int? = 0, // 1653247448
     @field:Json(name = "jti")
@@ -32,7 +32,9 @@ data class UserPayload(
     @field:Json(name = "token_type")
     val tokenType: String? = "", // refresh
     @field:Json(name = "user_id")
-    val userId: Int = -1 // 2
+    val userId: Int = -1, // 2
+    // full address
+    var address: String = "$gov - $city"
 )
 
 fun getUserPayloadFromToken(accessToken: String): UserPayload {
@@ -43,17 +45,19 @@ fun getUserPayloadFromToken(accessToken: String): UserPayload {
         val phone = jwt.getClaim("phone").asString() ?: ""
         val firebaseToken = jwt.getClaim("firebase_token").asString() ?: ""
         val nationalId = jwt.getClaim("national_id").asString() ?: ""
+        val gov = jwt.getClaim("gov").asString() ?: ""
+        val city = jwt.getClaim("city").asString() ?: ""
 
         LogMe.i("user", name)
-        LogMe.i("user", id.toString())
-        LogMe.i("user", phone)
 
         return UserPayload(
             userId = id,
             name = name,
             phone = phone,
             firebaseToken = firebaseToken,
-            nationalId = nationalId
+            nationalId = nationalId,
+            gov = gov,
+            city = city,
         )
 
     } catch (e: DecodeException) {

@@ -68,24 +68,6 @@ class NotificationViewModel @Inject constructor(private val notificationUseCase:
         )
     }
 
-    /*private fun emitNotificationsData(data: Pager<Int, NotificationsResponse.Notification>) {
-        val notifications = data.flow.distinctUntilChangedBy {
-        }.cachedIn(viewModelScope)
-
-
-        launchViewModelScope {
-            _stateChannel.emit(
-                stateChannel.value.copy(
-                    isLoading = false,
-                    errorMessage = null,
-                    networkError = null,
-                    isRefreshing = false,
-                    notifications = notifications
-                )
-            )
-        }
-    }*/
-
     private fun emitLoadingState() {
         _stateChannel.tryEmit(
             stateChannel.value.copy(

@@ -5,18 +5,42 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.material.Scaffold
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.mafqud.android.R
+import com.mafqud.android.data.DataStoreManager
 import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.theme.MafQudTheme
+import com.mafqud.android.util.other.UserPayload
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MyAccountFragment : Fragment() {
+
+    @Inject
+    lateinit var dataStoreManager: DataStoreManager
+
+    private var userPayload: UserPayload? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        lifecycleScope.launchWhenCreated {
+            readUserData()
+        }
+    }
+
+    private suspend fun readUserData() {
+        userPayload = dataStoreManager.readUserData()
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +63,17 @@ class MyAccountFragment : Fragment() {
                             }
                         )
                     }, content = {
-                        AccountScreen(onEditClicked = {
+                        val userName = remember {
+                            mutableStateOf("")
+                        }
+                        val address = remember {
+                            mutableStateOf("")
+                        }
+                        loadUserData(userName, address)
+                        AccountScreen(
+                            userName = userName.value,
+                            address = address.value,
+                            onEditClicked = {
                             findNavController().navigate(R.id.action_myAccountFragment_to_myAccountEditFragment)
                         }, onEditInfoClicked = {
                             findNavController().navigate(R.id.action_myAccountFragment_to_myAccountEditInfoFragment)
@@ -49,6 +83,17 @@ class MyAccountFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun loadUserData(userName: MutableState<String>, address: MutableState<String>) {
+        lifecycleScope.launchWhenCreated {
+            if (userPayload == null)
+                readUserData()
+
+            userName.value = userPayload?.name ?: ""
+            address.value = userPayload?.address ?: ""
+        }
+
     }
 
 }

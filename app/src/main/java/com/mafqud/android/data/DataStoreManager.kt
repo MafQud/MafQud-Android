@@ -26,6 +26,8 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         const val USER_TOKEN_ACCESS = "userTokenAccess"
         const val USER_TOKEN_REFRESH = "userTokenRefresh"
         const val USER_NAME = "userName"
+        const val USER_GOV = "userGov"
+        const val USER_CITY = "userCity"
         const val USER_PHONE = "userPhone"
         const val USER_ID = "userId"
         const val USER_NATIONAL_ID = "userNationalId"
@@ -85,10 +87,14 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         val fcm = user.firebaseToken
         val nationalId = user.nationalId
         val phone = user.phone
+        val gov = user.gov
+        val city = user.city
 
 
         mDataStore.edit { settings ->
             settings[stringPreferencesKey(USER_NAME)] = name
+            settings[stringPreferencesKey(USER_GOV)] = gov
+            settings[stringPreferencesKey(USER_CITY)] = city
             settings[stringPreferencesKey(USER_PHONE)] = phone
             settings[intPreferencesKey(USER_ID)] = id
             settings[stringPreferencesKey(USER_NATIONAL_ID)] = nationalId
@@ -96,72 +102,25 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
             settings[booleanPreferencesKey(IS_LOGGED_IN)] = true
         }
     }
-
     /**
      * for storing user info (name, image_url,...)
      */
-    /*suspend fun writeUserData(user: AuthResponseSuccess.User) {
-        val name = user.name
-        val imageUrl = user.image
-        val email = user.email
-        val id = user.id
-        val token = user.token
-        val followers = user.followers ?: 0
-        val following = user.following ?: 0
-
-        mDataStore.edit { settings ->
-            settings[stringPreferencesKey(USER_NAME)] = name
-            settings[stringPreferencesKey(USER_TOKEN)] = token
-            settings[stringPreferencesKey(USER_IMAGE)] = imageUrl
-            settings[stringPreferencesKey(USER_EMAIL)] = email
-            settings[intPreferencesKey(USER_ID)] = id
-            settings[intPreferencesKey(USER_FOLLOWERS)] = followers
-            settings[intPreferencesKey(USER_FOLLOWING)] = following
-        }
-    }
-*/
-    /**
-     * for storing user info (name, image_url,...)
-     */
-    /*suspend fun readUserInfo(): AuthResponseSuccess.User {
+    suspend fun readUserData(): UserPayload {
         var name = ""
-        var email = ""
-        var id = 0
-        var image = ""
-        var token = ""
-        var followers = 0
-        var following = 0
+        var gov = ""
+        var city = ""
 
         mDataStore.data.map { settings ->
             name = settings[stringPreferencesKey(USER_NAME)] ?: ""
-            image = settings[stringPreferencesKey(USER_IMAGE)] ?: ""
-            id = settings[intPreferencesKey(USER_ID)] ?: 0
-            followers = settings[intPreferencesKey(USER_FOLLOWERS)] ?: 0
-            following = settings[intPreferencesKey(USER_FOLLOWING)] ?: 0
-            email = settings[stringPreferencesKey(USER_EMAIL)] ?: ""
-            token = settings[stringPreferencesKey(USER_TOKEN)] ?: ""
+            gov = settings[stringPreferencesKey(USER_GOV)] ?: ""
+            city = settings[stringPreferencesKey(USER_CITY)] ?: ""
         }.first().toString()
-        return AuthResponseSuccess.User(
-            email = email,
-            id = id,
-            image = image,
+        return UserPayload(
             name = name,
-            token = token,
-            followers = followers,
-            following= following,
+            gov = gov,
+            city = city,
         )
-    }*/
-
-    /**
-     * for storing user info image_url
-     */
-    suspend fun readUserImage(): String {
-        val image = mDataStore.data.map { settings ->
-            settings[stringPreferencesKey(USER_IMAGE)] ?: ""
-        }.first().toString()
-        return image
     }
-
 
     suspend fun getUserId(): Int {
         return mDataStore.data.map { settings ->
