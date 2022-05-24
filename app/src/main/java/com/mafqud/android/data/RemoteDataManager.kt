@@ -80,9 +80,12 @@ interface RemoteDataManager {
 
 
     @GET("/api/notifications/")
-    // TODO change response model
     suspend fun getNotifications(
         @Query("offset") page: Int,
     ): NotificationsResponse
+
+
+    @GET("/api/locations/governorates/")
+    suspend fun getGovs(): NotificationsResponse
 
 }
