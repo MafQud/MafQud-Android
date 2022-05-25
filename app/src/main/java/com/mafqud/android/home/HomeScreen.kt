@@ -44,7 +44,8 @@ enum class CasesType {
 @Composable
 fun HomeScreen(
     onTapClicked: (CasesType) -> Unit = {},
-    cases: Flow<PagingData<CasesDataResponse.Case>>?
+    cases: Flow<PagingData<CasesDataResponse.Case>>?,
+    selectedTapState: CasesType
 ) {
     ColumnUi(
         Modifier
@@ -53,25 +54,28 @@ fun HomeScreen(
             ),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        HeadSearchUi(onTapClicked)
+        HeadSearchUi(onTapClicked, selectedTapState)
         CasesUi(Modifier.weight(1f), cases)
     }
 }
 
 @Composable
-fun HeadSearchUi(onTapClicked: (CasesType) -> Unit = {}) {
+fun HeadSearchUi(
+    onTapClicked: (CasesType) -> Unit = {},
+    selectedTapState: CasesType = CasesType.ALL
+) {
     BoxUi(
         Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
     ) {
-        SearchUi(onTapClicked)
+        SearchUi(onTapClicked, selectedTapState)
     }
 }
 
 
 @Composable
-private fun SearchUi(onTapClicked: (CasesType) -> Unit) {
+private fun SearchUi(onTapClicked: (CasesType) -> Unit, selectedTapState: CasesType) {
     ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        TapsUi(onTapClicked)
+        TapsUi(onTapClicked, selectedTapState)
         DropDownUi()
         SearchNameUi()
     }
@@ -142,7 +146,6 @@ private fun DropDownUi() {
         )
 
 
-
     }
 }
 
@@ -187,10 +190,10 @@ fun AgeTextPicker(modifier: Modifier) {
 }
 
 @Composable
-private fun TapsUi(onTapClicked: (CasesType) -> Unit) {
+private fun TapsUi(onTapClicked: (CasesType) -> Unit, selectedTapState: CasesType) {
     RowUi {
         val selectedItem = remember {
-            mutableStateOf(CasesType.ALL)
+            mutableStateOf(selectedTapState)
         }
 
         val activeTextColor = MaterialTheme.colorScheme.onSecondary
@@ -212,8 +215,10 @@ private fun TapsUi(onTapClicked: (CasesType) -> Unit) {
                 .clip(RoundedCornerShape(topStart = 20.dp, bottomStart = 20.dp))
                 .background(if (selectedItem.value == CasesType.ALL) activeBackgroundColor else disableBackgroundColor)
                 .clickable {
-                    selectedItem.value = CasesType.ALL
-                    onTapClicked(selectedItem.value)
+                    if (selectedItem.value != CasesType.ALL) {
+                        selectedItem.value = CasesType.ALL
+                        onTapClicked(selectedItem.value)
+                    }
                 },
             contentAlignment = Alignment.Center
         ) {
@@ -236,8 +241,10 @@ private fun TapsUi(onTapClicked: (CasesType) -> Unit) {
                 )
                 .background(if (selectedItem.value == CasesType.MISSING) activeBackgroundColor else disableBackgroundColor)
                 .clickable {
-                    selectedItem.value = CasesType.MISSING
-                    onTapClicked(selectedItem.value)
+                    if (selectedItem.value != CasesType.MISSING) {
+                        selectedItem.value = CasesType.MISSING
+                        onTapClicked(selectedItem.value)
+                    }
                 },
             contentAlignment = Alignment.Center
         ) {
@@ -261,8 +268,10 @@ private fun TapsUi(onTapClicked: (CasesType) -> Unit) {
                 .clip(RoundedCornerShape(topEnd = 20.dp, bottomEnd = 20.dp))
                 .background(if (selectedItem.value == CasesType.FOUND) activeBackgroundColor else disableBackgroundColor)
                 .clickable {
-                    selectedItem.value = CasesType.FOUND
-                    onTapClicked(selectedItem.value)
+                    if (selectedItem.value != CasesType.FOUND) {
+                        selectedItem.value = CasesType.FOUND
+                        onTapClicked(selectedItem.value)
+                    }
                 },
             contentAlignment = Alignment.Center
         ) {
@@ -279,7 +288,8 @@ private fun TapsUi(onTapClicked: (CasesType) -> Unit) {
 @Composable
 private fun CasesUi(
     modifier: Modifier, cases: Flow<PagingData<CasesDataResponse.Case>>?,
-    onCaseClicked: (CasesDataResponse.Case) -> Unit = {}) {
+    onCaseClicked: (CasesDataResponse.Case) -> Unit = {}
+) {
 
     BoxUi(
         modifier = Modifier

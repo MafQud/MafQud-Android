@@ -38,9 +38,9 @@ fun MapScreen() {
     ColumnUi {
         BoxUi(Modifier.background(MaterialTheme.colorScheme.surfaceVariant)) {
             ColumnUi {
-                HeadSearchUi {
+                HeadSearchUi({
 
-                }
+                })
                 SpacerUi(modifier = Modifier.height(8.dp))
             }
         }
