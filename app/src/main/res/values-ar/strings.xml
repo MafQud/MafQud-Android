@@ -157,5 +157,13 @@
     <string name="range_age">البحث حسب العمر</string>
     <string name="from">من</string>
     <string name="to">الي</string>
+    <string name="all">الكل</string>
+    <string name="lost">مفقود</string>
+    <string name="found">معثور عليه</string>
+    <string name="none">لا شئ</string>
+    <string name="should_logout">تم انتهاء صلاحية الوصول .. برجاء إعادة تسجيل الدخول</string>
+    <string name="error_not_auth">اسم المستخدم أو كلمة المرور غير صحيحة</string>
+    <string name="error_unknown">خطأ غير معروف</string>
+    <string name="more">المزيد</string>
 
 </resources>

@@ -1,8 +1,14 @@
 package com.mafqud.android.home.model
 import androidx.annotation.Keep
+import com.mafqud.android.home.CasesType
 import com.squareup.moshi.Json
 
 
+enum class CaseType{
+    FOUND,
+    MISSING,
+    NONE
+}
 
 @Keep
 data class CasesDataResponse(
@@ -34,8 +40,21 @@ data class CasesDataResponse(
         @field:Json(name = "thumbnail")
         val thumbnail: String? = "", // https://mafqud-bucket.s3.amazonaws.com/media/files/b366332189494525abe04591a583544f.png
         @field:Json(name = "type")
-        val type: String? = "" // F
+        val type: String? = "" ,// F
+        /*val mCaseType: CaseType =CaseType.NONE*/
+
     ) {
+        fun getCaseType(): CaseType {
+            return when(type){
+                "M" -> CaseType.MISSING
+                "F" -> CaseType.FOUND
+                else -> CaseType.NONE
+            }
+        }
+
+        fun getFullAddress(): String {
+            return location?.gov + " - " + location?.city
+        }
         @Keep
         data class Location(
             @field:Json(name = "city")

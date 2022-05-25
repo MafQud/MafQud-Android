@@ -121,25 +121,26 @@ private fun DropDownUi() {
         val selectedItem = remember {
             mutableStateOf("")
         }
-        DropDownItems(
-            items = listOf("Date"),
-            selectedItemID = selectedItem,
-            modifier = Modifier
-                .weight(1f)
-                .height(30.dp),
-        )
-        DropDownItems(
-            items = listOf("City"),
-            selectedItemID = selectedItem,
-            modifier = Modifier
-                .weight(1f)
-                .height(30.dp),
-        )
         AgeTextPicker(
             Modifier
                 .weight(1f)
                 .height(30.dp)
         )
+        DropDownItems(
+            items = listOf("تاريخ التغيب"),
+            selectedItemID = selectedItem,
+            modifier = Modifier
+                .weight(1f)
+                .height(30.dp),
+        )
+        DropDownItems(
+            items = listOf("المحافظة"),
+            selectedItemID = selectedItem,
+            modifier = Modifier
+                .weight(1f)
+                .height(30.dp),
+        )
+
 
 
     }
@@ -217,7 +218,7 @@ private fun TapsUi(onTapClicked: (CasesType) -> Unit) {
             contentAlignment = Alignment.Center
         ) {
             TextUi(
-                text = "All",
+                text = stringResource(id = R.string.all),
                 color = if (selectedItem.value == CasesType.ALL) activeTextColor else disableTextColor,
                 style = MaterialTheme.typography.titleSmall
             )
@@ -241,7 +242,7 @@ private fun TapsUi(onTapClicked: (CasesType) -> Unit) {
             contentAlignment = Alignment.Center
         ) {
             TextUi(
-                text = "Lost",
+                text = stringResource(id = R.string.lost),
                 color = if (selectedItem.value == CasesType.MISSING) activeTextColor else disableTextColor,
                 style = MaterialTheme.typography.titleSmall
             )
@@ -266,7 +267,7 @@ private fun TapsUi(onTapClicked: (CasesType) -> Unit) {
             contentAlignment = Alignment.Center
         ) {
             TextUi(
-                text = "Found",
+                text = stringResource(id = R.string.found),
                 color = if (selectedItem.value == CasesType.FOUND) activeTextColor else disableTextColor,
                 style = MaterialTheme.typography.titleSmall
             )

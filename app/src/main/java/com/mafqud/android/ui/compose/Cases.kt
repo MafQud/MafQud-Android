@@ -1,5 +1,6 @@
 package com.mafqud.android.ui.compose
 
+import android.icu.number.Scale.none
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -13,11 +14,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
+import com.google.accompanist.coil.rememberCoilPainter
 import com.mafqud.android.R
+import com.mafqud.android.home.model.CaseType
 import com.mafqud.android.home.model.CasesDataResponse
 import com.mafqud.android.ui.theme.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -50,7 +59,7 @@ fun CaseItem(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
                 verticalAlignment = Alignment.Top
             ) {
-                UserPhoto()
+                UserPhoto(imageUrl = case.thumbnail ?: "")
                 ColumnUi(
                     Modifier
                         .fillMaxSize(),
@@ -80,7 +89,7 @@ fun CaseItem(
 
                                 IconMap()
                                 TextUi(
-                                    text = case.location?.city ?: "",
+                                    text = case.getFullAddress(),
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     style = MaterialTheme.typography.titleSmall
                                 )
@@ -95,11 +104,12 @@ fun CaseItem(
                                 .clickable {
                                     if (onCaseClicked != null) {
                                         onCaseClicked(case)
-                                    }                                },
+                                    }
+                                },
                         ) {
                             TextUi(
                                 // modifier = Modifier.padding(12.dp),
-                                text = "more",
+                                text = stringResource(id = R.string.more),
                                 color = MaterialTheme.colorScheme.onSecondary,
                                 style = MaterialTheme.typography.titleSmall
                             )
@@ -107,19 +117,31 @@ fun CaseItem(
                     }
 
                     // state
+                    val type = when(case.getCaseType()) {
+                        CaseType.FOUND -> stringResource(id = R.string.found)
+                        CaseType.MISSING -> stringResource(id = R.string.lost)
+                        CaseType.NONE -> stringResource(id = R.string.none)
+                    }
                     TextUi(
-                        text = "Lost",
+                        text = type,
                         color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.titleSmall
                     )
 
-                    SpacerUi(modifier = Modifier.height(4.dp))
+                    SpacerUi(modifier = Modifier.height(8.dp))
                     //date
-                    TextUi(
-                        text = case.lastSeen ?: "",
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.titleSmall
-                    )
+                    RowUi(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        TextUi(
+                            text = stringResource(id = R.string.lost_date),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = MaterialTheme.typography.titleSmall
+                        )
+                        TextUi(
+                            text = case.lastSeen ?: "",
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = MaterialTheme.typography.titleSmall
+                        )
+                    }
                 }
             }
         }
@@ -130,6 +152,7 @@ fun CaseItem(
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun UserPhoto(
+    imageUrl: String = "",
     imagesSize: Dp = 45.dp
 ) {
     CardUi(
@@ -145,9 +168,18 @@ fun UserPhoto(
             .clickable {
             }, elevation = 2.dp
     ) {
-        ImageUi(
-            painter = painterResource(id = R.drawable.child),
-            modifier = Modifier.fillMaxSize()
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(imageUrl)
+                .crossfade(true)
+                .build(),
+            placeholder = painterResource(R.drawable.placeholder_image),
+            contentDescription = "User image",
+            contentScale = ContentScale.Crop,
+            error = painterResource(R.drawable.error_image),
+            modifier = Modifier
+                .padding(2.dp)
+                .clip(CircleShape)
         )
     }
 

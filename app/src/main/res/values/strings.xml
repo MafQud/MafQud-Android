@@ -28,9 +28,8 @@
     <string name="open_gps" translatable="false">Please, open your GPS to get your current location</string>
     <string name="error_no_more_data" translatable="false">Can\'t load more data.. Check Internet connection!</string>
     <string name="error_bad_gateway" translatable="false">Bad Getway</string>
-    <string name="error_unknown" translatable="false">Unknown Error</string>
     <string name="error_not_found" translatable="false">Not found</string>
-    <string name="error_not_auth" translatable="false">Email or password are incorrect</string>
+    <string name="error_not_auth">User name or password are incorrect</string>
     <string name="error_server_error" translatable="false">Server error</string>
     <string name="error_forbidden" translatable="false">Forbidden</string>
     <string name="error_bad_request" translatable="false">Bad request</string>
@@ -184,4 +183,10 @@
     <string name="from">From</string>
     <string name="to">To</string>
     <string name="should_logout">Session expired , you should login again.</string>
+    <string name="all">All</string>
+    <string name="lost">Lost</string>
+    <string name="found">Found</string>
+    <string name="none">None</string>
+    <string name="error_unknown">Unknown Error</string>
+    <string name="more">More</string>
 </resources>

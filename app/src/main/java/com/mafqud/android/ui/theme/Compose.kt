@@ -50,11 +50,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.PopupProperties
+import coil.ComponentRegistry
 import coil.ImageLoader
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
+import coil.request.ImageRequest
 import coil.size.OriginalSize
+import coil.size.Size
 import com.google.accompanist.pager.*
 import com.mafqud.android.R
 import com.mafqud.android.ui.compose.mirror
@@ -714,22 +718,20 @@ fun GifImage(
 ) {
     val context = LocalContext.current
     val imageLoader = ImageLoader.Builder(context)
-        .componentRegistry {
+        .components {
             if (SDK_INT >= 28) {
-                add(ImageDecoderDecoder(context))
+                add(ImageDecoderDecoder.Factory())
             } else {
-                add(GifDecoder())
+                add(GifDecoder.Factory())
             }
         }
         .build()
 
     Image(
-        painter = rememberImagePainter(
-            imageLoader = imageLoader,
-            data = imageID,
-            builder = {
-                size(OriginalSize)
-            },
+        painter = rememberAsyncImagePainter(
+            ImageRequest.Builder(LocalContext.current).data(data = imageID).apply(block = fun ImageRequest.Builder.() {
+                size(Size.ORIGINAL)
+            }).build(), imageLoader = imageLoader
         ),
         contentDescription = null,
         modifier = modifier
