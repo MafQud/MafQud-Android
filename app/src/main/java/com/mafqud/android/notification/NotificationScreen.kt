@@ -23,6 +23,7 @@ import com.mafqud.android.R
 import com.mafqud.android.notification.models.NotificationIconType
 import com.mafqud.android.notification.models.NotificationsResponse
 import com.mafqud.android.ui.theme.*
+import com.mafqud.android.util.dateFormat.fromFullDateToAnother
 import com.mafqud.android.util.network.HandlePagingError
 import kotlinx.coroutines.flow.Flow
 
@@ -165,14 +166,15 @@ fun NotificationItem(
                 )
 
                 //date
+                val date = fromFullDateToAnother(notification.createdAt)
                 TextUi(
-                    text = notification.createdAt ?: "",
+                    text = date,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.labelSmall
                 )
             }
             // icon
-            val iconRes = when(notification.iconType) {
+            val iconRes = when (notification.iconType) {
                 NotificationIconType.SUCCESS -> R.drawable.ic_state_success
                 NotificationIconType.WARNING -> R.drawable.ic_warning
                 NotificationIconType.INFO -> R.drawable.ic_info
