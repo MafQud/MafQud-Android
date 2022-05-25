@@ -1,5 +1,6 @@
 package com.mafqud.android.base
 
+import com.mafqud.android.base.activity.BaseActivity
 import com.mafqud.android.data.DataStoreManager
 import com.mafqud.android.data.FCMManager
 import com.mafqud.android.data.RemoteDataManager
@@ -28,7 +29,8 @@ open class BaseRepository() {
         return dataStoreManager.getUserName()
     }
 
-    /*  *//**
+    /*  */
+    /**
      *  this fun to add two fields to data store->[local DB] (IS_LOGGED_IN, USER_TOKEN)
      */
 
@@ -40,8 +42,8 @@ open class BaseRepository() {
     }
 
     suspend fun saveUserTokens(
-       accessToken: String,
-       refreshToken: String,
+        accessToken: String,
+        refreshToken: String,
     ) {
         // save user data to data store
         dataStoreManager.saveUserTokens(accessToken, refreshToken)
@@ -50,65 +52,24 @@ open class BaseRepository() {
     }
 
     /**
-     *  this fun to add two fields to data store->[local DB] (IS_LOGGED_IN, USER_TOKEN)
-     *//*
-    suspend fun saveUserData(
-        user: AuthResponseSuccess.User,
-    ) {
-        // save user data to data store
-        dataStoreManager.writeUserData(user)
-        // update interceptor token header value
-        myServiceInterceptor.setSessionToken(user.token)
-    }
-
-
-    *//**
-     *
-     *//*
-
-    suspend fun getUserImageUrlFromDb(
-    ): String {
-        return dataStoreManager.readUserImage()
-    }
-
-    *//**
-     *
-     *//*
-
-    suspend fun getUserData(
-    ): AuthResponseSuccess.User {
-        return dataStoreManager.readUserInfo()
-    }
-
-    *//**
-     *
-     *//*
-
-    suspend fun getUserId(): Int {
-        return dataStoreManager.getUserId()
-    }
-
-
-    *//**
-     *
-     *//*
-
-    suspend fun isUserLoggedIn(
-    ): Boolean {
-        return dataStoreManager.isUserLoggedIn()
-    }
-
-    *//**
-     *
-     *//*
-    suspend fun updateUserData(user: AuthResponseSuccess.User?) {
-        user?.let {
-            dataStoreManager.writeUserDataWithFlag(user)
-        }
-    }*/
-
-    /**
      *  this fun to get user FCM token for notification
      */
     suspend fun getUserFCMToken() = fcmManager.getUserFCMToken()
+
+    /**
+     * location data
+     */
+    suspend fun getGos() = remoteDataManager.getGovs()
+
+    suspend fun getCities(govId: Int) = remoteDataManager.getCities(govId = govId)
+
+    /**
+     * current app language type
+     */
+
+    suspend fun getAppLanguage() = dataStoreManager.read(
+        DataStoreManager.LANGUAGE,
+        BaseActivity.LangType.AR.toString()
+    )
+
 }

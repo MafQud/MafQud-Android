@@ -3,6 +3,8 @@ package com.mafqud.android.data
 import com.mafqud.android.auth.login.models.LoginBody
 import com.mafqud.android.auth.login.models.LoginResponse
 import com.mafqud.android.home.model.CasesDataResponse
+import com.mafqud.android.locations.CitiesResponse
+import com.mafqud.android.locations.GovResponse
 import com.mafqud.android.notification.NotificationResponse
 import com.mafqud.android.notification.models.NotificationsResponse
 import com.mafqud.android.reportedCases.models.ReportedCasesResponseItem
@@ -84,8 +86,13 @@ interface RemoteDataManager {
         @Query("offset") page: Int,
     ): NotificationsResponse
 
+    /**
+     * location data
+     */
 
     @GET("/api/locations/governorates/")
-    suspend fun getGovs(): NotificationsResponse
+    suspend fun getGovs(): GovResponse
 
+    @GET("/api/locations/governorates/{gov_id}/cities")
+    suspend fun getCities(@Path("gov_id") govId: Int): CitiesResponse
 }
