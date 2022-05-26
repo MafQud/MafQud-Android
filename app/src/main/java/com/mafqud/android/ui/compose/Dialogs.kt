@@ -149,7 +149,7 @@ fun WarningDialog(
                                     .padding(8.dp)
                             ) {
                                 IconUi(
-                                    painter = painterResource(id = R.drawable.ic_warning),
+                                    painter = painterResource(id = R.drawable.ic_warning_dialog),
                                     tint = MaterialTheme.colorScheme.onSecondary
                                 )
                             }
@@ -261,7 +261,7 @@ fun DismissDialog(
                                     .padding(8.dp)
                             ) {
                                 IconUi(
-                                    painter = painterResource(id = R.drawable.ic_warning),
+                                    painter = painterResource(id = R.drawable.ic_warning_dialog),
                                     tint = MaterialTheme.colorScheme.onSecondary
                                 )
                             }
@@ -480,7 +480,7 @@ fun LogoutDialog(
                                     .padding(8.dp)
                             ) {
                                 IconUi(
-                                    painter = painterResource(id = R.drawable.ic_warning),
+                                    painter = painterResource(id = R.drawable.ic_warning_dialog),
                                     tint = MaterialTheme.colorScheme.onSecondary
                                 )
                             }
@@ -581,7 +581,7 @@ fun ShouldLogoutDialog(
                                     .padding(8.dp)
                             ) {
                                 IconUi(
-                                    painter = painterResource(id = R.drawable.ic_warning),
+                                    painter = painterResource(id = R.drawable.ic_warning_dialog),
                                     tint = MaterialTheme.colorScheme.onSecondary
                                 )
                             }
