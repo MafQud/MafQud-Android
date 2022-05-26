@@ -4,9 +4,10 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.mafqud.android.data.RemoteDataManager
 import com.mafqud.android.home.model.CasesDataResponse
+import com.mafqud.android.util.other.LogMe
 
-const val INITIAL_PAGE = 1
-const val PAGE_SIZE_PAGING = 10
+const val INITIAL_OFFSET = 0
+const val PAGE_LIMIT_AND_OFFSET = 10
 
 class CasesSource(
     private val remoteData: RemoteDataManager,
@@ -15,28 +16,29 @@ class CasesSource(
 
     override suspend fun load(params: LoadParams<Int>): PagingSource.LoadResult<Int, CasesDataResponse.Case> {
         return try {
-            val currentPage = params.key ?: INITIAL_PAGE
+            val currentOffset = params.key ?: INITIAL_OFFSET
+            LogMe.i("currentOffsetCases", currentOffset.toString())
             val type = when(casesType) {
                 CasesType.ALL -> ""
                 CasesType.MISSING -> "M"
                 CasesType.FOUND -> "F"
             }
             val casesResponse = remoteData.getCases(
-                page = currentPage,
-                limit = PAGE_SIZE_PAGING,
+                offset = currentOffset,
+                limit = PAGE_LIMIT_AND_OFFSET,
                 type = type
             )
 
-            val nextPage: Int? = if (casesResponse.cases.isEmpty()) null else currentPage + 1
+            val nextPage: Int? = if (casesResponse.cases.isEmpty()) null else currentOffset + PAGE_LIMIT_AND_OFFSET
 
 
-            PagingSource.LoadResult.Page(
+            LoadResult.Page(
                 data = casesResponse.cases,
-                prevKey = if (currentPage == INITIAL_PAGE) null else currentPage - 1,
+                prevKey = if (currentOffset == INITIAL_OFFSET) null else currentOffset - PAGE_LIMIT_AND_OFFSET,
                 nextKey = nextPage
             )
         } catch (e: Exception) {
-            PagingSource.LoadResult.Error(e)
+            LoadResult.Error(e)
         }
     }
 

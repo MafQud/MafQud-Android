@@ -5,9 +5,8 @@ import com.mafqud.android.auth.login.models.LoginResponse
 import com.mafqud.android.home.model.CasesDataResponse
 import com.mafqud.android.locations.CitiesResponse
 import com.mafqud.android.locations.GovResponse
-import com.mafqud.android.notification.NotificationResponse
 import com.mafqud.android.notification.models.NotificationsResponse
-import com.mafqud.android.reportedCases.models.ReportedCasesResponseItem
+import com.mafqud.android.reportedCases.models.ReportedCasesResponse
 import com.mafqud.android.util.network.tokenRefresh.TokenRefreshBody
 import com.mafqud.android.util.network.tokenRefresh.TokenRefreshResponse
 import com.mafqud.android.util.network.tokenRefresh.TokenVerifyBody
@@ -56,7 +55,7 @@ interface RemoteDataManager {
 
     @GET("/api/cases")
     suspend fun getCases(
-        @Query("offset") page: Int,
+        @Query("offset") offset: Int,
         @Query("type") type: String,
         @Query("limit") limit: Int,
     ): CasesDataResponse
@@ -74,17 +73,17 @@ interface RemoteDataManager {
     ): Any
 
     @GET("/api/users/cases")
-    // TODO change response model
     suspend fun getReportedCases(
         @Query("offset") page: Int,
         @Query("limit") limit: Int,
-    ): ReportedCasesResponseItem
+    ): ReportedCasesResponse
 
 
     @GET("/api/notifications/")
     suspend fun getNotifications(
         @Query("offset") page: Int,
-    ): NotificationsResponse
+        @Query("limit") limit: Int,
+        ): NotificationsResponse
 
     /**
      * location data

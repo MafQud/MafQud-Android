@@ -4,8 +4,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.cachedIn
 import com.mafqud.android.base.viewModel.BaseViewModel
-import com.mafqud.android.home.CasesType
-import com.mafqud.android.home.model.CasesDataResponse
+import com.mafqud.android.reportedCases.models.ReportedCasesResponse
 import com.mafqud.android.util.network.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.distinctUntilChangedBy
@@ -61,7 +60,7 @@ class ReportedCasesViewModel @Inject constructor(private val reportedCasesReposi
         }
     }
 
-    private fun emitCasesData(data: Pager<Int, CasesDataResponse.Case>) {
+    private fun emitCasesData(data: Pager<Int, ReportedCasesResponse.UserCase>) {
         val cases = data.flow.distinctUntilChangedBy {
         }.cachedIn(viewModelScope)
 

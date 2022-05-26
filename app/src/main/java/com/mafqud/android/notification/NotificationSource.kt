@@ -4,9 +4,10 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.mafqud.android.data.RemoteDataManager
 import com.mafqud.android.notification.models.NotificationsResponse
-import kotlinx.coroutines.delay
+import com.mafqud.android.util.other.LogMe
 
-const val INITIAL_PAGE = 1
+const val INITIAL_OFFSET = 0
+const val PAGE_LIMIT_AND_OFFSET = 10
 
 class NotificationSource(
     private val remoteData: RemoteDataManager,
@@ -14,15 +15,18 @@ class NotificationSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, NotificationsResponse.Notification> {
         return try {
-            val currentPage = params.key ?: INITIAL_PAGE
+            val currentOffset = params.key ?: INITIAL_OFFSET
+            LogMe.i("OffsetNotificationSource", currentOffset.toString())
             val notificationsResponse = remoteData.getNotifications(
-                page = currentPage,
+                page = currentOffset,
+                limit = PAGE_LIMIT_AND_OFFSET
             )
 
-            val nextPage: Int? = if (notificationsResponse.notifications.isEmpty()) null else currentPage + 1
+            val nextPage: Int? =
+                if (notificationsResponse.notifications.isEmpty()) null else currentOffset + PAGE_LIMIT_AND_OFFSET
             LoadResult.Page(
                 data = notificationsResponse.notifications,
-                prevKey = if (currentPage == INITIAL_PAGE) null else currentPage - 1,
+                prevKey = if (currentOffset == INITIAL_OFFSET) null else currentOffset - PAGE_LIMIT_AND_OFFSET,
                 nextKey = nextPage
             )
         } catch (e: Exception) {
