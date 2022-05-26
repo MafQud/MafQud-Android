@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -18,9 +19,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
+import androidx.paging.PagingData
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import com.mafqud.android.R
+import com.mafqud.android.home.EmptyCasesState
+import com.mafqud.android.reportedCases.UserCaseItem
+import com.mafqud.android.reportedCases.models.ReportedCasesResponse
 import com.mafqud.android.ui.compose.*
 import com.mafqud.android.ui.theme.*
+import com.mafqud.android.util.network.HandlePagingError
+import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun MoreScreen(
@@ -30,6 +40,7 @@ fun MoreScreen(
     onHelpClicked: () -> Unit,
     onPhonesClicked: () -> Unit,
     onLogoutClicked: () -> Unit,
+    cases: Flow<PagingData<ReportedCasesResponse.UserCase>>?,
 ) {
     ColumnUi {
 
@@ -47,7 +58,7 @@ fun MoreScreen(
             ColumnUi(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
-                    .verticalScroll(rememberScrollState()),
+                    /*.verticalScroll(rememberScrollState())*/,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
@@ -58,24 +69,7 @@ fun MoreScreen(
                     icon = R.drawable.ic_report,
                     onItemClicked = onReportedClicked,
                 )
-
-
-                ColumnUi(
-                    Modifier
-                        .padding(),
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                ) {
-                    CaseItem(
-                        backgroundColor = MaterialTheme.colorScheme.primary.copy(
-                            alpha = 0.08f
-                        )
-                    )
-                    CaseItem(
-                        backgroundColor = MaterialTheme.colorScheme.primary.copy(
-                            alpha = 0.08f
-                        )
-                    )
-                }
+                DisplayUserCases(cases)
 
                 SpacerUi(modifier = Modifier.height(20.dp))
                 //HorizontalLine()
@@ -114,6 +108,56 @@ fun MoreScreen(
                 Logout(onConfirmClicked = onLogoutClicked)
 
                 SpacerUi(modifier = Modifier.height(16.dp))
+            }
+        }
+    }
+}
+
+@Composable
+fun DisplayUserCases(cases: Flow<PagingData<ReportedCasesResponse.UserCase>>?) {
+
+    cases?.let {
+        // Remember our own LazyListState
+        val listState = rememberLazyListState()
+
+        val lazyPagingItems = cases.collectAsLazyPagingItems()
+
+        val loadState = lazyPagingItems.loadState
+        val finishedLoading =
+            loadState.refresh !is LoadState.Loading &&
+                    loadState.prepend !is LoadState.Loading &&
+                    loadState.append !is LoadState.Loading &&
+                    loadState.refresh !is LoadState.Error
+
+        LazyColumnUi(
+            state = listState,
+            //modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(horizontal = 4.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        )
+        {
+            if (lazyPagingItems.itemCount == 0 && finishedLoading) {
+                item {
+                    EmptyCasesState((Modifier.size(150.dp)))
+                }
+            }
+
+            items(lazyPagingItems) { item ->
+                item?.let {
+                    UserCaseItem(caseData = item, onCaseClicked = null)
+                }
+            }
+
+            // for adding footer indicator for state
+            item {
+                HandlePagingError(
+                    isSimpleErrorItems = true,
+                    loadState = lazyPagingItems.loadState,
+                    modifier = Modifier.size(150.dp),
+                    onRetry = {
+                        lazyPagingItems.retry()
+                    }
+                )
             }
         }
     }

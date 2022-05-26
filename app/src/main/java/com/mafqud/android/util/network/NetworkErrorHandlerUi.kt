@@ -45,11 +45,16 @@ fun Result.NetworkError.ShowNetworkErrorUi(onTryBtnClicked: () -> Unit, view: Vi
     }
 }
 
+/**
+ * @param isSimpleErrorItems
+ * true -> for display only test with try button
+ */
 @Composable
 fun HandlePagingError(
     loadState: CombinedLoadStates,
     modifier: Modifier,
     shouldShowLogoutDialog: Boolean = true,
+    isSimpleErrorItems: Boolean = false,
     onRetry: () -> Unit,
 ) {
     val isDialogOpened = remember {
@@ -69,6 +74,7 @@ fun HandlePagingError(
             BoxUi(modifier, contentAlignment = Alignment.Center) {
                 BoxUi(modifier = Modifier.fillMaxSize(), Alignment.Center) {
                     ErrorItem(
+                        isSimpleErrorItems = isSimpleErrorItems,
                         message = e.error.getErrorMessage(),
                         onClickRetry = { onRetry() }
                     )
@@ -163,16 +169,19 @@ fun ErrorEndItem(message: String, onClickRetry: () -> Unit) {
 @Preview
 fun ErrorItem(
     message: String = "aaa",
-    onClickRetry: () -> Unit = {}
+    onClickRetry: () -> Unit = {},
+    isSimpleErrorItems: Boolean = false
 ) {
     ColumnUi(
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        ImageUi(
-            painter = painterResource(id = R.drawable.ic_no_internet),
-            modifier = Modifier.size(243.dp, 236.dp)
-        )
+        if (!isSimpleErrorItems) {
+            ImageUi(
+                painter = painterResource(id = R.drawable.ic_no_internet),
+                modifier = Modifier.size(243.dp, 236.dp)
+            )
+        }
         TextUi(
             text = message,
             textAlign = TextAlign.Center,
