@@ -44,6 +44,13 @@ class ReportLostFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestGovsList()
+    }
+
+    private fun requestGovsList() {
+        lifecycleScope.launchWhenCreated {
+            viewModel.intentChannel.send(ReportIntent.GetGovs)
+        }
     }
 
     override fun onCreateView(
@@ -77,19 +84,17 @@ class ReportLostFragment : BaseFragment() {
     @Composable
     private fun ListenToChanges() {
         val state = viewModel.stateChannel.collectAsState().value
-        /*val pickedImages = remember {
-            mutableStateListOf<Uri>()
-        }*/
         val galleryLauncher =
             rememberLauncherForActivityResult(ActivityResultContracts.GetMultipleContents()) {
                 val imagesUri = it
                 val mImageUri = imagesUri.toList()
                 sendImagesIntent(mImageUri)
-                //pickedImages.addAll(mImageUri)
             }
+
         LostScreen(
+            govs = state.govs,
+            cities = state.cities,
             pickedImages = state.imagesUri,
-            //mPickedImagesUris = pickedImagesUris,
             openGalleryClicked = {
                 openGallery(galleryLauncher)
             }, onNextClicked = {
@@ -100,9 +105,17 @@ class ReportLostFragment : BaseFragment() {
                 findNavController().navigate(actionToSecond)
             }, onCloseClicked = {
                 removeImageUri(it)
+            }, onGovSelected = {
+                requestCities(it)
             }
         )
 
+    }
+
+    private fun requestCities(it: Int) {
+        lifecycleScope.launchWhenCreated {
+            viewModel.intentChannel.send(ReportIntent.GetCities(it))
+        }
     }
 
     private fun removeImageUri(uri: Uri) {

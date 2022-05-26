@@ -17,13 +17,13 @@ data class MyCity(
     val name: String?
 )
 
-class LocationUseCase @Inject constructor(private val baseRepository: BaseRepository) {
+class LocationUseCase @Inject constructor(private val locationRepository: LocationRepository) {
 
     private var lang: String = BaseActivity.LangType.AR.toString()
 
     suspend fun getGovs(): List<MyGov>? {
-        lang = baseRepository.getAppLanguage()
-        val result = safeApiCall { return@safeApiCall  baseRepository.getGos() }
+        lang = locationRepository.getAppLanguage()
+        val result = safeApiCall { return@safeApiCall  locationRepository.getGos() }
         return when(result) {
             is Result.NetworkError.Generic -> null
             Result.NetworkError.NoInternet -> null
@@ -46,7 +46,7 @@ class LocationUseCase @Inject constructor(private val baseRepository: BaseReposi
 
 
     suspend fun getGCities(govId: Int) : List<MyCity>? {
-        val result = safeApiCall { return@safeApiCall  baseRepository.getCities(govId = govId) }
+        val result = safeApiCall { return@safeApiCall  locationRepository.getCities(govId = govId) }
         return when(result) {
             is Result.NetworkError.Generic -> null
             Result.NetworkError.NoInternet -> null

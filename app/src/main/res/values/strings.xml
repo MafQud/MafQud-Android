@@ -189,4 +189,6 @@
     <string name="none">None</string>
     <string name="error_unknown">Unknown Error</string>
     <string name="more">More</string>
+    <string name="gov">Gov</string>
+    <string name="city">City</string>
 </resources>

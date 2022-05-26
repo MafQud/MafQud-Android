@@ -18,12 +18,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.mafqud.android.R
 import com.mafqud.android.report.lost.Gender
 import com.mafqud.android.ui.theme.*
 
 @Composable
 fun DropDownItems(
+    title: String = "",
     items: List<String>,
     selectedItemID: MutableState<String> = mutableStateOf(""),
     modifier: Modifier,
@@ -33,7 +36,8 @@ fun DropDownItems(
     onSelectItem: (String) -> Unit = {},
 ) {
     val expanded = remember { mutableStateOf(false) }
-    val selectedText = remember { mutableStateOf(items.first()) }
+    val govTitle = title
+    val selectedText = remember { mutableStateOf(govTitle) }
 
     BoxUi(
         modifier = modifier
@@ -64,12 +68,24 @@ fun DropDownItems(
 
         DropDownMenuUi(expanded = expanded.value,
             modifier = Modifier.fillMaxWidth(), content = {
+                DropdownMenuItem(onClick = {
+                    selectedText.value = govTitle
+                    //selectedItemID.value = index.toString()
+                    expanded.value = false
+                    onSelectItem("-1")
+                }) {
+                    TextUi(
+                        modifier = Modifier.padding(4.dp),
+                        text = govTitle,
+                        style = MaterialTheme.typography.titleSmall,
+                    )
+                }
                 items.forEachIndexed { index, label ->
                     DropdownMenuItem(onClick = {
                         selectedText.value = label
-                        selectedItemID.value = label
+                        //selectedItemID.value = index.toString()
                         expanded.value = false
-                        onSelectItem(label)
+                        onSelectItem(index.toString())
                     }) {
                         TextUi(
                             modifier = Modifier.padding(4.dp),

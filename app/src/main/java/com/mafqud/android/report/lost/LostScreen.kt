@@ -28,23 +28,28 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import coil.compose.rememberImagePainter
 import com.mafqud.android.R
+import com.mafqud.android.locations.MyCity
+import com.mafqud.android.locations.MyGov
 import com.mafqud.android.report.UploadingPhotosInfo
 import com.mafqud.android.ui.compose.ButtonAuth
 import com.mafqud.android.ui.compose.DropDownItems
 import com.mafqud.android.ui.compose.dashedBorder
 import com.mafqud.android.ui.theme.*
+import com.mafqud.android.util.other.LogMe
 
 
 @Composable
 @Preview
 fun LostScreen(
-    //mPickedImagesUris: MutableState<Int>,
     maxPhotos: Int = 10,
     pickedImages: List<Uri> = mutableStateListOf("".toUri()),
     openGalleryClicked: () -> Unit = {},
     onCloseClicked: (Uri) -> Unit = {},
     openImagePreviewer: (List<Uri>, Int) -> Unit = { it, _it -> },
     onNextClicked: () -> Unit = {},
+    govs: List<MyGov>? = emptyList(),
+    cities: List<MyCity>? = emptyList(),
+    onGovSelected: (Int) -> Unit = {},
 ) {
     BoxUi(
         modifier = Modifier
@@ -63,10 +68,27 @@ fun LostScreen(
             var isFormActivated by remember {
                 mutableStateOf(false)
             }
+            var isProgressActivated by remember {
+                mutableStateOf(false)
+            }
             var progress by remember { mutableStateOf(0f) }
             val currentPickedImages = pickedImages.size
+
+            val selectedGovId = remember {
+                mutableStateOf(-1)
+            }
+            val selectedCityId = remember {
+                mutableStateOf(-1)
+            }
             progress = currentPickedImages.toFloat() / maxPhotos.toFloat()
-            isFormActivated = !(currentPickedImages < 3 || currentPickedImages > 10)
+            isProgressActivated =
+                (!(currentPickedImages < 3 || currentPickedImages > 10))
+
+
+            isFormActivated =
+                (!(currentPickedImages < 3 || currentPickedImages > 10))
+                        && selectedGovId.value != -1
+                        && selectedCityId.value != -1
 
             SpacerUi(modifier = Modifier.height(16.dp))
             Header()
@@ -76,14 +98,22 @@ fun LostScreen(
             UploadedImages(
                 pickedImages,
                 progress,
-                isFormActivated,
+                isProgressActivated,
                 openImagePreviewer,
                 onCloseClicked
             )
             SpacerUi(modifier = Modifier.height(20.dp))
-            LocationForm(isFormActivated) { i, x ->
-                onNextClicked()
-            }
+            LocationForm(
+                govs = govs,
+                cities = cities,
+                isFormActivated,
+                onGovSelected = onGovSelected,
+                onClicked = { i, x ->
+                    onNextClicked()
+                },
+                selectedGovId = selectedGovId,
+                selectedCityId = selectedCityId,
+            )
             SpacerUi(modifier = Modifier.height(16.dp))
 
         }
@@ -296,7 +326,15 @@ fun UploadImageButton(openGalleryClicked: () -> Unit) {
 }
 
 @Composable
-private fun LocationForm(isFormActivated: Boolean, onClicked: (Int, Int) -> Unit) {
+private fun LocationForm(
+    govs: List<MyGov>?,
+    cities: List<MyCity>?,
+    isFormActivated: Boolean,
+    onClicked: (Int, Int) -> Unit,
+    onGovSelected: (Int) -> Unit,
+    selectedGovId: MutableState<Int>,
+    selectedCityId: MutableState<Int>,
+) {
     ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         val selectedItem = remember {
             mutableStateOf("")
@@ -308,28 +346,58 @@ private fun LocationForm(isFormActivated: Boolean, onClicked: (Int, Int) -> Unit
             style = MaterialTheme.typography.titleMedium
 
         )
-        RowUi(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            DropDownItems(
-                modifier = Modifier
-                    .weight(1f)
-                    .height(50.dp),
-                items = listOf("Gov"),
-                selectedItemID = selectedItem,
-                iconColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
-                textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-            )
-            DropDownItems(
-                items = listOf("City"),
-                selectedItemID = selectedItem,
-                modifier = Modifier
-                    .weight(1f)
-                    .height(50.dp),
-                iconColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
-                textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-            )
+        RowUi(
+            modifier = Modifier.animateContentSize(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            govs?.let {
+                DropDownItems(
+                    title = stringResource(id = R.string.gov),
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(50.dp),
+                    items = it.map {
+                        return@map it.name ?: ""
+                    },
+                    selectedItemID = selectedItem,
+                    iconColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                    backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+                    textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                    onSelectItem = {
+                        val itemID = it.toIntOrNull() ?: -1
+                        val govId = govs.getOrNull(itemID)?.id ?: -1
+                        selectedGovId.value = govId
+                        onGovSelected(govId)
+                        LogMe.i("DropDownItems", "selected $it")
+                    }
+                )
+            }
+
+            cities?.let {
+                DropDownItems(
+                    title = stringResource(id = R.string.city),
+                    items = it.map {
+                        return@map it.name ?: ""
+                    },
+                    selectedItemID = selectedItem,
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(50.dp),
+                    iconColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                    backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+                    textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                    onSelectItem = {
+                        val itemID = it.toIntOrNull() ?: -1
+                        val cityId = cities.getOrNull(itemID)?.id ?: -1
+                        selectedCityId.value = cityId
+                        LogMe.i("DropDownItems", "selected $it")
+                    }
+                )
+            }
+
+
         }
+
         SpacerUi(modifier = Modifier.height(20.dp))
         ButtonAuth(
             enabled = isFormActivated,

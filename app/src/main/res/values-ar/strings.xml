@@ -165,5 +165,7 @@
     <string name="error_not_auth">اسم المستخدم أو كلمة المرور غير صحيحة</string>
     <string name="error_unknown">خطأ غير معروف</string>
     <string name="more">المزيد</string>
+    <string name="gov">المحافظة</string>
+    <string name="city">المدينة</string>
 
 </resources>
