@@ -191,4 +191,6 @@
     <string name="more">More</string>
     <string name="gov">Gov</string>
     <string name="city">City</string>
+    <string name="update_state">Update state</string>
+    <string name="success_to_found">Success to found</string>
 </resources>

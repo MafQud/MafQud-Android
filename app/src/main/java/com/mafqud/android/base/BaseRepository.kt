@@ -1,11 +1,14 @@
 package com.mafqud.android.base
 
+import android.app.Application
+import android.content.Context
 import com.mafqud.android.base.activity.BaseActivity
 import com.mafqud.android.data.DataStoreManager
 import com.mafqud.android.data.FCMManager
 import com.mafqud.android.data.RemoteDataManager
 import com.mafqud.android.di.MyServiceInterceptor
 import com.mafqud.android.util.other.UserPayload
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 open class BaseRepository() {
@@ -17,6 +20,10 @@ open class BaseRepository() {
 
     @Inject
     lateinit var myServiceInterceptor: MyServiceInterceptor
+
+    @Inject
+    @ApplicationContext
+    lateinit var  appContext: Context
 
     @Inject
     lateinit var fcmManager: FCMManager

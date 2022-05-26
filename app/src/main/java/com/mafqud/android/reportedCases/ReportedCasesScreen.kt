@@ -11,7 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
@@ -22,8 +24,8 @@ import com.mafqud.android.R
 
 import com.mafqud.android.home.EmptyCasesState
 import com.mafqud.android.home.model.CaseType
-import com.mafqud.android.home.model.CasesDataResponse
 import com.mafqud.android.reportedCases.models.ReportedCasesResponse
+import com.mafqud.android.reportedCases.models.UserCaseState
 import com.mafqud.android.ui.compose.IconMap
 import com.mafqud.android.ui.compose.UserPhoto
 import com.mafqud.android.ui.theme.*
@@ -156,27 +158,22 @@ fun UserCaseItem(
                             }
                         }
 
-                        BoxUi(
-                            Modifier
-                                .size(70.dp, 30.dp)
-                                .clip(RoundedCornerShape(12.dp))
-                                .background(MaterialTheme.colorScheme.error)
-                                .clickable {
-                                    if (onCaseClicked != null) {
-                                        onCaseClicked(case)
-                                    }
-                                },
-                        ) {
-                            TextUi(
-                                // modifier = Modifier.padding(12.dp),
-                                text = stringResource(id = R.string.more),
-                                color = MaterialTheme.colorScheme.onSecondary,
-                                style = MaterialTheme.typography.titleSmall
-                            )
+                        // case state
+                        when (case.getCaseState()) {
+                            UserCaseState.ACTIVE -> {
+                                UpdateStateButton()
+                            }
+                            UserCaseState.MISSING -> {
+                                SuccessToFound()
+                            }
+                            UserCaseState.NONE -> {
+
+                            }
                         }
+
                     }
 
-                    // state
+                    // type
                     val type = when (case.getCaseType()) {
                         CaseType.FOUND -> stringResource(id = R.string.found)
                         CaseType.MISSING -> stringResource(id = R.string.lost)
@@ -207,5 +204,47 @@ fun UserCaseItem(
         }
     }
 
+}
+
+@Composable
+fun SuccessToFound() {
+    RowUi(
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        BoxUi(Modifier.size(18.dp)) {
+            IconUi(
+                painter = painterResource(id = R.drawable.ic_state_success),
+                modifier = Modifier.size(18.dp)
+            )
+        }
+        TextUi(
+            text = stringResource(id = R.string.success_to_found),
+            style = MaterialTheme.typography.titleSmall,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.green
+        )
+
+    }
+}
+
+@Composable
+fun UpdateStateButton() {
+    BoxUi(
+        Modifier
+            .size(95.dp, 30.dp)
+            .clip(RoundedCornerShape(12.dp))
+            .background(MaterialTheme.colorScheme.error)
+            .clickable {
+
+            },
+    ) {
+        TextUi(
+            // modifier = Modifier.padding(12.dp),
+            text = stringResource(id = R.string.update_state),
+            color = MaterialTheme.colorScheme.onSecondary,
+            style = MaterialTheme.typography.titleSmall
+        )
+    }
 }
 

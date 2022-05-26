@@ -167,5 +167,7 @@
     <string name="more">المزيد</string>
     <string name="gov">المحافظة</string>
     <string name="city">المدينة</string>
+    <string name="update_state">تحديث الحالة</string>
+    <string name="success_to_found">تم العثور عليه</string>
 
 </resources>

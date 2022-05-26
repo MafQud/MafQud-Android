@@ -4,6 +4,11 @@ import androidx.annotation.Keep
 import com.mafqud.android.home.model.CaseType
 import com.squareup.moshi.Json
 
+enum class UserCaseState{
+    ACTIVE,
+    MISSING,
+    NONE
+}
 
 @Keep
 data class ReportedCasesResponse(
@@ -35,6 +40,15 @@ data class ReportedCasesResponse(
         @field:Json(name = "type")
         val type: String? = "" // F
     ) {
+
+        fun getCaseState(): UserCaseState {
+            //TODO map it
+            return when(state){
+                "Active" -> UserCaseState.ACTIVE
+                "FF" -> UserCaseState.MISSING
+                else -> UserCaseState.NONE
+            }
+        }
 
         fun getCaseType(): CaseType {
             return when(type){

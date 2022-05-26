@@ -24,7 +24,7 @@ class UploadingViewModel @Inject constructor(private val uploadingRepository: Up
         _stateChannel.tryEmit(
             stateChannel.value.copy(isUploadingImages = true, isFailedUploadingImages = false)
         )
-        uploadImagesThenCase(true)
+        uploadImagesThenCase()
     }
 
     private fun uploadCase(it: UploadingIntent) {
@@ -45,17 +45,18 @@ class UploadingViewModel @Inject constructor(private val uploadingRepository: Up
                 isUploadingImages = true
             )
         )
-        uploadImagesThenCase(false)
+        uploadImagesThenCase()
     }
 
-    private fun uploadImagesThenCase(b: Boolean) {
+    private fun uploadImagesThenCase() {
         // then try uploading images and get uploaded images urls
         launchViewModelScope {
             val imagesResult =
-                uploadingRepository.uploadImages(_stateChannel.value.imagesUrisPicked, success = b)
+                uploadingRepository.uploadImages(stateChannel.value.imagesUrisPicked)
 
             when (imagesResult) {
-                is Result.NetworkError.Generic, Result.NetworkError.NoInternet -> {
+                is Result.NetworkError.Generic,
+                Result.NetworkError.NoInternet -> {
                     emitFailedUploadingImages()
                 }
                 is Result.Success -> {
@@ -73,7 +74,7 @@ class UploadingViewModel @Inject constructor(private val uploadingRepository: Up
         // then try uploading case item
         val caseItem = stateChannel.value.caseData
         val caseResult =
-            uploadingRepository.uploadCase(caseItem = caseItem, success)
+            uploadingRepository.uploadCase(caseItem = caseItem)
 
         when (caseResult) {
             is Result.NetworkError.Generic, Result.NetworkError.NoInternet -> {
@@ -119,14 +120,14 @@ class UploadingViewModel @Inject constructor(private val uploadingRepository: Up
         }
     }
 
-    private suspend fun emitSuccessUploadingImages(imagesUrlsUploaded: List<String>) {
+    private suspend fun emitSuccessUploadingImages(imagesUrlsUploaded: Boolean) {
         _stateChannel.emit(
             stateChannel.value.copy(
                 isUploadingImages = false,
                 isFailedUploadingImages = false,
                 isSuccessUploadingImages = true,
                 isSuccess = null,
-                imagesUrlsUploaded = imagesUrlsUploaded,
+                //imagesUrlsUploaded = imagesUrlsUploaded,
                 isUploadingCase = true
             )
         )

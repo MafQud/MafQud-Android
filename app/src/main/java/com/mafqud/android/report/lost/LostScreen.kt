@@ -85,10 +85,10 @@ fun LostScreen(
                 (!(currentPickedImages < 3 || currentPickedImages > 10))
 
 
-            isFormActivated =
-                (!(currentPickedImages < 3 || currentPickedImages > 10))
+            isFormActivated = true
+              /*  (!(currentPickedImages < 3 || currentPickedImages > 10))
                         && selectedGovId.value != -1
-                        && selectedCityId.value != -1
+                        && selectedCityId.value != -1*/
 
             SpacerUi(modifier = Modifier.height(16.dp))
             Header()

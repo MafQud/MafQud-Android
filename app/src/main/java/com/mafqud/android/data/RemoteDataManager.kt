@@ -2,6 +2,10 @@ package com.mafqud.android.data
 
 import com.mafqud.android.auth.login.models.LoginBody
 import com.mafqud.android.auth.login.models.LoginResponse
+import com.mafqud.android.files.FinishUploadBody
+import com.mafqud.android.files.FinishUploadingResponse
+import com.mafqud.android.files.StartUploadBody
+import com.mafqud.android.files.StartUploadingResponse
 import com.mafqud.android.home.model.CasesDataResponse
 import com.mafqud.android.locations.CitiesResponse
 import com.mafqud.android.locations.GovResponse
@@ -10,6 +14,8 @@ import com.mafqud.android.reportedCases.models.ReportedCasesResponse
 import com.mafqud.android.util.network.tokenRefresh.TokenRefreshBody
 import com.mafqud.android.util.network.tokenRefresh.TokenRefreshResponse
 import com.mafqud.android.util.network.tokenRefresh.TokenVerifyBody
+import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -63,7 +69,7 @@ interface RemoteDataManager {
     @POST("/api/auth/token/refresh/")
     @Headers(AUTH_NOT_REQUIRED, REFRESH_TOKEN)
     fun refreshAccessToken(
-       @Body refreshToken: TokenRefreshBody
+        @Body refreshToken: TokenRefreshBody
     ): Call<TokenRefreshResponse>
 
     @POST("/api/auth/token/verify/")
@@ -83,7 +89,7 @@ interface RemoteDataManager {
     suspend fun getNotifications(
         @Query("offset") page: Int,
         @Query("limit") limit: Int,
-        ): NotificationsResponse
+    ): NotificationsResponse
 
     /**
      * location data
@@ -94,4 +100,22 @@ interface RemoteDataManager {
 
     @GET("/api/locations/governorates/{gov_id}/cities")
     suspend fun getCities(@Path("gov_id") govId: Int): CitiesResponse
+
+    @POST("/api/files/upload/direct/start/")
+    suspend fun startUploadingImage(
+        @Body startUploadBody: StartUploadBody
+    ): StartUploadingResponse
+
+    @POST("/api/files/upload/direct/finish/")
+    suspend fun finishUploadingImage(
+        @Body finishUploadBody: FinishUploadBody
+    ): FinishUploadingResponse
+
+    @Multipart
+    @PUT
+    fun uploadImageToS3(
+        @Header("Content-Type") contentType: String,
+        @Url uploadUrl: String,
+        @Part file: MultipartBody.Part
+    ): Any
 }
