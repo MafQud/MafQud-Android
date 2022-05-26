@@ -81,31 +81,11 @@ class MoreFragment : Fragment() {
                             logOutCurrentUser()
 
                         })
-                    //ListenToChanges()
                 }
             }
         }
     }
 
-    @Composable
-    private fun ListenToChanges() {
-        val state = viewModel.stateChannel.collectAsState()
-        val stateValue = state.value
-        SwipeRefresh(
-            state = rememberSwipeRefreshState(stateValue.isRefreshing),
-            onRefresh = {
-                refreshDataIntent()
-            },
-        ) {
-
-            //CircleLoading(stateValue.isLoading)
-
-
-            /*if (stateValue.networkError != null) {
-                stateValue.networkError.ShowNetworkErrorSnakeBar(scaffoldState)
-            }*/
-        }
-    }
 
     private fun refreshDataIntent() {
         lifecycleScope.launchWhenCreated {
