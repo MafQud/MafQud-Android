@@ -316,9 +316,12 @@ private fun CasesUi(
                 state = listState,
                 //modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(horizontal = 4.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             )
             {
+                item {
+                    SpacerUi(modifier = Modifier.height(8.dp))
+                }
                 if (lazyPagingItems.itemCount == 0 && finishedLoading) {
                     item {
                         EmptyCasesState((Modifier.fillParentMaxSize()))

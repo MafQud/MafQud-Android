@@ -73,6 +73,10 @@ fun NotificationScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             )
             {
+                item {
+                    SpacerUi(modifier = Modifier.height(8.dp))
+                }
+
                 if (lazyPagingItems.itemCount == 0 && finishedLoading) {
                     item {
                         EmptyNotificationState(Modifier.fillParentMaxSize())
