@@ -1,6 +1,7 @@
 package com.mafqud.android.notification.models
 
 import androidx.annotation.Keep
+import com.mafqud.android.home.model.CaseType
 import com.squareup.moshi.Json
 
 
@@ -9,6 +10,13 @@ enum class NotificationIconType {
     WARNING,
     INFO,
     ERROR,
+    NONE
+}
+
+enum class NotificationAction {
+    MATCHES,
+    PUBLISHED,
+    DETAILS,
     NONE
 }
 
@@ -29,21 +37,41 @@ data class NotificationsResponse(
 ) {
     @Keep
     data class Notification(
+        @field:Json(name = "action")
+        val action: String? = "", // D
         @field:Json(name = "body")
-        val body: String? = "", // تم نشر بيانات المعثور عليه بنجاح انتظر منا اشعار اخر فى حين الوصول لأى نتائج
+        val body: String? = "", // جارى البحث عن المفقود وسنقوم بإشعارك فى حاله العثور لأى نتائج
+        @field:Json(name = "case_id")
+        val caseId: Int? = 0, // 4
+        @field:Json(name = "case_type")
+        val caseType: String? = "", // M
         @field:Json(name = "created_at")
-        val createdAt: String? = "", // 2022-05-23T10:58:34.835169Z
+        val createdAt: String? = "", // 2022-05-26T15:39:10.411464Z
         @field:Json(name = "id")
-        val id: Int? = 0, // 11
+        val id: Int? = 0, // 7
         @field:Json(name = "level")
         val level: String? = "", // S
         @field:Json(name = "read_at")
-        val readAt: Any? = Any(), // null
-        @field:Json(name = "sent_to")
-        val sentTo: String? = "", // /api/users/3/
-        @field:Json(name = "title")
-        val title: String? = "",// تم نشر الحاله بنجاح
+        val readAt: String? = "", // 111
         var iconType: NotificationIconType = NotificationIconType.NONE // تم نشر الحاله بنجاح
+    ) {
+        fun getCaseType(): CaseType {
+            return when(caseType){
+                "M" -> CaseType.MISSING
+                "F" -> CaseType.FOUND
+                else -> CaseType.NONE
+            }
+        }
 
-    )
+        fun getAction(): NotificationAction {
+            return when(action){
+                "M" -> NotificationAction.MATCHES
+                "P" -> NotificationAction.PUBLISHED
+                "D" -> NotificationAction.DETAILS
+                "N" -> NotificationAction.NONE
+                else -> NotificationAction.NONE
+            }
+        }
+    }
+    
 }

@@ -166,8 +166,14 @@ fun UserCaseItem(
                             UserCaseState.ACTIVE -> {
                                 UpdateStateButton()
                             }
-                            UserCaseState.MISSING -> {
+                            UserCaseState.FINISHED -> {
                                 SuccessToFound()
+                            }
+                            UserCaseState.ARCHIVED -> {
+
+                            }
+                            UserCaseState.PENDING -> {
+
                             }
                             UserCaseState.NONE -> {
 

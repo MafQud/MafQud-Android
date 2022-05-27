@@ -6,7 +6,9 @@ import com.squareup.moshi.Json
 
 enum class UserCaseState{
     ACTIVE,
-    MISSING,
+    FINISHED,
+    ARCHIVED,
+    PENDING,
     NONE
 }
 
@@ -42,10 +44,11 @@ data class ReportedCasesResponse(
     ) {
 
         fun getCaseState(): UserCaseState {
-            //TODO map it
             return when(state){
-                "Active" -> UserCaseState.ACTIVE
-                "FF" -> UserCaseState.MISSING
+                "AC" -> UserCaseState.ACTIVE
+                "PE" -> UserCaseState.PENDING
+                "AR" -> UserCaseState.ARCHIVED
+                "DN" -> UserCaseState.FINISHED
                 else -> UserCaseState.NONE
             }
         }
