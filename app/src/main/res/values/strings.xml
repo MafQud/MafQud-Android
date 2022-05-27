@@ -193,4 +193,6 @@
     <string name="city">City</string>
     <string name="update_state">Update state</string>
     <string name="success_to_found">Success to found</string>
+    <string name="puclished">Case published</string>
+    <string name="puclished_before">Case already published</string>
 </resources>

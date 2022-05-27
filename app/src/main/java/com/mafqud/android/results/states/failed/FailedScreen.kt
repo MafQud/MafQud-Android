@@ -30,7 +30,7 @@ enum class FailureType {
 
 @Composable
 @Preview
-fun FailedScreen(caseModel: CaseModel?  = CaseModel()) {
+fun FailedScreen(caseModel: CaseModel? = CaseModel(), onPublish: () -> Unit = {}) {
     BoxUi(
         modifier = Modifier
             .fillMaxSize()
@@ -53,7 +53,7 @@ fun FailedScreen(caseModel: CaseModel?  = CaseModel()) {
             if (caseModel?.caseType != CaseType.NONE) {
                 FirstString()
 
-                val buttonTitle = when(caseModel?.caseType) {
+                val buttonTitle = when (caseModel?.caseType) {
                     CaseType.MISSING -> stringResource(id = R.string.publish_lost_data)
                     CaseType.FOUND -> stringResource(id = R.string.publish_found_data)
                     else -> ""
@@ -64,7 +64,7 @@ fun FailedScreen(caseModel: CaseModel?  = CaseModel()) {
                     title = buttonTitle,
                     backgroundColor = MaterialTheme.colorScheme.onTertiaryContainer
                 ) {
-
+                    onPublish()
                 }
             }
 

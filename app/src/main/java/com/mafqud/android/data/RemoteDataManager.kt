@@ -127,4 +127,8 @@ interface RemoteDataManager {
         @Body nationalIdBody: NationalIdBody
     )
 
+    @GET("/api/cases/{caseID}/publish")
+    suspend fun publishCase(
+        @Path("caseID") caseID: Int
+    )
 }

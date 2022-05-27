@@ -65,11 +65,10 @@ data class NotificationsResponse(
 
         fun getAction(): NotificationAction {
             return when(action){
-                // TODO change this
-                "D" -> NotificationAction.MATCHES
+                "M" -> NotificationAction.MATCHES
                 "P" -> NotificationAction.PUBLISHED
                 "D" -> NotificationAction.DETAILS
-                "N" -> NotificationAction.NONE
+                //"N" -> NotificationAction.NONE
                 else -> NotificationAction.NONE
             }
         }
