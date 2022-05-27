@@ -348,14 +348,16 @@ fun TextFieldPhone(
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TextFieldNationalID(
     nationalId: MutableState<String>,
     isIdError: MutableState<Boolean>,
-    focusRequester: FocusRequester,
     maxPhoneLength: Int = NATIONAL_ID_MAX_LENGTH,
 ) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+
+        val keyboardController = LocalSoftwareKeyboardController.current
 
         ColumnUi {
 
@@ -392,7 +394,7 @@ fun TextFieldNationalID(
                     keyboardType = KeyboardType.Number
                 ),
                 keyboardActions = KeyboardActions(
-                    onNext = { focusRequester.requestFocus() }),
+                    onDone  = { keyboardController?.hide() }),
                 isError = isIdError.value,
                 shape = RoundedCornerShape(50),
                 colors = TextFieldDefaults.textFieldColors(

@@ -36,6 +36,10 @@ fun isValidPhone(phone: String): Boolean {
     }
 }
 
+fun isValidNationalID(id: String): Boolean {
+    val isNumeric = id.toBigDecimalOrNull() != null
+    return id.length == 14 && id.isNotEmpty() && isNumeric
+}
 
 fun isValidPassword(password: String): Boolean {
     val isNumeric = password.toIntOrNull() != null
@@ -93,6 +97,23 @@ fun validateLoginForm(
         isPasswordError.value = PasswordError(isError = false)
     }
     onSuccessValidation(phone, password)
+
+}
+
+fun validateNationalIDForm(
+    id: String,
+    isIdError: MutableState<Boolean>,
+    onSuccessValidation: (String) -> Unit
+) {
+
+    if (!isValidNationalID(id)) {
+        isIdError.value = true
+        return
+    } else {
+        isIdError.value = false
+    }
+
+    onSuccessValidation(id)
 
 }
 

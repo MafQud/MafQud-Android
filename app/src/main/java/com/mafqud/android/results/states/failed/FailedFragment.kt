@@ -1,4 +1,4 @@
-package com.mafqud.android.results.states
+package com.mafqud.android.results.states.failed
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,9 +17,10 @@ import com.mafqud.android.ui.theme.MafQudTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SuccessReportingFragment : BaseFragment() {
+class FailedFragment : BaseFragment() {
 
-    private val args: SuccessReportingFragmentArgs by navArgs()
+
+    private val args : FailedFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,13 +44,7 @@ class SuccessReportingFragment : BaseFragment() {
                             iconType = IconType.CLOSE
                         )
                     }, content = {
-                        SuccessScreen(args.notificationType, showResults = {
-                            val actionToPublish =
-                                SuccessReportingFragmentDirections.actionSuccessLostFragmentToResultsCasesFragment(
-                                    args.notificationType
-                                )
-                            findNavController().navigate(actionToPublish)
-                        })
+                        FailedScreen(args.caseModel)
                     })
                 }
             }

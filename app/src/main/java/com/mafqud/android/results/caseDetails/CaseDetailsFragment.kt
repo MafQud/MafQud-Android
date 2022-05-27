@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.mafqud.android.R
 import com.mafqud.android.base.fragment.BaseFragment
+import com.mafqud.android.home.model.CaseType
 import com.mafqud.android.notification.NotificationType
 import com.mafqud.android.results.cases.ResultsCasesFragmentArgs
 import com.mafqud.android.results.cases.ResultsCasesFragmentDirections
@@ -37,10 +38,10 @@ class CaseDetailsFragment : BaseFragment() {
             )
             setContent {
                 MafQudTheme {
-                    val appbarTitle = when (args.notificationType) {
-                        NotificationType.SUCCESS_FINDING_LOST ->
+                    val appbarTitle = when (args.caseModel?.caseType) {
+                        CaseType.MISSING ->
                             stringResource(id = R.string.title_losts_data)
-                        NotificationType.SUCCESS_FINDING_FOUND ->
+                        CaseType.FOUND ->
                             stringResource(id = R.string.title_founds_data)
                         else -> {
                             ""

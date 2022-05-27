@@ -17,18 +17,25 @@ import androidx.navigation.fragment.findNavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mafqud.android.R
+import com.mafqud.android.data.DataStoreManager
 import com.mafqud.android.home.HomeActivity
-import com.mafqud.android.results.states.FailureType
 import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.status.loading.CircleLoading
 import com.mafqud.android.ui.theme.MafQudTheme
 import com.mafqud.android.util.network.ShowNetworkErrorUi
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class NotificationFragment : Fragment() {
 
     private val viewModel: NotificationViewModel by viewModels()
+
+    @Inject
+    lateinit var dataStoreManager: DataStoreManager
+
+    private var userNationalId : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +43,9 @@ class NotificationFragment : Fragment() {
         if (activity is HomeActivity) {
             activity.homeBarVisibility(isVisible = false)
         }
+       runBlocking {
+           userNationalId = dataStoreManager.getNationalId()
+       }
         requestDataIntent()
     }
 
@@ -94,63 +104,46 @@ class NotificationFragment : Fragment() {
             }
             NotificationScreen(
                 data = stateValue.notifications
-            ) { notificationData, notificationType ->
+            ) { notificationType ->
                 when (notificationType) {
-                    NotificationType.SUCCESS_FINDING_LOST,
-                    NotificationType.SUCCESS_FINDING_FOUND -> openSuccessFragment(
-                        notificationData,
-                        notificationType
-                    )
-                    NotificationType.FAILED_LOST,
-                    NotificationType.FAILED_FOUND,
-                    NotificationType.OTHER,
-                    -> openFailureFragment(
-                        notificationData,
-                        notificationType
-                    )
+                    is NotificationClickAction.Details -> {}
+                    is NotificationClickAction.Failed -> openFailureFragment(notificationType.caseModel)
+                    NotificationClickAction.None -> {}
+                    is NotificationClickAction.Success -> openSuccessFragment(notificationType.caseModel)
                 }
             }
         }
     }
 
     private fun openFailureFragment(
-        notificationData: NotificationResponse.Data,
-        notificationType: NotificationType
+        caseModel: CaseModel,
     ) {
-        when (notificationType) {
-            NotificationType.FAILED_LOST -> {
-                val action =
-                    NotificationFragmentDirections.actionNotificationFragmentToFailedFragment(
-                        FailureType.LOST
-                    )
-                findNavController().navigate(action)
-            }
-            NotificationType.FAILED_FOUND -> {
-                val action =
-                    NotificationFragmentDirections.actionNotificationFragmentToFailedFragment(
-                        FailureType.FOUND
-                    )
-                findNavController().navigate(action)
-            }
-            NotificationType.OTHER -> {
-                findNavController().navigate(R.id.action_notificationFragment_to_failedFragment)
-            }
-            else -> {
-                findNavController().navigate(R.id.action_notificationFragment_to_failedFragment)
-            }
-        }
+        val action =
+            NotificationFragmentDirections.actionNotificationFragmentToFailedFragment()
+        action.caseModel = caseModel
+        findNavController().navigate(action)
 
     }
 
     private fun openSuccessFragment(
-        notificationData: NotificationResponse.Data,
-        notificationType: NotificationType
+        caseModel: CaseModel,
     ) {
-        val actionToSuccess =
-            NotificationFragmentDirections.actionNotificationFragmentToSuccessLostFragment(
-                notificationType
-            )
-        findNavController().navigate(actionToSuccess)
+        /**
+         * if user national id in not empty open results screen .
+         */
+        if (userNationalId.isNotEmpty()) {
+            val actionToResults =
+                NotificationFragmentDirections.actionNotificationFragmentToResultsCasesFragment()
+            actionToResults.caseModel = caseModel
+            findNavController().navigate(actionToResults)
+
+        } else {
+            val actionToSuccess =
+                NotificationFragmentDirections.actionNotificationFragmentToSuccessLostFragment()
+            actionToSuccess.caseModel = caseModel
+            findNavController().navigate(actionToSuccess)
+        }
+
     }
 
 

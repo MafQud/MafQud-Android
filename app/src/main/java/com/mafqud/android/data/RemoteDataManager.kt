@@ -11,6 +11,7 @@ import com.mafqud.android.locations.CitiesResponse
 import com.mafqud.android.locations.GovResponse
 import com.mafqud.android.notification.models.NotificationsResponse
 import com.mafqud.android.reportedCases.models.ReportedCasesResponse
+import com.mafqud.android.results.states.success.models.NationalIdBody
 import com.mafqud.android.util.network.tokenRefresh.TokenRefreshBody
 import com.mafqud.android.util.network.tokenRefresh.TokenRefreshResponse
 import com.mafqud.android.util.network.tokenRefresh.TokenVerifyBody
@@ -117,5 +118,13 @@ interface RemoteDataManager {
         @Header("Content-Type") contentType: String,
         @Url uploadUrl: String,
         @Part file: MultipartBody.Part
-    ): Any
+    ): Void
+
+
+    @POST("/api/users/{userId}/set/id/")
+    suspend fun setNationalId(
+        @Path("userId") userId: Int,
+        @Body nationalIdBody: NationalIdBody
+    )
+
 }

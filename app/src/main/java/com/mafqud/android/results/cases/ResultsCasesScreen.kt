@@ -15,6 +15,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
+import com.mafqud.android.home.model.CaseType
+import com.mafqud.android.notification.CaseModel
 import com.mafqud.android.notification.NotificationType
 import com.mafqud.android.ui.compose.ButtonAuth
 import com.mafqud.android.ui.compose.CaseItem
@@ -25,7 +27,7 @@ import com.mafqud.android.ui.theme.SpacerUi
 @Composable
 @Preview
 fun ResultsCasesScreen(
-    notificationType: NotificationType = NotificationType.NONE,
+    caseModel: CaseModel? = CaseModel(),
     onNotFoundButton: () -> Unit = {},
     onCaseClicked: () -> Unit = {},
 ) {
@@ -47,10 +49,10 @@ fun ResultsCasesScreen(
             BodyUi(Modifier.weight(1f), onCaseClicked)
         }
 
-        val bottomTitle = when (notificationType) {
-            NotificationType.SUCCESS_FINDING_LOST ->
+        val bottomTitle = when (caseModel?.caseType) {
+            CaseType.MISSING ->
                 stringResource(id = R.string.title_losts_not_found)
-            NotificationType.SUCCESS_FINDING_FOUND ->
+            CaseType.FOUND ->
                 stringResource(id = R.string.title_founds_not_found)
             else -> {
                 ""

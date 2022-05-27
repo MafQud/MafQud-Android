@@ -32,6 +32,10 @@ open class BaseRepository() {
         return dataStoreManager.readUserAccessToken()
     }
 
+    suspend fun getUserID(): Int {
+        return dataStoreManager.getUserId()
+    }
+
     suspend fun getDisplayUserName(): String {
         return dataStoreManager.getUserName()
     }
@@ -79,4 +83,8 @@ open class BaseRepository() {
         BaseActivity.LangType.AR.toString()
     )
 
+
+    suspend fun getNationalID() = dataStoreManager.getNationalId()
+
+    suspend fun setNationalID(nationalId :String) = dataStoreManager.saveUserNationalID(nationalId)
 }

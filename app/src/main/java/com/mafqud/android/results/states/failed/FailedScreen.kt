@@ -1,4 +1,4 @@
-package com.mafqud.android.results.states
+package com.mafqud.android.results.states.failed
 
 import androidx.annotation.Keep
 import androidx.compose.foundation.background
@@ -15,6 +15,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
+import com.mafqud.android.home.model.CaseType
+import com.mafqud.android.notification.CaseModel
 import com.mafqud.android.ui.compose.ButtonAuth
 import com.mafqud.android.ui.theme.*
 
@@ -28,7 +30,7 @@ enum class FailureType {
 
 @Composable
 @Preview
-fun FailedScreen(failureType: FailureType = FailureType.NONE) {
+fun FailedScreen(caseModel: CaseModel?  = CaseModel()) {
     BoxUi(
         modifier = Modifier
             .fillMaxSize()
@@ -48,15 +50,15 @@ fun FailedScreen(failureType: FailureType = FailureType.NONE) {
             RobotImage()
 
             // create the rest of ui fragment if not FailureType.NONE
-            if (failureType != FailureType.NONE) {
+            if (caseModel?.caseType != CaseType.NONE) {
                 FirstString()
 
-                val buttonTitle = when(failureType) {
-                    FailureType.LOST -> stringResource(id = R.string.publish_lost_data)
-                    FailureType.FOUND -> stringResource(id = R.string.publish_found_data)
+                val buttonTitle = when(caseModel?.caseType) {
+                    CaseType.MISSING -> stringResource(id = R.string.publish_lost_data)
+                    CaseType.FOUND -> stringResource(id = R.string.publish_found_data)
                     else -> ""
                 }
-                SecondString(failureType)
+                SecondString(caseModel?.caseType)
 
                 ButtonAuth(
                     title = buttonTitle,
@@ -73,11 +75,12 @@ fun FailedScreen(failureType: FailureType = FailureType.NONE) {
 }
 
 @Composable
-fun SecondString(failureType: FailureType) {
-    val secondString = when (failureType) {
-        FailureType.LOST -> stringResource(id = R.string.sorry_results_lost_2)
-        FailureType.FOUND -> stringResource(id = R.string.sorry_results_found_2)
-        FailureType.NONE -> stringResource(id = R.string.sorry_results_lost_2)
+fun SecondString(caseType: CaseType?) {
+    val secondString = when (caseType) {
+        CaseType.MISSING -> stringResource(id = R.string.sorry_results_lost_2)
+        CaseType.FOUND -> stringResource(id = R.string.sorry_results_found_2)
+        CaseType.NONE -> stringResource(id = R.string.sorry_results_lost_2)
+        else -> stringResource(id = R.string.error_unknown)
     }
     TextUi(
         modifier = Modifier.fillMaxWidth(),

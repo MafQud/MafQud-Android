@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.mafqud.android.R
 import com.mafqud.android.base.fragment.BaseFragment
-import com.mafqud.android.notification.NotificationType
+import com.mafqud.android.home.model.CaseType
 import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.theme.MafQudTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,10 +35,10 @@ class ResultsCasesFragment : BaseFragment() {
             )
             setContent {
                 MafQudTheme {
-                    val appbarTitle = when (args.notificationType) {
-                        NotificationType.SUCCESS_FINDING_LOST ->
+                    val appbarTitle = when (args.caseModel?.caseType) {
+                        CaseType.MISSING ->
                             stringResource(id = R.string.title_losts)
-                        NotificationType.SUCCESS_FINDING_FOUND ->
+                        CaseType.FOUND ->
                             stringResource(id = R.string.title_founds)
                         else -> {
                             ""
@@ -52,19 +52,19 @@ class ResultsCasesFragment : BaseFragment() {
                             title = appbarTitle
                         )
                     }, content = {
-                        ResultsCasesScreen(args.notificationType, onNotFoundButton = {
+                        ResultsCasesScreen(args.caseModel, onNotFoundButton = {
                             val actionToPublish =
                                 ResultsCasesFragmentDirections.actionResultsCasesFragmentToPublishCaseFragment(
-                                    args.notificationType
                                 )
+                            actionToPublish.caseModel = args.caseModel
                             findNavController().navigate(actionToPublish)
-                        }, onCaseClicked = {
+                        }) {
                             val actionToCaseDetails =
                                 ResultsCasesFragmentDirections.actionResultsCasesFragmentToCaseDetailsFragment(
-                                    args.notificationType
                                 )
+                            actionToCaseDetails.caseModel = args.caseModel
                             findNavController().navigate(actionToCaseDetails)
-                        })
+                        }
                     })
                 }
             }

@@ -214,6 +214,12 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         mDataStore.edit { it.clear() }
     }
 
+    suspend fun saveUserNationalID(nationalId :String) {
+        mDataStore.edit { settings ->
+            settings[stringPreferencesKey(USER_NATIONAL_ID)] = nationalId
+        }
+    }
+
     suspend fun saveUserTokens(accessToken: String, refreshToken: String) {
         mDataStore.edit { settings ->
             settings[stringPreferencesKey(USER_TOKEN_ACCESS)] = accessToken
@@ -233,6 +239,11 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         }.first()
     }
 
+    suspend fun getNationalId(): String {
+        return mDataStore.data.map { settings ->
+            settings[stringPreferencesKey(USER_NATIONAL_ID)] ?: ""
+        }.first()
+    }
     suspend fun getUserAccessToken(): String {
         return mDataStore.data.map { settings ->
             settings[stringPreferencesKey(USER_TOKEN_ACCESS)] ?: ""

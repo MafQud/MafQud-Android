@@ -24,11 +24,13 @@
     </fragment>
     <fragment
         android:id="@+id/successLostFragment"
-        android:name="com.mafqud.android.results.states.SuccessReportingFragment"
+        android:name="com.mafqud.android.results.states.success.SuccessReportingFragment"
         android:label="SuccessLostFragment">
         <argument
-            android:name="notificationType"
-            app:argType="com.mafqud.android.notification.NotificationType" />
+            android:name="caseModel"
+            app:argType="com.mafqud.android.notification.CaseModel"
+            app:nullable="true"
+            android:defaultValue="@null" />
         <action
             android:id="@+id/action_successLostFragment_to_resultsCasesFragment"
             app:destination="@id/resultsCasesFragment" />
@@ -38,27 +40,33 @@
         android:name="com.mafqud.android.results.caseDetails.CaseDetailsFragment"
         android:label="CaseDetailsFragment">
         <argument
-            android:name="notificationType"
-            app:argType="com.mafqud.android.notification.NotificationType" />
+            android:name="caseModel"
+            app:argType="com.mafqud.android.notification.CaseModel"
+            app:nullable="true"
+            android:defaultValue="@null" />
         <action
             android:id="@+id/action_caseDetailsFragment_to_contactFragment"
             app:destination="@id/contactFragment" />
     </fragment>
     <fragment
         android:id="@+id/failedFragment"
-        android:name="com.mafqud.android.results.states.FailedFragment"
+        android:name="com.mafqud.android.results.states.failed.FailedFragment"
         android:label="FailedFragment">
         <argument
-            android:name="failureType"
-            app:argType="com.mafqud.android.results.states.FailureType" />
+            android:name="caseModel"
+            app:argType="com.mafqud.android.notification.CaseModel"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/resultsCasesFragment"
         android:name="com.mafqud.android.results.cases.ResultsCasesFragment"
         android:label="ResultsCasesFragment">
         <argument
-            android:name="notificationType"
-            app:argType="com.mafqud.android.notification.NotificationType" />
+            android:name="caseModel"
+            app:argType="com.mafqud.android.notification.CaseModel"
+            app:nullable="true"
+            android:defaultValue="@null" />
         <action
             android:id="@+id/action_resultsCasesFragment_to_publishCaseFragment"
             app:destination="@id/publishCaseFragment" />
@@ -98,13 +106,18 @@
         <action
             android:id="@+id/action_notificationFragment_to_failedFragment"
             app:destination="@id/failedFragment" />
+        <action
+            android:id="@+id/action_notificationFragment_to_resultsCasesFragment"
+            app:destination="@id/resultsCasesFragment" />
     </fragment>
     <fragment
         android:id="@+id/publishCaseFragment"
         android:name="com.mafqud.android.results.publishCase.PublishCaseFragment"
         android:label="PublishCaseFragment">
         <argument
-            android:name="notificationtype"
-            app:argType="com.mafqud.android.notification.NotificationType" />
+            android:name="caseModel"
+            app:argType="com.mafqud.android.notification.CaseModel"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 </navigation>

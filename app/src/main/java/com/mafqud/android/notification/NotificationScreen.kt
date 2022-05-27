@@ -20,12 +20,15 @@ import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.mafqud.android.R
+import com.mafqud.android.home.model.CaseType
+import com.mafqud.android.notification.models.NotificationAction
 import com.mafqud.android.notification.models.NotificationIconType
 import com.mafqud.android.notification.models.NotificationsResponse
 import com.mafqud.android.ui.theme.*
 import com.mafqud.android.util.dateFormat.fromFullDateToAnother
 import com.mafqud.android.util.network.HandlePagingError
 import kotlinx.coroutines.flow.Flow
+import java.io.Serializable
 
 
 @Keep
@@ -38,12 +41,25 @@ enum class NotificationType {
     NONE
 }
 
+data class CaseModel(
+    val caseId: Int = -1,
+    val caseType: CaseType = CaseType.NONE
+) : Serializable
+
+@Keep
+sealed class NotificationClickAction {
+    data class Success(val caseModel: CaseModel) : NotificationClickAction()
+    data class Failed(val caseModel: CaseModel) : NotificationClickAction()
+    data class Details(val caseModel: CaseModel) : NotificationClickAction()
+    object None : NotificationClickAction()
+}
+
 
 @Composable
 @Preview
 fun NotificationScreen(
     data: Flow<PagingData<NotificationsResponse.Notification>>? = null,
-    onNotificationClicked: (NotificationResponse.Data, NotificationType) -> Unit = { it, _it -> },
+    onNotificationClicked: (NotificationClickAction) -> Unit = {  _it -> },
 ) {
     BoxUi(
         modifier = Modifier
@@ -136,7 +152,7 @@ fun EmptyNotificationState(fillParentMaxSize: Modifier) {
 @Composable
 fun NotificationItem(
     notification: NotificationsResponse.Notification,
-    onSuccessNotificationClicked: (NotificationResponse.Data, NotificationType) -> Unit
+    onNotificationClicked: (NotificationClickAction) -> Unit
 ) {
     BoxUi(
         Modifier
@@ -144,11 +160,40 @@ fun NotificationItem(
             .clip(RoundedCornerShape(12.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
             .clickable {
-                // TODO change NotificationType
-                if (listOf(false, true).random()) {
-                    //onSuccessNotificationClicked(notification, NotificationType.SUCCESS_FINDING_FOUND)
-                } else {
-                    //onSuccessNotificationClicked(notification, NotificationType.SUCCESS_FINDING_LOST)
+                when (notification.getAction()) {
+                    NotificationAction.MATCHES -> {
+                        onNotificationClicked(
+                            NotificationClickAction.Success(
+                                CaseModel(
+                                    caseId = notification.caseId,
+                                    caseType = notification.getCaseType()
+                                )
+                            )
+                        )
+                    }
+                    NotificationAction.PUBLISHED -> {
+                        onNotificationClicked(
+                            NotificationClickAction.Failed(
+                                CaseModel(
+                                    caseId = notification.caseId,
+                                    caseType = notification.getCaseType()
+                                )
+                            )
+                        )
+                    }
+                    NotificationAction.DETAILS -> {
+                        onNotificationClicked(
+                            NotificationClickAction.Details(
+                                CaseModel(
+                                    caseId = notification.caseId,
+                                    caseType = notification.getCaseType()
+                                )
+                            )
+                        )
+                    }
+                    NotificationAction.NONE -> {
+                        onNotificationClicked(NotificationClickAction.None)
+                    }
                 }
             }
             .padding(8.dp)

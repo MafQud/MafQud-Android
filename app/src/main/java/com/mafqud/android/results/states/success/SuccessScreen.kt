@@ -1,4 +1,4 @@
-package com.mafqud.android.results.states
+package com.mafqud.android.results.states.success
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -6,31 +6,41 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
-import com.mafqud.android.notification.NotificationType
+import com.mafqud.android.home.model.CaseType
+import com.mafqud.android.notification.CaseModel
 import com.mafqud.android.ui.compose.ButtonAuth
 import com.mafqud.android.ui.compose.TextFieldNationalID
 import com.mafqud.android.ui.compose.WarningDialog
 import com.mafqud.android.ui.theme.*
+import com.mafqud.android.util.validation.validateLoginForm
+import com.mafqud.android.util.validation.validateNationalIDForm
 
 @Composable
 @Preview
 fun SuccessScreen(
-    notificationType: NotificationType = NotificationType.NONE,
-    showResults: () -> Unit = {}
+    caseModel: CaseModel? = CaseModel(),
+    nationalID: String = "",
+    showResults: (String) -> Unit = {}
 ) {
     val successDialog = remember {
+        mutableStateOf(false)
+    }
+    val nationalIdState = remember {
+        mutableStateOf(nationalID)
+    }
+    val isIdError = remember {
         mutableStateOf(false)
     }
     BoxUi(
@@ -53,9 +63,10 @@ fun SuccessScreen(
                 modifier = Modifier.size(286.dp, 252.dp)
             )
 
-            val firstString = when (notificationType) {
-                NotificationType.SUCCESS_FINDING_LOST -> stringResource(id = R.string.success_results_lost)
-                NotificationType.SUCCESS_FINDING_FOUND -> stringResource(id = R.string.success_results_found)
+            val firstString = when (caseModel?.caseType) {
+                CaseType.MISSING -> stringResource(id = R.string.success_results_lost)
+                CaseType.FOUND -> stringResource(id = R.string.success_results_found)
+                CaseType.NONE -> stringResource(id = R.string.error_unknown)
                 else -> {
                     stringResource(id = R.string.error_unknown)
                 }
@@ -77,18 +88,24 @@ fun SuccessScreen(
                 textAlign = TextAlign.Center,
             )
 
-            NationalIdField()
+            NationalIdField(nationalIdState, isIdError)
 
             ButtonAuth(title = stringResource(id = R.string.follow)) {
-                successDialog.value = true
+                validateNationalIDForm(
+                    id = nationalIdState.value,
+                    isIdError = isIdError
+                ) {
+                    successDialog.value = true
+                }
             }
 
             SpacerUi(modifier = Modifier.height(20.dp))
 
         }
-        val dialogTitle = when (notificationType) {
-            NotificationType.SUCCESS_FINDING_LOST -> stringResource(id = R.string.warn_dailog_title_lost)
-            NotificationType.SUCCESS_FINDING_FOUND -> stringResource(id = R.string.warn_dailog_title_found)
+        val dialogTitle = when (caseModel?.caseType) {
+            CaseType.MISSING -> stringResource(id = R.string.warn_dailog_title_lost)
+            CaseType.FOUND -> stringResource(id = R.string.warn_dailog_title_found)
+            CaseType.NONE -> stringResource(id = R.string.error_unknown)
             else -> {
                 stringResource(id = R.string.error_unknown)
             }
@@ -97,7 +114,7 @@ fun SuccessScreen(
             titleHead = dialogTitle,
             isOpened = successDialog,
             onConfirmClicked = {
-                showResults()
+                showResults(nationalIdState.value)
             },
             onCancelClicked = {
 
@@ -109,15 +126,8 @@ fun SuccessScreen(
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun NationalIdField() {
-    val nationalId = remember {
-        mutableStateOf("")
-    }
-    val isIdError = remember {
-        mutableStateOf(false)
-    }
-    val (focusRequester) = FocusRequester.createRefs()
+fun NationalIdField(nationalId: MutableState<String>, isIdError: MutableState<Boolean>) {
 
-    TextFieldNationalID(nationalId, isIdError, focusRequester)
+    TextFieldNationalID(nationalId, isIdError)
 
 }

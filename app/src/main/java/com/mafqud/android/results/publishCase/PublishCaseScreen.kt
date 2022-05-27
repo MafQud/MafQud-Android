@@ -14,6 +14,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
+import com.mafqud.android.home.model.CaseType
+import com.mafqud.android.notification.CaseModel
 import com.mafqud.android.notification.NotificationType
 import com.mafqud.android.ui.compose.ButtonAuth
 import com.mafqud.android.ui.theme.*
@@ -21,7 +23,7 @@ import com.mafqud.android.ui.theme.*
 @Composable
 @Preview
 fun PublishCaseScreen(
-    notificationType: NotificationType = NotificationType.NONE,
+    caseModel: CaseModel? = CaseModel(),
     onPublishClicked: () -> Unit = {}
 ) {
     BoxUi(
@@ -42,9 +44,9 @@ fun PublishCaseScreen(
                 modifier = Modifier.size(300.dp, 185.dp)
             )
 
-            val title = when (notificationType) {
-                NotificationType.SUCCESS_FINDING_LOST -> stringResource(id = R.string.publish_found2)
-                NotificationType.SUCCESS_FINDING_FOUND -> stringResource(id = R.string.publish_lost2)
+            val title = when (caseModel?.caseType) {
+                CaseType.MISSING -> stringResource(id = R.string.publish_found2)
+                CaseType.FOUND -> stringResource(id = R.string.publish_lost2)
                 else -> {
                     ""
                 }
@@ -60,9 +62,9 @@ fun PublishCaseScreen(
 
             SpacerUi(modifier = Modifier.height(50.dp))
 
-            val titleButton = when (notificationType) {
-                NotificationType.SUCCESS_FINDING_LOST -> stringResource(id = R.string.publish_found)
-                NotificationType.SUCCESS_FINDING_FOUND -> stringResource(id = R.string.publish_lost)
+            val titleButton = when (caseModel?.caseType) {
+                CaseType.MISSING -> stringResource(id = R.string.publish_found)
+                CaseType.FOUND -> stringResource(id = R.string.publish_lost)
                 else -> {
                     ""
                 }

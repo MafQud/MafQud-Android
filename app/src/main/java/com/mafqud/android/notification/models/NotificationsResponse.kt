@@ -42,7 +42,7 @@ data class NotificationsResponse(
         @field:Json(name = "body")
         val body: String? = "", // جارى البحث عن المفقود وسنقوم بإشعارك فى حاله العثور لأى نتائج
         @field:Json(name = "case_id")
-        val caseId: Int? = 0, // 4
+        val caseId: Int = 0, // 4
         @field:Json(name = "case_type")
         val caseType: String? = "", // M
         @field:Json(name = "created_at")
@@ -65,7 +65,8 @@ data class NotificationsResponse(
 
         fun getAction(): NotificationAction {
             return when(action){
-                "M" -> NotificationAction.MATCHES
+                // TODO change this
+                "D" -> NotificationAction.MATCHES
                 "P" -> NotificationAction.PUBLISHED
                 "D" -> NotificationAction.DETAILS
                 "N" -> NotificationAction.NONE

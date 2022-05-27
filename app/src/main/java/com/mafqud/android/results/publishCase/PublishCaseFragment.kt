@@ -44,10 +44,10 @@ class PublishCaseFragment : BaseFragment() {
                         )
                     }, content = {
                         PublishCaseScreen(
-                            notificationType = args.notificationtype,
-                            onPublishClicked = {
+                            caseModel = args.caseModel
+                        ) {
 
-                            })
+                        }
                     })
                 }
             }
