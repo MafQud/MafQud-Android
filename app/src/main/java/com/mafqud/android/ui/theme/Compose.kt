@@ -78,7 +78,7 @@ fun TextUi(
     textDecoration: TextDecoration? = null,
     textAlign: TextAlign? = null,
     lineHeight: TextUnit = TextUnit.Unspecified,
-    overflow: TextOverflow = TextOverflow.Ellipsis,
+    overflow: TextOverflow = TextOverflow.Clip,
     softWrap: Boolean = true,
     maxLines: Int = 5,
     onTextLayout: (TextLayoutResult) -> Unit = {},

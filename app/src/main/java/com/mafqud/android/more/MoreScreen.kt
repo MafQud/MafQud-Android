@@ -74,40 +74,48 @@ fun MoreScreen(
                 SpacerUi(modifier = Modifier.height(20.dp))
                 //HorizontalLine()
 
-                MoreItem(
-                    title = stringResource(id = R.string.my_account),
-                    icon = R.drawable.ic_account,
-                    onItemClicked = onAccountClicked,
+                ColumnUi(
+                    modifier = Modifier.verticalScroll(rememberScrollState()),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    MoreItem(
+                        title = stringResource(id = R.string.my_account),
+                        icon = R.drawable.ic_account,
+                        onItemClicked = onAccountClicked,
 
+                        )
+                    HorizontalLine()
+
+                    // TODO settings item
+                   /* MoreItem(
+                        title = stringResource(id = R.string.settings),
+                        icon = R.drawable.ic_setting,
+                        onItemClicked = onSettingClicked,
+
+                        )
+                    HorizontalLine()*/
+
+                    MoreItem(
+                        title = stringResource(id = R.string.help),
+                        icon = R.drawable.ic_info,
+                        onItemClicked = onHelpClicked,
+
+                        )
+                    HorizontalLine()
+
+                    MoreItem(
+                        title = stringResource(id = R.string.phones),
+                        icon = R.drawable.ic_phone,
+                        onItemClicked = onPhonesClicked,
                     )
-                HorizontalLine()
+                    SpacerUi(modifier = Modifier.height(20.dp))
 
-                MoreItem(
-                    title = stringResource(id = R.string.settings),
-                    icon = R.drawable.ic_setting,
-                    onItemClicked = onSettingClicked,
+                    Logout(onConfirmClicked = onLogoutClicked)
 
-                    )
-                HorizontalLine()
+                    SpacerUi(modifier = Modifier.height(16.dp))
+                }
 
-                MoreItem(
-                    title = stringResource(id = R.string.help),
-                    icon = R.drawable.ic_info,
-                    onItemClicked = onHelpClicked,
-
-                    )
-                HorizontalLine()
-
-                MoreItem(
-                    title = stringResource(id = R.string.phones),
-                    icon = R.drawable.ic_phone,
-                    onItemClicked = onPhonesClicked,
-                )
-                SpacerUi(modifier = Modifier.height(20.dp))
-
-                Logout(onConfirmClicked = onLogoutClicked)
-
-                SpacerUi(modifier = Modifier.height(16.dp))
             }
         }
     }

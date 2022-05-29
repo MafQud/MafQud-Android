@@ -217,7 +217,7 @@ fun CaseMatchItem(
                             Modifier
                                 .size(70.dp, 30.dp)
                                 .clip(RoundedCornerShape(12.dp))
-                                .background(MaterialTheme.colorScheme.error)
+                                .background(MaterialTheme.colorScheme.primary)
                                 .clickable {
                                     if (onCaseClicked != null) {
                                         onCaseClicked(caseData)
@@ -227,7 +227,7 @@ fun CaseMatchItem(
                             TextUi(
                                 // modifier = Modifier.padding(12.dp),
                                 text = stringResource(id = R.string.more),
-                                color = MaterialTheme.colorScheme.primary,
+                                color = MaterialTheme.colorScheme.onSecondary,
                                 style = MaterialTheme.typography.titleSmall
                             )
                         }

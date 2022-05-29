@@ -175,5 +175,8 @@
     <string name="archive_state">تمت ارشفة الحالة</string>
     <string name="no_state">لا يوجد حالة</string>
     <string name="no_name">لا يوجد اسم</string>
+    <string name="camera_dialog">أذونات الكاميرا والتخزين اللازمة لمعالجة الصور والوصول إليها</string>
+    <string name="storage_dialog">مطلوب إذن التخزين للوصول إلى الصور</string>
+    <string name="open_gps">من فضلك ، افتح GPS الخاص بك للحصول على موقعك الحالي</string>
 
 </resources>

@@ -309,12 +309,10 @@ fun SuccessToFound() {
 fun UpdateStateButton() {
     BoxUi(
         Modifier
-            .size(95.dp, 30.dp)
             .clip(RoundedCornerShape(12.dp))
             .background(MaterialTheme.colorScheme.error)
             .clickable {
-
-            },
+            }.padding(8.dp),
     ) {
         TextUi(
             // modifier = Modifier.padding(12.dp),

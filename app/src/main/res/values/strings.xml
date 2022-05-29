@@ -22,10 +22,9 @@
     <string name="fcm_notification_channel_id" translatable="false">102</string>
     <string name="permission_read_denied" translatable="false">Cann\'t access files.</string>
     <string name="permission_needed" translatable="false">Permission needed</string>
-    <string name="open_setting" translatable="false">Open Setting</string>
-    <string name="camera_dialog" translatable="false">Camera and Storage permissions needed for tacking and accessing photos</string>
-    <string name="storage_dialog" translatable="false">Storage permission needed for accessing photos</string>
-    <string name="open_gps" translatable="false">Please, open your GPS to get your current location</string>
+    <string name="open_setting">Open Setting</string>
+    <string name="storage_dialog" >Storage permission needed for accessing photos</string>
+    <string name="open_gps">Please, open your GPS to get your current location</string>
     <string name="error_no_more_data" translatable="false">Can\'t load more data.. Check Internet connection!</string>
     <string name="error_bad_gateway" translatable="false">Bad Getway</string>
     <string name="error_not_found" translatable="false">Not found</string>
@@ -199,4 +198,5 @@
     <string name="archive_state">Archieved case</string>
     <string name="no_state">No state</string>
     <string name="no_name">No name</string>
+    <string name="camera_dialog">Camera and Storage permissions needed for tacking and accessing photos</string>
 </resources>

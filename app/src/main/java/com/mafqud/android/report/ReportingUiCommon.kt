@@ -33,9 +33,9 @@ fun UploadingPhotosInfo(stateType: StateType = StateType.LOST) {
         StateType.LOST -> R.string.upload_inst2
         StateType.FOUND -> R.string.upload_inst22
     }
-    RowUi(
+    ColumnUi(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
+        verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         DotText(stringResource(id = R.string.upload_inst1))
         DotText(stringResource(id = secondString))
