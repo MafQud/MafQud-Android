@@ -174,5 +174,6 @@
     <string name="process_images">جاري تحليل الصور</string>
     <string name="archive_state">تمت ارشفة الحالة</string>
     <string name="no_state">لا يوجد حالة</string>
+    <string name="no_name">لا يوجد اسم</string>
 
 </resources>

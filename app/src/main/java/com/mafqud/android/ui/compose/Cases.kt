@@ -76,7 +76,7 @@ fun CaseItem(
                             verticalArrangement = Arrangement.spacedBy(2.dp)
                         ) {
                             TextUi(
-                                text = case.name ?: "",
+                                text = case.name ?: stringResource(id = com.mafqud.android.R.string.no_name),
                                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                                 style = MaterialTheme.typography.titleMedium
                             )

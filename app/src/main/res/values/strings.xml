@@ -198,4 +198,5 @@
     <string name="process_images">Process images</string>
     <string name="archive_state">Archieved case</string>
     <string name="no_state">No state</string>
+    <string name="no_name">No name</string>
 </resources>

@@ -47,6 +47,11 @@
         <action
             android:id="@+id/action_caseDetailsFragment_to_contactFragment"
             app:destination="@id/contactFragment" />
+        <argument
+            android:name="caseMatch"
+            app:argType="com.mafqud.android.results.cases.models.CasesMatchesResponse$CaseMatch"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/failedFragment"
