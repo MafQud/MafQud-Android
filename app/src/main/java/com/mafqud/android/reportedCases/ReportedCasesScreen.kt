@@ -170,13 +170,13 @@ fun UserCaseItem(
                                 SuccessToFound()
                             }
                             UserCaseState.ARCHIVED -> {
-
+                                ArchiveState()
                             }
                             UserCaseState.PENDING -> {
-
+                                PendingState()
                             }
                             UserCaseState.NONE -> {
-
+                                NoneState()
                             }
                         }
 
@@ -213,6 +213,74 @@ fun UserCaseItem(
         }
     }
 
+}
+
+@Composable
+fun NoneState() {
+    RowUi(
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        BoxUi(Modifier.size(18.dp)) {
+            IconUi(
+                painter = painterResource(id = R.drawable.ic_info),
+                modifier = Modifier.size(18.dp),
+            )
+        }
+        TextUi(
+            text = stringResource(id = R.string.no_state),
+            style = MaterialTheme.typography.titleSmall,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.primary
+        )
+
+    }
+}
+
+@Composable
+fun ArchiveState() {
+    RowUi(
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        BoxUi(Modifier.size(18.dp)) {
+            IconUi(
+                painter = painterResource(id = R.drawable.ic_archive),
+                modifier = Modifier.size(18.dp),
+                tint = MaterialTheme.colorScheme.error
+            )
+        }
+        TextUi(
+            text = stringResource(id = R.string.archive_state),
+            style = MaterialTheme.typography.titleSmall,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.primary
+        )
+
+    }
+}
+
+@Composable
+fun PendingState() {
+    RowUi(
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        BoxUi(Modifier.size(18.dp)) {
+            IconUi(
+                painter = painterResource(id = R.drawable.ic_process),
+                modifier = Modifier.size(18.dp),
+                tint = MaterialTheme.colorScheme.yellow
+            )
+        }
+        TextUi(
+            text = stringResource(id = R.string.process_images),
+            style = MaterialTheme.typography.titleSmall,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.primary
+        )
+
+    }
 }
 
 @Composable

@@ -169,5 +169,10 @@
     <string name="city">المدينة</string>
     <string name="update_state">تحديث الحالة</string>
     <string name="success_to_found">تم العثور عليه</string>
+    <string name="puclished">تم نشر الحالة</string>
+    <string name="puclished_before">تم نشر الحالة من قبل</string>
+    <string name="process_images">جاري تحليل الصور</string>
+    <string name="archive_state">تمت ارشفة الحالة</string>
+    <string name="no_state">لا يوجد حالة</string>
 
 </resources>

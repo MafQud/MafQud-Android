@@ -21,7 +21,7 @@ val blue = Color(0xFF3B5999)
 val white100 = Color(0xFFFAFAFA)
 val greenLight = Color(0xFFD9FFE3)
 val greenBold = Color(0xFF47B866)
-val yellowBold = Color(0xFFFFB800)
+val yellowBold = Color(0xFFee9400)
 val yellow500 = Color(0xFFEFA802)
 val yellowLight = Color(0xFFFFF8E5)
 val gray800 = Color(0xFF555555)
@@ -31,6 +31,9 @@ val ColorScheme.green: Color
 
 val ColorScheme.red: Color
     @Composable get() = redBold
+
+val ColorScheme.yellow: Color
+    @Composable get() = yellowBold
 
 val Colors.purpleAlways: Color
     @Composable get() = if (isLight) purple else purple

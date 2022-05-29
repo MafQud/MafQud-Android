@@ -195,4 +195,7 @@
     <string name="success_to_found">Success to found</string>
     <string name="puclished">Case published</string>
     <string name="puclished_before">Case already published</string>
+    <string name="process_images">Process images</string>
+    <string name="archive_state">Archieved case</string>
+    <string name="no_state">No state</string>
 </resources>
