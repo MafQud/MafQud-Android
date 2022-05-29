@@ -227,7 +227,7 @@ fun CaseMatchItem(
                             TextUi(
                                 // modifier = Modifier.padding(12.dp),
                                 text = stringResource(id = R.string.more),
-                                color = MaterialTheme.colorScheme.onSecondary,
+                                color = MaterialTheme.colorScheme.primary,
                                 style = MaterialTheme.typography.titleSmall
                             )
                         }

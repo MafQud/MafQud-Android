@@ -5,15 +5,19 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -22,10 +26,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
-import com.mafqud.android.home.HeadSearchUi
-import com.mafqud.android.ui.theme.BoxUi
-import com.mafqud.android.ui.theme.ColumnUi
-import com.mafqud.android.ui.theme.SpacerUi
+import com.mafqud.android.R
+import com.mafqud.android.home.*
+import com.mafqud.android.ui.theme.*
 import com.mafqud.android.util.bitmap.getMarkerBitmapFromView
 
 
@@ -38,7 +41,7 @@ fun MapScreen() {
     ColumnUi {
         BoxUi(Modifier.background(MaterialTheme.colorScheme.surfaceVariant)) {
             ColumnUi {
-                HeadSearchUi({
+                MapSearchUi({
 
                 })
                 SpacerUi(modifier = Modifier.height(8.dp))
@@ -47,6 +50,123 @@ fun MapScreen() {
         MapUi()
     }
 }
+
+@Composable
+fun MapSearchUi(
+    onTapClicked: (CasesType) -> Unit = {},
+    selectedTapState: CasesType = CasesType.ALL
+) {
+    BoxUi(
+        Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
+    ) {
+        SearchUi(onTapClicked, selectedTapState)
+    }
+}
+
+@Composable
+private fun SearchUi(onTapClicked: (CasesType) -> Unit, selectedTapState: CasesType) {
+    ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        // TODO add other search ui maps
+        TapsUi(onTapClicked, selectedTapState)
+    }
+}
+
+@Composable
+private fun TapsUi(onTapClicked: (CasesType) -> Unit, selectedTapState: CasesType) {
+    RowUi {
+        val selectedItem = remember {
+            mutableStateOf(selectedTapState)
+        }
+
+        val activeTextColor = MaterialTheme.colorScheme.onSecondary
+        val activeBackgroundColor = MaterialTheme.colorScheme.primary
+
+
+        val disableTextColor = MaterialTheme.colorScheme.primary
+        val disableBackgroundColor = MaterialTheme.colorScheme.onSecondary
+
+        BoxUi(
+            Modifier
+                .height(30.dp)
+                .weight(1f)
+                .border(
+                    width = 1.dp,
+                    color = activeBackgroundColor,
+                    shape = RoundedCornerShape(topStart = 20.dp, bottomStart = 20.dp)
+                )
+                .clip(RoundedCornerShape(topStart = 20.dp, bottomStart = 20.dp))
+                .background(if (selectedItem.value == CasesType.ALL) activeBackgroundColor else disableBackgroundColor)
+                .clickable {
+                    if (selectedItem.value != CasesType.ALL) {
+                        selectedItem.value = CasesType.ALL
+                        onTapClicked(selectedItem.value)
+                    }
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            TextUi(
+                text = stringResource(id = R.string.all),
+                color = if (selectedItem.value == CasesType.ALL) activeTextColor else disableTextColor,
+                style = MaterialTheme.typography.titleSmall
+            )
+        }
+
+        //
+        BoxUi(
+            Modifier
+                .height(30.dp)
+                .weight(1f)
+                .border(
+                    width = 1.dp,
+                    color = activeBackgroundColor,
+                    shape = RectangleShape
+                )
+                .background(if (selectedItem.value == CasesType.MISSING) activeBackgroundColor else disableBackgroundColor)
+                .clickable {
+                    if (selectedItem.value != CasesType.MISSING) {
+                        selectedItem.value = CasesType.MISSING
+                        onTapClicked(selectedItem.value)
+                    }
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            TextUi(
+                text = stringResource(id = R.string.lost),
+                color = if (selectedItem.value == CasesType.MISSING) activeTextColor else disableTextColor,
+                style = MaterialTheme.typography.titleSmall
+            )
+        }
+
+        //
+        BoxUi(
+            Modifier
+                .height(30.dp)
+                .weight(1f)
+                .border(
+                    width = 1.dp,
+                    color = activeBackgroundColor,
+                    shape = RoundedCornerShape(topEnd = 20.dp, bottomEnd = 20.dp)
+                )
+                .clip(RoundedCornerShape(topEnd = 20.dp, bottomEnd = 20.dp))
+                .background(if (selectedItem.value == CasesType.FOUND) activeBackgroundColor else disableBackgroundColor)
+                .clickable {
+                    if (selectedItem.value != CasesType.FOUND) {
+                        selectedItem.value = CasesType.FOUND
+                        onTapClicked(selectedItem.value)
+                    }
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            TextUi(
+                text = stringResource(id = R.string.found),
+                color = if (selectedItem.value == CasesType.FOUND) activeTextColor else disableTextColor,
+                style = MaterialTheme.typography.titleSmall
+            )
+        }
+    }
+}
+
+
 
 @Composable
 fun MapUi() {

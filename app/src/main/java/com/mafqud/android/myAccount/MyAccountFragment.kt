@@ -78,11 +78,12 @@ class MyAccountFragment : Fragment() {
                             address = address.value,
                             phone = phone.value,
                             onEditClicked = {
-                            findNavController().navigate(R.id.action_myAccountFragment_to_myAccountEditFragment)
-                        }, onEditInfoClicked = {
-                            findNavController().navigate(R.id.action_myAccountFragment_to_myAccountEditInfoFragment)
-
-                        })
+                                //TODO profile data
+                                //findNavController().navigate(R.id.action_myAccountFragment_to_myAccountEditFragment)
+                            }, onEditInfoClicked = {
+                                //TODO profile data
+                                //findNavController().navigate(R.id.action_myAccountFragment_to_myAccountEditInfoFragment)
+                            })
                     })
                 }
             }
