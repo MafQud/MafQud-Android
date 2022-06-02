@@ -5,6 +5,8 @@
     app:startDestination="@id/homeFragment">
 
     <action
+        app:enterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/slide_right"
         android:id="@+id/actionToNotificationGraph"
         app:destination="@+id/notifications_graph" />
 
@@ -51,6 +53,8 @@
             app:enterAnim="@anim/fade_in"
             app:popEnterAnim="@anim/fade_in" />
         <action
+            app:enterAnim="@anim/fade_in"
+            app:popEnterAnim="@anim/fade_in"
             android:id="@+id/action_moreFragment_to_reportedCasesFragment"
             app:destination="@id/reportedCasesFragment" />
     </fragment>

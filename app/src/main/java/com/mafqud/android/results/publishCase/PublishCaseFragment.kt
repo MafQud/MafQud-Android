@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
@@ -79,7 +78,7 @@ class PublishCaseFragment : BaseFragment() {
         if (stateValue.isSuccess) {
             val message = stringResource(id = R.string.puclished)
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.action_pop_out_of_game)
+            findNavController().navigate(R.id.action_pop_out_of_notification_graph)
         }
 
         if (stateValue.networkError != null) {
@@ -94,7 +93,7 @@ class PublishCaseFragment : BaseFragment() {
                         //close current screen
                         val message = stringResource(id = R.string.puclished_before)
                         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-                        findNavController().navigate(R.id.action_pop_out_of_game)
+                        findNavController().navigate(R.id.action_pop_out_of_notification_graph)
 
                     } else {
                         stateValue.networkError.ShowNetworkErrorSnakeBar(

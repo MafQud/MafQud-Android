@@ -22,18 +22,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.mafqud.android.R
 import com.mafqud.android.base.fragment.BaseFragment
-import com.mafqud.android.notification.NotificationType
-import com.mafqud.android.results.caseDetails.CaseDetailsFragmentArgs
-import com.mafqud.android.results.caseDetails.CaseDetailsScreen
-import com.mafqud.android.results.cases.ResultsCasesFragmentArgs
 import com.mafqud.android.ui.compose.ButtonSmall
-import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.theme.*
-import com.mafqud.android.util.other.openDialer
-import dagger.hilt.android.AndroidEntryPoint
 
 
 class ContactFailedFragment : BaseFragment() {
@@ -91,7 +83,7 @@ class ContactFailedFragment : BaseFragment() {
                 // next
                 ButtonSmall(title = stringResource(id = R.string.confirm)) {
                     findNavController().navigate(
-                        R.id.action_pop_out_of_game,
+                        R.id.action_pop_out_of_notification_graph,
                     )
                 }
             }

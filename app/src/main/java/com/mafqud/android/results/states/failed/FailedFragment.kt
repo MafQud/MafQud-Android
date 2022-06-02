@@ -78,7 +78,7 @@ class FailedFragment : BaseFragment() {
         if (stateValue.isSuccess) {
             val message = stringResource(id = R.string.puclished)
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.action_pop_out_of_game)
+            findNavController().navigate(R.id.action_pop_out_of_notification_graph)
         }
 
         if (stateValue.networkError != null) {
@@ -93,7 +93,7 @@ class FailedFragment : BaseFragment() {
                         //close current screen
                         val message = stringResource(id = R.string.puclished_before)
                         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-                        findNavController().navigate(R.id.action_pop_out_of_game)
+                        findNavController().navigate(R.id.action_pop_out_of_notification_graph)
 
                     } else {
                         stateValue.networkError.ShowNetworkErrorSnakeBar(

@@ -5,13 +5,18 @@
     android:id="@+id/notifications_graph">
 
 
-    <action android:id="@+id/action_pop_out_of_game"
+    <action
+        app:enterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/slide_right"
+        android:id="@+id/action_pop_out_of_notification_graph"
         app:destination="@+id/homeFragment"
         app:launchSingleTop="true"
         app:popUpTo="@id/notifications_graph"
         app:popUpToInclusive="true" />
 
     <action
+        app:enterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/slide_right"
         android:id="@+id/action_contactFragment_to_contactFailedFragment"
         app:destination="@id/contactFailedFragment" />
     <fragment
@@ -19,6 +24,8 @@
         android:name="com.mafqud.android.results.contact.ContactFragment"
         android:label="ContactFragment">
         <action
+            app:enterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_right"
             android:id="@+id/action_contactFragment_to_contactFailedFragment"
             app:destination="@id/contactFailedFragment" />
     </fragment>
@@ -32,6 +39,8 @@
             app:nullable="true"
             android:defaultValue="@null" />
         <action
+            app:enterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_right"
             android:id="@+id/action_successLostFragment_to_resultsCasesFragment"
             app:destination="@id/resultsCasesFragment" />
     </fragment>
@@ -45,6 +54,8 @@
             app:nullable="true"
             android:defaultValue="@null" />
         <action
+            app:enterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_right"
             android:id="@+id/action_caseDetailsFragment_to_contactFragment"
             app:destination="@id/contactFragment" />
         <argument
@@ -73,9 +84,13 @@
             app:nullable="true"
             android:defaultValue="@null" />
         <action
+            app:enterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_right"
             android:id="@+id/action_resultsCasesFragment_to_publishCaseFragment"
             app:destination="@id/publishCaseFragment" />
         <action
+            app:enterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_right"
             android:id="@+id/action_resultsCasesFragment_to_caseDetailsFragment"
             app:destination="@id/caseDetailsFragment" />
     </fragment>
@@ -83,6 +98,8 @@
         android:id="@+id/action_notificationFragment_to_successLostFragment"
         app:destination="@id/successLostFragment" />
     <action
+        app:enterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/slide_right"
         android:id="@+id/action_resultsCasesFragment_to_publishCaseFragment"
         app:destination="@id/publishCaseFragment" />
     <fragment
@@ -90,15 +107,23 @@
         android:name="com.mafqud.android.results.contactFailed.ContactFailedFragment"
         android:label="ContactFailedFragment" />
     <action
+        app:enterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/slide_right"
         android:id="@+id/action_notificationFragment_to_failedFragment"
         app:destination="@id/failedFragment" />
     <action
+        app:enterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/slide_right"
         android:id="@+id/action_successLostFragment_to_resultsCasesFragment"
         app:destination="@id/resultsCasesFragment" />
     <action
+        app:enterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/slide_right"
         android:id="@+id/action_resultsCasesFragment_to_caseDetailsFragment"
         app:destination="@id/caseDetailsFragment" />
     <action
+        app:enterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/slide_right"
         android:id="@+id/action_caseDetailsFragment_to_contactFragment"
         app:destination="@id/contactFragment" />
     <fragment
@@ -106,12 +131,18 @@
         android:name="com.mafqud.android.notification.NotificationFragment"
         android:label="NotificationFragment">
         <action
+            app:enterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_right"
             android:id="@+id/action_notificationFragment_to_successLostFragment"
             app:destination="@id/successLostFragment" />
         <action
+            app:enterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_right"
             android:id="@+id/action_notificationFragment_to_failedFragment"
             app:destination="@id/failedFragment" />
         <action
+            app:enterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_right"
             android:id="@+id/action_notificationFragment_to_resultsCasesFragment"
             app:destination="@id/resultsCasesFragment" />
     </fragment>
