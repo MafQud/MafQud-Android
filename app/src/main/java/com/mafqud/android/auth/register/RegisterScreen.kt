@@ -1,8 +1,10 @@
 package com.mafqud.android.auth.register
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -12,17 +14,17 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
-import com.mafqud.android.auth.openReportActivity
+import com.mafqud.android.locations.MyCity
+import com.mafqud.android.locations.MyGov
 import com.mafqud.android.ui.compose.*
 import com.mafqud.android.ui.other.TimerUi
 import com.mafqud.android.ui.theme.*
-import com.mafqud.android.util.network.ShowNetworkErrorSnakeBarUi
-import com.mafqud.android.util.validation.PasswordError
-import com.mafqud.android.util.validation.validateNAmeAndEmailForm
-import com.mafqud.android.util.validation.validatePassAndConfirm
-import com.mafqud.android.util.validation.validatePhoneForm
+import com.mafqud.android.util.network.ShowNetworkErrorSnakeBar
+import com.mafqud.android.util.other.LogMe
+import com.mafqud.android.util.validation.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -39,48 +41,54 @@ enum class StepCount {
 
 @Composable
 fun RegisterScreen(
-    registerViewModel: RegisterViewModel = RegisterViewModel(RegisterRepository()),
-    registerFormData: MutableState<RegisterIntent.Signup>,
-    activeStep: MutableState<StepCount>,
+    scaffoldState: ScaffoldState,
+    stateValue: RegisterViewState,
     otpState: MutableState<String>,
     onStepOne: (String) -> Unit,
     onStepTwo: (String) -> Unit,
-    onStepThree: (String, String) -> Unit,
+    onStepThree: (String) -> Unit,
     onStepFour: (Int, Int) -> Unit,
     onStepFive: (String) -> Unit,
     onBackPressed: () -> Unit,
-    onSuccessRegister: () -> Unit = {} ,
-    sendVerificationCode: (String, MutableState<StepCount>) -> Unit = {_it, it ->} ,
+    onSuccessRegister: () -> Unit = {},
+    sendVerificationCode: (String) -> Unit = { _it -> },
+    onGovSelected: (Int) -> Unit,
 ) {
     /**
      * ui states
      *
      */
-    val state = registerViewModel.stateChannel.collectAsState()
-    val stateValue = state.value
 
-
+    LogMe.i("phonee", stateValue.phone.toString())
     LoadingDialog(stateValue.isLoading)
 
-    if (stateValue.isValidPhone) {
-        if (stateValue.phone != null) {
-            sendVerificationCode(stateValue.phone, activeStep)
+    if (stateValue.isValidPhone != null) {
+        if (stateValue.isValidPhone) {
+            if (stateValue.phone != null) {
+                sendVerificationCode(stateValue.phone)
+            }
+
+        } else {
+            val notValidNum = stringResource(id = R.string.error_phone_exists)
+            LaunchedEffect(key1 = null, block = {
+                scaffoldState.snackbarHostState.showSnackbar(notValidNum)
+            })
         }
-
     }
-    if (stateValue.isValidEmail) {
+
+    /*if (stateValue.isValidEmail) {
         activeStep.value = StepCount.Four
-    }
+    }*/
 
 
-    if (stateValue.isSuccess && stateValue.data != null) {
+    if (stateValue.isSuccess) {
         onSuccessRegister()
     }
-    if (stateValue.networkError != null) {
-       /* stateValue.networkError.ShowNetworkErrorSnakeBarUi(
-            view = requireView()
-        )*/
 
+    if (stateValue.networkError != null) {
+        stateValue.networkError.ShowNetworkErrorSnakeBar(
+            scaffoldState = scaffoldState
+        )
     }
     /**
      * ui data
@@ -105,7 +113,7 @@ fun RegisterScreen(
                 .fillMaxSize()
         ) {
 
-            HeadItem(activeStep, Modifier.weight(1f), onBackPressed)
+            HeadItem(stateValue.stepCount, Modifier.weight(1f), onBackPressed)
 
             ColumnUi(
                 modifier = Modifier
@@ -124,20 +132,24 @@ fun RegisterScreen(
                     ColumnUi {
                         SpacerUi(modifier = Modifier.height(50.dp))
                         // display the needed view
-                        when (activeStep.value) {
-                            StepCount.One -> PhoneForm(registerFormData.value.phone, onStepOne)
+                        when (stateValue.stepCount) {
+                            StepCount.One -> PhoneForm(stateValue.phone ?: "", onStepOne)
 
                             StepCount.Two -> {
                                 isTimerRunning.value = true
                                 OTPForm(otpState, isTimerRunning, currentTime, onStepTwo)
                             }
 
-                            StepCount.Three -> NameAndEmailForm(registerFormData.value, onStepThree)
+                            StepCount.Three -> NameAndEmailForm(stateValue.name ?: "", onStepThree)
 
-                            StepCount.Four -> LocationForm(registerFormData.value, onStepFour)
+                            StepCount.Four -> LocationForm(
+                                onStepFour,
+                                onGovSelected,
+                                stateValue.govs,
+                                stateValue.cities,
+                            )
 
                             StepCount.Five -> PassWordForm(
-                                registerFormData.value.password,
                                 onStepFive
                             )
 
@@ -213,14 +225,14 @@ private suspend fun getFakeOTP(): String {
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun PassWordForm(passwordInitial: String, onClicked: (String) -> Unit) {
+private fun PassWordForm(onClicked: (String) -> Unit) {
 
     val password = remember {
-        mutableStateOf(passwordInitial)
+        mutableStateOf("")
     }
 
     val passwordConfirm = remember {
-        mutableStateOf(passwordInitial)
+        mutableStateOf("")
     }
 
     val isPasswordError = remember { mutableStateOf(PasswordError()) }
@@ -265,7 +277,21 @@ private fun PassWordForm(passwordInitial: String, onClicked: (String) -> Unit) {
 }
 
 @Composable
-private fun LocationForm(signUpData: RegisterIntent.Signup, onClicked: (Int, Int) -> Unit) {
+private fun LocationForm(
+    onClicked: (Int, Int) -> Unit,
+    onGovSelected: (Int) -> Unit,
+    govs: List<MyGov>?,
+    cities: List<MyCity>?,
+) {
+    val selectedGovId = remember {
+        mutableStateOf(-1)
+    }
+    val selectedCityId = remember {
+        mutableStateOf(-1)
+    }
+    val isLocationError = remember {
+        mutableStateOf(false)
+    }
     ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         val selectedItem = remember {
             mutableStateOf("")
@@ -277,31 +303,76 @@ private fun LocationForm(signUpData: RegisterIntent.Signup, onClicked: (Int, Int
             style = MaterialTheme.typography.titleMedium
 
         )
-        RowUi(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            DropDownItems(
-                modifier = Modifier
-                    .weight(1f)
-                    .height(50.dp),
-                items = listOf("Gov"),
-                selectedItemID = selectedItem,
-                iconColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
-                textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-            )
-            DropDownItems(
-                items = listOf("City"),
-                selectedItemID = selectedItem,
-                modifier = Modifier
-                    .weight(1f)
-                    .height(50.dp),
-                iconColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
-                textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-            )
+        RowUi(
+            modifier = Modifier.animateContentSize(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            govs?.let {
+                DropDownItems(
+                    title = stringResource(id = R.string.gov),
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(50.dp),
+                    items = it.map {
+                        return@map it.name ?: ""
+                    },
+                    selectedItemID = selectedItem,
+                    iconColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                    backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+                    textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                    onSelectItem = {
+                        isLocationError.value = false
+                        val itemID = it.toIntOrNull() ?: -1
+                        val govId = govs.getOrNull(itemID)?.id ?: -1
+                        selectedGovId.value = govId
+                        onGovSelected(govId)
+                        LogMe.i("DropDownItems", "selected $it")
+                    }
+                )
+            }
+
+            cities?.let {
+                DropDownItems(
+                    title = stringResource(id = R.string.city),
+                    items = it.map {
+                        return@map it.name ?: ""
+                    },
+                    selectedItemID = selectedItem,
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(50.dp),
+                    iconColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                    backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+                    textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                    onSelectItem = {
+                        isLocationError.value = false
+                        val itemID = it.toIntOrNull() ?: -1
+                        val cityId = cities.getOrNull(itemID)?.id ?: -1
+                        selectedCityId.value = cityId
+                        LogMe.i("DropDownItems", "selected $it")
+                    }
+                )
+            }
         }
+       if (isLocationError.value) {
+           //error message
+           TextUi(
+               text = stringResource(id = R.string.error_location),
+               textAlign = TextAlign.Start,
+               color = MaterialTheme.colorScheme.error,
+               style = MaterialTheme.typography.titleSmall,
+               modifier = Modifier.fillMaxWidth()
+           )
+       }
         SpacerUi(modifier = Modifier.height(20.dp))
         ButtonAuth(title = stringResource(id = R.string.next), onClick = {
-            onClicked(-1, -1)
+            if (selectedGovId.value != -1 && selectedCityId.value != -1) {
+                LogMe.i("Gov Id ${selectedGovId.value}", "selected")
+                LogMe.i("City Id ${selectedGovId.value}", "selected")
+                onClicked(selectedGovId.value, selectedCityId.value)
+            } else {
+                isLocationError.value = true
+            }
         })
     }
 }
@@ -309,23 +380,24 @@ private fun LocationForm(signUpData: RegisterIntent.Signup, onClicked: (Int, Int
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun NameAndEmailForm(
-    signUpData: RegisterIntent.Signup,
-    onClicked: (String, String) -> Unit
+    name: String,
+    onClicked: (String) -> Unit
 ) {
+    LogMe.i("userName", name)
     val fullName = remember {
-        mutableStateOf(signUpData.fullName)
+        mutableStateOf(name)
     }
 
-    val email = remember {
-        mutableStateOf(signUpData.email)
-    }
+    /* val email = remember {
+         mutableStateOf(signUpData.email)
+     }*/
 
     val isNameError = remember {
         mutableStateOf(false)
     }
-    val isEmailError = remember {
+    /*val isEmailError = remember {
         mutableStateOf(false)
-    }
+    }*/
     val (focusRequester) = FocusRequester.createRefs()
 
     ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -338,7 +410,7 @@ private fun NameAndEmailForm(
         )
         TextFieldName(stringResource(id = R.string.example_name), fullName, isNameError)
 
-        SpacerUi(modifier = Modifier.height(8.dp))
+        /*SpacerUi(modifier = Modifier.height(8.dp))
 
         TextUi(
             modifier = Modifier.fillMaxWidth(),
@@ -346,21 +418,18 @@ private fun NameAndEmailForm(
             style = MaterialTheme.typography.titleMedium
 
         )
-        TextFieldEmail(email, isEmailError)
+        TextFieldEmail(email, isEmailError)*/
 
         SpacerUi(modifier = Modifier.height(8.dp))
         ButtonAuth(title = stringResource(id = R.string.next), onClick = {
             // first validate data
-            validateNAmeAndEmailForm(
+            validateNameForm(
                 name = fullName.value,
-                email = email.value,
-                isNameError = isNameError,
-                isEmailError = isEmailError,
-                onSuccessValidation = { name, email ->
-                    // fire button click
-                    onClicked(name, email)
-                }
-            )
+                isNameError
+            ) {
+                // fire button click
+                onClicked(fullName.value)
+            }
         })
     }
 }
@@ -401,7 +470,7 @@ private fun PhoneForm(mPhone: String, onNextPressed: (String) -> Unit) {
 
 @Composable
 private fun HeadItem(
-    activeStep: MutableState<StepCount>,
+    activeStep: StepCount,
     weight: Modifier,
     onBackPressed: () -> Unit
 ) {
@@ -459,7 +528,7 @@ private fun HeadItem(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 for (index in stepsList.indices) {
-                    StepItem(index, stepsList.get(index), activeStep.value)
+                    StepItem(index, stepsList.get(index), activeStep)
                 }
             }
 

@@ -2,6 +2,8 @@ package com.mafqud.android.data
 
 import com.mafqud.android.auth.login.models.LoginBody
 import com.mafqud.android.auth.login.models.LoginResponse
+import com.mafqud.android.auth.register.models.SignUpRequest
+import com.mafqud.android.auth.register.models.ValidatePhoneRequest
 import com.mafqud.android.files.FinishUploadBody
 import com.mafqud.android.files.FinishUploadingResponse
 import com.mafqud.android.files.StartUploadBody
@@ -60,6 +62,18 @@ interface RemoteDataManager {
         @Body loginBody: LoginBody
     ): LoginResponse
 
+
+    @POST("/api/auth/phone/validate/")
+    @Headers(AUTH_NOT_REQUIRED)
+    suspend fun validatePhone(
+        @Body validatePhoneRequest: ValidatePhoneRequest
+    )
+
+    @POST("/api/users/create/")
+    @Headers(AUTH_NOT_REQUIRED)
+    suspend fun signUp(
+        @Body signUpRequest: SignUpRequest
+    )
 
     @GET("/api/cases")
     suspend fun getCases(

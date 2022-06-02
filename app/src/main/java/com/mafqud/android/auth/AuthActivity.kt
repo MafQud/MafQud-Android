@@ -87,92 +87,115 @@ class AuthActivity : BaseActivity() {
                 LoginRouter(navController, scaffoldState)
             }
             composable(AuthScreen.Register.route) {
-                RegisterRouter(navController, scaffoldState)
+                val registerViewModel: RegisterViewModel by viewModels()
+                RegisterRouter(
+                    navController, scaffoldState, registerViewModel,
+                )
             }
         }
     }
 
     @Composable
-    private fun RegisterRouter(navController: NavHostController, scaffoldState: ScaffoldState) {
-        val registerViewModel: RegisterViewModel by viewModels()
-
+    private fun RegisterRouter(
+        navController: NavHostController,
+        scaffoldState: ScaffoldState,
+        registerViewModel: RegisterViewModel,
+    ) {
         // variable for FirebaseAuth class
         mAuth = FirebaseAuth.getInstance()
 
         val isDialogOpened = remember {
             mutableStateOf(false)
         }
-        val registerFormData = remember {
-            mutableStateOf(RegisterIntent.Signup())
-        }
-        val activeStep = remember {
-            mutableStateOf(StepCount.One)
-        }
+
+        val state = registerViewModel.stateChannel.collectAsState()
+        val stateValue = state.value
+
 
         RegisterScreen(
-            registerViewModel = registerViewModel,
-            registerFormData,
-            activeStep,
-            otpState,
+            scaffoldState = scaffoldState,
+            stateValue = stateValue,
+            otpState = otpState,
             onStepOne = { phone ->
                 otpState.value = ""
-                registerFormData.value = registerFormData.value.copy(
-                    phone = phone
-
-                )
                 validatePhone(registerViewModel = registerViewModel, phone = phone)
             },
             onStepTwo = { otp ->
                 otpState.value = otp
                 verifyCode(registerViewModel, otp) {
-                    activeStep.value = StepCount.Three
+                    sendNextActiveStep(registerViewModel, StepCount.Three)
                 }
             },
-            onStepThree = { name, email ->
-                registerFormData.value = registerFormData.value.copy(
-                    fullName = name,
-                    email = email
-                )
-                validateEmail(registerViewModel = registerViewModel, email = email)
-
+            onStepThree = { name ->
+                sendUserNameIntent(registerViewModel, name)
             },
             onStepFour = { govId, cityId ->
-                registerFormData.value = registerFormData.value.copy(
-                    govId = govId,
-                    cityId = cityId
-                )
-                activeStep.value = StepCount.Five
-
+                sendLocationData(registerViewModel, govId, cityId)
             },
             onStepFive = { pass ->
-                registerFormData.value = registerFormData.value.copy(
-                    password = pass,
-                )
-                signupForm(registerViewModel, registerFormData.value)
+                savePasswordData(registerViewModel, pass)
 
             }, onBackPressed = {
-                handleBackWithCurrentStep(activeStep, isDialogOpened)
+                handleBackWithCurrentStep(stateValue.stepCount, isDialogOpened, registerViewModel)
             }, onSuccessRegister = {
                 openReportActivity()
             },
-            sendVerificationCode = { phone, activeStep ->
-                sendVerificationCode(registerViewModel, phone, activeStep)
+            sendVerificationCode = { phone ->
+                sendVerificationCode(registerViewModel, phone)
 
+            }, onGovSelected = {
+                requestCities(registerViewModel, it)
             }
         )
 
         DismissDialog(isOpened = isDialogOpened, onConfirmClicked = {
+            resetInitialUiState(registerViewModel)
             navController.popBackStack()
         })
 
-        customBackStackButton(activeStep, isDialogOpened)
+        customBackStackButton(stateValue.stepCount, isDialogOpened, registerViewModel)
 
+    }
+
+    private fun resetInitialUiState(registerViewModel: RegisterViewModel) {
+        lifecycleScope.launchWhenCreated {
+            registerViewModel.intentChannel.send(RegisterIntent.Clear)
+        }
+    }
+
+    private fun savePasswordData(registerViewModel: RegisterViewModel, pass: String) {
+        lifecycleScope.launchWhenCreated {
+            registerViewModel.intentChannel.send(RegisterIntent.SavePassword(pass))
+        }
+    }
+
+    private fun sendLocationData(registerViewModel: RegisterViewModel, govId: Int, cityId: Int) {
+        lifecycleScope.launchWhenCreated {
+            registerViewModel.intentChannel.send(RegisterIntent.SaveLocation(govId, cityId))
+        }
+    }
+
+    private fun requestCities(registerViewModel: RegisterViewModel, it: Int) {
+        lifecycleScope.launchWhenCreated {
+            registerViewModel.intentChannel.send(RegisterIntent.GetCities(it))
+        }
+    }
+
+    private fun sendUserNameIntent(registerViewModel: RegisterViewModel, name: String) {
+        lifecycleScope.launchWhenCreated {
+            registerViewModel.intentChannel.send(RegisterIntent.SaveName(name))
+        }
+    }
+
+    private fun sendNextActiveStep(registerViewModel: RegisterViewModel, nextStep: StepCount) {
+        lifecycleScope.launchWhenCreated {
+            registerViewModel.intentChannel.send(RegisterIntent.NextStep(nextStep))
+        }
     }
 
     private fun sendVerificationCode(
         registerViewModel: RegisterViewModel,
         phone: String,
-        activeStep: MutableState<StepCount>
     ) {
         val mPhone = "+20$phone"
         // this method is used for getting
@@ -194,7 +217,6 @@ class AuthActivity : BaseActivity() {
                     // we are storing in our string
                     // which we have already created.
                     verificationId = s
-                    activeStep.value = StepCount.Two
                 }
 
                 // this method is called when user
@@ -217,7 +239,7 @@ class AuthActivity : BaseActivity() {
                         // to OTP edittext field we
                         // are calling our verifycode method.
                         verifyCode(registerViewModel, code) {
-                            activeStep.value = StepCount.Three
+                            sendNextActiveStep(registerViewModel, StepCount.Three)
                         }
                     }
                 }
@@ -238,7 +260,7 @@ class AuthActivity : BaseActivity() {
                         "SMS quota for Mafqud has been exceeded"
 
                     } else {
-                        "Unknown error"
+                        e.localizedMessage
                     }
                     // Show a message and update the UI
                     // ...
@@ -291,39 +313,28 @@ class AuthActivity : BaseActivity() {
 
     @Composable
     private fun customBackStackButton(
-        activeStep: MutableState<StepCount>,
-        isDialogOpened: MutableState<Boolean>
+        activeStep: StepCount,
+        isDialogOpened: MutableState<Boolean>,
+        registerViewModel: RegisterViewModel
     ) {
         BackHandler {
-            handleBackWithCurrentStep(activeStep, isDialogOpened)
-
+            handleBackWithCurrentStep(activeStep, isDialogOpened, registerViewModel)
         }
     }
 
     private fun handleBackWithCurrentStep(
-        activeStep: MutableState<StepCount>,
-        isDialogOpened: MutableState<Boolean>
+        activeStep: StepCount,
+        isDialogOpened: MutableState<Boolean>,
+        registerViewModel: RegisterViewModel
     ) {
-        when (activeStep.value) {
+        when (activeStep) {
             StepCount.One -> {
                 isDialogOpened.value = true
             }
-            StepCount.Two -> activeStep.value = StepCount.One
-            StepCount.Three -> activeStep.value = StepCount.Two
-            StepCount.Four -> activeStep.value = StepCount.Three
-            StepCount.Five -> activeStep.value = StepCount.Four
-        }
-    }
-
-    private fun signupForm(
-        registerViewModel: RegisterViewModel,
-        signupData: RegisterIntent.Signup
-    ) {
-        //requireContext().hideKeypad(requireView())
-        lifecycleScope.launch {
-            registerViewModel.intentChannel.send(
-                signupData
-            )
+            StepCount.Two -> sendNextActiveStep(registerViewModel, StepCount.One)
+            StepCount.Three -> sendNextActiveStep(registerViewModel, StepCount.Two)
+            StepCount.Four -> sendNextActiveStep(registerViewModel, StepCount.Three)
+            StepCount.Five -> sendNextActiveStep(registerViewModel, StepCount.Four)
         }
     }
 
@@ -349,7 +360,7 @@ class AuthActivity : BaseActivity() {
     @Composable
     private fun LoginRouter(navController: NavHostController, scaffoldState: ScaffoldState) {
         val loginViewModel: LoginViewModel by viewModels()
-        LoginScreen(scaffoldState = scaffoldState,viewModel = loginViewModel,
+        LoginScreen(scaffoldState = scaffoldState, viewModel = loginViewModel,
             onBackPressed = {
                 navController.popBackStack()
             }, onNextPressed = {

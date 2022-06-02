@@ -141,6 +141,24 @@ fun validatePassAndConfirm(
 
 }
 
+fun validateNameForm(
+    name: String,
+    isNameError: MutableState<Boolean>,
+    onSuccessValidation: (String) -> Unit
+) {
+    val mName = name.trim()
+
+    // check phone validation or any
+    if (!isValidName(mName)) {
+        isNameError.value = true
+        return
+    } else {
+        isNameError.value = false
+    }
+
+    onSuccessValidation(mName)
+
+}
 fun validateNAmeAndEmailForm(
     name: String,
     email: String,

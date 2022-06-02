@@ -178,5 +178,7 @@
     <string name="camera_dialog">أذونات الكاميرا والتخزين اللازمة لمعالجة الصور والوصول إليها</string>
     <string name="storage_dialog">مطلوب إذن التخزين للوصول إلى الصور</string>
     <string name="open_gps">من فضلك ، افتح GPS الخاص بك للحصول على موقعك الحالي</string>
+    <string name="error_phone_exists">هذا الرقم مسجل لدينا بالفعل</string>
+    <string name="error_location">برجاء اختيار المحافظة والمدينة</string>
 
 </resources>
