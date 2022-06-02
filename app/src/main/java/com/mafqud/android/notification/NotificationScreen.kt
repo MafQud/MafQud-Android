@@ -41,6 +41,7 @@ enum class NotificationType {
     NONE
 }
 
+@Keep
 data class CaseModel(
     val caseId: Int = -1,
     val caseType: CaseType = CaseType.NONE

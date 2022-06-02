@@ -13,6 +13,7 @@ import com.mafqud.android.locations.CitiesResponse
 import com.mafqud.android.locations.GovResponse
 import com.mafqud.android.notification.models.NotificationsResponse
 import com.mafqud.android.reportedCases.models.ReportedCasesResponse
+import com.mafqud.android.results.caseDetails.models.CaseDetailsResponse
 import com.mafqud.android.results.cases.models.CasesMatchesResponse
 import com.mafqud.android.results.states.success.models.NationalIdBody
 import com.mafqud.android.util.network.tokenRefresh.TokenRefreshBody
@@ -153,4 +154,9 @@ interface RemoteDataManager {
         @Query("offset") offset: Int,
         @Query("limit") limit: Int,
     ): CasesMatchesResponse
+
+    @GET("/api/cases/{caseID}/")
+    suspend fun getCaseDetails(
+        @Path("caseID") caseID: Int,
+    ) : CaseDetailsResponse
 }

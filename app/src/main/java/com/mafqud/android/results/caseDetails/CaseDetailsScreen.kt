@@ -16,75 +16,74 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
-import com.mafqud.android.myAccount.AccountButton
-import com.mafqud.android.myAccount.AccountHead
-import com.mafqud.android.notification.NotificationType
+import com.mafqud.android.results.caseDetails.models.CaseDetailsResponse
 import com.mafqud.android.ui.compose.ButtonAuth
-import com.mafqud.android.ui.compose.CaseItem
 import com.mafqud.android.ui.compose.UserPhoto
 import com.mafqud.android.ui.theme.*
 
 @Composable
 @Preview
 fun CaseDetailsScreen(
-    notificationType: NotificationType = NotificationType.NONE,
+    caseDetailsResponse: CaseDetailsResponse? =null,
     onContact: () -> Unit = {}
 ) {
-    BoxUi(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                MaterialTheme.colorScheme.onPrimary
-            )
-            .padding(horizontal = 16.dp),
-        contentAlignment = Alignment.TopCenter
-    ) {
-        ColumnUi(
-            Modifier
+    caseDetailsResponse?.let { case ->
+        BoxUi(
+            modifier = Modifier
+                .fillMaxSize()
                 .background(
                     MaterialTheme.colorScheme.onPrimary
                 )
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(horizontal = 16.dp),
+            contentAlignment = Alignment.TopCenter
         ) {
-            SpacerUi(modifier = Modifier.height(20.dp))
-            UserPhoto(imagesSize = 80.dp)
-            TextUi(
-                text = "Ahmed shehata",
-                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                style = MaterialTheme.typography.titleMedium
-            )
-            SpacerSmallLine()
-            LazyRowUi(content = {
-                item {
-                    UserPhoto(imagesSize = 47.dp)
-                }
-                item {
-                    UserPhoto(imagesSize = 47.dp)
-                }
-            })
-            SpacerUi(modifier = Modifier.height(20.dp))
-            TableContent()
+            ColumnUi(
+                Modifier
+                    .background(
+                        MaterialTheme.colorScheme.onPrimary
+                    )
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                SpacerUi(modifier = Modifier.height(20.dp))
+                UserPhoto(imagesSize = 80.dp)
+                TextUi(
+                    text = case.details?.name ?: stringResource(id = R.string.no_name),
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                    style = MaterialTheme.typography.titleMedium
+                )
+                SpacerSmallLine()
+                LazyRowUi(content = {
+                    item {
+                        UserPhoto(imagesSize = 47.dp)
+                    }
+                    item {
+                        UserPhoto(imagesSize = 47.dp)
+                    }
+                })
+                SpacerUi(modifier = Modifier.height(20.dp))
+                TableContent(case)
 
-        }
-        BoxUi(
-            Modifier
-                .fillMaxSize()
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 20.dp), contentAlignment = Alignment.BottomCenter
-        ) {
-            ButtonAuth(
-                title = stringResource(id = R.string.contact),
-                backgroundColor = MaterialTheme.colorScheme.green, onClick = onContact,
-                icon = Icons.Filled.Call
-            )
+            }
+            BoxUi(
+                Modifier
+                    .fillMaxSize()
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 20.dp), contentAlignment = Alignment.BottomCenter
+            ) {
+                ButtonAuth(
+                    title = stringResource(id = R.string.contact),
+                    backgroundColor = MaterialTheme.colorScheme.green, onClick = onContact,
+                    icon = Icons.Filled.Call
+                )
+            }
         }
     }
 }
 
 @Composable
-fun TableContent() {
+fun TableContent(case: CaseDetailsResponse) {
     BoxUi(
         modifier = Modifier
             .height(200.dp)
@@ -108,7 +107,7 @@ fun TableContent() {
                 )
                 TextUi(
                     modifier = Modifier.weight(2f),
-                    text = "16/3/2022",
+                    text = case.details?.lastSeen ?: "",
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.titleMedium
                 )
@@ -126,7 +125,7 @@ fun TableContent() {
                 )
                 TextUi(
                     modifier = Modifier.weight(2f),
-                    text = "10",
+                    text = case.details?.age?.toString() ?: "",
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.titleMedium
                 )
@@ -144,7 +143,7 @@ fun TableContent() {
                 )
                 TextUi(
                     modifier = Modifier.weight(2f),
-                    text = "الدقهلية - المنصورة شارع جيهان",
+                    text = case.location?.getFullAddress() ?: "",
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.titleMedium
                 )
