@@ -2,6 +2,7 @@ package com.mafqud.android.results.caseDetails
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -24,7 +25,7 @@ import com.mafqud.android.ui.theme.*
 @Composable
 @Preview
 fun CaseDetailsScreen(
-    caseDetailsResponse: CaseDetailsResponse? =null,
+    caseDetailsResponse: CaseDetailsResponse? = null,
     onContact: () -> Unit = {}
 ) {
     caseDetailsResponse?.let { case ->
@@ -47,21 +48,24 @@ fun CaseDetailsScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 SpacerUi(modifier = Modifier.height(20.dp))
-                UserPhoto(imagesSize = 80.dp)
+                if (!case.photos.isNullOrEmpty()) {
+                    UserPhoto(imageUrl = case.photos.first() ?: "", imagesSize = 80.dp)
+                }
+
                 TextUi(
                     text = case.details?.name ?: stringResource(id = R.string.no_name),
                     color = MaterialTheme.colorScheme.onTertiaryContainer,
                     style = MaterialTheme.typography.titleMedium
                 )
                 SpacerSmallLine()
-                LazyRowUi(content = {
-                    item {
-                        UserPhoto(imagesSize = 47.dp)
-                    }
-                    item {
-                        UserPhoto(imagesSize = 47.dp)
-                    }
-                })
+                if (!case.photos.isNullOrEmpty()) {
+                    val restPhotos = case.photos.drop(1)
+                    LazyRowUi(content = {
+                        items(restPhotos) {
+                            UserPhoto(imagesSize = 47.dp)
+                        }
+                    })
+                }
                 SpacerUi(modifier = Modifier.height(20.dp))
                 TableContent(case)
 
