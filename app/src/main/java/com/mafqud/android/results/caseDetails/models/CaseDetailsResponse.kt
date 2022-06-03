@@ -1,6 +1,7 @@
 package com.mafqud.android.results.caseDetails.models
 import androidx.annotation.Keep
 import com.squareup.moshi.Json
+import java.io.Serializable
 
 
 @Keep
@@ -17,7 +18,7 @@ data class CaseDetailsResponse(
     val type: String? = "", // M
     @field:Json(name = "user")
     val user: String? = "" // 1111111111
-) {
+) : Serializable {
     @Keep
     data class Details(
         @field:Json(name = "age")
@@ -32,7 +33,7 @@ data class CaseDetailsResponse(
         val location: Location? = Location(),
         @field:Json(name = "name")
         val name: String? = "" // omar
-    ) {
+    ) : Serializable {
         @Keep
         data class Location(
             @field:Json(name = "address")
@@ -64,7 +65,7 @@ data class CaseDetailsResponse(
         val lat: String? = "", // 31.362806
         @field:Json(name = "lon")
         val lon: String? = "" // 31.031443
-    ) {
+    )  : Serializable {
         fun getFullAddress(): String {
             return "${gov ?: ""} - ${city ?: ""}"
         }

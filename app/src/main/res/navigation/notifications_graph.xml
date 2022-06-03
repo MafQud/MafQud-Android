@@ -28,6 +28,14 @@
             app:popExitAnim="@anim/slide_right"
             android:id="@+id/action_contactFragment_to_contactFailedFragment"
             app:destination="@id/contactFailedFragment" />
+        <argument
+            android:name="caseDetails"
+            app:argType="com.mafqud.android.results.caseDetails.models.CaseDetailsResponse"
+            app:nullable="true" />
+        <argument
+            android:name="caseId"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
     <fragment
         android:id="@+id/successLostFragment"

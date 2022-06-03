@@ -4,26 +4,35 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.mafqud.android.R
 import com.mafqud.android.base.fragment.BaseFragment
-import com.mafqud.android.notification.NotificationType
-import com.mafqud.android.results.caseDetails.CaseDetailsFragmentArgs
-import com.mafqud.android.results.caseDetails.CaseDetailsScreen
-import com.mafqud.android.results.cases.ResultsCasesFragmentArgs
+import com.mafqud.android.ui.compose.LoadingDialog
 import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.theme.MafQudTheme
+import com.mafqud.android.util.network.ShowNetworkErrorSnakeBar
 import com.mafqud.android.util.other.openDialer
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ContactFragment : BaseFragment() {
 
+
+    private val viewModel: ContactViewModel by viewModels()
+    private val args: ContactFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,7 +47,8 @@ class ContactFragment : BaseFragment() {
             )
             setContent {
                 MafQudTheme {
-                    Scaffold(topBar = {
+                    val scaffoldState = rememberScaffoldState()
+                    Scaffold(scaffoldState = scaffoldState, topBar = {
                         TitledAppBar(
                             onIconClicked = {
                                 findNavController().navigateUp()
@@ -46,16 +56,63 @@ class ContactFragment : BaseFragment() {
                             title = stringResource(id = R.string.contact_another)
                         )
                     }, content = {
-                        ContactScreen(openDialer = { number ->
-                            requireContext().openDialer(number)
-                        }, onContactFailed = {
-                            findNavController().navigate(R.id.action_contactFragment_to_contactFailedFragment)
-                        }, onContactSuccess = {
-
-                        })
+                        ListenToChanges(scaffoldState)
                     })
                 }
             }
+        }
+    }
+
+    @OptIn(ExperimentalMaterialApi::class)
+    @Composable
+    private fun ListenToChanges(scaffoldState: ScaffoldState) {
+        // ui state
+        val state = viewModel.stateChannel.collectAsState()
+        val stateValue = state.value
+
+        stateValue.isContactDoneSuccess?.let {
+            Toast.makeText(requireContext(), "isContactDoneSuccess", Toast.LENGTH_SHORT).show()
+        }
+
+        stateValue.isContactFailedSuccess?.let {
+            Toast.makeText(requireContext(), "isContactFailedSuccess", Toast.LENGTH_SHORT).show()
+        }
+
+        ContactScreen(
+            caseDetails = args.caseDetails,
+            openDialer = { number ->
+                requireContext().openDialer(number)
+            }, onContactFailed = {
+                sendFailedContactIntent()
+            }, onContactSuccess = {
+                sendDoneContactIntent()
+            })
+
+        if (stateValue.networkError != null) {
+            stateValue.networkError.ShowNetworkErrorSnakeBar(
+                scaffoldState = scaffoldState
+            )
+        }
+
+        LoadingDialog(stateValue.isLoading)
+
+    }
+
+    private fun sendFailedContactIntent() {
+        // TODO fix it
+        findNavController().navigate(R.id.action_contactFragment_to_contactFailedFragment)
+        lifecycleScope.launchWhenCreated {
+            viewModel
+                .intentChannel
+                .send(ContactIntent.Done(args.caseId))
+        }
+    }
+
+    private fun sendDoneContactIntent() {
+        lifecycleScope.launchWhenCreated {
+            viewModel
+                .intentChannel
+                .send(ContactIntent.Done(args.caseId))
         }
     }
 

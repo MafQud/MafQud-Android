@@ -15,6 +15,7 @@ import com.mafqud.android.notification.models.NotificationsResponse
 import com.mafqud.android.reportedCases.models.ReportedCasesResponse
 import com.mafqud.android.results.caseDetails.models.CaseDetailsResponse
 import com.mafqud.android.results.cases.models.CasesMatchesResponse
+import com.mafqud.android.results.contact.models.CreateCaseContactBody
 import com.mafqud.android.results.states.success.models.NationalIdBody
 import com.mafqud.android.util.network.tokenRefresh.TokenRefreshBody
 import com.mafqud.android.util.network.tokenRefresh.TokenRefreshResponse
@@ -131,9 +132,13 @@ interface RemoteDataManager {
     @Multipart
     @PUT
     fun uploadImageToS3(
-        @Header("Content-Type") contentType: String,
+        /*@Header("Content-Type") contentType: String,
         @Url uploadUrl: String,
-        @Part file: MultipartBody.Part
+        @Part file: MultipartBody.Part*/
+        @Url uploadUrl: String,
+        @Header("Content-Type") contentType: String,
+        @PartMap params: LinkedHashMap<String, String>,
+        @Part("File") file: MultipartBody.Part
     ): Void
 
 
@@ -158,5 +163,15 @@ interface RemoteDataManager {
     @GET("/api/cases/{caseID}/")
     suspend fun getCaseDetails(
         @Path("caseID") caseID: Int,
-    ) : CaseDetailsResponse
+    ): CaseDetailsResponse
+
+    @GET("/api/cases/contacts/{caseID}/update/")
+    suspend fun updateCaseContact(
+        @Path("caseID") caseID: Int,
+        // TODO
+    ): CaseDetailsResponse
+
+    @POST("/api/cases/contacts/create/")
+    suspend fun createCaseContact(): CreateCaseContactBody
+
 }

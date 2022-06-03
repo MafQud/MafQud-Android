@@ -95,7 +95,10 @@ class CaseDetailsFragment : BaseFragment() {
             CaseDetailsScreen(stateValue.case,
                 onContact = {
                     val actionToContact =
-                        CaseDetailsFragmentDirections.actionCaseDetailsFragmentToContactFragment()
+                        CaseDetailsFragmentDirections.actionCaseDetailsFragmentToContactFragment(
+                            stateValue.case
+                        )
+                    actionToContact.caseId = args.caseMatch?.case?.id ?: -1
                     findNavController().navigate(actionToContact)
                 })
 

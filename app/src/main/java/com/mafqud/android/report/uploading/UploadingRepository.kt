@@ -7,8 +7,10 @@ import com.mafqud.android.files.StartUploadBody
 import com.mafqud.android.files.StartUploadingResponse
 import com.mafqud.android.util.network.Result
 import com.mafqud.android.util.network.safeApiCall
+import com.mafqud.android.util.other.LogMe
 import com.mafqud.android.util.other.MultiPartUtil
 import kotlinx.coroutines.coroutineScope
+import java.util.LinkedHashMap
 import javax.inject.Inject
 
 
@@ -50,7 +52,8 @@ class UploadingRepository @Inject constructor() : BaseRepository() {
             return@safeApiCall remoteDataManager.uploadImageToS3(
                 contentType = data.fields?.contentType ?: "image/*",
                 uploadUrl = data.url ?: "",
-                file = multiPart
+                file = multiPart,
+                params = data.fields?.toLinkedHashMap() ?: linkedMapOf()
             )
         }
         return when (resultS3) {
@@ -76,5 +79,18 @@ class UploadingRepository @Inject constructor() : BaseRepository() {
         return safeApiCall {
             return@safeApiCall ""
         }
+    }
+}
+
+private fun StartUploadingResponse.Fields.toLinkedHashMap(): LinkedHashMap<String, String> {
+    with(this) {
+        return linkedMapOf(
+            "key" to key.toString(),
+            "AWSAccessKeyId" to aWSAccessKeyId.toString(),
+            "acl" to acl.toString(),
+            "Content-Type" to contentType.toString(),
+            "policy" to policy.toString(),
+            "signature" to signature.toString(),
+        )
     }
 }
