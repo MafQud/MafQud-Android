@@ -1,7 +1,9 @@
 package com.mafqud.android.report.uploading
 
 import com.mafqud.android.base.viewModel.BaseViewModel
+import com.mafqud.android.report.uploading.models.CreateCaseBody
 import com.mafqud.android.util.network.Result
+import com.mafqud.android.util.other.LogMe
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -32,7 +34,7 @@ class UploadingViewModel @Inject constructor(private val uploadingRepository: Up
             stateChannel.value.copy(isUploadingCase = true, isFailedUploadingCase = false)
         )
         launchViewModelScope {
-            uploadingCase(true)
+            uploadingCase()
         }
     }
 
@@ -41,7 +43,7 @@ class UploadingViewModel @Inject constructor(private val uploadingRepository: Up
         _stateChannel.tryEmit(
             stateChannel.value.copy(
                 imagesUrisPicked = it.imagesUrisPicked,
-                caseData = it.caseItem,
+                createCaseBody = it.createCaseBody,
                 isUploadingImages = true
             )
         )
@@ -60,30 +62,46 @@ class UploadingViewModel @Inject constructor(private val uploadingRepository: Up
                     emitFailedUploadingImages()
                 }
                 is Result.Success -> {
-                    // first emit uploading images success state
-                    emitSuccessUploadingImages(imagesResult.data)
-                    //then try uploading case with images urls
-                    uploadingCase(false)
+                    if (imagesResult.data != null) {
+                        LogMe.i("imagesResult", imagesResult.data.thumbnailId.toString())
+                        LogMe.i("imagesResult", imagesResult.data.imagesIds.size.toString())
+
+                        // first emit uploading images success state
+                        emitSuccessUploadingImages(imagesResult.data)
+                        //then try uploading case with images urls
+                        uploadingCase()
+                    } else {
+                        //emit failed to upload images
+                        emitFailedUploadingImages()
+                    }
 
                 }
             }
         }
     }
 
-    private suspend fun uploadingCase(success: Boolean = false) {
+    private suspend fun uploadingCase() {
         // then try uploading case item
-        val caseItem = stateChannel.value.caseData
-        val caseResult =
-            uploadingRepository.uploadCase(caseItem = caseItem)
+        val caseItem = stateChannel.value.createCaseBody
+        val uploadFilesId = stateChannel.value.imagesUrlsUploaded
 
-        when (caseResult) {
-            is Result.NetworkError.Generic, Result.NetworkError.NoInternet -> {
-                emitFailedUploadingCase()
-            }
-            is Result.Success -> {
-                // emit uploading images success state
-                emitSuccessUploadingCase()
+        if (uploadFilesId != null && caseItem != null) {
+            val caseResult =
+                uploadingRepository.uploadCase(caseItem = caseItem, uploadFilesId = uploadFilesId)
 
+            when (caseResult) {
+                is Result.NetworkError.Generic,
+                Result.NetworkError.NoInternet -> {
+                    emitFailedUploadingCase()
+                }
+                is Result.Success -> {
+                    // emit uploading images success state
+                    if (caseResult.data) {
+                        emitSuccessUploadingCase()
+                    } else {
+                        emitFailedUploadingCase()
+                    }
+                }
             }
         }
     }
@@ -120,18 +138,17 @@ class UploadingViewModel @Inject constructor(private val uploadingRepository: Up
         }
     }
 
-    private suspend fun emitSuccessUploadingImages(imagesUrlsUploaded: Boolean) {
-        _stateChannel.emit(
+    private fun emitSuccessUploadingImages(imagesUrlsUploaded: UploadingRepository.UploadImagesIDs?) {
+        _stateChannel.tryEmit(
             stateChannel.value.copy(
                 isUploadingImages = false,
                 isFailedUploadingImages = false,
                 isSuccessUploadingImages = true,
                 isSuccess = null,
-                //imagesUrlsUploaded = imagesUrlsUploaded,
+                imagesUrlsUploaded = imagesUrlsUploaded,
                 isUploadingCase = true
             )
         )
-
     }
 
     private fun emitFailedUploadingImages() {

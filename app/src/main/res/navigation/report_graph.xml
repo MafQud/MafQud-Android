@@ -4,6 +4,24 @@
     android:id="@+id/report_graph"
     app:startDestination="@id/reportLostFragment">
 
+  <!--  <action
+        app:enterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/slide_right"
+        android:id="@+id/action_pop_out_of_report_auth_graph"
+        app:destination="@+id/homeFragment"
+        app:launchSingleTop="true"
+        app:popUpTo="@id/reportAuthFragment"
+        app:popUpToInclusive="true" />
+-->
+    <action
+        app:enterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/slide_right"
+        android:id="@+id/action_pop_out_of_report_graph"
+        app:destination="@+id/homeFragment"
+        app:launchSingleTop="true"
+        app:popUpTo="@id/reportFragment"
+        app:popUpToInclusive="true" />
+
     <fragment
         android:id="@+id/reportLostFragment"
         android:name="com.mafqud.android.report.lost.ReportLostFragment"
@@ -33,6 +51,12 @@
         <argument
             android:name="imagesUrisPicked"
             app:argType="string[]" />
+        <argument
+            android:name="givID"
+            app:argType="integer" />
+        <argument
+            android:name="cityID"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/cameraFragment"
@@ -53,6 +77,9 @@
         <argument
             android:name="imagesUrisPicked"
             app:argType="string[]" />
+        <argument
+            android:name="caseBody"
+            app:argType="com.mafqud.android.report.uploading.models.CreateCaseBody" />
     </fragment>
 
 </navigation>

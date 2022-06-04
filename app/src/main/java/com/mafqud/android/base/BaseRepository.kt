@@ -3,6 +3,7 @@ package com.mafqud.android.base
 import android.app.Application
 import android.content.Context
 import com.mafqud.android.base.activity.BaseActivity
+import com.mafqud.android.data.AWSUploading
 import com.mafqud.android.data.DataStoreManager
 import com.mafqud.android.data.FCMManager
 import com.mafqud.android.data.RemoteDataManager
@@ -14,6 +15,9 @@ import javax.inject.Inject
 open class BaseRepository() {
     @Inject
     lateinit var remoteDataManager: RemoteDataManager
+
+    @Inject
+    lateinit var awsUploading: AWSUploading
 
     @Inject
     lateinit var dataStoreManager: DataStoreManager

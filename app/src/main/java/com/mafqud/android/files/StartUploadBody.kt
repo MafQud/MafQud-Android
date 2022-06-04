@@ -18,6 +18,6 @@ data class StartUploadBody(
     @field:Json(name = "file_name")
     val fileName: String = System.currentTimeMillis().toString(), // test-image.png
     @field:Json(name = "file_type")
-    val fileType: String = "image/*" // png
+    val fileType: String = "image/png" // png
 )
 

@@ -12,6 +12,7 @@ import com.mafqud.android.home.model.CasesDataResponse
 import com.mafqud.android.locations.CitiesResponse
 import com.mafqud.android.locations.GovResponse
 import com.mafqud.android.notification.models.NotificationsResponse
+import com.mafqud.android.report.uploading.models.CreateCaseBody
 import com.mafqud.android.reportedCases.models.ReportedCasesResponse
 import com.mafqud.android.results.caseDetails.models.CaseDetailsResponse
 import com.mafqud.android.results.cases.models.CasesMatchesResponse
@@ -129,18 +130,6 @@ interface RemoteDataManager {
         @Body finishUploadBody: FinishUploadBody
     ): FinishUploadingResponse
 
-    @Multipart
-    @PUT
-    fun uploadImageToS3(
-        /*@Header("Content-Type") contentType: String,
-        @Url uploadUrl: String,
-        @Part file: MultipartBody.Part*/
-        @Url uploadUrl: String,
-        @Header("Content-Type") contentType: String,
-        @PartMap params: LinkedHashMap<String, String>,
-        @Part("File") file: MultipartBody.Part
-    ): Void
-
 
     @POST("/api/users/{userId}/set/id/")
     suspend fun setNationalId(
@@ -173,5 +162,9 @@ interface RemoteDataManager {
 
     @POST("/api/cases/contacts/create/")
     suspend fun createCaseContact(): CreateCaseContactBody
+
+
+    @POST("/api/cases/create/")
+    suspend fun uploadCase(@Body createCaseBody: CreateCaseBody)
 
 }

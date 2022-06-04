@@ -25,7 +25,8 @@ import com.mafqud.android.ui.theme.*
 fun UploadingScreen(
     state: UploadingViewState = UploadingViewState(isUploadingImages = true),
     onTryUploadingImages: () -> Unit = {},
-    onTryUploadingCase: () -> Unit ={},
+    onTryUploadingCase: () -> Unit = {},
+    onConfirm: () -> Unit = {},
 ) {
     BoxUi(
         modifier = Modifier
@@ -60,7 +61,7 @@ fun UploadingScreen(
                         ),
                         exit = slideOutVertically() + shrinkVertically() + fadeOut()
                     ) {
-                        UploadingSuccess()
+                        UploadingSuccess(onConfirm)
                     }
                 }
             } else {
@@ -234,7 +235,9 @@ fun UploadingImages() {
 }
 
 @Composable
-fun UploadingSuccess() {
+fun UploadingSuccess(
+    onConfirm: () -> Unit = {}
+) {
     ColumnUi(
         modifier = Modifier
             .fillMaxSize(),
@@ -271,7 +274,7 @@ fun UploadingSuccess() {
                 .clip(RoundedCornerShape(12.dp))
                 .background(MaterialTheme.colorScheme.primary)
                 .clickable {
-                    //onClickRetry()
+                    onConfirm()
                 }
                 .padding(8.dp),
             text = stringResource(id = R.string.confirm),

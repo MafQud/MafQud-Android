@@ -1,6 +1,7 @@
 package com.mafqud.android.report.uploading
 
 import android.net.Uri
+import com.mafqud.android.report.uploading.models.CreateCaseBody
 
 /**
  * 1- set -> isUploadingImages -> true
@@ -19,11 +20,11 @@ data class UploadingViewState(
     val isSuccessUploadingCase: Boolean = false,
 
     val imagesUrisPicked: List<Uri> = emptyList(),
-    val imagesUrlsUploaded: List<String> = emptyList(),
-    val caseData: CaseItem? = null,
+    val imagesUrlsUploaded: UploadingRepository.UploadImagesIDs? = null,
+    val createCaseBody: CreateCaseBody? = null,
     val isSuccess: Boolean? = null,
 
-)
+    )
 
 data class CaseItem(
     val name: String = "",

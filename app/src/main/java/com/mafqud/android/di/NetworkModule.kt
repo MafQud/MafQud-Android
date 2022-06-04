@@ -4,9 +4,11 @@ package com.mafqud.android.di
 import android.content.Context
 import com.mafqud.android.BuildConfig
 import com.mafqud.android.MyApp
+import com.mafqud.android.data.AWSUploading
 import com.mafqud.android.data.DataStoreManager
 import com.mafqud.android.data.RemoteDataManager
 import com.mafqud.android.util.constants.BASE_URL
+import com.mafqud.android.util.constants.BASE_URL_AWS
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -130,6 +132,31 @@ class NetworkModule {
         myServiceInterceptor.remoteDataManager = api
         tokenAuthenticator.remoteDataManager = api
         return api
+    }
+
+    @Provides
+    @Singleton
+    fun provideAWS(
+        moshi: MoshiConverterFactory
+    ): AWSUploading {
+        val logging = HttpLoggingInterceptor()
+        logging.level = if (BuildConfig.DEBUG) Level.BODY else Level.NONE
+        val okHttpClient = OkHttpClient.Builder()
+        okHttpClient.apply {
+            retryOnConnectionFailure(true)
+            readTimeout(5, TimeUnit.MINUTES)
+            connectTimeout(1, TimeUnit.MINUTES)
+            writeTimeout(5, TimeUnit.MINUTES)
+            addInterceptor(logging)
+        }
+
+        val retrofit =  Retrofit.Builder()
+            .baseUrl(BASE_URL_AWS)
+            .client(okHttpClient.build())
+            .addConverterFactory(moshi)
+            .build()
+
+        return retrofit.create(AWSUploading::class.java)
     }
 
 }

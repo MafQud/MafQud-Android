@@ -15,6 +15,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.mafqud.android.R
 import com.mafqud.android.base.fragment.BaseFragment
+import com.mafqud.android.home.model.CaseType
+import com.mafqud.android.report.uploading.models.CreateCaseBody
 import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.theme.MafQudTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,7 +54,14 @@ class ReportLostSecondFragment : BaseFragment() {
                         requireActivity().LostScreenTwo(onNext = {
                             val actonToUploading =
                                 ReportLostSecondFragmentDirections.actionReportLostSecondFragmentToUploadingImagesFragment(
-                                    args.imagesUrisPicked
+                                    args.imagesUrisPicked,
+                                    CreateCaseBody(
+                                        caseType = CaseType.MISSING,
+                                        location = CreateCaseBody.Location(
+                                            gov = args.givID.toString(),
+                                            city = args.cityID.toString(),
+                                        )
+                                    )
                                 )
                             findNavController().navigate(actonToUploading)
                         }, onBack = {

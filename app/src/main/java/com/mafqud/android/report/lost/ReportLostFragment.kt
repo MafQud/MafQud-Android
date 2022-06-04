@@ -97,10 +97,12 @@ class ReportLostFragment : BaseFragment() {
             pickedImages = state.imagesUri,
             openGalleryClicked = {
                 openGallery(galleryLauncher)
-            }, onNextClicked = {
+            }, onNextClicked = { govId, cityId ->
                 val actionToSecond =
                     ReportLostFragmentDirections.actionReportLostFragmentToReportLostSecondFragment(
-                        state.imagesUri.map { it.toString() }.toTypedArray()
+                        state.imagesUri.map { it.toString() }.toTypedArray(),
+                        govId,
+                        cityId
                     )
                 findNavController().navigate(actionToSecond)
             }, onCloseClicked = {

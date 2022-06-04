@@ -46,7 +46,7 @@ fun LostScreen(
     openGalleryClicked: () -> Unit = {},
     onCloseClicked: (Uri) -> Unit = {},
     openImagePreviewer: (List<Uri>, Int) -> Unit = { it, _it -> },
-    onNextClicked: () -> Unit = {},
+    onNextClicked: (Int, Int) -> Unit = {it, _it ->},
     govs: List<MyGov>? = emptyList(),
     cities: List<MyCity>? = emptyList(),
     onGovSelected: (Int) -> Unit = {},
@@ -109,7 +109,7 @@ fun LostScreen(
                 isFormActivated,
                 onGovSelected = onGovSelected,
                 onClicked = { i, x ->
-                    onNextClicked()
+                    onNextClicked(i, x)
                 },
                 selectedGovId = selectedGovId,
                 selectedCityId = selectedCityId,
@@ -403,7 +403,7 @@ private fun LocationForm(
             enabled = isFormActivated,
             title = stringResource(id = R.string.next),
             onClick = {
-                onClicked(-1, -1)
+                onClicked(selectedGovId.value, selectedCityId.value)
             })
     }
 }

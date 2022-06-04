@@ -4,6 +4,7 @@
     android:id="@+id/report_navigation.xml"
     app:startDestination="@id/reportAuthFragment">
 
+
     <fragment
         android:id="@+id/reportAuthFragment"
         android:name="com.mafqud.android.report.report.ReportAuthFragment"

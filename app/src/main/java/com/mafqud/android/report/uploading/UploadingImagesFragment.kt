@@ -1,5 +1,6 @@
 package com.mafqud.android.report.uploading
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,9 +17,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.mafqud.android.R
+import com.mafqud.android.auth.AuthActivity
 import com.mafqud.android.base.fragment.BaseFragment
+import com.mafqud.android.home.HomeActivity
+import com.mafqud.android.report.ReportActivity
 import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.theme.MafQudTheme
+import com.mafqud.android.util.other.LogMe
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,8 +43,7 @@ class UploadingImagesFragment : BaseFragment() {
         lifecycleScope.launchWhenCreated {
             viewModel.intentChannel.send(
                 UploadingIntent.UploadCaseWithImages(
-                    //TODO receive caseItem
-                    caseItem = CaseItem(),
+                    createCaseBody = args.caseBody,
                     imagesUrisPicked = args.imagesUrisPicked.map {
                         it.toUri()
                     }
@@ -83,7 +88,26 @@ class UploadingImagesFragment : BaseFragment() {
         }, onTryUploadingCase = {
             tryUploadingCase()
 
+        }, onConfirm = {
+            handleConfirmButton()
         })
+    }
+
+    private fun handleConfirmButton() {
+        when (activity) {
+            is HomeActivity -> {
+                findNavController().navigate(R.id.action_pop_out_of_report_graph)
+            }
+            is ReportActivity -> {
+                startActivity(
+                    Intent(
+                        requireContext(),
+                        HomeActivity::class.java
+                    )
+                )
+                requireActivity().finish()
+            }
+        }
     }
 
     private fun tryUploadingCase() {

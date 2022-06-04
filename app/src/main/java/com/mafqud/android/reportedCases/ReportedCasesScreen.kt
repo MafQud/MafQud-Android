@@ -30,6 +30,7 @@ import com.mafqud.android.ui.compose.IconMap
 import com.mafqud.android.ui.compose.UserPhoto
 import com.mafqud.android.ui.theme.*
 import com.mafqud.android.util.network.HandlePagingError
+import com.mafqud.android.util.other.LogMe
 import kotlinx.coroutines.flow.Flow
 
 
@@ -124,6 +125,7 @@ fun UserCaseItem(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
                 verticalAlignment = Alignment.Top
             ) {
+                LogMe.i("case.thumbnail", case.thumbnail.toString())
                 UserPhoto(imageUrl = case.thumbnail ?: "")
                 ColumnUi(
                     Modifier
