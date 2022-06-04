@@ -190,7 +190,7 @@ fun UserPhoto(
 }
 
 fun getCorrectImageUrl(imageUrl: String): String {
-    LogMe.i("old_url", imageUrl)
+    //LogMe.i("old_url", imageUrl)
     val newBase = imageUrl.replaceAfter(delimiter = "s3", replacement = ".eu-south-1.amazonaws.com")
     val file = "/files"
     val filesPath = imageUrl.substringAfter(file)

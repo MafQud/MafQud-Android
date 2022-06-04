@@ -1,6 +1,7 @@
 package com.mafqud.android.report.uploading
 
 import android.annotation.SuppressLint
+import android.content.ContentResolver
 import android.content.Context
 import android.database.Cursor
 import android.graphics.Bitmap
@@ -9,20 +10,23 @@ import android.media.ThumbnailUtils
 import android.net.Uri
 import android.provider.MediaStore
 import android.provider.OpenableColumns
+import android.webkit.MimeTypeMap
 import com.mafqud.android.base.BaseRepository
 import com.mafqud.android.files.FinishUploadBody
 import com.mafqud.android.files.StartUploadBody
 import com.mafqud.android.files.StartUploadingResponse
 import com.mafqud.android.home.model.CaseType
 import com.mafqud.android.report.uploading.models.CreateCaseBody
+import com.mafqud.android.util.ImageSaver
+import com.mafqud.android.util.fileManager.getCurrentDate
 import com.mafqud.android.util.network.Result
 import com.mafqud.android.util.network.safeApiCall
+import com.mafqud.android.util.other.FileUtils
 import com.mafqud.android.util.other.LogMe
 import com.mafqud.android.util.other.MultiPartUtil
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.ByteArrayOutputStream
-import java.io.File
 import javax.inject.Inject
 
 
@@ -37,13 +41,13 @@ class UploadingRepository @Inject constructor() : BaseRepository() {
     suspend fun uploadImages(imagesUris: List<Uri>): Result<UploadImagesIDs?> {
         return safeApiCall {
             val firstImage = imagesUris.first()
-            //val firstThumbnail = getImageThumbnail(firstImage)
-            //LogMe.i("firstThumbnail", firstThumbnail.path.toString())
+            val firstThumbnail = getImageThumbnail(firstImage)
+            LogMe.i("firstThumbnail", firstThumbnail.path.toString())
             LogMe.i("imagesUris", imagesUris.size.toString())
 
 
             val allImagesToUpload = mutableListOf<Uri>()
-            //allImagesToUpload.add(firstThumbnail)
+            allImagesToUpload.add(firstThumbnail)
             allImagesToUpload.addAll(imagesUris)
             LogMe.i("allImagesToUpload", allImagesToUpload.size.toString())
 
@@ -54,7 +58,10 @@ class UploadingRepository @Inject constructor() : BaseRepository() {
                 // get the credentials to upload photo
                 val awsCredentials = remoteDataManager.startUploadingImage(
                     StartUploadBody(
-                        fileName = uri.path.toString()
+                        // fileName : myImagePickedName/21.jpg
+                        fileName = uri.path.toString() + "." + getUriMemiType(uri),
+                        // fileType : image/jpg
+                        fileType = "image/" + getUriMemiType(uri)
                     )
                 )
 
@@ -89,22 +96,39 @@ class UploadingRepository @Inject constructor() : BaseRepository() {
             }
             return@safeApiCall UploadImagesIDs(
                 thumbnailId = uploadedFilesIds.first(),
-                imagesIds = uploadedFilesIds/*.drop(1)*/
+                imagesIds = uploadedFilesIds.drop(1)
             )
         }
     }
 
-    @SuppressLint("Range")
+    private fun getUriMemiType(uri: Uri): String {
+        val contentResolver = appContext.contentResolver
+        val mime = MimeTypeMap.getSingleton()
+        val result =
+            "${mime.getExtensionFromMimeType(contentResolver.getType(uri)) ?: "*"}"
+        LogMe.i("getUriMemiType", result)
+        return result
+    }
+
+
     private fun getImageThumbnail(firstImage: Uri): Uri {
         val THUMBSIZE = 128
 
         val thumbImage = ThumbnailUtils.extractThumbnail(
-            BitmapFactory.decodeFile(File(firstImage.toString()).absolutePath),
+            BitmapFactory.decodeFile(FileUtils.getPath(appContext, firstImage)),
             THUMBSIZE,
             THUMBSIZE
         )
 
-       return getImageUri(appContext, thumbImage)
+        val thumbnailName = getCurrentDate()
+        ImageSaver(appContext)
+            .setFileName(thumbnailName)
+            .save(thumbImage)
+
+        val bitmap =
+            ImageSaver(appContext).setFileName(thumbnailName).load()
+
+        return getImageUri(appContext, bitmap)
     }
 
     private fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
