@@ -54,7 +54,7 @@ class UploadingRepository @Inject constructor() : BaseRepository() {
                 // get the credentials to upload photo
                 val awsCredentials = remoteDataManager.startUploadingImage(
                     StartUploadBody(
-                        fileName = getFileName(uri)
+                        fileName = uri.path.toString()
                     )
                 )
 

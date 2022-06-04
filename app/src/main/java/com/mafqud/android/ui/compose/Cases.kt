@@ -23,13 +23,16 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
+import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.google.accompanist.coil.rememberCoilPainter
 import com.mafqud.android.R
 import com.mafqud.android.home.model.CaseType
 import com.mafqud.android.home.model.CasesDataResponse
 import com.mafqud.android.ui.theme.*
+import com.mafqud.android.util.other.LogMe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.lang.StringBuilder
 
 @Composable
 @Preview
@@ -170,8 +173,9 @@ fun UserPhoto(
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(imageUrl)
+                .data(getCorrectImageUrl(imageUrl))
                 .crossfade(true)
+                .diskCachePolicy(CachePolicy.ENABLED)
                 .build(),
             placeholder = painterResource(R.drawable.placeholder_image),
             contentDescription = "User image",
@@ -183,4 +187,14 @@ fun UserPhoto(
         )
     }
 
+}
+
+fun getCorrectImageUrl(imageUrl: String): String {
+    LogMe.i("old_url", imageUrl)
+    val newBase = imageUrl.replaceAfter(delimiter = "s3", replacement = ".eu-south-1.amazonaws.com")
+    val file = "/files"
+    val filesPath = imageUrl.substringAfter(file)
+    val newUrl = newBase + file + filesPath
+    LogMe.i("new_url", newUrl)
+    return newUrl
 }
