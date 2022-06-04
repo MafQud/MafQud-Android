@@ -1,6 +1,7 @@
 package com.mafqud.android.report.lost
 
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
@@ -20,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -41,7 +43,7 @@ import com.mafqud.android.util.other.LogMe
 @Composable
 @Preview
 fun LostScreen(
-    maxPhotos: Int = 10,
+    maxPhotos: Int = 3,
     pickedImages: List<Uri> = mutableStateListOf("".toUri()),
     openGalleryClicked: () -> Unit = {},
     onCloseClicked: (Uri) -> Unit = {},
@@ -81,14 +83,15 @@ fun LostScreen(
                 mutableStateOf(-1)
             }
             progress = currentPickedImages.toFloat() / maxPhotos.toFloat()
+            val isValidImagesRang = currentPickedImages != 0 && currentPickedImages <= maxPhotos
             isProgressActivated =
-                (!(currentPickedImages < 3 || currentPickedImages > 10))
+                ((isValidImagesRang))
 
 
-            isFormActivated = true
-              /*  (!(currentPickedImages < 3 || currentPickedImages > 10))
+            isFormActivated =
+                ((isValidImagesRang))
                         && selectedGovId.value != -1
-                        && selectedCityId.value != -1*/
+                        && selectedCityId.value != -1
 
             SpacerUi(modifier = Modifier.height(16.dp))
             Header()
@@ -96,6 +99,7 @@ fun LostScreen(
             UploadImageButton(openGalleryClicked)
             UploadingPhotosInfo()
             UploadedImages(
+                maxPhotos,
                 pickedImages,
                 progress,
                 isProgressActivated,
@@ -140,6 +144,7 @@ fun Header() {
 
 @Composable
 private fun UploadedImages(
+    maxValue: Int,
     pickedImages: List<Uri>,
     progress: Float,
     isFormActivated: Boolean,
@@ -186,10 +191,10 @@ private fun UploadedImages(
                     color = animatedColor.value
                 )
 
-                val photosCount = (progress * 10).toInt()
+                val photosCount = (progress * maxValue).toInt()
                 //counter message
                 TextUi(
-                    text = "$photosCount / 10",
+                    text = "$photosCount / $maxValue",
                     textAlign = TextAlign.End,
                     color = animatedColor.value,
                     style = MaterialTheme.typography.titleSmall,
