@@ -84,6 +84,8 @@ class HomeFragment : BaseFragment() {
             CircleLoading(stateValue.isLoading)
 
             HomeScreen(
+                selectedGovId = stateValue.govID,
+                govs = stateValue.govs,
                 searchedName = stateValue.searchedName,
                 ageRange = stateValue.ageRange,
                 cases = stateValue.cases,
@@ -96,11 +98,19 @@ class HomeFragment : BaseFragment() {
                     requestCasesByAgeIntent(it)
                 }, onSearchTyping = {
                     requestCasesByNameIntent(it)
+                }, onGovSelected = {
+                    requestCasesByGovIntent(it)
                 })
 
             if (stateValue.networkError != null) {
                 stateValue.networkError.ShowNetworkErrorSnakeBar(scaffoldState)
             }
+        }
+    }
+
+    private fun requestCasesByGovIntent(it: Int?) {
+        lifecycleScope.launchWhenCreated {
+            viewModel.intentChannel.send(HomeIntent.GetCasesByGov(it))
         }
     }
 

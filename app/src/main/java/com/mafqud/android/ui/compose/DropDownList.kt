@@ -18,17 +18,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.mafqud.android.R
 import com.mafqud.android.report.lost.Gender
 import com.mafqud.android.ui.theme.*
+import com.mafqud.android.util.other.LogMe
 
 @Composable
 fun DropDownItems(
     title: String = "",
     items: List<String>,
-    selectedItemID: MutableState<String> = mutableStateOf(""),
+    selectedItemTitle: MutableState<String> = mutableStateOf(""),
     modifier: Modifier,
     iconColor: Color = MaterialTheme.colorScheme.onSecondary,
     backgroundColor: Color = MaterialTheme.colorScheme.primary,
@@ -38,6 +37,13 @@ fun DropDownItems(
     val expanded = remember { mutableStateOf(false) }
     val govTitle = title
     val selectedText = remember { mutableStateOf(govTitle) }
+
+    if (selectedItemTitle.value == "-1") {
+        LogMe.i("selectedItemID" , "tr")
+        selectedText.value = govTitle
+    } else {
+        selectedText.value = selectedItemTitle.value
+    }
 
     BoxUi(
         modifier = modifier

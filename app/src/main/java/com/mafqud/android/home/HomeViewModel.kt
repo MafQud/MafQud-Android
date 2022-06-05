@@ -5,14 +5,19 @@ import androidx.paging.Pager
 import androidx.paging.cachedIn
 import com.mafqud.android.base.viewModel.BaseViewModel
 import com.mafqud.android.home.model.CasesDataResponse
+import com.mafqud.android.locations.LocationUseCase
 import com.mafqud.android.util.network.Result
+import com.mafqud.android.util.other.LogMe
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val homeRepository: HomeRepository) :
+class HomeViewModel @Inject constructor(
+    private val homeRepository: HomeRepository,
+    private val locationUseCase: LocationUseCase
+) :
     BaseViewModel<HomeIntent, HomeViewState>(HomeViewState(isLoading = true)) {
 
     init {
@@ -22,6 +27,35 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
                 HomeIntent.Refresh -> refreshData()
                 is HomeIntent.GetCasesByAge -> getCaseByAge(it)
                 is HomeIntent.GetCasesByName -> getCaseByName(it)
+                is HomeIntent.GetCasesByGov -> getCaseByGov(it)
+            }
+        }
+    }
+
+    private fun getCaseByGov(it: HomeIntent.GetCasesByGov) {
+        setGovId(it.id)
+        getAllData(isRefreshing = false)
+    }
+
+    private fun setGovId(id: Int?) {
+        LogMe.i("setGovId", id.toString())
+        _stateChannel.tryEmit(
+            stateChannel.value.copy(
+                govID = id
+            )
+        )
+    }
+
+
+    private fun getGovs() {
+        if (_stateChannel.value.govs == null) {
+            launchViewModelScope {
+                val result = locationUseCase.getGovs()
+                _stateChannel.tryEmit(
+                    stateChannel.value.copy(
+                        govs = result
+                    )
+                )
             }
         }
     }
@@ -53,6 +87,7 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
     }
 
     private fun getCase(casesTabType: CasesTabType) {
+        getGovs()
         setUserName()
         setSelectedCasesType(casesTabType)
         getAllData(isRefreshing = false)
@@ -85,8 +120,17 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
     private fun refreshData() {
         restAgeRange()
         resetSearchName()
+        resetGov()
         emitRefreshingState()
         getAllData(true)
+    }
+
+    private fun resetGov() {
+        _stateChannel.tryEmit(
+            stateChannel.value.copy(
+                govID = null
+            )
+        )
     }
 
     private fun resetSearchName() {
@@ -126,13 +170,20 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
     }
 
     private suspend fun getCases() {
-        val result = homeRepository.getCases(getSelectedCasesType(), getAgeRange(), geSearchName())
+        val result = homeRepository.getCases(
+            getSelectedCasesType(),
+            getAgeRange(),
+            geSearchName(),
+            getGovID()
+        )
         when (result) {
             is Result.Success -> emitNotificationsData(result.data)
         }
     }
 
-    private fun geSearchName() = _stateChannel.value.searchedName ?: ""
+    private fun getGovID() = _stateChannel.value.govID
+
+    private fun geSearchName() = _stateChannel.value.searchedName
 
     private fun getAgeRange() = _stateChannel.value.ageRange
 

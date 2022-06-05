@@ -1,7 +1,6 @@
 package com.mafqud.android.report.lost
 
 import android.net.Uri
-import android.widget.Toast
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
@@ -21,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -364,7 +362,7 @@ private fun LocationForm(
                     items = it.map {
                         return@map it.name ?: ""
                     },
-                    selectedItemID = selectedItem,
+                    selectedItemTitle = selectedItem,
                     iconColor = MaterialTheme.colorScheme.onTertiaryContainer,
                     backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
                     textColor = MaterialTheme.colorScheme.onTertiaryContainer,
@@ -384,7 +382,7 @@ private fun LocationForm(
                     items = it.map {
                         return@map it.name ?: ""
                     },
-                    selectedItemID = selectedItem,
+                    selectedItemTitle = selectedItem,
                     modifier = Modifier
                         .weight(1f)
                         .height(50.dp),

@@ -12,13 +12,18 @@ const val PAGE_SIZE_PAGING_EXPLORE = 10
 
 class HomeRepository @Inject constructor () : BaseRepository() {
 
-    suspend fun getCases(casesTabType: CasesTabType, ageRange: AgeRange?, searchName: String): Result<Pager<Int, CasesDataResponse.Case>> {
+    suspend fun getCases(
+        casesTabType: CasesTabType,
+        ageRange: AgeRange?,
+        searchName: String?,
+        govID: Int?
+    ): Result<Pager<Int, CasesDataResponse.Case>> {
         return safeApiCall {
             return@safeApiCall Pager(config = PagingConfig(
                 pageSize = PAGE_SIZE_PAGING_EXPLORE,
                 enablePlaceholders = false
             ), pagingSourceFactory = {
-                CasesSource(remoteDataManager, casesTabType, ageRange, searchName)
+                CasesSource(remoteDataManager, casesTabType, ageRange, searchName, govID)
             })
         }
     }

@@ -28,6 +28,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.mafqud.android.R
 import com.mafqud.android.home.model.CasesDataResponse
+import com.mafqud.android.locations.MyGov
 import com.mafqud.android.ui.compose.CaseItem
 import com.mafqud.android.ui.compose.DropDownItems
 import com.mafqud.android.ui.picker.AgePickerDialog
@@ -52,6 +53,9 @@ fun HomeScreen(
     ageRange: AgeRange?,
     searchedName: String?,
     onSearchTyping: (String) -> Unit = {},
+    govs: List<MyGov>?,
+    onGovSelected: (Int?) -> Unit = {},
+    selectedGovId: Int?,
 ) {
     ColumnUi(
         Modifier
@@ -63,7 +67,8 @@ fun HomeScreen(
         HeadSearchUi(
             onTapClicked, selectedTapState,
             ageRange, onRangeSelected,
-            searchedName, onSearchTyping
+            searchedName, onSearchTyping,
+            govs, onGovSelected, selectedGovId
         )
         CasesUi(Modifier.weight(1f), cases, onCaseClicked)
     }
@@ -76,7 +81,10 @@ fun HeadSearchUi(
     ageRange: AgeRange?,
     onRangeSelected: (AgeRange) -> Unit,
     searchedName: String?,
-    onSearchTyping: (String) -> Unit
+    onSearchTyping: (String) -> Unit,
+    govs: List<MyGov>?,
+    onGovSelected: (Int?) -> Unit,
+    selectedGovId: Int?
 ) {
     BoxUi(
         Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
@@ -90,7 +98,11 @@ fun HeadSearchUi(
             onRangeSelected,
             // name filter
             searchedName,
-            onSearchTyping
+            onSearchTyping,
+            // gov filer
+            govs,
+            onGovSelected,
+            selectedGovId
         )
     }
 }
@@ -103,11 +115,14 @@ private fun SearchUi(
     ageRange: AgeRange?,
     onRangeSelected: (AgeRange) -> Unit,
     searchedName: String?,
-    onSearchTyping: (String) -> Unit
+    onSearchTyping: (String) -> Unit,
+    govs: List<MyGov>?,
+    onGovSelected: (Int?) -> Unit,
+    selectedGovId: Int?
 ) {
     ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         TapsUi(onTapClicked, selectedTapState)
-        DropDownUi(ageRange, onRangeSelected)
+        DropDownUi(ageRange, onRangeSelected, govs, onGovSelected, selectedGovId)
         SearchNameUi(searchedName, onSearchTyping)
     }
 }
@@ -154,9 +169,16 @@ private fun SearchNameUi(searchedName: String?, onSearchTyping: (String) -> Unit
 }
 
 @Composable
-private fun DropDownUi(ageRange: AgeRange?, onRangeSelected: (AgeRange) -> Unit) {
+private fun DropDownUi(
+    ageRange: AgeRange?,
+    onRangeSelected: (AgeRange) -> Unit,
+    govs: List<MyGov>?,
+    onGovSelected: (Int?) -> Unit,
+    selectedGovId: Int?
+) {
+
     RowUi(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        val selectedItem = remember {
+        val selectedItemDate = remember {
             mutableStateOf("")
         }
         AgeTextPicker(
@@ -168,19 +190,42 @@ private fun DropDownUi(ageRange: AgeRange?, onRangeSelected: (AgeRange) -> Unit)
         )
         DropDownItems(
             items = listOf("تاريخ التغيب"),
-            selectedItemID = selectedItem,
-            modifier = Modifier
-                .weight(1f)
-                .height(30.dp),
-        )
-        DropDownItems(
-            items = listOf("المحافظة"),
-            selectedItemID = selectedItem,
+            selectedItemTitle = selectedItemDate,
             modifier = Modifier
                 .weight(1f)
                 .height(30.dp),
         )
 
+
+        // Govs
+        val selectedItem = remember {
+            mutableStateOf(selectedGovId.toString())
+        }
+
+        govs?.let {
+            if (selectedGovId == null) {
+                selectedItem.value = "-1"
+            } else selectedItem.value = govs.find {
+                return@find (it.id  == selectedGovId)
+            }?.name ?: "-1"
+
+            DropDownItems(
+                title = stringResource(id = R.string.gov),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(30.dp),
+                items = it.map {
+                    return@map it.name ?: ""
+                },
+                selectedItemTitle = selectedItem,
+                onSelectItem = {
+                    val itemID = it.toIntOrNull() ?: -1
+                    val govId = govs.getOrNull(itemID)?.id
+                    onGovSelected(govId)
+
+                }
+            )
+        }
 
     }
 }

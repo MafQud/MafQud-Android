@@ -316,7 +316,7 @@ private fun LocationForm(
                     items = it.map {
                         return@map it.name ?: ""
                     },
-                    selectedItemID = selectedItem,
+                    selectedItemTitle = selectedItem,
                     iconColor = MaterialTheme.colorScheme.onTertiaryContainer,
                     backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
                     textColor = MaterialTheme.colorScheme.onTertiaryContainer,
@@ -337,7 +337,7 @@ private fun LocationForm(
                     items = it.map {
                         return@map it.name ?: ""
                     },
-                    selectedItemID = selectedItem,
+                    selectedItemTitle = selectedItem,
                     modifier = Modifier
                         .weight(1f)
                         .height(50.dp),
