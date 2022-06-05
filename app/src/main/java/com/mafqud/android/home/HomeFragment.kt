@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
@@ -19,7 +18,6 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mafqud.android.R
 import com.mafqud.android.base.fragment.BaseFragment
 import com.mafqud.android.home.model.CasesDataResponse
-import com.mafqud.android.homeDetails.HomeDetailsFragmentDirections
 import com.mafqud.android.ui.compose.HomeAppBar
 import com.mafqud.android.ui.status.loading.CircleLoading
 import com.mafqud.android.ui.theme.MafQudTheme
@@ -85,17 +83,27 @@ class HomeFragment : BaseFragment() {
             }
             CircleLoading(stateValue.isLoading)
 
-            HomeScreen(cases = stateValue.cases,
+            HomeScreen(
+                ageRange = stateValue.ageRange,
+                cases = stateValue.cases,
                 selectedTapState = stateValue.casesTabType,
                 onTapClicked = {
                     requestCasesIntent(it)
                 }, onCaseClicked = {
                     openCaseDetails(it)
+                }, onRangeSelected = {
+                    requestCasesByAgeIntent(it)
                 })
 
             if (stateValue.networkError != null) {
                 stateValue.networkError.ShowNetworkErrorSnakeBar(scaffoldState)
             }
+        }
+    }
+
+    private fun requestCasesByAgeIntent(it: AgeRange) {
+        lifecycleScope.launchWhenCreated {
+            viewModel.intentChannel.send(HomeIntent.GetCasesByAge(it))
         }
     }
 

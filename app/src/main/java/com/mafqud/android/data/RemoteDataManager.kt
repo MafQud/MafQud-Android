@@ -85,6 +85,15 @@ interface RemoteDataManager {
         @Query("limit") limit: Int,
     ): CasesDataResponse
 
+    @GET("/api/cases")
+    suspend fun getCases(
+        @Query("offset") offset: Int,
+        @Query("type") type: String,
+        @Query("limit") limit: Int,
+        @Query("start_age") startAge: Int,
+        @Query("end_age") endAge: Int,
+    ): CasesDataResponse
+
     @POST("/api/auth/token/refresh/")
     @Headers(AUTH_NOT_REQUIRED, REFRESH_TOKEN)
     fun refreshAccessToken(

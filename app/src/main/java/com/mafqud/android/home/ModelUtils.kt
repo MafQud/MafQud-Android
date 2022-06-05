@@ -5,9 +5,3 @@ data class DateSince(
     val title: String = "",
 )
 
-
-data class AgeRange(
-    val id: Int = -1,
-    val title: String = "",
-)
-

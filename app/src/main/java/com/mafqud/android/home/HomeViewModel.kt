@@ -6,6 +6,7 @@ import androidx.paging.cachedIn
 import com.mafqud.android.base.viewModel.BaseViewModel
 import com.mafqud.android.home.model.CasesDataResponse
 import com.mafqud.android.util.network.Result
+import com.mafqud.android.util.other.LogMe
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import javax.inject.Inject
@@ -20,8 +21,22 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
             when (it) {
                 is HomeIntent.GetCases -> getCase(it.casesTabType)
                 HomeIntent.Refresh -> refreshData()
+                is HomeIntent.GetCasesByAge -> getCaseByAge(it)
             }
         }
+    }
+
+    private fun getCaseByAge(it: HomeIntent.GetCasesByAge) {
+        setAgeRange(it.ageRange)
+        getAllData(isRefreshing = false)
+    }
+
+    private fun setAgeRange(ageRange: AgeRange) {
+        _stateChannel.tryEmit(
+            stateChannel.value.copy(
+                ageRange = ageRange
+            )
+        )
     }
 
     private fun getCase(casesTabType: CasesTabType) {
@@ -55,8 +70,17 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
     }
 
     private fun refreshData() {
+        restAgeRange()
         emitRefreshingState()
         getAllData(true)
+    }
+
+    private fun restAgeRange() {
+        _stateChannel.tryEmit(
+            stateChannel.value.copy(
+                ageRange = null
+            )
+        )
     }
 
     private fun emitRefreshingState() {
@@ -80,11 +104,14 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
     }
 
     private suspend fun getCases() {
-        val result = homeRepository.getCases(getSelectedCasesType())
+        val result = homeRepository.getCases(getSelectedCasesType(), getAgeRange())
         when (result) {
             is Result.Success -> emitNotificationsData(result.data)
         }
     }
+
+    private fun getAgeRange() = _stateChannel.value.ageRange
+
 
     private fun emitNotificationsData(data: Pager<Int, CasesDataResponse.Case>) {
         val cases = data.flow.distinctUntilChangedBy {

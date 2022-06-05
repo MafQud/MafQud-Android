@@ -27,13 +27,13 @@ import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.mafqud.android.R
-import com.mafqud.android.home.model.CaseType
 import com.mafqud.android.home.model.CasesDataResponse
 import com.mafqud.android.ui.compose.CaseItem
 import com.mafqud.android.ui.compose.DropDownItems
 import com.mafqud.android.ui.picker.AgePickerDialog
 import com.mafqud.android.ui.theme.*
 import com.mafqud.android.util.network.HandlePagingError
+import com.mafqud.android.util.other.LogMe
 import kotlinx.coroutines.flow.Flow
 
 enum class CasesTabType {
@@ -45,9 +45,11 @@ enum class CasesTabType {
 @Composable
 fun HomeScreen(
     onTapClicked: (CasesTabType) -> Unit = {},
+    onRangeSelected: (AgeRange) -> Unit = {},
     onCaseClicked: (CasesDataResponse.Case) -> Unit = {},
     cases: Flow<PagingData<CasesDataResponse.Case>>?,
-    selectedTapState: CasesTabType
+    selectedTapState: CasesTabType,
+    ageRange: AgeRange?
 ) {
     ColumnUi(
         Modifier
@@ -56,7 +58,7 @@ fun HomeScreen(
             ),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        HeadSearchUi(onTapClicked, selectedTapState)
+        HeadSearchUi(onTapClicked, selectedTapState, ageRange, onRangeSelected)
         CasesUi(Modifier.weight(1f), cases, onCaseClicked)
     }
 }
@@ -64,21 +66,28 @@ fun HomeScreen(
 @Composable
 fun HeadSearchUi(
     onTapClicked: (CasesTabType) -> Unit = {},
-    selectedTapState: CasesTabType = CasesTabType.ALL
+    selectedTapState: CasesTabType = CasesTabType.ALL,
+    ageRange: AgeRange?,
+    onRangeSelected: (AgeRange) -> Unit
 ) {
     BoxUi(
         Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
     ) {
-        SearchUi(onTapClicked, selectedTapState)
+        SearchUi(onTapClicked, selectedTapState, ageRange, onRangeSelected)
     }
 }
 
 
 @Composable
-private fun SearchUi(onTapClicked: (CasesTabType) -> Unit, selectedTapState: CasesTabType) {
+private fun SearchUi(
+    onTapClicked: (CasesTabType) -> Unit,
+    selectedTapState: CasesTabType,
+    ageRange: AgeRange?,
+    onRangeSelected: (AgeRange) -> Unit
+) {
     ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         TapsUi(onTapClicked, selectedTapState)
-        DropDownUi()
+        DropDownUi(ageRange, onRangeSelected)
         SearchNameUi()
     }
 }
@@ -122,7 +131,7 @@ private fun SearchNameUi() {
 }
 
 @Composable
-private fun DropDownUi() {
+private fun DropDownUi(ageRange: AgeRange?, onRangeSelected: (AgeRange) -> Unit) {
     RowUi(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         val selectedItem = remember {
             mutableStateOf("")
@@ -130,7 +139,9 @@ private fun DropDownUi() {
         AgeTextPicker(
             Modifier
                 .weight(1f)
-                .height(30.dp)
+                .height(30.dp),
+            ageRange,
+            onRangeSelected
         )
         DropDownItems(
             items = listOf("تاريخ التغيب"),
@@ -152,16 +163,27 @@ private fun DropDownUi() {
 }
 
 @Composable
-fun AgeTextPicker(modifier: Modifier) {
+fun AgeTextPicker(
+    modifier: Modifier,
+    ageRange: AgeRange?,
+    onRangeSelected: (AgeRange) -> Unit
+) {
     val isOpened = remember {
         mutableStateOf(false)
     }
     val startSlider = remember {
-        mutableStateOf(0f)
+        mutableStateOf((ageRange?.start ?: 0).toFloat())
     }
     val endSlider = remember {
-        mutableStateOf(20f)
+        mutableStateOf((ageRange?.end ?: 20).toFloat())
     }
+    if (ageRange == null) {
+        startSlider.value = 0F
+        endSlider.value = 20F
+    }
+    LogMe.i("restAgeRange", startSlider.value.toString())
+    LogMe.i("restAgeRange", endSlider.value.toString())
+
     BoxUi(
         modifier = modifier
             .clip(RoundedCornerShape(50))
@@ -172,22 +194,29 @@ fun AgeTextPicker(modifier: Modifier) {
             },
         contentAlignment = Alignment.Center
     ) {
-        val ageRange =
+        val mAgeRange =
             startSlider.value.toInt().toString() + " : " + endSlider.value.toInt().toString()
         TextUi(
             modifier = Modifier.padding(start = 4.dp),
             text =
-            stringResource(id = R.string.age) + " " + ageRange,
+            stringResource(id = R.string.age) + " " + mAgeRange,
             style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.onPrimary,
         ) // City name label
     }
 
-
     AgePickerDialog(
         startPickedAge = startSlider,
         endPickedAge = endSlider,
         isOpened = isOpened,
+        onConfirmClicked = {
+            onRangeSelected(
+                AgeRange(
+                    start = startSlider.value.toInt(),
+                    end = endSlider.value.toInt()
+                )
+            )
+        }
     )
 }
 
