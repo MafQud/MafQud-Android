@@ -1,4 +1,4 @@
-package com.mafqud.android.myAccountEdit
+package com.mafqud.android.myAccountEdit.info
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

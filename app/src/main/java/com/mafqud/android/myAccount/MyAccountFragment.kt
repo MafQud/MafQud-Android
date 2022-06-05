@@ -25,6 +25,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MyAccountFragment : Fragment() {
 
+    private lateinit var userName: MutableState<String>
+
     @Inject
     lateinit var dataStoreManager: DataStoreManager
 
@@ -63,7 +65,7 @@ class MyAccountFragment : Fragment() {
                             }
                         )
                     }, content = {
-                        val userName = remember {
+                        userName = remember {
                             mutableStateOf("")
                         }
                         val address = remember {
@@ -78,14 +80,23 @@ class MyAccountFragment : Fragment() {
                             address = address.value,
                             phone = phone.value,
                             onEditClicked = {
-                                //TODO profile data
-                                //findNavController().navigate(R.id.action_myAccountFragment_to_myAccountEditFragment)
+                                findNavController().navigate(R.id.action_myAccountFragment_to_myAccountEditFragment)
                             }, onEditInfoClicked = {
                                 //TODO profile data
                                 //findNavController().navigate(R.id.action_myAccountFragment_to_myAccountEditInfoFragment)
                             })
                     })
                 }
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        lifecycleScope.launchWhenCreated {
+            readUserData()
+            if (::userName.isInitialized) {
+                userName.value = userPayload?.name ?: ""
             }
         }
     }

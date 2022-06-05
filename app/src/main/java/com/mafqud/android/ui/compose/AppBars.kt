@@ -18,6 +18,7 @@ import com.mafqud.android.R
 import com.mafqud.android.ui.theme.BoxUi
 import com.mafqud.android.ui.theme.RowUi
 import com.mafqud.android.ui.theme.TextUi
+import com.mafqud.android.util.other.toFirstChar
 
 enum class IconType {
     BACK,
@@ -43,11 +44,9 @@ fun HomeAppBar(
     ) {
 
         RowUi(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            val char  = userName.firstOrNull()?.let {
-                return@let it
-            } ?: ""
+            val char  = userName.toFirstChar()
 
-            LetterIcon(char.toString(), letterSize = MaterialTheme.typography.titleMedium)
+            LetterIcon(char, letterSize = MaterialTheme.typography.titleMedium)
             TextUi(
                 text = userName,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,

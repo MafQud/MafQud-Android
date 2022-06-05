@@ -1,4 +1,4 @@
-package com.mafqud.android.myAccountEdit
+package com.mafqud.android.myAccountEdit.name
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -7,21 +7,25 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
 import com.mafqud.android.ui.compose.ButtonSmall
 import com.mafqud.android.ui.compose.IconEdit
 import com.mafqud.android.ui.compose.TextFieldName
 import com.mafqud.android.ui.theme.*
+import com.mafqud.android.util.other.toFirstChar
 
 @Composable
-fun EditAccountScreen(onSaveClicked: () -> Unit) {
+@Preview
+fun EditAccountScreen(onSaveClicked: (String) -> Unit = {}, currentName: String? = "") {
     ColumnUi {
         BoxUi(
             modifier = Modifier
@@ -38,34 +42,36 @@ fun EditAccountScreen(onSaveClicked: () -> Unit) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                AccountName()
+                val fullName = remember {
+                    mutableStateOf(currentName ?: "")
+                }
+                val char  = currentName.toFirstChar()
+                AccountName(char)
                 SpacerUi(modifier = Modifier.height(20.dp))
-                AccountFullName()
+                AccountFullName(fullName)
                 SpacerUi(modifier = Modifier.height(8.dp))
-                AccountButton(onSaveClicked)
-
+                AccountButton(onSaveClicked, fullName)
             }
         }
     }
 }
 
 @Composable
-fun AccountButton(onSaveClicked: () -> Unit) {
+fun AccountButton(onSaveClicked: (String) -> Unit, fullName: MutableState<String>) {
     ButtonSmall(title = stringResource(id = R.string.save)) {
-        onSaveClicked()
+        if (fullName.value.trim().isNotEmpty()) {
+            onSaveClicked(fullName.value.trim())
+        }
     }
 
 }
 
 @Composable
-fun AccountFullName() {
+fun AccountFullName(currentName: MutableState<String>) {
     ColumnUi(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        val fullName = remember {
-            mutableStateOf("Marwa kamel")
-        }
         val isNameError = remember {
             mutableStateOf(false)
         }
@@ -75,12 +81,12 @@ fun AccountFullName() {
             style = MaterialTheme.typography.titleMedium
 
         )
-        TextFieldName(stringResource(id = R.string.example_name), fullName, isNameError)
+        TextFieldName(stringResource(id = R.string.example_name), currentName, isNameError)
     }
 }
 
 @Composable
-fun AccountName() {
+fun AccountName(char: String) {
     BoxUi {
         RowUi {
             SpacerUi(modifier = Modifier.width(8.dp))
@@ -93,7 +99,7 @@ fun AccountName() {
                     ),
             ) {
                 TextUi(
-                    text = "M",
+                    text = char,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     style = MaterialTheme.typography.headlineSmall
                 )

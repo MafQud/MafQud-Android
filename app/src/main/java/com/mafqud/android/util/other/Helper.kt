@@ -39,7 +39,7 @@ fun Context.openDialer(number: String = "") {
 fun Context.openBrowser(link: String = "") {
     val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
     //if (browserIntent.resolveActivity(packageManager) != null) {
-        startActivity(browserIntent)
+    startActivity(browserIntent)
     //}
 }
 
@@ -150,6 +150,7 @@ fun Activity.inAppReview() {
     }
 
 }
+
 fun Activity.inAppUpdate() {
     // Creates instance of the manager.
     val appUpdateManager = AppUpdateManagerFactory.create(this)
@@ -183,7 +184,8 @@ private fun Activity.startUpdate(appUpdateManager: AppUpdateManager, appUpdateIn
         // The current activity making the update request.
         this,
         // Include a request code to later monitor this update request.
-        101)
+        101
+    )
 }
 
 fun getTimeFromSec(totalSecs: Long): String {
@@ -193,4 +195,10 @@ fun getTimeFromSec(totalSecs: Long): String {
     val seconds = totalSecs % 60;
 
     return String.format("%02d:%02d", minutes, seconds)
+}
+
+fun String?.toFirstChar(): String {
+    return (this?.firstOrNull()?.let {
+        return@let it
+    } ?: "").toString()
 }

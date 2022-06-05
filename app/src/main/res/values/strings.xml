@@ -201,4 +201,5 @@
     <string name="camera_dialog">Camera and Storage permissions needed for tacking and accessing photos</string>
     <string name="error_phone_exists">Phone exists before</string>
     <string name="error_location">Choose gov and city</string>
+    <string name="name_updated">Name updated</string>
 </resources>

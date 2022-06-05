@@ -11,6 +11,7 @@ import com.mafqud.android.files.StartUploadingResponse
 import com.mafqud.android.home.model.CasesDataResponse
 import com.mafqud.android.locations.CitiesResponse
 import com.mafqud.android.locations.GovResponse
+import com.mafqud.android.myAccountEdit.name.models.ChangeNameBody
 import com.mafqud.android.notification.models.NotificationsResponse
 import com.mafqud.android.report.uploading.models.CreateCaseBody
 import com.mafqud.android.reportedCases.models.ReportedCasesResponse
@@ -174,6 +175,13 @@ interface RemoteDataManager {
     @GET("/api/notifications/{notificationID}/read")
     suspend fun markNotificationAsRead(
         @Path("notificationID") id: Int
+    )
+
+
+    @POST("/api/users/{userID}/update/")
+    suspend fun changeUserName(
+        @Path("userID") userID: Int,
+        @Body changeNameBody: ChangeNameBody
     )
 
 }

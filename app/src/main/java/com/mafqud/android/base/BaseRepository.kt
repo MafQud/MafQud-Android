@@ -40,6 +40,13 @@ open class BaseRepository() {
         return dataStoreManager.getUserId()
     }
 
+    suspend fun getUserName(): String {
+        return dataStoreManager.getUserName()
+    }
+
+    suspend fun setUserName(userName: String) {
+        return dataStoreManager.saveUserName(userName)
+    }
     suspend fun getDisplayUserName(): String {
         return dataStoreManager.getUserName()
     }

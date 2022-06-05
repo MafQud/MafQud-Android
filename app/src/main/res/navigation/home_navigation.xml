@@ -91,7 +91,7 @@
         android:label="PhonesFragment" />
     <fragment
         android:id="@+id/myAccountEditFragment"
-        android:name="com.mafqud.android.myAccountEdit.MyAccountEditFragment"
+        android:name="com.mafqud.android.myAccountEdit.name.MyAccountEditFragment"
         android:label="MyAccountEditFragment" />
     <include app:graph="@navigation/report_graph" />
     <fragment
@@ -100,7 +100,7 @@
         android:label="ReportedCasesFragment" />
     <fragment
         android:id="@+id/myAccountEditInfoFragment"
-        android:name="com.mafqud.android.myAccountEdit.MyAccountEditInfoFragment"
+        android:name="com.mafqud.android.myAccountEdit.info.MyAccountEditInfoFragment"
         android:label="MyAccountEditInfoFragment" />
     <fragment
         android:id="@+id/homeDetailsFragment"

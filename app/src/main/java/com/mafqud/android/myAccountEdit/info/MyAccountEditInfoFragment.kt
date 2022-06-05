@@ -1,4 +1,4 @@
-package com.mafqud.android.myAccountEdit
+package com.mafqud.android.myAccountEdit.info
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,7 +16,7 @@ import com.mafqud.android.ui.theme.MafQudTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyAccountEditFragment : Fragment() {
+class MyAccountEditInfoFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,9 +39,7 @@ class MyAccountEditFragment : Fragment() {
                             }
                         )
                     }, content = {
-                        EditAccountScreen(onSaveClicked = {
-
-                        })
+                        MyAccountInfo()
                     })
                 }
             }

@@ -180,5 +180,6 @@
     <string name="open_gps">من فضلك ، افتح GPS الخاص بك للحصول على موقعك الحالي</string>
     <string name="error_phone_exists">هذا الرقم مسجل لدينا بالفعل</string>
     <string name="error_location">برجاء اختيار المحافظة والمدينة</string>
+    <string name="name_updated">تم تحديث الاسم</string>
 
 </resources>

@@ -28,7 +28,7 @@ class HomeRepository @Inject constructor () : BaseRepository() {
         }
     }
 
-    suspend fun getUserName(): String {
+    suspend fun getCurrentUserName(): String {
         return getDisplayUserName()
     }
 

@@ -233,6 +233,11 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         }
     }
 
+    suspend fun saveUserName(name: String) {
+        mDataStore.edit { settings ->
+            settings[stringPreferencesKey(USER_NAME)] = name
+        }
+    }
     suspend fun getUserName(): String {
         return mDataStore.data.map { settings ->
             settings[stringPreferencesKey(USER_NAME)] ?: ""

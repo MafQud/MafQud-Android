@@ -110,7 +110,7 @@ class HomeViewModel @Inject constructor(
             launchViewModelScope {
                 _stateChannel.tryEmit(
                     stateChannel.value.copy(
-                        userName = homeRepository.getUserName()
+                        userName = homeRepository.getCurrentUserName()
                     )
                 )
             }
