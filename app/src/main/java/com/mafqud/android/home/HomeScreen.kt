@@ -27,6 +27,7 @@ import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.mafqud.android.R
+import com.mafqud.android.home.model.CaseType
 import com.mafqud.android.home.model.CasesDataResponse
 import com.mafqud.android.ui.compose.CaseItem
 import com.mafqud.android.ui.compose.DropDownItems
@@ -35,7 +36,7 @@ import com.mafqud.android.ui.theme.*
 import com.mafqud.android.util.network.HandlePagingError
 import kotlinx.coroutines.flow.Flow
 
-enum class CasesType {
+enum class CasesTabType {
     ALL,
     MISSING,
     FOUND
@@ -43,9 +44,10 @@ enum class CasesType {
 
 @Composable
 fun HomeScreen(
-    onTapClicked: (CasesType) -> Unit = {},
+    onTapClicked: (CasesTabType) -> Unit = {},
+    onCaseClicked: (CasesDataResponse.Case) -> Unit = {},
     cases: Flow<PagingData<CasesDataResponse.Case>>?,
-    selectedTapState: CasesType
+    selectedTapState: CasesTabType
 ) {
     ColumnUi(
         Modifier
@@ -55,14 +57,14 @@ fun HomeScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         HeadSearchUi(onTapClicked, selectedTapState)
-        CasesUi(Modifier.weight(1f), cases)
+        CasesUi(Modifier.weight(1f), cases, onCaseClicked)
     }
 }
 
 @Composable
 fun HeadSearchUi(
-    onTapClicked: (CasesType) -> Unit = {},
-    selectedTapState: CasesType = CasesType.ALL
+    onTapClicked: (CasesTabType) -> Unit = {},
+    selectedTapState: CasesTabType = CasesTabType.ALL
 ) {
     BoxUi(
         Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
@@ -73,7 +75,7 @@ fun HeadSearchUi(
 
 
 @Composable
-private fun SearchUi(onTapClicked: (CasesType) -> Unit, selectedTapState: CasesType) {
+private fun SearchUi(onTapClicked: (CasesTabType) -> Unit, selectedTapState: CasesTabType) {
     ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         TapsUi(onTapClicked, selectedTapState)
         DropDownUi()
@@ -190,7 +192,7 @@ fun AgeTextPicker(modifier: Modifier) {
 }
 
 @Composable
-private fun TapsUi(onTapClicked: (CasesType) -> Unit, selectedTapState: CasesType) {
+private fun TapsUi(onTapClicked: (CasesTabType) -> Unit, selectedTapState: CasesTabType) {
     RowUi {
         val selectedItem = remember {
             mutableStateOf(selectedTapState)
@@ -213,10 +215,10 @@ private fun TapsUi(onTapClicked: (CasesType) -> Unit, selectedTapState: CasesTyp
                     shape = RoundedCornerShape(topStart = 20.dp, bottomStart = 20.dp)
                 )
                 .clip(RoundedCornerShape(topStart = 20.dp, bottomStart = 20.dp))
-                .background(if (selectedItem.value == CasesType.ALL) activeBackgroundColor else disableBackgroundColor)
+                .background(if (selectedItem.value == CasesTabType.ALL) activeBackgroundColor else disableBackgroundColor)
                 .clickable {
-                    if (selectedItem.value != CasesType.ALL) {
-                        selectedItem.value = CasesType.ALL
+                    if (selectedItem.value != CasesTabType.ALL) {
+                        selectedItem.value = CasesTabType.ALL
                         onTapClicked(selectedItem.value)
                     }
                 },
@@ -224,7 +226,7 @@ private fun TapsUi(onTapClicked: (CasesType) -> Unit, selectedTapState: CasesTyp
         ) {
             TextUi(
                 text = stringResource(id = R.string.all),
-                color = if (selectedItem.value == CasesType.ALL) activeTextColor else disableTextColor,
+                color = if (selectedItem.value == CasesTabType.ALL) activeTextColor else disableTextColor,
                 style = MaterialTheme.typography.titleSmall
             )
         }
@@ -239,10 +241,10 @@ private fun TapsUi(onTapClicked: (CasesType) -> Unit, selectedTapState: CasesTyp
                     color = activeBackgroundColor,
                     shape = RectangleShape
                 )
-                .background(if (selectedItem.value == CasesType.MISSING) activeBackgroundColor else disableBackgroundColor)
+                .background(if (selectedItem.value == CasesTabType.MISSING) activeBackgroundColor else disableBackgroundColor)
                 .clickable {
-                    if (selectedItem.value != CasesType.MISSING) {
-                        selectedItem.value = CasesType.MISSING
+                    if (selectedItem.value != CasesTabType.MISSING) {
+                        selectedItem.value = CasesTabType.MISSING
                         onTapClicked(selectedItem.value)
                     }
                 },
@@ -250,7 +252,7 @@ private fun TapsUi(onTapClicked: (CasesType) -> Unit, selectedTapState: CasesTyp
         ) {
             TextUi(
                 text = stringResource(id = R.string.lost),
-                color = if (selectedItem.value == CasesType.MISSING) activeTextColor else disableTextColor,
+                color = if (selectedItem.value == CasesTabType.MISSING) activeTextColor else disableTextColor,
                 style = MaterialTheme.typography.titleSmall
             )
         }
@@ -266,10 +268,10 @@ private fun TapsUi(onTapClicked: (CasesType) -> Unit, selectedTapState: CasesTyp
                     shape = RoundedCornerShape(topEnd = 20.dp, bottomEnd = 20.dp)
                 )
                 .clip(RoundedCornerShape(topEnd = 20.dp, bottomEnd = 20.dp))
-                .background(if (selectedItem.value == CasesType.FOUND) activeBackgroundColor else disableBackgroundColor)
+                .background(if (selectedItem.value == CasesTabType.FOUND) activeBackgroundColor else disableBackgroundColor)
                 .clickable {
-                    if (selectedItem.value != CasesType.FOUND) {
-                        selectedItem.value = CasesType.FOUND
+                    if (selectedItem.value != CasesTabType.FOUND) {
+                        selectedItem.value = CasesTabType.FOUND
                         onTapClicked(selectedItem.value)
                     }
                 },
@@ -277,7 +279,7 @@ private fun TapsUi(onTapClicked: (CasesType) -> Unit, selectedTapState: CasesTyp
         ) {
             TextUi(
                 text = stringResource(id = R.string.found),
-                color = if (selectedItem.value == CasesType.FOUND) activeTextColor else disableTextColor,
+                color = if (selectedItem.value == CasesTabType.FOUND) activeTextColor else disableTextColor,
                 style = MaterialTheme.typography.titleSmall
             )
         }

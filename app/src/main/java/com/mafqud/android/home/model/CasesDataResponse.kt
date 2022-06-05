@@ -1,6 +1,5 @@
 package com.mafqud.android.home.model
 import androidx.annotation.Keep
-import com.mafqud.android.home.CasesType
 import com.squareup.moshi.Json
 
 

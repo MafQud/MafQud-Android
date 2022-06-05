@@ -6,7 +6,6 @@ import androidx.paging.cachedIn
 import com.mafqud.android.base.viewModel.BaseViewModel
 import com.mafqud.android.home.model.CasesDataResponse
 import com.mafqud.android.util.network.Result
-import com.mafqud.android.util.other.LogMe
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import javax.inject.Inject
@@ -19,28 +18,28 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
     init {
         handleIntents {
             when (it) {
-                is HomeIntent.GetCases -> getCase(it.casesType)
+                is HomeIntent.GetCases -> getCase(it.casesTabType)
                 HomeIntent.Refresh -> refreshData()
             }
         }
     }
 
-    private fun getCase(casesType: CasesType) {
+    private fun getCase(casesTabType: CasesTabType) {
         setUserName()
-        setSelectedCasesType(casesType)
+        setSelectedCasesType(casesTabType)
         getAllData(isRefreshing = false)
     }
 
-    private fun setSelectedCasesType(casesType: CasesType) {
+    private fun setSelectedCasesType(casesTabType: CasesTabType) {
         _stateChannel.tryEmit(
             stateChannel.value.copy(
-                casesType = casesType
+                casesTabType = casesTabType
             )
         )
     }
 
-    private fun getSelectedCasesType(): CasesType {
-        return stateChannel.value.casesType
+    private fun getSelectedCasesType(): CasesTabType {
+        return stateChannel.value.casesTabType
     }
 
     private fun setUserName() {

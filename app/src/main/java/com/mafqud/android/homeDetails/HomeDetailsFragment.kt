@@ -1,36 +1,40 @@
-package com.mafqud.android.home
+package com.mafqud.android.homeDetails
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mafqud.android.R
 import com.mafqud.android.base.fragment.BaseFragment
-import com.mafqud.android.home.model.CasesDataResponse
-import com.mafqud.android.homeDetails.HomeDetailsFragmentDirections
-import com.mafqud.android.ui.compose.HomeAppBar
+import com.mafqud.android.home.model.CaseType
+import com.mafqud.android.notification.NotificationType
+import com.mafqud.android.results.caseDetails.*
+import com.mafqud.android.results.cases.*
+import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.status.loading.CircleLoading
 import com.mafqud.android.ui.theme.MafQudTheme
 import com.mafqud.android.util.network.ShowNetworkErrorSnakeBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment() {
+class HomeDetailsFragment : BaseFragment() {
 
-
-    private val viewModel: HomeViewModel by viewModels()
+    private val args: HomeDetailsFragmentArgs by navArgs()
+    private val viewModel: CaseDetailsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,19 +54,25 @@ class HomeFragment : BaseFragment() {
             )
             setContent {
                 MafQudTheme {
-                    val userName = remember {
-                        mutableStateOf("")
+                    val appbarTitle = when (args.caseType) {
+                        CaseType.FOUND ->
+                            stringResource(id = R.string.title_losts_data)
+                        CaseType.MISSING ->
+                            stringResource(id = R.string.title_founds_data)
+                        else -> {
+                            ""
+                        }
                     }
                     val scaffoldState = rememberScaffoldState()
                     Scaffold(scaffoldState = scaffoldState, topBar = {
-                        HomeAppBar(
-                            userName = userName.value,
-                            onNotificationClicked = {
-                                findNavController().navigate(R.id.actionToNotificationGraph)
-                            }
+                        TitledAppBar(
+                            onIconClicked = {
+                                findNavController().navigateUp()
+                            },
+                            title = appbarTitle
                         )
                     }, content = {
-                        ListenToChanges(userName, scaffoldState)
+                        ListenToChanges(scaffoldState)
                     })
                 }
             }
@@ -70,7 +80,7 @@ class HomeFragment : BaseFragment() {
     }
 
     @Composable
-    private fun ListenToChanges(userName: MutableState<String>, scaffoldState: ScaffoldState) {
+    private fun ListenToChanges(scaffoldState: ScaffoldState) {
         val state = viewModel.stateChannel.collectAsState()
         val stateValue = state.value
         SwipeRefresh(
@@ -80,17 +90,16 @@ class HomeFragment : BaseFragment() {
             },
         ) {
 
-            if (stateValue.userName != null) {
-                userName.value = stateValue.userName
-            }
             CircleLoading(stateValue.isLoading)
 
-            HomeScreen(cases = stateValue.cases,
-                selectedTapState = stateValue.casesTabType,
-                onTapClicked = {
-                    requestCasesIntent(it)
-                }, onCaseClicked = {
-                    openCaseDetails(it)
+            CaseDetailsScreen(stateValue.case,
+                onContact = {
+                   /* val actionToContact =
+                        CaseDetailsFragmentDirections.actionCaseDetailsFragmentToContactFragment(
+                            stateValue.case
+                        )
+                    actionToContact.caseId = args.caseMatch?.case?.id ?: -1
+                    findNavController().navigate(actionToContact)*/
                 })
 
             if (stateValue.networkError != null) {
@@ -99,29 +108,16 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun openCaseDetails(it: CasesDataResponse.Case) {
-        val actionToDetails = HomeFragmentDirections.actionHomeFragmentToHomeDetailsFragment(
-            it.id ?: -1,
-            it.getCaseType()
-        )
-        findNavController().navigate(actionToDetails)
-    }
-
-    private fun requestCasesIntent(it: CasesTabType) {
-        lifecycleScope.launchWhenCreated {
-            viewModel.intentChannel.send(HomeIntent.GetCases(it))
-        }
-    }
 
     private fun refreshDataIntent() {
         lifecycleScope.launchWhenCreated {
-            viewModel.intentChannel.send(HomeIntent.Refresh)
+            viewModel.intentChannel.send(CaseDetailsIntent.Refresh(args.caseID))
         }
     }
 
     private fun requestDataIntent() {
         lifecycleScope.launchWhenCreated {
-            viewModel.intentChannel.send(HomeIntent.GetCases(CasesTabType.ALL))
+            viewModel.intentChannel.send(CaseDetailsIntent.GetCase(args.caseID))
         }
     }
 

@@ -15,7 +15,13 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.mafqud.android.home.HomeFragment"
-        android:label="HomeFragment" />
+        android:label="HomeFragment" >
+        <action
+            app:enterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_right"
+            android:id="@+id/action_homeFragment_to_homeDetailsFragment"
+            app:destination="@id/homeDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.mafqud.android.map.MapFragment"
@@ -96,4 +102,15 @@
         android:id="@+id/myAccountEditInfoFragment"
         android:name="com.mafqud.android.myAccountEdit.MyAccountEditInfoFragment"
         android:label="MyAccountEditInfoFragment" />
+    <fragment
+        android:id="@+id/homeDetailsFragment"
+        android:name="com.mafqud.android.homeDetails.HomeDetailsFragment"
+        android:label="HomeDetailsFragment" >
+        <argument
+            android:name="caseID"
+            app:argType="integer" />
+        <argument
+            android:name="caseType"
+            app:argType="com.mafqud.android.home.model.CaseType" />
+    </fragment>
 </navigation>

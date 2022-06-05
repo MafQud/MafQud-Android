@@ -3,8 +3,6 @@ package com.mafqud.android.results.cases
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.mafqud.android.data.RemoteDataManager
-import com.mafqud.android.home.CasesType
-import com.mafqud.android.home.model.CasesDataResponse
 import com.mafqud.android.results.cases.models.CasesMatchesResponse
 import com.mafqud.android.util.other.LogMe
 
