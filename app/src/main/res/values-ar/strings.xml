@@ -181,5 +181,6 @@
     <string name="error_phone_exists">هذا الرقم مسجل لدينا بالفعل</string>
     <string name="error_location">برجاء اختيار المحافظة والمدينة</string>
     <string name="name_updated">تم تحديث الاسم</string>
+    <string name="no_name_state">بدون اسم</string>
 
 </resources>

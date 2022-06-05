@@ -22,6 +22,7 @@ data class HomeViewState(
     val cases: Flow<PagingData<CasesDataResponse.Case>>? = null,
     val ageRange: AgeRange? = null,
     val searchedName: String? = null,
+    val isNoName: Boolean = false,
     val govs: List<MyGov>? = null,
     val govID: Int? = null,
 )

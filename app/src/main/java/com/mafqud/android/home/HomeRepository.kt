@@ -16,14 +16,15 @@ class HomeRepository @Inject constructor () : BaseRepository() {
         casesTabType: CasesTabType,
         ageRange: AgeRange?,
         searchName: String?,
-        govID: Int?
+        govID: Int?,
+        isNoName: Boolean?
     ): Result<Pager<Int, CasesDataResponse.Case>> {
         return safeApiCall {
             return@safeApiCall Pager(config = PagingConfig(
                 pageSize = PAGE_SIZE_PAGING_EXPLORE,
                 enablePlaceholders = false
             ), pagingSourceFactory = {
-                CasesSource(remoteDataManager, casesTabType, ageRange, searchName, govID)
+                CasesSource(remoteDataManager, casesTabType, ageRange, searchName, govID, isNoName)
             })
         }
     }

@@ -88,6 +88,7 @@ interface RemoteDataManager {
         @Query("end_age") endAge: Int?,
         @Query("name") name: String?,
         @Query("gov") govID: Int?,
+        @Query("include_null") isNoName: Boolean?,
     ): CasesDataResponse
 
     @POST("/api/auth/token/refresh/")

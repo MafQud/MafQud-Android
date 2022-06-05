@@ -84,6 +84,7 @@ class HomeFragment : BaseFragment() {
             CircleLoading(stateValue.isLoading)
 
             HomeScreen(
+                isNoName = stateValue.isNoName,
                 selectedGovId = stateValue.govID,
                 govs = stateValue.govs,
                 searchedName = stateValue.searchedName,
@@ -100,11 +101,19 @@ class HomeFragment : BaseFragment() {
                     requestCasesByNameIntent(it)
                 }, onGovSelected = {
                     requestCasesByGovIntent(it)
+                }, onNoNameSelected = {
+                    requestCasesByNoNameIntent()
                 })
 
             if (stateValue.networkError != null) {
                 stateValue.networkError.ShowNetworkErrorSnakeBar(scaffoldState)
             }
+        }
+    }
+
+    private fun requestCasesByNoNameIntent() {
+        lifecycleScope.launchWhenCreated {
+            viewModel.intentChannel.send(HomeIntent.GetCasesByNoName)
         }
     }
 

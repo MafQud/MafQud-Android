@@ -28,8 +28,22 @@ class HomeViewModel @Inject constructor(
                 is HomeIntent.GetCasesByAge -> getCaseByAge(it)
                 is HomeIntent.GetCasesByName -> getCaseByName(it)
                 is HomeIntent.GetCasesByGov -> getCaseByGov(it)
+                is HomeIntent.GetCasesByNoName -> getCaseByNoName()
             }
         }
+    }
+
+    private fun getCaseByNoName() {
+        setNoName()
+        getAllData(isRefreshing = false)
+    }
+
+    private fun setNoName() {
+        _stateChannel.tryEmit(
+            stateChannel.value.copy(
+                isNoName = !stateChannel.value.isNoName
+            )
+        )
     }
 
     private fun getCaseByGov(it: HomeIntent.GetCasesByGov) {
@@ -118,11 +132,20 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun refreshData() {
+        resetNoName()
         restAgeRange()
         resetSearchName()
         resetGov()
         emitRefreshingState()
         getAllData(true)
+    }
+
+    private fun resetNoName() {
+        _stateChannel.tryEmit(
+            stateChannel.value.copy(
+                isNoName = false
+            )
+        )
     }
 
     private fun resetGov() {
@@ -174,12 +197,15 @@ class HomeViewModel @Inject constructor(
             getSelectedCasesType(),
             getAgeRange(),
             geSearchName(),
-            getGovID()
+            getGovID(),
+            getIsNoName()
         )
         when (result) {
             is Result.Success -> emitNotificationsData(result.data)
         }
     }
+
+    private fun getIsNoName() = _stateChannel.value.isNoName
 
     private fun getGovID() = _stateChannel.value.govID
 

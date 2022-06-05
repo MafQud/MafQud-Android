@@ -14,7 +14,8 @@ class CasesSource(
     private val casesTabType: CasesTabType,
     private val ageRange: AgeRange?,
     private val searchName: String?,
-    private val govID: Int?
+    private val govID: Int?,
+    private val isNoName: Boolean?
 ) : PagingSource<Int, CasesDataResponse.Case>() {
 
     override suspend fun load(params: LoadParams<Int>): PagingSource.LoadResult<Int, CasesDataResponse.Case> {
@@ -34,7 +35,8 @@ class CasesSource(
                 startAge = ageRange?.start,
                 endAge = ageRange?.end,
                 name = searchName,
-                govID = govID
+                govID = govID,
+                isNoName = isNoName
             )
 
             val nextPage: Int? =

@@ -202,4 +202,5 @@
     <string name="error_phone_exists">Phone exists before</string>
     <string name="error_location">Choose gov and city</string>
     <string name="name_updated">Name updated</string>
+    <string name="no_name_state">No Name</string>
 </resources>

@@ -1,6 +1,8 @@
 package com.mafqud.android.home
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,6 +33,7 @@ import com.mafqud.android.home.model.CasesDataResponse
 import com.mafqud.android.locations.MyGov
 import com.mafqud.android.ui.compose.CaseItem
 import com.mafqud.android.ui.compose.DropDownItems
+import com.mafqud.android.ui.compose.IconAdd
 import com.mafqud.android.ui.picker.AgePickerDialog
 import com.mafqud.android.ui.theme.*
 import com.mafqud.android.util.network.HandlePagingError
@@ -56,6 +59,9 @@ fun HomeScreen(
     govs: List<MyGov>?,
     onGovSelected: (Int?) -> Unit = {},
     selectedGovId: Int?,
+    isNoName: Boolean,
+    onNoNameSelected: () -> Unit
+
 ) {
     ColumnUi(
         Modifier
@@ -68,7 +74,9 @@ fun HomeScreen(
             onTapClicked, selectedTapState,
             ageRange, onRangeSelected,
             searchedName, onSearchTyping,
-            govs, onGovSelected, selectedGovId
+            govs, onGovSelected, selectedGovId,
+            isNoName,
+            onNoNameSelected
         )
         CasesUi(Modifier.weight(1f), cases, onCaseClicked)
     }
@@ -84,7 +92,9 @@ fun HeadSearchUi(
     onSearchTyping: (String) -> Unit,
     govs: List<MyGov>?,
     onGovSelected: (Int?) -> Unit,
-    selectedGovId: Int?
+    selectedGovId: Int?,
+    isNoName: Boolean,
+    onNoNameSelected: () -> Unit
 ) {
     BoxUi(
         Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
@@ -99,10 +109,12 @@ fun HeadSearchUi(
             // name filter
             searchedName,
             onSearchTyping,
+            isNoName,
             // gov filer
             govs,
             onGovSelected,
-            selectedGovId
+            selectedGovId,
+            onNoNameSelected
         )
     }
 }
@@ -116,56 +128,103 @@ private fun SearchUi(
     onRangeSelected: (AgeRange) -> Unit,
     searchedName: String?,
     onSearchTyping: (String) -> Unit,
+    isNoName: Boolean,
     govs: List<MyGov>?,
     onGovSelected: (Int?) -> Unit,
-    selectedGovId: Int?
+    selectedGovId: Int?,
+    onNoNameSelected: () -> Unit
+
 ) {
     ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         TapsUi(onTapClicked, selectedTapState)
         DropDownUi(ageRange, onRangeSelected, govs, onGovSelected, selectedGovId)
-        SearchNameUi(searchedName, onSearchTyping)
+        SearchNameUi(searchedName, onSearchTyping, isNoName,onNoNameSelected )
     }
 }
 
 @Composable
-private fun SearchNameUi(searchedName: String?, onSearchTyping: (String) -> Unit) {
+private fun SearchNameUi(
+    searchedName: String?,
+    onSearchTyping: (String) -> Unit,
+    isNoName: Boolean,
+    onNoNameSelected: () -> Unit
+) {
     val mSearchName = remember {
         mutableStateOf(searchedName ?: "")
     }
     if (searchedName == null) {
         mSearchName.value = ""
     }
-    TextFieldUi(
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-        keyboardActions = KeyboardActions { /*onTypeListener(searchWords.value)*/ },
-        modifier = Modifier
-            .fillMaxWidth(),
-        placeholder = {
-            TextUi(
-                text = stringResource(id = R.string.search_title),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                style = MaterialTheme.typography.titleSmall
+
+
+    BoxUi {
+        TextFieldUi(
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+            keyboardActions = KeyboardActions { /*onTypeListener(searchWords.value)*/ },
+            modifier = Modifier
+                .fillMaxWidth(),
+            placeholder = {
+                TextUi(
+                    text = stringResource(id = R.string.search_title),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.titleSmall
+                )
+            },
+            shape = RoundedCornerShape(50),
+            value = mSearchName.value,
+            onValueChange = {
+                mSearchName.value = it
+                onSearchTyping(it)
+            },
+            singleLine = true,
+            leadingIcon = {
+                IconUi(
+                    imageVector = Icons.Outlined.Search,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            },
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = MaterialTheme.colorScheme.onSecondary,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
             )
-        },
-        shape = RoundedCornerShape(50),
-        value = mSearchName.value,
-        onValueChange = {
-            mSearchName.value = it
-            onSearchTyping(it)
-        },
-        singleLine = true,
-        leadingIcon = {
-            IconUi(
-                imageVector = Icons.Outlined.Search,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        },
-        colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = MaterialTheme.colorScheme.onSecondary,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent
         )
+        IncludeNoNames(
+            Modifier
+                .align(Alignment.CenterEnd)
+                .padding(end = 8.dp),
+            isNoName,
+            onNoNameSelected
+        )
+    }
+}
+
+@Composable
+fun IncludeNoNames(modifier: Modifier, isSelected: Boolean, onNoNameSelected: () -> Unit) {
+
+    val color = animateColorAsState(
+        targetValue = if (isSelected)
+            MaterialTheme.colorScheme.green
+        else MaterialTheme.colorScheme.green.copy(alpha = 0.4f)
     )
+    BoxUi(
+        modifier
+            .clip(RoundedCornerShape(20.dp))
+            .background(color.value)
+            .clickable(indication = null,
+                interactionSource = remember { MutableInteractionSource() }) {
+                onNoNameSelected()
+            }
+    ) {
+        RowUi(Modifier.padding(4.dp)) {
+            IconAdd()
+            TextUi(
+                text = stringResource(id = R.string.no_name_state),
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.background
+            )
+        }
+    }
 }
 
 @Composable
@@ -206,7 +265,7 @@ private fun DropDownUi(
             if (selectedGovId == null) {
                 selectedItem.value = "-1"
             } else selectedItem.value = govs.find {
-                return@find (it.id  == selectedGovId)
+                return@find (it.id == selectedGovId)
             }?.name ?: "-1"
 
             DropDownItems(
