@@ -21,6 +21,10 @@ class NotificationUseCase @Inject constructor(private val notificationRepository
         }
     }
 
+    suspend fun markNotificationAsRead(id: Int) {
+        notificationRepository.markNotificationAsRead(id)
+    }
+
     private fun returnNotifications(data: Pager<Int, NotificationsResponse.Notification>):
             Flow<PagingData<NotificationsResponse.Notification>> {
         return data.flow.map {

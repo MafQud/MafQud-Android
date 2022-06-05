@@ -23,7 +23,14 @@ class NotificationViewModel @Inject constructor(private val notificationUseCase:
             when (it) {
                 NotificationIntent.GetAllData -> getAllData(false)
                 NotificationIntent.RefreshData -> refreshData()
+                is NotificationIntent.MarkNotificationAsRead -> markNotificationRead(it)
             }
+        }
+    }
+
+    private fun markNotificationRead(it: NotificationIntent.MarkNotificationAsRead) {
+        launchViewModelScope {
+            notificationUseCase.markNotificationAsRead(it.id)
         }
     }
 

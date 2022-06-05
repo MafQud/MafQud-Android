@@ -13,6 +13,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
@@ -56,14 +57,14 @@ fun DotText(text: String) {
 }
 
 @Composable
-fun CircleDot() {
+fun CircleDot(color: Color = MaterialTheme.colorScheme.error) {
     BoxUi(
         modifier = Modifier
             .size(10.dp)
             .clip(
                 RoundedCornerShape(50)
             )
-            .background(MaterialTheme.colorScheme.error)
+            .background(color)
 
     ) {
 

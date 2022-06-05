@@ -21,9 +21,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mafqud.android.R
 import com.mafqud.android.base.fragment.BaseFragment
 import com.mafqud.android.home.model.CaseType
-import com.mafqud.android.notification.NotificationType
 import com.mafqud.android.results.caseDetails.*
-import com.mafqud.android.results.cases.*
 import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.status.loading.CircleLoading
 import com.mafqud.android.ui.theme.MafQudTheme

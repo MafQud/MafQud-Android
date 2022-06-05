@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,22 +25,13 @@ import com.mafqud.android.home.model.CaseType
 import com.mafqud.android.notification.models.NotificationAction
 import com.mafqud.android.notification.models.NotificationIconType
 import com.mafqud.android.notification.models.NotificationsResponse
+import com.mafqud.android.report.CircleDot
 import com.mafqud.android.ui.theme.*
 import com.mafqud.android.util.dateFormat.fromFullDateToAnother
 import com.mafqud.android.util.network.HandlePagingError
 import kotlinx.coroutines.flow.Flow
 import java.io.Serializable
 
-
-@Keep
-enum class NotificationType {
-    SUCCESS_FINDING_LOST,
-    SUCCESS_FINDING_FOUND,
-    FAILED_LOST,
-    FAILED_FOUND,
-    OTHER,
-    NONE
-}
 
 @Keep
 data class CaseModel(
@@ -60,7 +52,7 @@ sealed class NotificationClickAction {
 @Preview
 fun NotificationScreen(
     data: Flow<PagingData<NotificationsResponse.Notification>>? = null,
-    onNotificationClicked: (NotificationClickAction) -> Unit = {  _it -> },
+    onNotificationClicked: (NotificationClickAction, Int?) -> Unit = { it, _it -> },
 ) {
     BoxUi(
         modifier = Modifier
@@ -153,11 +145,12 @@ fun EmptyNotificationState(fillParentMaxSize: Modifier) {
 @Composable
 fun NotificationItem(
     notification: NotificationsResponse.Notification,
-    onNotificationClicked: (NotificationClickAction) -> Unit
+    onNotificationClicked: (NotificationClickAction, Int?) -> Unit
 ) {
     BoxUi(
         Modifier
             .fillMaxWidth()
+            .fillMaxHeight()
             .clip(RoundedCornerShape(12.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
             .clickable {
@@ -170,6 +163,7 @@ fun NotificationItem(
                                     caseType = notification.getCaseType()
                                 )
                             )
+                        , notification.id
                         )
                     }
                     NotificationAction.PUBLISHED -> {
@@ -180,6 +174,7 @@ fun NotificationItem(
                                     caseType = notification.getCaseType()
                                 )
                             )
+                        , notification.id
                         )
                     }
                     NotificationAction.DETAILS -> {
@@ -190,10 +185,11 @@ fun NotificationItem(
                                     caseType = notification.getCaseType()
                                 )
                             )
+                            , notification.id
                         )
                     }
                     NotificationAction.NONE -> {
-                        onNotificationClicked(NotificationClickAction.None)
+                        onNotificationClicked(NotificationClickAction.None, notification.id)
                     }
                 }
             }
@@ -205,6 +201,9 @@ fun NotificationItem(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
+
+            NotificationUnreadDot(Modifier.alignByBaseline(),notification)
+
             ColumnUi(
                 Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -241,5 +240,28 @@ fun NotificationItem(
         }
     }
 
+}
+
+@Composable
+fun NotificationUnreadDot(modifier: Modifier, notification: NotificationsResponse.Notification) {
+    if (notification.readAt == null) {
+        val dotColor: Color? = when (notification.iconType) {
+            NotificationIconType.SUCCESS -> MaterialTheme.colorScheme.green
+            NotificationIconType.WARNING -> MaterialTheme.colorScheme.yellow
+            NotificationIconType.INFO -> MaterialTheme.colorScheme.primary
+            NotificationIconType.ERROR -> MaterialTheme.colorScheme.error
+            NotificationIconType.NONE -> null
+        }
+
+        BoxUi(
+            modifier = modifier
+                .padding(end = 4.dp),
+            contentAlignment = Alignment.TopCenter
+        ) {
+            dotColor?.let {
+                CircleDot(color = dotColor)
+            }
+        }
+    }
 }
 

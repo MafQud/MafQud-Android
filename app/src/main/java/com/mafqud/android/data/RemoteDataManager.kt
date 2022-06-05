@@ -167,4 +167,9 @@ interface RemoteDataManager {
     @POST("/api/cases/create/")
     suspend fun uploadCase(@Body createCaseBody: CreateCaseBody)
 
+    @GET("/api/notifications/{notificationID}/read")
+    suspend fun markNotificationAsRead(
+        @Path("notificationID") id: Int
+    )
+
 }

@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
 import com.mafqud.android.home.model.CaseType
 import com.mafqud.android.notification.CaseModel
-import com.mafqud.android.notification.NotificationType
 import com.mafqud.android.ui.compose.ButtonAuth
 import com.mafqud.android.ui.theme.*
 

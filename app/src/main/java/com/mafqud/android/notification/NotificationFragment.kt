@@ -104,13 +104,22 @@ class NotificationFragment : Fragment() {
             }
             NotificationScreen(
                 data = stateValue.notifications
-            ) { notificationType ->
+            ) { notificationType, id ->
+                sendMarkNotificationAsReadIntent(id)
                 when (notificationType) {
                     is NotificationClickAction.Details -> {}
                     is NotificationClickAction.Failed -> openFailureFragment(notificationType.caseModel)
                     NotificationClickAction.None -> {}
                     is NotificationClickAction.Success -> openSuccessFragment(notificationType.caseModel)
                 }
+            }
+        }
+    }
+
+    private fun sendMarkNotificationAsReadIntent(id: Int?) {
+        id?.let {
+            lifecycleScope.launchWhenCreated {
+                viewModel.intentChannel.send(NotificationIntent.MarkNotificationAsRead(id))
             }
         }
     }

@@ -23,4 +23,10 @@ class NotificationRepository @Inject constructor (private val remoteData: Remote
         }
     }
 
+
+    suspend fun markNotificationAsRead(id: Int) {
+        safeApiCall {
+            remoteData.markNotificationAsRead(id)
+        }
+    }
 }
