@@ -6,9 +6,8 @@ import androidx.paging.cachedIn
 import com.mafqud.android.base.viewModel.BaseViewModel
 import com.mafqud.android.home.model.CasesDataResponse
 import com.mafqud.android.util.network.Result
-import com.mafqud.android.util.other.LogMe
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 
@@ -22,8 +21,22 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
                 is HomeIntent.GetCases -> getCase(it.casesTabType)
                 HomeIntent.Refresh -> refreshData()
                 is HomeIntent.GetCasesByAge -> getCaseByAge(it)
+                is HomeIntent.GetCasesByName -> getCaseByName(it)
             }
         }
+    }
+
+    private fun getCaseByName(it: HomeIntent.GetCasesByName) {
+        setSearchedName(it.name)
+        getAllData(isRefreshing = false)
+    }
+
+    private fun setSearchedName(name: String) {
+        _stateChannel.tryEmit(
+            stateChannel.value.copy(
+                searchedName = name
+            )
+        )
     }
 
     private fun getCaseByAge(it: HomeIntent.GetCasesByAge) {
@@ -71,8 +84,17 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
 
     private fun refreshData() {
         restAgeRange()
+        resetSearchName()
         emitRefreshingState()
         getAllData(true)
+    }
+
+    private fun resetSearchName() {
+        _stateChannel.tryEmit(
+            stateChannel.value.copy(
+                searchedName = null
+            )
+        )
     }
 
     private fun restAgeRange() {
@@ -104,11 +126,13 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
     }
 
     private suspend fun getCases() {
-        val result = homeRepository.getCases(getSelectedCasesType(), getAgeRange())
+        val result = homeRepository.getCases(getSelectedCasesType(), getAgeRange(), geSearchName())
         when (result) {
             is Result.Success -> emitNotificationsData(result.data)
         }
     }
+
+    private fun geSearchName() = _stateChannel.value.searchedName ?: ""
 
     private fun getAgeRange() = _stateChannel.value.ageRange
 

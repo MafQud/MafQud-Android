@@ -12,7 +12,8 @@ const val PAGE_LIMIT_AND_OFFSET = 10
 class CasesSource(
     private val remoteData: RemoteDataManager,
     private val casesTabType: CasesTabType,
-    private val ageRange: AgeRange?
+    private val ageRange: AgeRange?,
+    private val searchName: String
 ) : PagingSource<Int, CasesDataResponse.Case>() {
 
     override suspend fun load(params: LoadParams<Int>): PagingSource.LoadResult<Int, CasesDataResponse.Case> {
@@ -32,12 +33,14 @@ class CasesSource(
                     type = type,
                     startAge = ageRange.start,
                     endAge = ageRange.end,
+                    name = searchName,
                 )
             } else {
                 remoteData.getCases(
                     offset = currentOffset,
                     limit = PAGE_LIMIT_AND_OFFSET,
-                    type = type
+                    type = type,
+                    name = searchName
                 )
             }
 

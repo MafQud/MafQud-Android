@@ -84,6 +84,7 @@ class HomeFragment : BaseFragment() {
             CircleLoading(stateValue.isLoading)
 
             HomeScreen(
+                searchedName = stateValue.searchedName,
                 ageRange = stateValue.ageRange,
                 cases = stateValue.cases,
                 selectedTapState = stateValue.casesTabType,
@@ -93,11 +94,19 @@ class HomeFragment : BaseFragment() {
                     openCaseDetails(it)
                 }, onRangeSelected = {
                     requestCasesByAgeIntent(it)
+                }, onSearchTyping = {
+                    requestCasesByNameIntent(it)
                 })
 
             if (stateValue.networkError != null) {
                 stateValue.networkError.ShowNetworkErrorSnakeBar(scaffoldState)
             }
+        }
+    }
+
+    private fun requestCasesByNameIntent(it: String) {
+        lifecycleScope.launchWhenCreated {
+            viewModel.intentChannel.send(HomeIntent.GetCasesByName(it))
         }
     }
 

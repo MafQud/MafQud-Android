@@ -20,4 +20,5 @@ data class HomeViewState(
     val casesTabType: CasesTabType = CasesTabType.ALL,
     val cases: Flow<PagingData<CasesDataResponse.Case>>? = null,
     val ageRange: AgeRange? = null,
+    val searchedName: String? = null
 )

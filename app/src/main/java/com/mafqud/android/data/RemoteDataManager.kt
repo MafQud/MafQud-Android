@@ -83,6 +83,7 @@ interface RemoteDataManager {
         @Query("offset") offset: Int,
         @Query("type") type: String,
         @Query("limit") limit: Int,
+        @Query("name") name: String,
     ): CasesDataResponse
 
     @GET("/api/cases")
@@ -92,6 +93,7 @@ interface RemoteDataManager {
         @Query("limit") limit: Int,
         @Query("start_age") startAge: Int,
         @Query("end_age") endAge: Int,
+        @Query("name") name: String,
     ): CasesDataResponse
 
     @POST("/api/auth/token/refresh/")

@@ -49,7 +49,9 @@ fun HomeScreen(
     onCaseClicked: (CasesDataResponse.Case) -> Unit = {},
     cases: Flow<PagingData<CasesDataResponse.Case>>?,
     selectedTapState: CasesTabType,
-    ageRange: AgeRange?
+    ageRange: AgeRange?,
+    searchedName: String?,
+    onSearchTyping: (String) -> Unit = {},
 ) {
     ColumnUi(
         Modifier
@@ -58,7 +60,11 @@ fun HomeScreen(
             ),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        HeadSearchUi(onTapClicked, selectedTapState, ageRange, onRangeSelected)
+        HeadSearchUi(
+            onTapClicked, selectedTapState,
+            ageRange, onRangeSelected,
+            searchedName, onSearchTyping
+        )
         CasesUi(Modifier.weight(1f), cases, onCaseClicked)
     }
 }
@@ -68,12 +74,24 @@ fun HeadSearchUi(
     onTapClicked: (CasesTabType) -> Unit = {},
     selectedTapState: CasesTabType = CasesTabType.ALL,
     ageRange: AgeRange?,
-    onRangeSelected: (AgeRange) -> Unit
+    onRangeSelected: (AgeRange) -> Unit,
+    searchedName: String?,
+    onSearchTyping: (String) -> Unit
 ) {
     BoxUi(
         Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
     ) {
-        SearchUi(onTapClicked, selectedTapState, ageRange, onRangeSelected)
+        SearchUi(
+            //tap action
+            onTapClicked,
+            selectedTapState,
+            // age filter
+            ageRange,
+            onRangeSelected,
+            // name filter
+            searchedName,
+            onSearchTyping
+        )
     }
 }
 
@@ -83,19 +101,24 @@ private fun SearchUi(
     onTapClicked: (CasesTabType) -> Unit,
     selectedTapState: CasesTabType,
     ageRange: AgeRange?,
-    onRangeSelected: (AgeRange) -> Unit
+    onRangeSelected: (AgeRange) -> Unit,
+    searchedName: String?,
+    onSearchTyping: (String) -> Unit
 ) {
     ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         TapsUi(onTapClicked, selectedTapState)
         DropDownUi(ageRange, onRangeSelected)
-        SearchNameUi()
+        SearchNameUi(searchedName, onSearchTyping)
     }
 }
 
 @Composable
-private fun SearchNameUi() {
-    val searchName = remember {
-        mutableStateOf("")
+private fun SearchNameUi(searchedName: String?, onSearchTyping: (String) -> Unit) {
+    val mSearchName = remember {
+        mutableStateOf(searchedName ?: "")
+    }
+    if (searchedName == null) {
+        mSearchName.value = ""
     }
     TextFieldUi(
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
@@ -110,10 +133,10 @@ private fun SearchNameUi() {
             )
         },
         shape = RoundedCornerShape(50),
-        value = searchName.value,
+        value = mSearchName.value,
         onValueChange = {
-            searchName.value = it
-            //onTypeListener(it)
+            mSearchName.value = it
+            onSearchTyping(it)
         },
         singleLine = true,
         leadingIcon = {
