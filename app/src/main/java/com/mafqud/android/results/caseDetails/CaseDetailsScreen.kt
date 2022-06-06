@@ -20,6 +20,7 @@ import com.mafqud.android.R
 import com.mafqud.android.results.caseDetails.models.CaseDetailsResponse
 import com.mafqud.android.ui.compose.ButtonAuth
 import com.mafqud.android.ui.compose.UserPhoto
+import com.mafqud.android.ui.compose.toCorrectImageUrl
 import com.mafqud.android.ui.theme.*
 
 @Composable
@@ -59,12 +60,16 @@ fun CaseDetailsScreen(
                 )
                 SpacerSmallLine()
                 if (!case.photos.isNullOrEmpty()) {
-                    val restPhotos = case.photos.drop(1)
-                    LazyRowUi(content = {
-                        items(restPhotos) {
-                            UserPhoto(imagesSize = 47.dp)
-                        }
-                    })
+                    val restPhotos = case.photos.drop(1).map {
+                        return@map it?.toCorrectImageUrl()
+                    }
+                    LazyRowUi(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        content = {
+                            items(restPhotos) { image ->
+                                UserPhoto(imagesSize = 47.dp, imageUrl = image.toString())
+                            }
+                        })
                 }
                 SpacerUi(modifier = Modifier.height(20.dp))
                 TableContent(case)
@@ -90,7 +95,6 @@ fun CaseDetailsScreen(
 fun TableContent(case: CaseDetailsResponse) {
     BoxUi(
         modifier = Modifier
-            .height(200.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
@@ -101,7 +105,7 @@ fun TableContent(case: CaseDetailsResponse) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            RowUi {
+            RowUi(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 // date
                 TextUi(
                     modifier = Modifier.weight(1f),
@@ -118,7 +122,7 @@ fun TableContent(case: CaseDetailsResponse) {
             }
             SpacerSmallLine()
 
-            RowUi {
+            RowUi(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
 
                 //Email
                 TextUi(
@@ -136,7 +140,7 @@ fun TableContent(case: CaseDetailsResponse) {
             }
             SpacerSmallLine()
 
-            RowUi {
+            RowUi(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
 
                 //address
                 TextUi(
