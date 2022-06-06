@@ -1,12 +1,14 @@
 package com.mafqud.android.home
 
 import android.util.Range
+import androidx.annotation.Keep
 import androidx.paging.PagingData
 import com.mafqud.android.home.model.CasesDataResponse
 import com.mafqud.android.locations.MyGov
 import com.mafqud.android.util.network.Result
 import kotlinx.coroutines.flow.Flow
 
+@Keep
 data class AgeRange(
     val start: Int,
     val end: Int,

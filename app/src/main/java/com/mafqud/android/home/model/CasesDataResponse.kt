@@ -2,7 +2,7 @@ package com.mafqud.android.home.model
 import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
-
+@Keep
 enum class CaseType{
     FOUND,
     MISSING,

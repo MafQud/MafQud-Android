@@ -237,9 +237,6 @@ private fun DropDownUi(
 ) {
 
     RowUi(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        val selectedItemDate = remember {
-            mutableStateOf("")
-        }
         AgeTextPicker(
             Modifier
                 .weight(1f)
@@ -249,7 +246,6 @@ private fun DropDownUi(
         )
         DropDownItems(
             items = listOf("تاريخ التغيب"),
-            selectedItemTitle = selectedItemDate,
             modifier = Modifier
                 .weight(1f)
                 .height(30.dp),

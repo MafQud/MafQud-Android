@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.ArrowDropDown
 import androidx.compose.material3.MaterialTheme
@@ -27,7 +28,7 @@ import com.mafqud.android.util.other.LogMe
 fun DropDownItems(
     title: String = "",
     items: List<String>,
-    selectedItemTitle: MutableState<String> = mutableStateOf(""),
+    selectedItemTitle: MutableState<String>? = null,
     modifier: Modifier,
     iconColor: Color = MaterialTheme.colorScheme.onSecondary,
     backgroundColor: Color = MaterialTheme.colorScheme.primary,
@@ -38,11 +39,13 @@ fun DropDownItems(
     val govTitle = title
     val selectedText = remember { mutableStateOf(govTitle) }
 
-    if (selectedItemTitle.value == "-1") {
-        LogMe.i("selectedItemID" , "tr")
-        selectedText.value = govTitle
-    } else {
-        selectedText.value = selectedItemTitle.value
+    selectedItemTitle?.let {
+        if (selectedItemTitle.value == "-1") {
+            LogMe.i("selectedItemID" , "tr")
+            selectedText.value = govTitle
+        } else {
+            selectedText.value = selectedItemTitle.value
+        }
     }
 
     BoxUi(

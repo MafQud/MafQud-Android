@@ -293,10 +293,6 @@ private fun LocationForm(
         mutableStateOf(false)
     }
     ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        val selectedItem = remember {
-            mutableStateOf("")
-        }
-
         TextUi(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(id = R.string.address),
@@ -316,7 +312,6 @@ private fun LocationForm(
                     items = it.map {
                         return@map it.name ?: ""
                     },
-                    selectedItemTitle = selectedItem,
                     iconColor = MaterialTheme.colorScheme.onTertiaryContainer,
                     backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
                     textColor = MaterialTheme.colorScheme.onTertiaryContainer,
@@ -337,7 +332,6 @@ private fun LocationForm(
                     items = it.map {
                         return@map it.name ?: ""
                     },
-                    selectedItemTitle = selectedItem,
                     modifier = Modifier
                         .weight(1f)
                         .height(50.dp),
