@@ -92,12 +92,14 @@ class HomeDetailsFragment : BaseFragment() {
 
             CaseDetailsScreen(stateValue.case,
                 onContact = {
-                   /* val actionToContact =
-                        CaseDetailsFragmentDirections.actionCaseDetailsFragmentToContactFragment(
-                            stateValue.case
-                        )
-                    actionToContact.caseId = args.caseMatch?.case?.id ?: -1
-                    findNavController().navigate(actionToContact)*/
+                    /* val actionToContact =
+                         CaseDetailsFragmentDirections.actionCaseDetailsFragmentToContactFragment(
+                             stateValue.case
+                         )
+                     actionToContact.caseId = args.caseMatch?.case?.id ?: -1
+                     findNavController().navigate(actionToContact)*/
+                }, onImageClicked = {
+                    openImagePreviewer(it)
                 })
 
             if (stateValue.networkError != null) {
@@ -106,6 +108,12 @@ class HomeDetailsFragment : BaseFragment() {
         }
     }
 
+    private fun openImagePreviewer(imageUrl: String?) {
+        val action =
+            HomeDetailsFragmentDirections.actionHomeDetailsFragmentToImageSliderFragment(imageUrl)
+
+        findNavController().navigate(action)
+    }
 
     private fun refreshDataIntent() {
         lifecycleScope.launchWhenCreated {

@@ -11,6 +11,7 @@ import androidx.annotation.LayoutRes
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.FlingBehavior
+import androidx.compose.foundation.gestures.LocalOverScrollConfiguration
 import androidx.compose.foundation.gestures.ScrollableDefaults
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -19,12 +20,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
@@ -62,6 +61,7 @@ import coil.size.Size
 import com.google.accompanist.pager.*
 import com.mafqud.android.R
 import com.mafqud.android.ui.compose.mirror
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlin.math.absoluteValue
 
 
@@ -399,6 +399,133 @@ fun SliderHorizontalUi(
                pagerState = pagerState,
                modifier = Modifier.align(Alignment.CenterHorizontally)
            )*/
+    }
+}
+
+
+@OptIn(InternalCoroutinesApi::class, androidx.compose.foundation.ExperimentalFoundationApi::class)
+@ExperimentalPagerApi
+@Composable
+fun SliderVerticalUi(
+    enableRippleEffect: Boolean = true,
+    count: Int,
+    backgroundColor: Color = Color.Transparent,
+    showIndicators: Boolean = true,
+    onAllViewClicked: () -> Unit = {},
+    animateToIndex: Int = 0,
+    contentModifier: Modifier = Modifier.requiredHeightIn(300.dp, 380.dp),
+    onCurrentPageChanged: (Int, Int) -> Unit = { it, _it -> },
+    pagerState: PagerState = rememberPagerState(),
+    content: @Composable (Int, PagerState) -> Unit,
+) {
+
+
+    LaunchedEffect(pagerState) {
+        // Collect from the a snapshotFlow reading the currentPage
+        snapshotFlow { pagerState.currentPage }.collect { page ->
+            onCurrentPageChanged(page, pagerState.pageCount)
+        }
+    }
+    val clickModifier: Modifier = if (enableRippleEffect) {
+        Modifier.clickable {
+            onAllViewClicked()
+        }
+    } else {
+        // for removing ripple ink click effect
+        Modifier.noRippleClickable {
+            onAllViewClicked()
+        }
+    }
+
+    // to disable OverScroll
+    CompositionLocalProvider(
+        LocalOverScrollConfiguration provides null
+    ) {
+        ColumnUi(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(backgroundColor)
+                .then(clickModifier),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            VerticalPager(state = pagerState, count = count) { page ->
+                CardUi(
+                    Modifier
+                        .graphicsLayer {
+                            // Calculate the absolute offset for the current page from the
+                            // scroll position. We use the absolute value which allows us to mirror
+                            // any effects for both directions
+                            val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
+
+                            // We animate the scaleX + scaleY, between 85% and 100%
+                            androidx.compose.ui.util
+                                .lerp(
+                                    start = 0.85f,
+                                    stop = 1f,
+                                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                                )
+                                .also { scale ->
+                                    scaleX = scale
+                                    scaleY = scale
+                                }
+                            // We animate the alpha, between 50% and 100%
+                            alpha = androidx.compose.ui.util.lerp(
+                                start = 0.5f,
+                                stop = 1f,
+                                fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                            )
+                        }
+                        .fillMaxWidth(), backgroundColor = Color.Transparent, elevation = 0.dp
+                ) {
+                    // Card content
+                    BoxUi(
+                        modifier = contentModifier,
+                        contentAlignment = Alignment.Center
+                    ) {
+                        content(page, pagerState)
+                    }
+
+                }
+            }
+
+            /**
+             *  HorizontalPagerIndicator
+             */
+
+            /**
+             *  HorizontalPagerIndicator
+             */
+            if (showIndicators) {
+                HorizontalPagerIndicator(
+                    indicatorWidth = 12.dp,
+                    indicatorHeight = 12.dp,
+                    pagerState = pagerState,
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .requiredSizeIn(50.dp, 30.dp),
+                    activeColor = MaterialTheme.colors.whiteAlways,
+                    inactiveColor = MaterialTheme.colors.gray200ToBlueLight
+                )
+            }
+        }
+
+        LaunchedEffect(pagerState.pageCount) {
+            if (pagerState.pageCount != 0) {
+                // now interact with pagerState
+                pagerState.scrollToPage(animateToIndex)
+
+            }
+        }
+    }
+
+}
+
+
+inline fun Modifier.noRippleClickable(crossinline onClick: () -> Unit): Modifier = composed {
+    clickable(indication = null,
+        interactionSource = remember { MutableInteractionSource() }) {
+        onClick()
     }
 }
 

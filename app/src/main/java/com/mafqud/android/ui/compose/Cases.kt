@@ -12,21 +12,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.request.CachePolicy
-import coil.request.ImageRequest
 import com.mafqud.android.R
 import com.mafqud.android.home.model.CaseType
 import com.mafqud.android.home.model.CasesDataResponse
 import com.mafqud.android.ui.theme.*
-import com.mafqud.android.util.other.LogMe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @Composable
@@ -150,8 +143,9 @@ fun CaseItem(
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun UserPhoto(
-    imageUrl: String = "",
-    imagesSize: Dp = 45.dp
+    imageUrl: String? = "",
+    imagesSize: Dp = 45.dp,
+    onClicked: () -> Unit = {}
 ) {
     CardUi(
         modifier = Modifier
@@ -164,32 +158,17 @@ fun UserPhoto(
             )
             .background(MaterialTheme.colorScheme.onSecondary)
             .clickable {
+                onClicked()
             }, elevation = 2.dp
     ) {
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(imageUrl.toCorrectImageUrl())
-                .crossfade(true)
-                .diskCachePolicy(CachePolicy.ENABLED)
-                .build(),
-            placeholder = painterResource(R.drawable.placeholder_image),
-            contentDescription = "User image",
-            contentScale = ContentScale.Crop,
-            error = painterResource(R.drawable.error_image),
+        LoadImageAsync(
             modifier = Modifier
                 .padding(2.dp)
-                .clip(CircleShape)
+                .clip(CircleShape),
+            imageUrl
         )
     }
 
 }
 
-fun String.toCorrectImageUrl(): String {
-    //LogMe.i("old_url", imageUrl)
-    val newBase = this.replaceAfter(delimiter = "s3", replacement = ".eu-south-1.amazonaws.com")
-    val file = "/files"
-    val filesPath = this.substringAfter(file)
-    val newUrl = newBase + file + filesPath
-    LogMe.i("new_url", newUrl)
-    return newUrl
-}
+

@@ -202,3 +202,18 @@ fun String?.toFirstChar(): String {
         return@let it
     } ?: "").toString()
 }
+
+fun Context.shareText(text: String) {
+    val intent = Intent(Intent.ACTION_SEND)
+    /*This will be the actual content you wish you share.*/
+    /*The type of the content is text, obviously.*/
+    intent.type = "text/plain"
+    /*Applying information Subject and Body.*/
+    intent.putExtra(
+        Intent.EXTRA_SUBJECT,
+        getString(R.string.share_subject)
+    )
+    intent.putExtra(Intent.EXTRA_TEXT, text)
+    /*Fire!*/
+    startActivity(Intent.createChooser(intent, getString(R.string.share_using)))
+}

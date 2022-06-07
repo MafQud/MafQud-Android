@@ -112,5 +112,19 @@
         <argument
             android:name="caseType"
             app:argType="com.mafqud.android.home.model.CaseType" />
+        <action
+            app:enterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_right"
+            android:id="@+id/action_homeDetailsFragment_to_imageSliderFragment"
+            app:destination="@id/imageSliderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/imageSliderFragment"
+        android:name="com.mafqud.android.imageSlider.ImageSliderFragment"
+        android:label="ImageSliderFragment" >
+        <argument
+            android:name="imageUrl"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 </navigation>

@@ -3,6 +3,7 @@ package com.mafqud.android.results.caseDetails
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -27,7 +28,8 @@ import com.mafqud.android.ui.theme.*
 @Preview
 fun CaseDetailsScreen(
     caseDetailsResponse: CaseDetailsResponse? = null,
-    onContact: () -> Unit = {}
+    onContact: () -> Unit = {},
+    onImageClicked: (String?) -> Unit = {}
 ) {
     caseDetailsResponse?.let { case ->
         BoxUi(
@@ -50,7 +52,11 @@ fun CaseDetailsScreen(
             ) {
                 SpacerUi(modifier = Modifier.height(20.dp))
                 if (!case.photos.isNullOrEmpty()) {
-                    UserPhoto(imageUrl = case.photos.first() ?: "", imagesSize = 80.dp)
+                    val firstImage = case.photos.first()
+                    UserPhoto(imageUrl = firstImage, imagesSize = 80.dp,
+                    onClicked = {
+                        onImageClicked(firstImage)
+                    })
                 }
 
                 TextUi(
@@ -59,18 +65,7 @@ fun CaseDetailsScreen(
                     style = MaterialTheme.typography.titleMedium
                 )
                 SpacerSmallLine()
-                if (!case.photos.isNullOrEmpty()) {
-                    val restPhotos = case.photos.drop(1).map {
-                        return@map it?.toCorrectImageUrl()
-                    }
-                    LazyRowUi(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        content = {
-                            items(restPhotos) { image ->
-                                UserPhoto(imagesSize = 47.dp, imageUrl = image.toString())
-                            }
-                        })
-                }
+                OtherPhotos(case, onImageClicked)
                 SpacerUi(modifier = Modifier.height(20.dp))
                 TableContent(case)
 
@@ -88,6 +83,25 @@ fun CaseDetailsScreen(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun OtherPhotos(case: CaseDetailsResponse, onImageClicked: (String?) -> Unit) {
+    if (!case.photos.isNullOrEmpty()) {
+        val restPhotos = case.photos.drop(1).map {
+            return@map it?.toCorrectImageUrl()
+        }
+
+        LazyRowUi(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            content = {
+                items(restPhotos) { imageUrl ->
+                    UserPhoto(imagesSize = 47.dp, imageUrl = imageUrl, onClicked = {
+                        onImageClicked(imageUrl)
+                    })
+                }
+            })
     }
 }
 
