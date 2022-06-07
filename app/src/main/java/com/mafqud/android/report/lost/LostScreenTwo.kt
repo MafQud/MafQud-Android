@@ -1,5 +1,6 @@
 package com.mafqud.android.report.lost
 
+import android.icu.lang.UCharacter.getAge
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -65,8 +66,8 @@ fun FragmentActivity.LostScreenTwo(
         mutableStateOf("")
     }
 
-    val selectedDate = remember {
-        mutableStateOf("")
+    val selectedDate: MutableState<String?> = remember {
+        mutableStateOf(null)
     }
     val phone = remember {
         mutableStateOf("")
@@ -103,22 +104,24 @@ fun FragmentActivity.LostScreenTwo(
                     enabled = true,
                     title = stringResource(id = R.string.search_losts),
                     onClick = {
-                        onNext(CreateCaseBody(
-                            details = CreateCaseBody.Details(
-                                age = selectedAge.value.trim().toIntOrNull(),
-                                name = lostName.value.trim(),
-                                description = description.value.trim(),
-                                gender = getGender(selectedGender),
-                                lastSeen = selectedDate.value,
-                                // TODO
-                                location = CreateCaseBody.Details.Location(
-                                    gov = "7",
-                                    city = "182",
-                                    address = "My address"
-                                )
-                            ),
-                            caseType = CaseType.MISSING
-                        ))
+                        onNext(
+                            CreateCaseBody(
+                                details = CreateCaseBody.Details(
+                                    age = getUserAge(selectedAge.value),
+                                    name = lostName.value.trim(),
+                                    description = getDes(description.value),
+                                    gender = getGender(selectedGender),
+                                    lastSeen = selectedDate.value,
+                                    // TODO
+                                    location = CreateCaseBody.Details.Location(
+                                        gov = "7",
+                                        city = "182",
+                                        address = "My address"
+                                    )
+                                ),
+                                caseType = CaseType.MISSING
+                            )
+                        )
                     })
             }
 
@@ -154,8 +157,16 @@ fun FragmentActivity.LostScreenTwo(
     })
 }
 
+fun getDes(description: String): String? {
+    return if (description.trim().isEmpty()) null else description.trim()
+}
+
+fun getUserAge(value: String): Int? {
+    return value.trim().toIntOrNull()
+}
+
 fun getGender(selectedGender: MutableState<Gender>): String? {
-    return when(selectedGender.value) {
+    return when (selectedGender.value) {
         Gender.MALE -> "M"
         Gender.FEMALE -> "F"
         Gender.NONE -> null
@@ -189,7 +200,7 @@ fun LostDescription(description: MutableState<String>) {
 }
 
 @Composable
-fun LostDate(selectedDate: MutableState<String>, activity: FragmentActivity) {
+fun LostDate(selectedDate: MutableState<String?>, activity: FragmentActivity) {
     ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         // full name
         val displayedDate = remember {

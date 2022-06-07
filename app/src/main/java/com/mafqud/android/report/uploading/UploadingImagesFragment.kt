@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -68,12 +69,15 @@ class UploadingImagesFragment : BaseFragment() {
                     Scaffold(topBar = {
                         TitledAppBar(
                             onIconClicked = {
-                                findNavController().popBackStack()
+                                handleConfirmButton()
                             },
                             backgroundColor = MaterialTheme.colors.onPrimary
                         )
                     }, content = {
                         ListenToChanges()
+                        BackHandler {
+                            handleConfirmButton()
+                        }
                     })
                 }
             }
