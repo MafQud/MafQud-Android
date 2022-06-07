@@ -55,13 +55,12 @@ class ReportLostSecondFragment : BaseFragment() {
                             val actonToUploading =
                                 ReportLostSecondFragmentDirections.actionReportLostSecondFragmentToUploadingImagesFragment(
                                     args.imagesUrisPicked,
-                                    CreateCaseBody(
-                                        caseType = CaseType.MISSING,
+                                    it.apply {
                                         location = CreateCaseBody.Location(
                                             gov = args.givID.toString(),
                                             city = args.cityID.toString(),
                                         )
-                                    )
+                                    }
                                 )
                             findNavController().navigate(actonToUploading)
                         }, onBack = {

@@ -18,7 +18,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import com.mafqud.android.R
+import com.mafqud.android.home.model.CaseType
 import com.mafqud.android.report.PhoneReportForm
+import com.mafqud.android.report.uploading.models.CreateCaseBody
 import com.mafqud.android.ui.compose.*
 import com.mafqud.android.ui.picker.datePicker
 import com.mafqud.android.ui.theme.*
@@ -37,7 +39,7 @@ val genders = listOf(Gender.NONE, Gender.MALE, Gender.FEMALE)
 @Composable
 @Preview
 fun FragmentActivity.LostScreenTwo(
-    onNext: () -> Unit = {},
+    onNext: (CreateCaseBody) -> Unit = {},
     onBack: () -> Unit = {},
     isDialogOpened: MutableState<Boolean> = mutableStateOf(true)
 ) {
@@ -48,15 +50,25 @@ fun FragmentActivity.LostScreenTwo(
     /**
      * Ui data
      */
-    val selectedgender = remember {
+    val selectedGender = remember {
         mutableStateOf(Gender.NONE)
     }
 
+    val lostName = remember {
+        mutableStateOf("")
+    }
+
+    val description = remember {
+        mutableStateOf("")
+    }
     val selectedAge = remember {
         mutableStateOf("")
     }
 
     val selectedDate = remember {
+        mutableStateOf("")
+    }
+    val phone = remember {
         mutableStateOf("")
     }
 
@@ -76,12 +88,12 @@ fun FragmentActivity.LostScreenTwo(
         ) {
             SpacerUi(modifier = Modifier.height(16.dp))
             HeaderTwo()
-            LostName()
-            LostGenderAndAge(selectedgender, selectedAge)
+            LostName(lostName)
+            LostGenderAndAge(selectedGender, selectedAge)
             LostDate(selectedDate, this@LostScreenTwo)
-            LostDescription()
+            LostDescription(description)
             LocationForm()
-            PhoneReportForm()
+            PhoneReportForm(phone)
             BoxUi(modifier = Modifier
                 .fillMaxWidth()
                 .onGloballyPositioned { coordinates ->
@@ -91,7 +103,22 @@ fun FragmentActivity.LostScreenTwo(
                     enabled = true,
                     title = stringResource(id = R.string.search_losts),
                     onClick = {
-                        onNext()
+                        onNext(CreateCaseBody(
+                            details = CreateCaseBody.Details(
+                                age = selectedAge.value.trim().toIntOrNull(),
+                                name = lostName.value.trim(),
+                                description = description.value.trim(),
+                                gender = getGender(selectedGender),
+                                lastSeen = selectedDate.value,
+                                // TODO
+                                location = CreateCaseBody.Details.Location(
+                                    gov = "7",
+                                    city = "182",
+                                    address = "My address"
+                                )
+                            ),
+                            caseType = CaseType.MISSING
+                        ))
                     })
             }
 
@@ -127,12 +154,16 @@ fun FragmentActivity.LostScreenTwo(
     })
 }
 
-@Composable
-fun LostDescription() {
-    val description = remember {
-        mutableStateOf("")
+fun getGender(selectedGender: MutableState<Gender>): String? {
+    return when(selectedGender.value) {
+        Gender.MALE -> "M"
+        Gender.FEMALE -> "F"
+        Gender.NONE -> null
     }
+}
 
+@Composable
+fun LostDescription(description: MutableState<String>) {
     val isTextError = remember {
         mutableStateOf(false)
     }
@@ -161,8 +192,12 @@ fun LostDescription() {
 fun LostDate(selectedDate: MutableState<String>, activity: FragmentActivity) {
     ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         // full name
-        val datePicker = datePicker(updatedDate = { long, string ->
-            selectedDate.value = string
+        val displayedDate = remember {
+            mutableStateOf("")
+        }
+        val datePicker = datePicker(updatedDate = { global, display ->
+            selectedDate.value = global
+            displayedDate.value = display
         })
         TextUi(
             modifier = Modifier.fillMaxWidth(),
@@ -170,7 +205,7 @@ fun LostDate(selectedDate: MutableState<String>, activity: FragmentActivity) {
             style = MaterialTheme.typography.titleMedium
 
         )
-        DateUi(dataString = selectedDate.value,
+        DateUi(dataString = displayedDate.value,
             onClick = {
                 datePicker.show(activity.supportFragmentManager, "")
             })
@@ -235,11 +270,7 @@ private fun LostGenderAndAge(gender: MutableState<Gender>, age: MutableState<Str
 }
 
 @Composable
-private fun LostName() {
-    val fullName = remember {
-        mutableStateOf("")
-    }
-
+private fun LostName(lostName: MutableState<String>) {
     val isNameError = remember {
         mutableStateOf(false)
     }
@@ -252,7 +283,7 @@ private fun LostName() {
             style = MaterialTheme.typography.titleMedium
 
         )
-        TextFieldName(stringResource(id = R.string.example_name), fullName, isNameError)
+        TextFieldName(stringResource(id = R.string.example_name), lostName, isNameError)
     }
 }
 

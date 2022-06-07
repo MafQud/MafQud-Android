@@ -13,14 +13,18 @@ import com.mafqud.android.R
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * @return first String like : 1999-07-12
+ * @return second String like : Mon, 1999/07/12
+ */
 fun datePicker(
-    updatedDate: (Long?, String) -> Unit
+    updatedDate: (String, String) -> Unit
 ): MaterialDatePicker<Long> {
     val picker = MaterialDatePicker.Builder.datePicker().setTheme(
         R.style.ThemeOverlay_App_MaterialCalendar
     ).build()
     picker.addOnPositiveButtonClickListener {
-        updatedDate(it, dateFormatter(it))
+        updatedDate(dateFormatterGlobal(it), dateFormatterDisplay(it))
     }
     return picker
 }
@@ -72,7 +76,18 @@ fun datePicker(onDataPicked: (String) -> Unit): DatePickerDialog {
     return mDatePickerDialog
 }
 
-private fun dateFormatter(milliseconds: Long?): String {
+private fun dateFormatterGlobal(milliseconds: Long?): String {
+    milliseconds?.let {
+        val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val calendar: Calendar = Calendar.getInstance()
+        calendar.timeInMillis = it
+        return formatter.format(calendar.time)
+    }
+    return ""
+}
+
+
+private fun dateFormatterDisplay(milliseconds: Long?): String {
     milliseconds?.let {
         val formatter = SimpleDateFormat("EEE, yyyy/MM/dd", Locale.getDefault())
         val calendar: Calendar = Calendar.getInstance()

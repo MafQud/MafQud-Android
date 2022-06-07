@@ -13,7 +13,7 @@ data class CreateCaseBody(
     @field:Json(name = "file_ids")
     var fileIds: List<Int?>? = null,
     @field:Json(name = "location")
-    val location: Location? = null,
+    var location: Location? = null,
     @field:Json(name = "thumbnail")
     var thumbnail: Int? = null, // 1
     @field:Json(name = "type")

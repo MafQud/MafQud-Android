@@ -32,7 +32,6 @@ val genders = listOf(Gender.NONE, Gender.MALE, Gender.FEMALE)
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-@Preview
 fun FragmentActivity.FoundScreenTwo(onBack: () -> Unit, isDialogOpened: MutableState<Boolean>) {
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
@@ -50,6 +49,10 @@ fun FragmentActivity.FoundScreenTwo(onBack: () -> Unit, isDialogOpened: MutableS
     }
 
     val selectedDate = remember {
+        mutableStateOf("")
+    }
+
+    val phone = remember {
         mutableStateOf("")
     }
 
@@ -74,7 +77,7 @@ fun FragmentActivity.FoundScreenTwo(onBack: () -> Unit, isDialogOpened: MutableS
             FoundDate(selectedDate, this@FoundScreenTwo)
             FoundDescription()
             LocationForm()
-            PhoneReportForm()
+            PhoneReportForm(phone)
             BoxUi(modifier = Modifier
                 .fillMaxWidth()
                 .onGloballyPositioned { coordinates ->
