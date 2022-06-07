@@ -65,9 +65,11 @@ public class ImageSaver {
         File directory;
         if(external){
             directory = getAlbumStorageDir(directoryName);
+            Log.e("ImageSaver","getAlbumStorageDir" );
         }
         else {
             directory = context.getDir(directoryName, Context.MODE_PRIVATE);
+            Log.e("ImageSaver","MODE_PRIVATE" );
         }
         if(!directory.exists() && !directory.mkdirs()){
             Log.e("ImageSaver","Error creating directory " + directory);

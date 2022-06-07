@@ -123,10 +123,11 @@ class UploadingRepository @Inject constructor() : BaseRepository() {
         val thumbnailName = getCurrentDate()
         ImageSaver(appContext)
             .setFileName(thumbnailName)
+            .setExternal(false)
             .save(thumbImage)
 
         val bitmap =
-            ImageSaver(appContext).setFileName(thumbnailName).load()
+            ImageSaver(appContext).setExternal(false).setFileName(thumbnailName).load()
 
         return getImageUri(appContext, bitmap)
     }

@@ -108,7 +108,7 @@ fun FragmentActivity.LostScreenTwo(
                             CreateCaseBody(
                                 details = CreateCaseBody.Details(
                                     age = getUserAge(selectedAge.value),
-                                    name = lostName.value.trim(),
+                                    name = getName(lostName.value),
                                     description = getDes(description.value),
                                     gender = getGender(selectedGender),
                                     lastSeen = selectedDate.value,
@@ -155,6 +155,10 @@ fun FragmentActivity.LostScreenTwo(
     DismissDialog(isOpened = isDialogOpened, onConfirmClicked = {
         onBack()
     })
+}
+
+fun getName(name: String): String? {
+    return if (name.trim().isEmpty()) null else name.trim()
 }
 
 fun getDes(description: String): String? {
