@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -49,14 +50,14 @@ object Notifier {
         pendingIntent: PendingIntent = getPendingIntent(context, intent)
     ): NotificationCompat.Builder {
         return NotificationCompat.Builder(context, channelId)
-            .setSmallIcon(R.drawable.ic_flash_off)
-            /*.setLargeIcon(
+            .setSmallIcon(R.drawable.ic_mafqud_logo)
+            .setLargeIcon(
                 BitmapFactory.decodeResource(
                     context.resources,
-                    R.drawable.ic_stat_limee
+                    R.drawable.ic_mafqud_logo
                 )
-            )*/
-            .setColor(ContextCompat.getColor(context, R.color.red))
+            )
+            .setColor(ContextCompat.getColor(context, R.color.blue))
             .setContentTitle(title)
             .setContentText(description)
             .setContentIntent(pendingIntent)

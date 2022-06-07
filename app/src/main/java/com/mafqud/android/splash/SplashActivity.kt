@@ -22,6 +22,7 @@ import com.mafqud.android.base.activity.BaseActivity
 import com.mafqud.android.data.DataStoreManager.Companion.IS_PASSED_INTRO
 import com.mafqud.android.home.HomeActivity
 import com.mafqud.android.ui.theme.MafQudTheme
+import com.mafqud.android.util.other.LogMe
 import com.mafqud.android.util.other.inAppUpdate
 import com.mafqud.android.util.other.statusBarColor
 
@@ -38,17 +39,15 @@ class SplashActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         statusBarColor(resources.getColor(R.color.white))
         initialSetup()
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+        /*FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
                 return@OnCompleteListener
             }
             // Get new FCM registration token
             val token = task.result
             // Log and toast
-            Log.d("firebaseToken", token)
-        })
-
-
+            LogMe.i("firebaseToken", token)
+        })*/
     }
 
     override fun onResume() {
