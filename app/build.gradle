@@ -119,7 +119,7 @@ dependencies {
     def moshi = "2.4.0"
     def facebook_login = "5.15.3"
     def google_login = "19.2.0"
-    //def glide = "4.12.0"
+    def glide = "4.12.0"
     def color_picker = "2.0"
     def lottie = "4.1.0"
     def swipe_refresh = "0.18.0"
@@ -181,6 +181,10 @@ dependencies {
 
     // M3 compose
     implementation "androidx.compose.material3:material3:1.0.0-alpha03"
+
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$glide"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glide"
 
     /**
      * camera x
@@ -281,6 +285,8 @@ dependencies {
 
     //JWTDecode.Android
     implementation 'com.auth0.android:jwtdecode:2.0.1'
+
+    implementation 'com.google.android.gms:play-services-location:19.0.1'
 
     //System UI Controller for Jetpack Compose¶
     //implementation "com.google.accompanist:accompanist-systemuicontroller:0.24.7-alpha"

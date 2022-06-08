@@ -1,6 +1,7 @@
 package com.mafqud.android.data
 
 import android.content.Context
+import android.location.Location
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import com.mafqud.android.util.other.UserPayload
@@ -32,10 +33,8 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         const val USER_ID = "userId"
         const val USER_NATIONAL_ID = "userNationalId"
         const val USER_FCM_TOKEN = "fcmToken"
-        const val USER_FOLLOWERS = "userFollowers"
-        const val USER_FOLLOWING = "userFollowing"
-        const val USER_IMAGE = "userImage"
-        const val USER_EMAIL = "userEmail"
+        const val USER_LAT = "lat"
+        const val USER_LNG = "lng"
 
         /**
          * other
@@ -102,6 +101,7 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
             settings[booleanPreferencesKey(IS_LOGGED_IN)] = true
         }
     }
+
     /**
      * for storing user info (name, image_url,...)
      */
@@ -123,6 +123,24 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
             city = city,
             phone = phone
         )
+    }
+
+    suspend fun readUserLocation(): Location? {
+        var lat = 0.0
+        var lng = 0.0
+
+        mDataStore.data.map { settings ->
+            lat = settings[doublePreferencesKey(USER_LAT)] ?: 0.0
+            lng = settings[doublePreferencesKey(USER_LNG)] ?: 0.0
+        }.first().toString()
+
+        if (lat == 0.0 && lng == 0.0) {
+            return null
+        }
+        val location = Location("")
+        location.latitude = lat
+        location.longitude = lng
+        return location
     }
 
     suspend fun getUserId(): Int {
@@ -214,7 +232,7 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         mDataStore.edit { it.clear() }
     }
 
-    suspend fun saveUserNationalID(nationalId :String) {
+    suspend fun saveUserNationalID(nationalId: String) {
         mDataStore.edit { settings ->
             settings[stringPreferencesKey(USER_NATIONAL_ID)] = nationalId
         }
@@ -224,6 +242,13 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         mDataStore.edit { settings ->
             settings[stringPreferencesKey(USER_TOKEN_ACCESS)] = accessToken
             settings[stringPreferencesKey(USER_TOKEN_REFRESH)] = refreshToken
+        }
+    }
+
+    suspend fun saveUserLocation(location: Location) {
+        mDataStore.edit { settings ->
+            settings[doublePreferencesKey(USER_LAT)] = location.latitude
+            settings[doublePreferencesKey(USER_LNG)] = location.longitude
         }
     }
 
@@ -238,17 +263,20 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
             settings[stringPreferencesKey(USER_NAME)] = name
         }
     }
+
     suspend fun getUserName(): String {
         return mDataStore.data.map { settings ->
             settings[stringPreferencesKey(USER_NAME)] ?: ""
         }.first()
     }
 
+
     suspend fun getNationalId(): String {
         return mDataStore.data.map { settings ->
             settings[stringPreferencesKey(USER_NATIONAL_ID)] ?: ""
         }.first()
     }
+
     suspend fun getUserAccessToken(): String {
         return mDataStore.data.map { settings ->
             settings[stringPreferencesKey(USER_TOKEN_ACCESS)] ?: ""

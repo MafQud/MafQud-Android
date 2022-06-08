@@ -84,11 +84,11 @@ interface RemoteDataManager {
         @Query("offset") offset: Int,
         @Query("type") type: String,
         @Query("limit") limit: Int,
-        @Query("start_age") startAge: Int?,
-        @Query("end_age") endAge: Int?,
-        @Query("name") name: String?,
-        @Query("gov") govID: Int?,
-        @Query("include_null") isNoName: Boolean?,
+        @Query("start_age") startAge: Int? = null,
+        @Query("end_age") endAge: Int? = null,
+        @Query("name") name: String? = null,
+        @Query("gov") govID: Int? = null,
+        @Query("include_null") isNoName: Boolean? = null,
     ): CasesDataResponse
 
     @POST("/api/auth/token/refresh/")

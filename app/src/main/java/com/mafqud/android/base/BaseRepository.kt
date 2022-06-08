@@ -2,6 +2,7 @@ package com.mafqud.android.base
 
 import android.app.Application
 import android.content.Context
+import android.location.Location
 import com.mafqud.android.base.activity.BaseActivity
 import com.mafqud.android.data.AWSUploading
 import com.mafqud.android.data.DataStoreManager
@@ -73,6 +74,19 @@ open class BaseRepository() {
         myServiceInterceptor.setSessionToken(accessToken)
     }
 
+
+    suspend fun saveUserLocation(
+       location: Location
+    ) {
+        // save user data to data store
+        dataStoreManager.saveUserLocation(location)
+
+    }
+
+    suspend fun getUserLocation(): Location? {
+        // save user data to data store
+        return dataStoreManager.readUserLocation()
+    }
     /**
      *  this fun to get user FCM token for notification
      */

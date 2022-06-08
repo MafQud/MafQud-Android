@@ -9,9 +9,13 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat.getDrawable
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.mafqud.android.R
+import com.mafqud.android.home.model.CasesDataResponse
 
 
 fun ImageView.toBitmap(): Bitmap {
@@ -43,14 +47,16 @@ fun overlay(bmp1: Bitmap, bmp2: Bitmap, bmp3: Bitmap): Bitmap? {
     return bmOverlay
 }
 
-fun Context.getMarkerBitmapFromView(/*@DrawableRes resId: Int*/): Bitmap {
+fun Context.getMarkerBitmapFromView(case: CasesDataResponse.Case, bitmap: Bitmap): Bitmap {
     val customMarkerView: View =
         (getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater?)!!.inflate(
             R.layout.view_custom_marker,
             null
         )
     val markerImageView = customMarkerView.findViewById<View>(R.id.iv_map_image) as ImageView
-    //markerImageView.setImageResource(resId)
+    val caseName = customMarkerView.findViewById<View>(R.id.tv_case_name) as TextView
+    caseName.text = case.name ?: getString(R.string.no_name)
+    markerImageView.setImageBitmap(bitmap)
     customMarkerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
     customMarkerView.layout(0, 0, customMarkerView.measuredWidth, customMarkerView.measuredHeight)
     customMarkerView.buildDrawingCache()
@@ -64,6 +70,31 @@ fun Context.getMarkerBitmapFromView(/*@DrawableRes resId: Int*/): Bitmap {
     drawable?.draw(canvas)
     customMarkerView.draw(canvas)
     return returnedBitmap
+}
+
+
+fun Context.downloadBitmapFromUrl(
+    photoUrl: String,
+    onBitmapIsReady: (Bitmap) -> Unit
+) {
+
+    Glide.with(this.applicationContext)
+        .asBitmap()
+        .load(photoUrl)
+        .into(object : CustomTarget<Bitmap>() {
+            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                onBitmapIsReady(resource)
+                Log.i("onResourceReady", resource.width.toString())
+            }
+
+            override fun onLoadCleared(placeholder: Drawable?) {
+                // this is called when imageView is cleared on lifecycle call or for
+                // some other reason.
+                // if you are referencing the bitmap somewhere else too other than this imageView
+                // clear it here as you can no longer have the bitmap
+            }
+        })
+
 }
 fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor {
     // pin
@@ -86,7 +117,7 @@ fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescri
     vectorDrawable2!!.setBounds(
         centreX,
         centreY,
-        80 ,
+        80,
         80
     )
 
@@ -96,7 +127,7 @@ fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescri
     return BitmapDescriptorFactory.fromBitmap(bitmap)
 }
 
-fun Bitmap.blur(scale: Float =  0.1f, radius: Int =  5): Bitmap? {
+fun Bitmap.blur(scale: Float = 0.1f, radius: Int = 5): Bitmap? {
     var sentBitmap = this.toResizedBitmap()
     val width = Math.round(sentBitmap.width * scale)
     val height = Math.round(sentBitmap.height * scale)

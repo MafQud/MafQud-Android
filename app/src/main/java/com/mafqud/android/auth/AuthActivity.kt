@@ -256,6 +256,7 @@ class AuthActivity : BaseActivity() {
                         "Invalid request ${e.message}"
 
                     } else if (e is FirebaseTooManyRequestsException) {
+                        sendNextActiveStep(registerViewModel, StepCount.Three)
                         // The SMS quota for the project has been exceeded
                         "SMS quota for Mafqud has been exceeded"
 

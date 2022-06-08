@@ -206,4 +206,7 @@
     <string name="share_subject" translatable="false">Share image with</string>
     <string name="share_using" translatable="false">Share using</string>
     <string name="archive">Archive</string>
+    <string name="map_pemissions">You should accept locations permissions to get the nearest cases for you</string>
+    <string name="permission">Give permissions</string>
+    <string name="gps">Open GPS</string>
 </resources>
