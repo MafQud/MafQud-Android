@@ -34,7 +34,7 @@ class CasesSource(
                 type = type,
                 startAge = ageRange?.start,
                 endAge = ageRange?.end,
-                name = searchName,
+                name = if (searchName?.trim().isNullOrEmpty()) null else searchName,
                 govID = govID,
                 isNoName = isNoName
             )
