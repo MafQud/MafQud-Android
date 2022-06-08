@@ -20,6 +20,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mafqud.android.R
 import com.mafqud.android.base.fragment.BaseFragment
 import com.mafqud.android.ui.compose.TitledAppBar
+import com.mafqud.android.ui.other.showToast
 import com.mafqud.android.ui.status.loading.CircleLoading
 import com.mafqud.android.ui.theme.MafQudTheme
 import com.mafqud.android.util.network.ShowNetworkErrorSnakeBar
@@ -78,11 +79,40 @@ class ReportedCasesFragment : BaseFragment() {
 
             CircleLoading(stateValue.isLoading)
 
-            ReportedCasesScreen(cases = stateValue.cases)
+            DisplayUserStateResult(stateValue)
+            ReportedCasesScreen(cases = stateValue.cases,
+                onFoundCase = {
+                    sendFinishCaseIntent(it.id)
+                }, onArchiveCase = {
+                    sendArchiveCaseIntent(it.id)
+                })
 
             if (stateValue.networkError != null) {
                 stateValue.networkError.ShowNetworkErrorSnakeBar(scaffoldState)
             }
+        }
+    }
+
+    @Composable
+    private fun DisplayUserStateResult(stateValue: ReportedCasesViewState) {
+        if (stateValue.isArchived != null) {
+            requireContext().showToast(stringResource(id = R.string.archive_state))
+        }
+
+        if (stateValue.isFinished != null) {
+            requireContext().showToast(stringResource(id = R.string.success_to_found))
+        }
+    }
+
+    private fun sendArchiveCaseIntent(id: Int?) {
+        id?.let {
+            viewModel.intentChannel.trySend(ReportedCasesIntent.ArchiveCase(id))
+        }
+    }
+
+    private fun sendFinishCaseIntent(id: Int?) {
+        id?.let {
+            viewModel.intentChannel.trySend(ReportedCasesIntent.FinishCase(id))
         }
     }
 

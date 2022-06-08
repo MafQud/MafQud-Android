@@ -7,6 +7,9 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -14,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
@@ -26,6 +30,7 @@ import com.mafqud.android.home.EmptyCasesState
 import com.mafqud.android.home.model.CaseType
 import com.mafqud.android.reportedCases.models.ReportedCasesResponse
 import com.mafqud.android.reportedCases.models.UserCaseState
+import com.mafqud.android.ui.compose.ChangeCaseStateDialog
 import com.mafqud.android.ui.compose.IconMap
 import com.mafqud.android.ui.compose.UserPhoto
 import com.mafqud.android.ui.theme.*
@@ -36,7 +41,9 @@ import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun ReportedCasesScreen(
-    cases: Flow<PagingData<ReportedCasesResponse.UserCase>>?
+    cases: Flow<PagingData<ReportedCasesResponse.UserCase>>?,
+    onFoundCase: (ReportedCasesResponse.UserCase) -> Unit = {},
+    onArchiveCase: (ReportedCasesResponse.UserCase) -> Unit = {},
 ) {
     BoxUi(
         modifier = Modifier
@@ -77,7 +84,11 @@ fun ReportedCasesScreen(
 
                 items(lazyPagingItems) { item ->
                     item?.let {
-                        UserCaseItem(caseData = item, onCaseClicked = null)
+                        UserCaseItem(
+                            caseData = item, onCaseClicked = null,
+                            onFoundCase = onFoundCase,
+                            onArchiveCase = onArchiveCase
+                        )
                     }
                 }
 
@@ -103,8 +114,12 @@ fun UserCaseItem(
     backgroundColor: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.08f),
     caseData: ReportedCasesResponse.UserCase? = null,
     onCaseClicked: ((ReportedCasesResponse.UserCase) -> Unit)? = {},
+    onFoundCase: (ReportedCasesResponse.UserCase) -> Unit = {},
+    onArchiveCase: (ReportedCasesResponse.UserCase) -> Unit = {},
 ) {
-
+    val isDialogOpened = remember {
+        mutableStateOf(false)
+    }
 
     caseData?.let { case ->
         BoxUi(
@@ -140,12 +155,17 @@ fun UserCaseItem(
                         verticalAlignment = Alignment.Top
                     ) {
                         ColumnUi(
+                            Modifier
+                                .weight(1f),
                             verticalArrangement = Arrangement.spacedBy(2.dp)
                         ) {
                             TextUi(
-                                text = case.name ?: stringResource(id = com.mafqud.android.R.string.no_name),
+                                text = case.name
+                                    ?: stringResource(id = com.mafqud.android.R.string.no_name),
                                 color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                style = MaterialTheme.typography.titleMedium
+                                style = MaterialTheme.typography.titleMedium,
+                                overflow = TextOverflow.Ellipsis,
+                                maxLines = 1
                             )
 
                             //address
@@ -158,7 +178,9 @@ fun UserCaseItem(
                                 TextUi(
                                     text = case.getFullAddress(),
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    style = MaterialTheme.typography.titleSmall
+                                    style = MaterialTheme.typography.titleSmall,
+                                    overflow = TextOverflow.Ellipsis,
+                                    maxLines = 1
                                 )
                             }
                         }
@@ -166,7 +188,7 @@ fun UserCaseItem(
                         // case state
                         when (case.getCaseState()) {
                             UserCaseState.ACTIVE -> {
-                                UpdateStateButton()
+                                UpdateStateButton(isDialogOpened)
                             }
                             UserCaseState.FINISHED -> {
                                 SuccessToFound()
@@ -212,6 +234,14 @@ fun UserCaseItem(
                     }
                 }
             }
+
+            ChangeCaseStateDialog(isOpened = isDialogOpened, onFoundClicked = {
+                onFoundCase(case)
+                isDialogOpened.value = false
+            }, onArchiveClicked = {
+                onArchiveCase(case)
+                isDialogOpened.value = false
+            })
         }
     }
 
@@ -249,14 +279,16 @@ fun ArchiveState() {
             IconUi(
                 painter = painterResource(id = R.drawable.ic_archive),
                 modifier = Modifier.size(18.dp),
-                tint = MaterialTheme.colorScheme.error
+                tint = MaterialTheme.colorScheme.green
             )
         }
         TextUi(
             text = stringResource(id = R.string.archive_state),
             style = MaterialTheme.typography.titleSmall,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.primary
+            color = MaterialTheme.colorScheme.green,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1
         )
 
     }
@@ -308,19 +340,21 @@ fun SuccessToFound() {
 }
 
 @Composable
-fun UpdateStateButton() {
+fun UpdateStateButton(isDialogOpened: MutableState<Boolean>) {
     BoxUi(
         Modifier
             .clip(RoundedCornerShape(12.dp))
             .background(MaterialTheme.colorScheme.error)
             .clickable {
-            }.padding(8.dp),
+                isDialogOpened.value = true
+            }
+            .padding(8.dp),
     ) {
         TextUi(
             // modifier = Modifier.padding(12.dp),
             text = stringResource(id = R.string.update_state),
             color = MaterialTheme.colorScheme.onSecondary,
-            style = MaterialTheme.typography.titleSmall
+            style = MaterialTheme.typography.titleSmall,
         )
     }
 }

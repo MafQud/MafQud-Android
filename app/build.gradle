@@ -13,9 +13,9 @@ apply plugin: 'com.google.gms.google-services'
 // breaking
 ext.majorVersion = 1
 // feature
-ext.minorVersion = 3
+ext.minorVersion = 4
 //bugfix
-ext.patchVersion = 2
+ext.patchVersion = 0
 /*
  alpha - beta  - stable
  */
@@ -119,7 +119,7 @@ dependencies {
     def moshi = "2.4.0"
     def facebook_login = "5.15.3"
     def google_login = "19.2.0"
-    def glide = "4.12.0"
+    //def glide = "4.12.0"
     def color_picker = "2.0"
     def lottie = "4.1.0"
     def swipe_refresh = "0.18.0"
@@ -133,17 +133,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     // LiveData
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
-
-    /**
-     * face , google login sdks
-     */
-    // face login sdk
-    //implementation "com.facebook.android:facebook-login:$facebook_login"
-    implementation 'com.facebook.android:facebook-android-sdk:[8,9)'
-
-
-    // Google login sdk
-    implementation "com.google.android.gms:play-services-auth:$google_login"
 
     /**
      * retrofit
@@ -214,24 +203,12 @@ dependencies {
      */
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
-
-    // Glide
-    implementation "com.github.bumptech.glide:glide:$glide"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glide"
-
+    
     //lottie
     implementation "com.airbnb.android:lottie-compose:$lottie"
 
     // swipe to  refresh
     implementation "com.google.accompanist:accompanist-swiperefresh:$swipe_refresh"
-
-
-    //PhotoEditor
-    implementation 'com.burhanrashid52:photoeditor:1.5.1'
-
-    // glide compose
-    implementation "com.github.skydoves:landscapist-glide:1.4.1"
-
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.3.1'

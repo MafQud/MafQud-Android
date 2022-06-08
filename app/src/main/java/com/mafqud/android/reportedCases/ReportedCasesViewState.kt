@@ -12,4 +12,7 @@ data class ReportedCasesViewState(
     val errorMessage: String? = null,
     val networkError: Result.NetworkError? = null,
     val cases: Flow<PagingData<ReportedCasesResponse.UserCase>>? = null,
+
+    val isFinished: Boolean? = null,
+    val isArchived: Boolean? = null,
 )

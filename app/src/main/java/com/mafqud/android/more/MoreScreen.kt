@@ -41,6 +41,8 @@ fun MoreScreen(
     onPhonesClicked: () -> Unit,
     onLogoutClicked: () -> Unit,
     cases: Flow<PagingData<ReportedCasesResponse.UserCase>>?,
+    onFoundCase: (ReportedCasesResponse.UserCase) -> Unit = {},
+    onArchiveCase: (ReportedCasesResponse.UserCase) -> Unit = {},
 ) {
     ColumnUi {
 
@@ -58,7 +60,7 @@ fun MoreScreen(
             ColumnUi(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
-                    /*.verticalScroll(rememberScrollState())*/,
+                /*.verticalScroll(rememberScrollState())*/,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
@@ -69,7 +71,7 @@ fun MoreScreen(
                     icon = R.drawable.ic_report,
                     onItemClicked = onReportedClicked,
                 )
-                DisplayUserCases(cases)
+                DisplayUserCases(cases, onFoundCase, onArchiveCase)
 
                 SpacerUi(modifier = Modifier.height(20.dp))
                 //HorizontalLine()
@@ -88,13 +90,13 @@ fun MoreScreen(
                     HorizontalLine()
 
                     // TODO settings item
-                   /* MoreItem(
-                        title = stringResource(id = R.string.settings),
-                        icon = R.drawable.ic_setting,
-                        onItemClicked = onSettingClicked,
+                    /* MoreItem(
+                         title = stringResource(id = R.string.settings),
+                         icon = R.drawable.ic_setting,
+                         onItemClicked = onSettingClicked,
 
-                        )
-                    HorizontalLine()*/
+                         )
+                     HorizontalLine()*/
 
                     MoreItem(
                         title = stringResource(id = R.string.help),
@@ -122,8 +124,11 @@ fun MoreScreen(
 }
 
 @Composable
-fun DisplayUserCases(cases: Flow<PagingData<ReportedCasesResponse.UserCase>>?) {
-
+fun DisplayUserCases(
+    cases: Flow<PagingData<ReportedCasesResponse.UserCase>>?,
+    onFoundCase: (ReportedCasesResponse.UserCase) -> Unit,
+    onArchiveCase: (ReportedCasesResponse.UserCase) -> Unit,
+) {
     cases?.let {
         // Remember our own LazyListState
         val listState = rememberLazyListState()
@@ -148,11 +153,16 @@ fun DisplayUserCases(cases: Flow<PagingData<ReportedCasesResponse.UserCase>>?) {
                 item {
                     EmptyCasesState((Modifier.size(150.dp)))
                 }
+
             }
 
             items(lazyPagingItems) { item ->
                 item?.let {
-                    UserCaseItem(caseData = item, onCaseClicked = null)
+                    UserCaseItem(
+                        caseData = item, onCaseClicked = null,
+                        onFoundCase = onFoundCase,
+                        onArchiveCase = onArchiveCase
+                    )
                 }
             }
 
@@ -168,6 +178,7 @@ fun DisplayUserCases(cases: Flow<PagingData<ReportedCasesResponse.UserCase>>?) {
                 )
             }
         }
+
     }
 }
 

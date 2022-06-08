@@ -72,19 +72,16 @@ fun AgePickerDialog(
                                     .background(MaterialTheme.colorScheme.error)
                                     .padding(8.dp)
                             ) {
-                                IconUi(
-                                    imageVector = Icons.Filled.Face,
-                                    modifier = Modifier.size(35.dp),
-                                    tint = MaterialTheme.colorScheme.onSecondary
+                                TextUi(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(12.dp),
+                                    text = stringResource(id = R.string.range_age),
+                                    color = MaterialTheme.colorScheme.onPrimary,
+                                    style = MaterialTheme.typography.titleMedium,
+                                    textAlign = TextAlign.Center
                                 )
                             }
-                            TextUi(
-                                modifier = Modifier.fillMaxWidth(),
-                                text = stringResource(id = R.string.range_age),
-                                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                                style = MaterialTheme.typography.titleMedium,
-                                textAlign = TextAlign.Center
-                            )
                             // age data
                             val sliderPosition = remember {
                                 mutableStateOf(

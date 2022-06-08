@@ -3,7 +3,6 @@ package com.mafqud.android.util.validation
 import android.text.TextUtils
 import android.util.Patterns
 import androidx.compose.runtime.MutableState
-import com.google.zxing.common.StringUtils
 import com.mafqud.android.util.other.LogMe
 
 const val PHONE_MAX_LENGTH = 10

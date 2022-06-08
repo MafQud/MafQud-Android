@@ -203,8 +203,7 @@
     <string name="error_location">Choose gov and city</string>
     <string name="name_updated">Name updated</string>
     <string name="no_name_state">No Name</string>
-    <string name="share_subject">Share image with</string>
-    <string name="share_using">Share using</string>
-    <string name="page">Page</string>
-    <string name="of">of</string>
+    <string name="share_subject" translatable="false">Share image with</string>
+    <string name="share_using" translatable="false">Share using</string>
+    <string name="archive">Archive</string>
 </resources>

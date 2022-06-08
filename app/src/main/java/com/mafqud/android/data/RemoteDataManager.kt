@@ -185,4 +185,10 @@ interface RemoteDataManager {
         @Body changeNameBody: ChangeNameBody
     )
 
+    @GET("/api/cases/{caseId}/finish")
+    suspend fun finishUserCase(@Path("caseId") id: Int)
+
+
+    @GET("/api/cases/{caseId}/archive")
+    suspend fun archiveUserCase(@Path("caseId") id: Int)
 }

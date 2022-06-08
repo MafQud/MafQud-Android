@@ -182,5 +182,6 @@
     <string name="error_location">برجاء اختيار المحافظة والمدينة</string>
     <string name="name_updated">تم تحديث الاسم</string>
     <string name="no_name_state">بدون اسم</string>
+    <string name="archive">أرشفة الحالة</string>
 
 </resources>

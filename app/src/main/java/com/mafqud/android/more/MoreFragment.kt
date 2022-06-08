@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -19,9 +20,12 @@ import com.mafqud.android.R
 import com.mafqud.android.auth.AuthActivity
 import com.mafqud.android.data.DataStoreManager
 import com.mafqud.android.di.MyServiceInterceptor
+import com.mafqud.android.report.lost.ReportIntent
 import com.mafqud.android.reportedCases.ReportedCasesIntent
 import com.mafqud.android.reportedCases.ReportedCasesLimitedViewModel
 import com.mafqud.android.reportedCases.ReportedCasesScreen
+import com.mafqud.android.reportedCases.ReportedCasesViewState
+import com.mafqud.android.ui.other.showToast
 import com.mafqud.android.ui.status.loading.CircleLoading
 import com.mafqud.android.ui.theme.MafQudTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -60,6 +64,7 @@ class MoreFragment : Fragment() {
                 MafQudTheme {
                     val state = viewModel.stateChannel.collectAsState()
                     val stateValue = state.value
+                    DisplayUserStateResult(stateValue)
                     MoreScreen(
                         cases = stateValue.cases,
                         onReportedClicked = {
@@ -80,9 +85,36 @@ class MoreFragment : Fragment() {
                         }, onLogoutClicked = {
                             logOutCurrentUser()
 
+                        }, onFoundCase = {
+                            sendFinishCaseIntent(it.id)
+                        }, onArchiveCase = {
+                            sendArchiveCaseIntent(it.id)
                         })
                 }
             }
+        }
+    }
+
+    @Composable
+    private fun DisplayUserStateResult(stateValue: ReportedCasesViewState) {
+        if (stateValue.isArchived != null) {
+            requireContext().showToast(stringResource(id = R.string.archive_state))
+        }
+
+        if (stateValue.isFinished != null) {
+            requireContext().showToast(stringResource(id = R.string.success_to_found))
+        }
+    }
+
+    private fun sendArchiveCaseIntent(id: Int?) {
+        id?.let {
+            viewModel.intentChannel.trySend(ReportedCasesIntent.ArchiveCase(id))
+        }
+    }
+
+    private fun sendFinishCaseIntent(id: Int?) {
+        id?.let {
+            viewModel.intentChannel.trySend(ReportedCasesIntent.FinishCase(id))
         }
     }
 

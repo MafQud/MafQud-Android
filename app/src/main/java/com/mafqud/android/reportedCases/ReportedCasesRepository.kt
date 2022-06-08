@@ -35,4 +35,15 @@ class ReportedCasesRepository @Inject constructor() : BaseRepository() {
         }
     }
 
+    suspend fun finishCase(caseId: Int): Result<Any> {
+        return safeApiCall {
+            return@safeApiCall remoteDataManager.finishUserCase(caseId)
+        }
+    }
+
+    suspend fun archiveCase(caseId: Int): Result<Any> {
+        return safeApiCall {
+            return@safeApiCall remoteDataManager.archiveUserCase(caseId)
+        }
+    }
 }

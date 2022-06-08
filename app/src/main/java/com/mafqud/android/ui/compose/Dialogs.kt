@@ -1,15 +1,12 @@
 package com.mafqud.android.ui.compose
 
-import android.content.Context
 import android.net.Uri
-import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -28,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import coil.compose.rememberImagePainter
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mafqud.android.R
 import com.mafqud.android.ui.theme.*
 
@@ -686,77 +682,99 @@ fun LoadingDialog(
 
 }
 
+@Composable
+fun ChangeCaseStateDialog(
+    titleHead: String = stringResource(id = R.string.update_state),
+    isOpened: MutableState<Boolean> = remember {
+        mutableStateOf(false)
+    },
+    onFoundClicked: () -> Unit = {},
+    onArchiveClicked: () -> Unit = {},
+) {
+    ColumnUi {
 
-fun Context.logoutDialog(onConfirmClicked: () -> Unit): AlertDialog {
-    val alertDialog = MaterialAlertDialogBuilder(
-        this,
-        R.style.MaterialAlertDialog_rounded
-    )
+        if (isOpened.value) {
+            Dialog(
+                onDismissRequest = {
+                    // Dismiss the dialog when the user clicks outside the dialog or on the back
+                    // button. If you want to disable that functionality, simply use an empty
+                    // onCloseRequest.
+                    isOpened.value = false
+                },
+                content = {
+                    BoxUi(
+                        Modifier
+                            .padding(8.dp)
+                            .clip(
+                                RoundedCornerShape(12.dp)
+                            )
+                            .background(MaterialTheme.colorScheme.onPrimary)
 
-    // SettingsActivity Dialog Title
-    alertDialog.setTitle(getString(R.string.are_you_sure_logout))
+                    ) {
+                        ColumnUi(
+                            Modifier
+                                .verticalScroll(rememberScrollState()),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(16.dp),
+                        ) {
+                            BoxUi(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(MaterialTheme.colorScheme.error)
+                                    .padding(8.dp)
+                            ) {
+                                TextUi(
+                                    modifier = Modifier.fillMaxWidth().padding(12.dp),
+                                    text = titleHead,
+                                    color = MaterialTheme.colorScheme.onPrimary,
+                                    style = MaterialTheme.typography.titleMedium,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
 
-    // SettingsActivity Dialog Message
-    alertDialog.setCancelable(true)
-    alertDialog.setPositiveButton(
-        getString(R.string.log_out)
-    ) { p0, p1 ->
-        onConfirmClicked()
+                            // found
+                            TextUi(
+                                modifier = Modifier
+                                    .width(150.dp)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .background(MaterialTheme.colorScheme.green)
+                                    .clickable {
+                                        isOpened.value = false
+                                        onFoundClicked()
+                                    }
+                                    .padding(8.dp),
+                                text = stringResource(id = R.string.success_to_found),
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                style = MaterialTheme.typography.titleMedium,
+                                textAlign = TextAlign.Center
+                            )
+
+                            // achieve
+                            TextUi(
+                                modifier = Modifier
+                                    .width(150.dp)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .background(MaterialTheme.colorScheme.primary)
+                                    .clickable {
+                                        onArchiveClicked()
+                                    }
+                                    .padding(8.dp),
+                                text = stringResource(id = R.string.archive),
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                style = MaterialTheme.typography.titleMedium,
+                                textAlign = TextAlign.Center
+                            )
+                            SpacerUi(modifier = Modifier.height(12.dp))
+
+                        }
+                    }
+                }, properties = DialogProperties(
+                    dismissOnBackPress = true,
+                    dismissOnClickOutside = true
+                )
+            )
+
+        }
     }
 
-    alertDialog.setNegativeButton(
-        getString(R.string.cancel)
-    ) { p0, p1 ->
-        p0.dismiss()
-    }
-
-    val dialog = alertDialog.create()
-    //dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-    //2. now setup to change color of the button
-    dialog.setOnShowListener {
-        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE)
-            .setTextColor(resources.getColor(R.color.black))
-        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE)
-            .setTextColor(resources.getColor(R.color.red))
-    }
-    // Showing Alert Message
-    return dialog
-}
-
-fun Context.showAreYouSureDialog(onCloseClicked: () -> Unit) {
-    val alertDialog = MaterialAlertDialogBuilder(
-        this,
-        R.style.MaterialAlertDialog_rounded
-    )
-
-    // SettingsActivity Dialog Title
-    alertDialog.setTitle(getString(R.string.are_you_sure_close))
-
-    // SettingsActivity Dialog Message
-    alertDialog.setCancelable(true)
-    alertDialog.setPositiveButton(
-        getString(R.string.close)
-    ) { p0, p1 ->
-        onCloseClicked()
-    }
-
-    alertDialog.setNegativeButton(
-        getString(R.string.cancel)
-    ) { p0, p1 ->
-        p0.dismiss()
-    }
-
-    val dialog = alertDialog.create()
-    //dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-    //2. now setup to change color of the button
-    dialog.setOnShowListener {
-        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE)
-            .setTextColor(resources.getColor(R.color.black))
-        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE)
-            .setTextColor(resources.getColor(R.color.red))
-    }
-    // Showing Alert Message
-    dialog.show()
 }

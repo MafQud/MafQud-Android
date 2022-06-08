@@ -9,9 +9,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat.getDrawable
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.mafqud.android.R
@@ -45,31 +42,6 @@ fun overlay(bmp1: Bitmap, bmp2: Bitmap, bmp3: Bitmap): Bitmap? {
     bmp3.recycle()
     return bmOverlay
 }
-
-fun Context.downloadBitmapFromUrl(
-    photoUrl: String,
-    onBitmapIsReady: (Bitmap) -> Unit
-) {
-
-    Glide.with(this)
-        .asBitmap()
-        .load(photoUrl)
-        .into(object : CustomTarget<Bitmap>() {
-            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                onBitmapIsReady(resource)
-                Log.i("onResourceReady", resource.width.toString())
-            }
-
-            override fun onLoadCleared(placeholder: Drawable?) {
-                // this is called when imageView is cleared on lifecycle call or for
-                // some other reason.
-                // if you are referencing the bitmap somewhere else too other than this imageView
-                // clear it here as you can no longer have the bitmap
-            }
-        })
-
-}
-
 
 fun Context.getMarkerBitmapFromView(/*@DrawableRes resId: Int*/): Bitmap {
     val customMarkerView: View =

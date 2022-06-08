@@ -20,8 +20,64 @@ class ReportedCasesLimitedViewModel @Inject constructor(private val reportedCase
             when (it) {
                 ReportedCasesIntent.GetReportedCasesLimited -> getCase()
                 ReportedCasesIntent.Refresh -> refreshData()
+                is ReportedCasesIntent.ArchiveCase -> archiveCase(it)
+                is ReportedCasesIntent.FinishCase -> finishCase(it)
+                //ReportedCasesIntent.GetReportedCases -> TODO()
             }
         }
+    }
+
+    private fun finishCase(it: ReportedCasesIntent.FinishCase) {
+        emitLoadingState()
+        launchViewModelScope {
+            finishUserCase(it.caseId)
+        }
+
+    }
+
+    private suspend fun finishUserCase(caseId: Int) {
+        val result = reportedCasesRepository.finishCase(caseId)
+        when (result) {
+            is Result.Success -> emitFinishCase()
+        }
+    }
+
+    private fun emitFinishCase() {
+        _stateChannel.tryEmit(
+            stateChannel.value.copy(
+                isLoading = false,
+                networkError = null,
+                isRefreshing = true,
+                isFinished = true
+            )
+        )
+        refreshData()
+    }
+
+    private fun archiveCase(it: ReportedCasesIntent.ArchiveCase) {
+        emitLoadingState()
+        launchViewModelScope {
+            archiveUserCase(it.caseId)
+        }
+    }
+
+    private suspend fun archiveUserCase(caseId: Int) {
+        val result = reportedCasesRepository.archiveCase(caseId)
+        when (result) {
+            is Result.Success -> emitArchiveCase()
+        }
+    }
+
+    private fun emitArchiveCase() {
+        _stateChannel.tryEmit(
+            stateChannel.value.copy(
+                isLoading = false,
+                networkError = null,
+                isRefreshing = true,
+                isArchived = true
+            )
+        )
+        refreshData()
     }
 
     private fun getCase() {
@@ -39,6 +95,8 @@ class ReportedCasesLimitedViewModel @Inject constructor(private val reportedCase
                 isLoading = false,
                 networkError = null,
                 isRefreshing = true,
+                isFinished = null,
+                isArchived = null
             )
         )
 
