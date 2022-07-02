@@ -183,5 +183,10 @@
     <string name="name_updated">تم تحديث الاسم</string>
     <string name="no_name_state">بدون اسم</string>
     <string name="archive">أرشفة الحالة</string>
+    <string name="permission">امنح أذونات</string>
+    <string name="gps">افتح GPS</string>
+    <string name="search_found_2">سنبذل قصارى جهدنا للعثور عليه</string>
+    <string name="map_pemissions">يجب عليك قبول أذونات المواقع للحصول على أقرب الحالات لك</string>
+    <string name="search_found">سوف نقوم بالبحث عن المعثور عليه ونقوم بابلاغك بذلك</string>
 
 </resources>

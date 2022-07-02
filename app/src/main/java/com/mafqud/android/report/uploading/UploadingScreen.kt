@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
+import com.mafqud.android.home.model.CaseType
 import com.mafqud.android.ui.status.loading.CircleLoading
 import com.mafqud.android.ui.theme.*
 
@@ -27,6 +28,7 @@ fun UploadingScreen(
     onTryUploadingImages: () -> Unit = {},
     onTryUploadingCase: () -> Unit = {},
     onConfirm: () -> Unit = {},
+    caseType: CaseType = CaseType.NONE,
 ) {
     BoxUi(
         modifier = Modifier
@@ -45,28 +47,35 @@ fun UploadingScreen(
         ) {
             if (state.isSuccess != null) {
                 if (state.isSuccess) {
-                    var visible by remember { mutableStateOf(state.isSuccess) }
-                    val density = LocalDensity.current
-                    AnimatedVisibility(
-                        visible = visible,
-                        enter = slideInVertically {
-                            // Slide in from 40 dp from the top.
-                            with(density) { -40.dp.roundToPx() }
-                        } + expandVertically(
-                            // Expand from the top.
-                            expandFrom = Alignment.Top
-                        ) + fadeIn(
-                            // Fade in with the initial alpha of 0.3f.
-                            initialAlpha = 0.3f
-                        ),
-                        exit = slideOutVertically() + shrinkVertically() + fadeOut()
-                    ) {
-                        UploadingSuccess(onConfirm)
-                    }
+                    UploadingSuccessState(state, onConfirm, caseType)
                 }
             } else {
                 ImageAndCaseStates(state, onTryUploadingImages, onTryUploadingCase)
             }
+        }
+    }
+}
+
+@Composable
+fun UploadingSuccessState(state: UploadingViewState, onConfirm: () -> Unit, caseType: CaseType) {
+    val visible by remember { mutableStateOf(state.isSuccess) }
+    val density = LocalDensity.current
+    visible?.let {
+        AnimatedVisibility(
+            visible = it,
+            enter = slideInVertically {
+                // Slide in from 40 dp from the top.
+                with(density) { -40.dp.roundToPx() }
+            } + expandVertically(
+                // Expand from the top.
+                expandFrom = Alignment.Top
+            ) + fadeIn(
+                // Fade in with the initial alpha of 0.3f.
+                initialAlpha = 0.3f
+            ),
+            exit = slideOutVertically() + shrinkVertically() + fadeOut()
+        ) {
+            UploadingSuccess(onConfirm, caseType)
         }
     }
 }
@@ -236,8 +245,14 @@ fun UploadingImages() {
 
 @Composable
 fun UploadingSuccess(
-    onConfirm: () -> Unit = {}
+    onConfirm: () -> Unit = {},
+    caseType: CaseType
 ) {
+    val messageOne = when(caseType) {
+        CaseType.FOUND -> stringResource(id = R.string.search_found)
+        CaseType.MISSING -> stringResource(id = R.string.search_lost)
+        CaseType.NONE -> ""
+    }
     ColumnUi(
         modifier = Modifier
             .fillMaxSize(),
@@ -247,7 +262,7 @@ fun UploadingSuccess(
         BoxUi(modifier = Modifier) {
             ColumnUi {
                 SpacerUi(modifier = Modifier.height(70.dp))
-                BodyText()
+                BodyText(messageOne)
             }
             IconUi(
                 modifier = Modifier
@@ -259,9 +274,15 @@ fun UploadingSuccess(
         }
 
 
+        val messageTwo = when(caseType) {
+            CaseType.FOUND -> stringResource(id = R.string.search_found_2)
+            CaseType.MISSING -> stringResource(id = R.string.search_lost_2)
+            CaseType.NONE -> ""
+        }
+
         TextUi(
             modifier = Modifier.fillMaxWidth(),
-            text = stringResource(id = R.string.search_lost_2),
+            text = messageTwo,
             style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onTertiaryContainer
@@ -287,7 +308,7 @@ fun UploadingSuccess(
 }
 
 @Composable
-fun BodyText() {
+fun BodyText(messageOne: String) {
     BoxUi(
         modifier = Modifier
             .fillMaxWidth()
@@ -307,7 +328,7 @@ fun BodyText() {
 
         TextUi(
             modifier = Modifier.fillMaxWidth(),
-            text = stringResource(id = R.string.search_lost),
+            text = messageOne,
             style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.primary

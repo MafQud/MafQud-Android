@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -19,13 +18,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.mafqud.android.R
-import com.mafqud.android.auth.AuthActivity
 import com.mafqud.android.base.fragment.BaseFragment
 import com.mafqud.android.home.HomeActivity
 import com.mafqud.android.report.ReportActivity
 import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.theme.MafQudTheme
-import com.mafqud.android.util.other.LogMe
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -87,7 +84,9 @@ class UploadingImagesFragment : BaseFragment() {
     @Composable
     private fun ListenToChanges() {
         val state = viewModel.stateChannel.collectAsState().value
-        UploadingScreen(state, onTryUploadingImages = {
+        UploadingScreen(caseType = args.caseBody.caseType,
+            state = state,
+            onTryUploadingImages = {
             tryUploadingImages()
         }, onTryUploadingCase = {
             tryUploadingCase()

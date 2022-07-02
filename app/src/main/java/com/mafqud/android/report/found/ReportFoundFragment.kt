@@ -29,6 +29,7 @@ import com.mafqud.android.base.fragment.BaseFragment
 import com.mafqud.android.camera.CameraFragment
 import com.mafqud.android.home.HomeActivity
 import com.mafqud.android.report.lost.ReportIntent
+import com.mafqud.android.report.lost.ReportLostFragmentDirections
 import com.mafqud.android.report.lost.ReportViewModel
 import com.mafqud.android.ui.compose.CameraDialog
 import com.mafqud.android.ui.compose.TitledAppBar
@@ -57,6 +58,17 @@ class ReportFoundFragment : BaseFragment() {
             PermissionAccessType.CAMERA
 
         )
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requestGovsList()
+    }
+
+    private fun requestGovsList() {
+        lifecycleScope.launchWhenCreated {
+            viewModel.intentChannel.send(ReportIntent.GetGovs)
+        }
     }
 
     @OptIn(ExperimentalMaterialApi::class)
@@ -207,7 +219,8 @@ class ReportFoundFragment : BaseFragment() {
             if (PermissionManager.isPermissionsGranted(
                     requireContext(),
                     CAMERA_READ_FILES__PERMISSIONS
-            )) {
+                )
+            ) {
                 openBottomSheet()
             } else {
                 requestPermissionsFirst()
@@ -215,24 +228,41 @@ class ReportFoundFragment : BaseFragment() {
         })
 
         FoundScreen(
+            govs = mState.govs,
+            cities = mState.cities,
             pickedImages = mState.imagesUri,
             openGalleryClicked = {
                 if (PermissionManager.isPermissionsGranted(
                         requireContext(),
                         CAMERA_READ_FILES__PERMISSIONS
-                    )) {
+                    )
+                ) {
                     openBottomSheet()
                 } else {
                     // open our dialog
                     cameraDialog.value = true
                 }
-            }, onNextClicked = {
-                findNavController().navigate(R.id.action_reportFoundFragment_to_reportfoundSecondFragment)
+            }, onNextClicked = { govId, cityId ->
+                val actionToSecond =
+                    ReportFoundFragmentDirections.actionReportFoundFragmentToReportfoundSecondFragment(
+                        mState.imagesUri.map { it.toString() }.toTypedArray(),
+                        govId,
+                        cityId
+                    )
+                findNavController().navigate(actionToSecond)
             }, onCloseClicked = {
                 removeImageUri(it)
+            }, onGovSelected = {
+                requestCities(it)
             }
         )
+    }
 
+
+    private fun requestCities(it: Int) {
+        lifecycleScope.launchWhenCreated {
+            viewModel.intentChannel.send(ReportIntent.GetCities(it))
+        }
     }
 
     private fun requestPermissionsFirst() {

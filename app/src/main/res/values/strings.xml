@@ -209,4 +209,6 @@
     <string name="map_pemissions">You should accept locations permissions to get the nearest cases for you</string>
     <string name="permission">Give permissions</string>
     <string name="gps">Open GPS</string>
+    <string name="search_found_2">We will do our best to find him</string>
+    <string name="search_found">We will seach for him ...</string>
 </resources>

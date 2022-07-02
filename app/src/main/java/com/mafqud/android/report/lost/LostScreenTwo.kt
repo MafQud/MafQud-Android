@@ -108,7 +108,7 @@ fun FragmentActivity.LostScreenTwo(
             LostDate(selectedDate, this@LostScreenTwo)
             LostDescription(description)
             LocationForm(govs, cities, onGovSelected, selectedGovId, selectedCityId)
-            PhoneReportForm(phone)
+            //PhoneReportForm(phone)
             BoxUi(modifier = Modifier
                 .fillMaxWidth()
                 .onGloballyPositioned { coordinates ->

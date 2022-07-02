@@ -69,6 +69,16 @@
         <action
             android:id="@+id/action_reportfoundSecondFragment_to_uploadingImagesFragment"
             app:destination="@id/uploadingImagesFragment" />
+
+        <argument
+            android:name="imagesUrisPicked"
+            app:argType="string[]" />
+        <argument
+            android:name="givID"
+            app:argType="integer" />
+        <argument
+            android:name="cityID"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/uploadingImagesFragment"
