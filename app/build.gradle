@@ -11,9 +11,9 @@ apply plugin: 'com.google.gms.google-services'
 
 
 // breaking
-ext.majorVersion = 1
+ext.majorVersion = 2
 // feature
-ext.minorVersion = 4
+ext.minorVersion = 0
 //bugfix
 ext.patchVersion = 0
 /*
@@ -117,10 +117,7 @@ dependencies {
     def splash_screen = "1.0.0-beta01"
     def retrofit = "2.9.0"
     def moshi = "2.4.0"
-    def facebook_login = "5.15.3"
-    def google_login = "19.2.0"
     def glide = "4.12.0"
-    def color_picker = "2.0"
     def lottie = "4.1.0"
     def swipe_refresh = "0.18.0"
     def nav_version_compose = "2.4.2"
@@ -145,7 +142,6 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp"
     // retrofit moshi
     implementation "com.squareup.retrofit2:converter-moshi:$moshi"
-
 
     /**
      *  splash screen api
@@ -288,11 +284,7 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-location:19.0.1'
 
-    //System UI Controller for Jetpack Compose¶
-    //implementation "com.google.accompanist:accompanist-systemuicontroller:0.24.7-alpha"
-
 }
-
 
 private Integer generateVersionCode() {
     return ext.majorVersion * 10000 + ext.minorVersion * 100 + ext.patchVersion

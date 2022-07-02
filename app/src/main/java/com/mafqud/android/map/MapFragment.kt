@@ -81,7 +81,7 @@ class MapFragment : BaseFragment(), LocationListener {
                     val scaffoldState = rememberScaffoldState()
                     Scaffold(scaffoldState = scaffoldState, topBar = {
                         HomeAppBar(
-                            userName = "userName.value",
+                            userName = userName.value,
                             onNotificationClicked = {
                                 findNavController().navigate(R.id.actionToNotificationGraph)
                             }

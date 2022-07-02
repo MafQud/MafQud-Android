@@ -51,6 +51,7 @@ class MapViewModel @Inject constructor(
 
     private fun getCases(casesTabType: CasesTabType) {
         saveCaseTape(casesTabType)
+        setUserName()
         launchViewModelScope {
             val savedLocation = mapRepository.getSavedLocation()
             setLocation(savedLocation)
