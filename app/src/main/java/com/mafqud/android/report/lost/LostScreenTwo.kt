@@ -1,6 +1,5 @@
 package com.mafqud.android.report.lost
 
-import android.icu.lang.UCharacter.getAge
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -20,11 +19,15 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import com.mafqud.android.R
 import com.mafqud.android.home.model.CaseType
+import com.mafqud.android.locations.MyCity
+import com.mafqud.android.locations.MyGov
 import com.mafqud.android.report.PhoneReportForm
 import com.mafqud.android.report.uploading.models.CreateCaseBody
 import com.mafqud.android.ui.compose.*
+import com.mafqud.android.ui.other.showToast
 import com.mafqud.android.ui.picker.datePicker
 import com.mafqud.android.ui.theme.*
+import com.mafqud.android.util.other.LogMe
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -42,7 +45,10 @@ val genders = listOf(Gender.NONE, Gender.MALE, Gender.FEMALE)
 fun FragmentActivity.LostScreenTwo(
     onNext: (CreateCaseBody) -> Unit = {},
     onBack: () -> Unit = {},
-    isDialogOpened: MutableState<Boolean> = mutableStateOf(true)
+    isDialogOpened: MutableState<Boolean> = mutableStateOf(true),
+    govs: List<MyGov>? = emptyList(),
+    cities: List<MyCity>? = emptyList(),
+    onGovSelected: (Int) -> Unit = {},
 ) {
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
@@ -73,6 +79,14 @@ fun FragmentActivity.LostScreenTwo(
         mutableStateOf("")
     }
 
+    // location info
+    val selectedGovId = remember {
+        mutableStateOf(-1)
+    }
+    val selectedCityId = remember {
+        mutableStateOf(-1)
+    }
+
     BoxUi(
         modifier = Modifier
             .fillMaxSize()
@@ -93,7 +107,7 @@ fun FragmentActivity.LostScreenTwo(
             LostGenderAndAge(selectedGender, selectedAge)
             LostDate(selectedDate, this@LostScreenTwo)
             LostDescription(description)
-            LocationForm()
+            LocationForm(govs, cities, onGovSelected, selectedGovId, selectedCityId)
             PhoneReportForm(phone)
             BoxUi(modifier = Modifier
                 .fillMaxWidth()
@@ -104,24 +118,30 @@ fun FragmentActivity.LostScreenTwo(
                     enabled = true,
                     title = stringResource(id = R.string.search_losts),
                     onClick = {
-                        onNext(
-                            CreateCaseBody(
-                                details = CreateCaseBody.Details(
-                                    age = getUserAge(selectedAge.value),
-                                    name = getName(lostName.value),
-                                    description = getDes(description.value),
-                                    gender = getGender(selectedGender),
-                                    lastSeen = selectedDate.value,
-                                    // TODO
-                                    location = CreateCaseBody.Details.Location(
-                                        gov = "7",
-                                        city = "182",
-                                        address = "My address"
-                                    )
-                                ),
-                                caseType = CaseType.MISSING
+                        if (isLocationValid(
+                                selectedGovId.value,
+                                selectedCityId.value
                             )
-                        )
+                        ) {
+                            onNext(
+                                CreateCaseBody(
+                                    details = CreateCaseBody.Details(
+                                        age = getUserAge(selectedAge.value),
+                                        name = getName(lostName.value),
+                                        description = getDes(description.value),
+                                        gender = getGender(selectedGender),
+                                        lastSeen = selectedDate.value,
+                                        location = getSelectedLocation(
+                                            selectedGovId,
+                                            selectedCityId
+                                        )
+                                    ),
+                                    caseType = CaseType.MISSING
+                                )
+                            )
+                        } else {
+                            showToast(getString(R.string.error_location))
+                        }
                     })
             }
 
@@ -155,6 +175,25 @@ fun FragmentActivity.LostScreenTwo(
     DismissDialog(isOpened = isDialogOpened, onConfirmClicked = {
         onBack()
     })
+}
+
+fun isLocationValid(gov: Int, city: Int): Boolean {
+    return !(city == -1 && gov != -1)
+}
+
+fun getSelectedLocation(
+    selectedGovId: MutableState<Int>,
+    selectedCityId: MutableState<Int>
+): CreateCaseBody.Details.Location? {
+    if (selectedGovId.value == -1 && selectedCityId.value == -1)
+        return null
+
+    return CreateCaseBody.Details.Location(
+        gov = selectedGovId.value.toString(),
+        city = selectedCityId.value.toString(),
+        // TODO pass user address
+        address = "TODO"
+    )
 }
 
 fun getName(name: String): String? {
@@ -318,33 +357,68 @@ private fun HeaderTwo() {
 }
 
 @Composable
-private fun LocationForm() {
+private fun LocationForm(
+    govs: List<MyGov>?,
+    cities: List<MyCity>?,
+    onGovSelected: (Int) -> Unit,
+    selectedGovId: MutableState<Int>,
+    selectedCityId: MutableState<Int>,
+) {
     ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         TextUi(
             modifier = Modifier.fillMaxWidth(),
-            text = stringResource(id = R.string.address_lost_where),
+            text = stringResource(id = R.string.address_lost),
             style = MaterialTheme.typography.titleMedium
 
         )
-        RowUi(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            DropDownItems(
-                modifier = Modifier
-                    .weight(1f)
-                    .height(50.dp),
-                items = listOf("Gov"),
-                iconColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
-                textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-            )
-            DropDownItems(
-                items = listOf("City"),
-                modifier = Modifier
-                    .weight(1f)
-                    .height(50.dp),
-                iconColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
-                textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-            )
+        RowUi(
+            modifier = Modifier.animateContentSize(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            govs?.let {
+                DropDownItems(
+                    title = stringResource(id = R.string.gov),
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(50.dp),
+                    items = it.map {
+                        return@map it.name ?: ""
+                    },
+                    iconColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                    backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+                    textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                    onSelectItem = {
+                        val itemID = it.toIntOrNull() ?: -1
+                        val govId = govs.getOrNull(itemID)?.id ?: -1
+                        selectedGovId.value = govId
+                        onGovSelected(govId)
+                        LogMe.i("DropDownItems", "selected $it")
+                    }
+                )
+            }
+
+            cities?.let {
+                DropDownItems(
+                    title = stringResource(id = R.string.city),
+                    items = it.map {
+                        return@map it.name ?: ""
+                    },
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(50.dp),
+                    iconColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                    backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+                    textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                    onSelectItem = {
+                        val itemID = it.toIntOrNull() ?: -1
+                        val cityId = cities.getOrNull(itemID)?.id ?: -1
+                        selectedCityId.value = cityId
+                        LogMe.i("DropDownItems", "selected $it")
+                    }
+                )
+            }
+
+
         }
     }
 }

@@ -6,16 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.compose.BackHandler
 import androidx.compose.material.Scaffold
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.mafqud.android.R
 import com.mafqud.android.base.fragment.BaseFragment
-import com.mafqud.android.home.model.CaseType
 import com.mafqud.android.report.uploading.models.CreateCaseBody
 import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.theme.MafQudTheme
@@ -26,6 +26,19 @@ class ReportLostSecondFragment : BaseFragment() {
 
 
     private val args: ReportLostSecondFragmentArgs by navArgs()
+    private val viewModel: ReportViewModel by viewModels()
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requestGovsList()
+    }
+
+    private fun requestGovsList() {
+        lifecycleScope.launchWhenCreated {
+            viewModel.intentChannel.send(ReportIntent.GetGovs)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,21 +64,7 @@ class ReportLostSecondFragment : BaseFragment() {
                             }
                         )
                     }, content = {
-                        requireActivity().LostScreenTwo(onNext = {
-                            val actonToUploading =
-                                ReportLostSecondFragmentDirections.actionReportLostSecondFragmentToUploadingImagesFragment(
-                                    args.imagesUrisPicked,
-                                    it.apply {
-                                        location = CreateCaseBody.Location(
-                                            gov = args.givID.toString(),
-                                            city = args.cityID.toString(),
-                                        )
-                                    }
-                                )
-                            findNavController().navigate(actonToUploading)
-                        }, onBack = {
-                            findNavController().popBackStack()
-                        }, isDialogOpened)
+                        ListenToChanges(isDialogOpened)
                     })
                     BackHandler {
                         isDialogOpened.value = true
@@ -73,5 +72,46 @@ class ReportLostSecondFragment : BaseFragment() {
                 }
             }
         }
+    }
+
+
+    @Composable
+    private fun ListenToChanges(isDialogOpened: MutableState<Boolean>) {
+        val state = viewModel.stateChannel.collectAsState().value
+
+        requireActivity().LostScreenTwo(
+            govs = state.govs,
+            cities = state.cities,
+            onGovSelected = {
+                requestCities(it)
+            },
+            onNext = { caseBody ->
+                // open uploading screen fragment
+                uploadCase(caseBody)
+            }, onBack = {
+                findNavController().popBackStack()
+            }, isDialogOpened = isDialogOpened
+        )
+    }
+
+    private fun requestCities(it: Int) {
+        lifecycleScope.launchWhenCreated {
+            viewModel.intentChannel.send(ReportIntent.GetCities(it))
+        }
+    }
+
+    private fun uploadCase(it: CreateCaseBody) {
+        val actonToUploading =
+            ReportLostSecondFragmentDirections.actionReportLostSecondFragmentToUploadingImagesFragment(
+                args.imagesUrisPicked,
+                it.apply {
+                    // set the lost case home location
+                    location = CreateCaseBody.Location(
+                        gov = args.givID.toString(),
+                        city = args.cityID.toString(),
+                    )
+                }
+            )
+        findNavController().navigate(actonToUploading)
     }
 }
