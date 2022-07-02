@@ -1,5 +1,6 @@
 package com.mafqud.android.results.caseDetails.models
 import androidx.annotation.Keep
+import com.mafqud.android.home.model.CaseType
 import com.squareup.moshi.Json
 import java.io.Serializable
 
@@ -19,6 +20,13 @@ data class CaseDetailsResponse(
     @field:Json(name = "user")
     val user: String? = "" // 1111111111
 ) : Serializable {
+    fun getCaseType(): CaseType {
+        return when(type){
+            "M" -> CaseType.MISSING
+            "F" -> CaseType.FOUND
+            else -> CaseType.NONE
+        }
+    }
     @Keep
     data class Details(
         @field:Json(name = "age")

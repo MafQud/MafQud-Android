@@ -122,8 +122,13 @@ fun CaseItem(
                     SpacerUi(modifier = Modifier.height(8.dp))
                     //date
                     RowUi(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        val dateTitle = when(case.getCaseType()) {
+                            CaseType.FOUND -> stringResource(id = R.string.found_date)
+                            CaseType.MISSING -> stringResource(id = R.string.lost_date)
+                            CaseType.NONE -> ""
+                        }
                         TextUi(
-                            text = stringResource(id = R.string.lost_date),
+                            text = dateTitle,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             style = MaterialTheme.typography.titleSmall
                         )

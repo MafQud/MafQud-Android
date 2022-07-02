@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
+import com.mafqud.android.home.model.CaseType
 import com.mafqud.android.results.caseDetails.models.CaseDetailsResponse
 import com.mafqud.android.ui.compose.ButtonAuth
 import com.mafqud.android.ui.compose.UserPhoto
@@ -54,9 +55,9 @@ fun CaseDetailsScreen(
                 if (!case.photos.isNullOrEmpty()) {
                     val firstImage = case.photos.first()
                     UserPhoto(imageUrl = firstImage, imagesSize = 80.dp,
-                    onClicked = {
-                        onImageClicked(firstImage)
-                    })
+                        onClicked = {
+                            onImageClicked(firstImage)
+                        })
                 }
 
                 TextUi(
@@ -154,12 +155,39 @@ fun TableContent(case: CaseDetailsResponse) {
             }
             SpacerSmallLine()
 
+            // description
+            RowUi(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                val desTitle = when (case.getCaseType()) {
+                    CaseType.FOUND -> stringResource(id = R.string.found_des)
+                    CaseType.MISSING -> stringResource(id = R.string.lost_des)
+                    CaseType.NONE -> ""
+                }
+                TextUi(
+                    modifier = Modifier.weight(1f),
+                    text = desTitle,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                    style = MaterialTheme.typography.titleMedium
+                )
+                TextUi(
+                    modifier = Modifier.weight(2f),
+                    text = case.details?.description ?: stringResource(id = R.string.not_found),
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
+            SpacerSmallLine()
+
             RowUi(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
 
+                val addressTitle = when (case.getCaseType()) {
+                    CaseType.FOUND -> stringResource(id = R.string.address_founded)
+                    CaseType.MISSING -> stringResource(id = R.string.address_lost_title)
+                    CaseType.NONE -> ""
+                }
                 //address
                 TextUi(
                     modifier = Modifier.weight(1f),
-                    text = stringResource(id = R.string.address_founded),
+                    text = addressTitle,
                     color = MaterialTheme.colorScheme.onTertiaryContainer,
                     style = MaterialTheme.typography.titleMedium
                 )

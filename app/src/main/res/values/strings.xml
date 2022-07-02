@@ -211,4 +211,7 @@
     <string name="gps">Open GPS</string>
     <string name="search_found_2">We will do our best to find him</string>
     <string name="search_found">We will seach for him ...</string>
+    <string name="found_date">Found date</string>
+    <string name="address_lost_title">Lost address location</string>
+    <string name="not_found">Not Found</string>
 </resources>
