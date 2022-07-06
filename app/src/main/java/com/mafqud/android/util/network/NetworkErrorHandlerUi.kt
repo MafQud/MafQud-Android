@@ -31,6 +31,7 @@ import com.mafqud.android.ui.theme.BoxUi
 import com.mafqud.android.ui.theme.ColumnUi
 import com.mafqud.android.ui.theme.ImageUi
 import com.mafqud.android.ui.theme.TextUi
+import org.greenrobot.eventbus.EventBus
 
 
 @Composable
@@ -86,7 +87,9 @@ fun HandlePagingError(
                     if (shouldShowLogoutDialog) {
                         ShouldLogoutDialog(
                             titleHead = stringResource(id = R.string.should_logout),
-                            isOpened = isDialogOpened
+                            isOpened = isDialogOpened, onConfirmClicked = {
+                                EventBus.getDefault().post("logout")
+                            }
                         )
                     }
                 }
@@ -116,7 +119,7 @@ private fun Throwable.getErrorMessage(): String {
 @Composable
 private fun Throwable.isUnauthorized(): Boolean {
     return when (val res = getNetworkErrorFromThrowable(throwable = this)) {
-        is Result.NetworkError.Generic  -> res.type == HttpErrorType.NotAuthorized
+        is Result.NetworkError.Generic -> res.type == HttpErrorType.NotAuthorized
         else -> false
     }
 }

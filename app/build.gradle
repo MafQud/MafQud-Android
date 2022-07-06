@@ -104,6 +104,11 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    kapt {
+        arguments {
+            arg('eventBusIndex', 'com.example.myapp.MyEventBusIndex')
+        }
+    }
 }
 
 dependencies {
@@ -121,6 +126,8 @@ dependencies {
     def lottie = "4.1.0"
     def swipe_refresh = "0.18.0"
     def nav_version_compose = "2.4.2"
+    def eventbus = "3.1.1"
+    def eventbusProcessor = "3.1.1"
 
 
     /**
@@ -283,6 +290,10 @@ dependencies {
     implementation 'com.auth0.android:jwtdecode:2.0.1'
 
     implementation 'com.google.android.gms:play-services-location:19.0.1'
+
+    // event bus
+    implementation "org.greenrobot:eventbus:$eventbus"
+    kapt "org.greenrobot:eventbus-annotation-processor:$eventbusProcessor"
 
 }
 
