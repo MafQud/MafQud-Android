@@ -52,7 +52,7 @@ data class NotificationsResponse(
         @field:Json(name = "level")
         val level: String? = "", // S
         @field:Json(name = "read_at")
-        val readAt: String? = "", // 111
+        var readAt: String? = "", // 111
         var iconType: NotificationIconType = NotificationIconType.NONE // تم نشر الحاله بنجاح
     ) {
         fun getCaseType(): CaseType {

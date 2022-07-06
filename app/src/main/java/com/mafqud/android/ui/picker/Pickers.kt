@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.fragment.app.FragmentActivity
+import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.mafqud.android.R
@@ -20,9 +21,14 @@ import java.util.*
 fun datePicker(
     updatedDate: (String, String) -> Unit
 ): MaterialDatePicker<Long> {
+    val currentTimeZone = Calendar.getInstance(TimeZone.getDefault())
+
     val picker = MaterialDatePicker.Builder.datePicker().setTheme(
         R.style.ThemeOverlay_App_MaterialCalendar
-    ).build()
+    // limit end date by current day .
+    ).setCalendarConstraints(
+        CalendarConstraints.Builder().setEnd(currentTimeZone.timeInMillis).build()
+    ).setSelection(currentTimeZone.timeInMillis).build()
     picker.addOnPositiveButtonClickListener {
         updatedDate(dateFormatterGlobal(it), dateFormatterDisplay(it))
     }

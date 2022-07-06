@@ -28,6 +28,7 @@ import com.mafqud.android.notification.models.NotificationsResponse
 import com.mafqud.android.report.CircleDot
 import com.mafqud.android.ui.theme.*
 import com.mafqud.android.util.dateFormat.fromFullDateToAnother
+import com.mafqud.android.util.fileManager.getCurrentDate
 import com.mafqud.android.util.network.HandlePagingError
 import kotlinx.coroutines.flow.Flow
 import java.io.Serializable
@@ -154,6 +155,10 @@ fun NotificationItem(
             .clip(RoundedCornerShape(12.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
             .clickable {
+                // assign current clicked notification as readed
+                notification.readAt = getCurrentDate()
+
+                // handle notification click action
                 when (notification.getAction()) {
                     NotificationAction.MATCHES -> {
                         onNotificationClicked(

@@ -86,10 +86,10 @@ fun LostScreen(
                 ((isValidImagesRang))
 
 
-            isFormActivated =
-                ((isValidImagesRang))
+            isFormActivated = true
+                /*((isValidImagesRang))
                         && selectedGovId.value != -1
-                        && selectedCityId.value != -1
+                        && selectedCityId.value != -1*/
 
             SpacerUi(modifier = Modifier.height(16.dp))
             Header()
