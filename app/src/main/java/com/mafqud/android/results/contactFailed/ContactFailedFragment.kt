@@ -83,7 +83,7 @@ class ContactFailedFragment : BaseFragment() {
                 // next
                 ButtonSmall(title = stringResource(id = R.string.confirm)) {
                     findNavController().navigate(
-                        R.id.action_pop_out_of_notification_graph,
+                        R.id.action_pop_out_of_graph,
                     )
                 }
             }

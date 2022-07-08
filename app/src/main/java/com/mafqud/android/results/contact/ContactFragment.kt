@@ -99,7 +99,6 @@ class ContactFragment : BaseFragment() {
     }
 
     private fun sendFailedContactIntent() {
-        // TODO fix it
         findNavController().navigate(R.id.action_contactFragment_to_contactFailedFragment)
         args.caseContact?.let {
             lifecycleScope.launchWhenCreated {

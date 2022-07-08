@@ -104,6 +104,7 @@ class NationalIDFragment : BaseFragment() {
     private fun openContactScreen() {
         val actionToPublish =
             NationalIDFragmentDirections.actionNationalIdFragmentToContactFragment2(
+
             )
         actionToPublish.caseContact = args.caseContact
         findNavController().navigate(actionToPublish)

@@ -7,9 +7,26 @@
     <action
         app:enterAnim="@anim/fade_in"
         app:popExitAnim="@anim/slide_right"
+        android:id="@+id/action_pop_out_of_graph"
+        app:destination="@+id/homeFragment"
+        app:launchSingleTop="true"
+        app:popUpTo="@id/notifications_graph"
+        app:popUpToInclusive="true" />
+
+    <action
+        app:enterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/slide_right"
         android:id="@+id/actionToNotificationGraph"
         app:destination="@+id/notifications_graph" />
-
+    <action
+        app:enterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/slide_right"
+        android:id="@+id/action_contactFragment_to_contactFailedFragment"
+        app:destination="@id/contactFailedFragment" />
+    <fragment
+        android:id="@+id/contactFailedFragment"
+        android:name="com.mafqud.android.results.contactFailed.ContactFailedFragment"
+        android:label="ContactFailedFragment" />
     <include app:graph="@navigation/notifications_graph" />
 
     <fragment

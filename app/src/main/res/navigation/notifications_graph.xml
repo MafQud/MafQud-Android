@@ -8,7 +8,7 @@
     <action
         app:enterAnim="@anim/fade_in"
         app:popExitAnim="@anim/slide_right"
-        android:id="@+id/action_pop_out_of_notification_graph"
+        android:id="@+id/action_pop_out_of_graph"
         app:destination="@+id/homeFragment"
         app:launchSingleTop="true"
         app:popUpTo="@id/notifications_graph"
