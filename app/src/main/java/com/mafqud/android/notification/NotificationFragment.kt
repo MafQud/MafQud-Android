@@ -19,6 +19,8 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mafqud.android.R
 import com.mafqud.android.data.DataStoreManager
 import com.mafqud.android.home.HomeActivity
+import com.mafqud.android.mapper.CaseContact
+import com.mafqud.android.results.states.success.NationalIDHelper
 import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.status.loading.CircleLoading
 import com.mafqud.android.ui.theme.MafQudTheme
@@ -33,9 +35,8 @@ class NotificationFragment : Fragment() {
     private val viewModel: NotificationViewModel by viewModels()
 
     @Inject
-    lateinit var dataStoreManager: DataStoreManager
+    lateinit var nationalIDHelper: NationalIDHelper
 
-    private var userNationalId : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,9 +44,6 @@ class NotificationFragment : Fragment() {
         if (activity is HomeActivity) {
             activity.homeBarVisibility(isVisible = false)
         }
-       runBlocking {
-           userNationalId = dataStoreManager.getNationalId()
-       }
         requestDataIntent()
     }
 
@@ -138,23 +136,31 @@ class NotificationFragment : Fragment() {
         caseModel: CaseModel,
     ) {
         /**
-         * if user national id in not empty open results screen .
+         * if the user has no national id so open national Id screen to fill his national ID
          */
-        if (userNationalId.isNotEmpty()) {
+        if (nationalIDHelper.shouldOpenNationalIdScreen()) {
+            val actionToSuccess =
+                NotificationFragmentDirections.actionNotificationFragmentToNationalId(
+
+                )
+            actionToSuccess.caseContact = CaseContact(
+                caseType = caseModel.caseType,
+                id = caseModel.caseId
+            )
+            findNavController().navigate(actionToSuccess)
+        }
+        /**
+         * if user national id in not empty open results screen .
+         *
+         */
+        else {
             val actionToResults =
                 NotificationFragmentDirections.actionNotificationFragmentToResultsCasesFragment()
             actionToResults.caseModel = caseModel
             findNavController().navigate(actionToResults)
 
-        } else {
-            val actionToSuccess =
-                NotificationFragmentDirections.actionNotificationFragmentToSuccessLostFragment()
-            actionToSuccess.caseModel = caseModel
-            findNavController().navigate(actionToSuccess)
         }
-
     }
-
 
     private fun refreshDataIntent() {
         lifecycleScope.launchWhenCreated {

@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.compose.compiler.plugins.kotlin.EmptyFunctionMetrics.name
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -15,17 +15,22 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.mafqud.android.base.fragment.BaseFragment
+import com.mafqud.android.home.model.CaseType
+import com.mafqud.android.mapper.CaseContact
+import com.mafqud.android.notification.CaseModel
 import com.mafqud.android.ui.compose.IconType
 import com.mafqud.android.ui.compose.LoadingDialog
 import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.theme.MafQudTheme
 import com.mafqud.android.util.network.ShowNetworkErrorSnakeBar
+import com.mafqud.android.util.other.LogMe
 import dagger.hilt.android.AndroidEntryPoint
+import com.mafqud.android.R
 
 @AndroidEntryPoint
-class SuccessReportingFragment : BaseFragment() {
+class NationalIDFragment : BaseFragment() {
 
-    private val args: SuccessReportingFragmentArgs by navArgs()
+    private val args: NationalIDFragmentArgs by navArgs()
     private val viewModel: SuccessResultsViewModel by viewModels()
 
     override fun onCreateView(
@@ -65,15 +70,13 @@ class SuccessReportingFragment : BaseFragment() {
         val state = viewModel.stateChannel.collectAsState()
         val stateValue = state.value
 
-
-
-        SuccessScreen(args.caseModel, stateValue.nationalID) { id ->
+        SuccessScreen(args.caseContact, stateValue.nationalID) { id ->
             // try send national ID
             sendUserInfoIntent(id)
         }
         if (stateValue.isSuccess) {
             clearState()
-            displayMatchesCases()
+            openNextScreen()
         }
 
         if (stateValue.networkError != null) {
@@ -84,6 +87,26 @@ class SuccessReportingFragment : BaseFragment() {
 
         LoadingDialog(stateValue.isLoading)
 
+    }
+
+    private fun openNextScreen() {
+        val previousFragmentId = findNavController().previousBackStackEntry?.destination?.id
+
+        if (previousFragmentId == R.id.notificationFragment) {
+            displayMatchesCases()
+
+        } else if (previousFragmentId == R.id.homeDetailsFragment) {
+            openContactScreen()
+        }
+
+    }
+
+    private fun openContactScreen() {
+        val actionToPublish =
+            NationalIDFragmentDirections.actionNationalIdFragmentToContactFragment2(
+            )
+        actionToPublish.caseContact = args.caseContact
+        findNavController().navigate(actionToPublish)
     }
 
     private fun sendUserInfoIntent(nationalId: String) {
@@ -104,9 +127,13 @@ class SuccessReportingFragment : BaseFragment() {
 
     private fun displayMatchesCases() {
         val actionToPublish =
-            SuccessReportingFragmentDirections.actionSuccessLostFragmentToResultsCasesFragment(
+            NationalIDFragmentDirections.actionNationalIdToResultsCasesFragment(
+
             )
-        actionToPublish.caseModel = args.caseModel
+        actionToPublish.caseModel = CaseModel(
+            caseId = args.caseContact?.id ?: -1,
+            caseType = args.caseContact?.caseType ?: CaseType.NONE
+        )
         findNavController().navigate(actionToPublish)
     }
 

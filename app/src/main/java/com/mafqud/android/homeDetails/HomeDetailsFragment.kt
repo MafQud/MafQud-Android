@@ -21,18 +21,27 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mafqud.android.R
 import com.mafqud.android.base.fragment.BaseFragment
 import com.mafqud.android.home.model.CaseType
+import com.mafqud.android.mapper.CaseContact
+import com.mafqud.android.notification.CaseModel
 import com.mafqud.android.results.caseDetails.*
+import com.mafqud.android.results.caseDetails.models.CaseDetailsResponse
+import com.mafqud.android.results.states.success.NationalIDHelper
 import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.status.loading.CircleLoading
 import com.mafqud.android.ui.theme.MafQudTheme
 import com.mafqud.android.util.network.ShowNetworkErrorSnakeBar
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeDetailsFragment : BaseFragment() {
 
     private val args: HomeDetailsFragmentArgs by navArgs()
     private val viewModel: CaseDetailsViewModel by viewModels()
+
+    @Inject
+    lateinit var nationalIDHelper: NationalIDHelper
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,12 +101,9 @@ class HomeDetailsFragment : BaseFragment() {
 
             CaseDetailsScreen(stateValue.case,
                 onContact = {
-                    /* val actionToContact =
-                         CaseDetailsFragmentDirections.actionCaseDetailsFragmentToContactFragment(
-                             stateValue.case
-                         )
-                     actionToContact.caseId = args.caseMatch?.case?.id ?: -1
-                     findNavController().navigate(actionToContact)*/
+                    if (stateValue.case != null) {
+                        openNextScreen(stateValue.case)
+                    }
                 }, onImageClicked = {
                     openImagePreviewer(it)
                 })
@@ -105,6 +111,36 @@ class HomeDetailsFragment : BaseFragment() {
             if (stateValue.networkError != null) {
                 stateValue.networkError.ShowNetworkErrorSnakeBar(scaffoldState)
             }
+        }
+    }
+
+    private fun openNextScreen(case: CaseDetailsResponse) {
+        val caseContact = CaseContact(
+            id = args.caseID,
+            caseType = args.caseType,
+            name = case.details?.name,
+            phone = case.user,
+            address = case.location?.getFullAddress(),
+        )
+        /**
+         * if the user has no national id so open national Id screen to fill his national ID
+         */
+        if (nationalIDHelper.shouldOpenNationalIdScreen()) {
+            val actionToNAtionalID =
+                HomeDetailsFragmentDirections.actionHomeDetailsFragmentToNationalIdFragment(
+                )
+            actionToNAtionalID.caseContact = caseContact
+            findNavController().navigate(actionToNAtionalID)
+        }
+        /**
+         * if user national id in not empty open contact screen .
+         */
+        else {
+            val actionToContact =
+                HomeDetailsFragmentDirections.actionHomeDetailsFragmentToContactFragment2(
+                )
+            actionToContact.caseContact = caseContact
+            findNavController().navigate(actionToContact)
         }
     }
 

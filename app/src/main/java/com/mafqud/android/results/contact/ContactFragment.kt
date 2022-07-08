@@ -79,7 +79,7 @@ class ContactFragment : BaseFragment() {
         }
 
         ContactScreen(
-            caseDetails = args.caseDetails,
+            caseContact = args.caseContact,
             openDialer = { number ->
                 requireContext().openDialer(number)
             }, onContactFailed = {
@@ -101,19 +101,25 @@ class ContactFragment : BaseFragment() {
     private fun sendFailedContactIntent() {
         // TODO fix it
         findNavController().navigate(R.id.action_contactFragment_to_contactFailedFragment)
-        lifecycleScope.launchWhenCreated {
-            viewModel
-                .intentChannel
-                .send(ContactIntent.Done(args.caseId))
+        args.caseContact?.let {
+            lifecycleScope.launchWhenCreated {
+                viewModel
+                    .intentChannel
+                    .send(ContactIntent.Done(it.id ?: -1))
+            }
         }
+
     }
 
     private fun sendDoneContactIntent() {
-        lifecycleScope.launchWhenCreated {
-            viewModel
-                .intentChannel
-                .send(ContactIntent.Done(args.caseId))
+        args.caseContact?.let {
+            lifecycleScope.launchWhenCreated {
+                viewModel
+                    .intentChannel
+                    .send(ContactIntent.Done(it.id ?: -1))
+            }
         }
+
     }
 
 }

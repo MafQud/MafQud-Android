@@ -21,6 +21,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.mafqud.android.R
 import com.mafqud.android.base.fragment.BaseFragment
 import com.mafqud.android.home.model.CaseType
+import com.mafqud.android.mapper.CaseContact
 import com.mafqud.android.ui.compose.TitledAppBar
 import com.mafqud.android.ui.status.loading.CircleLoading
 import com.mafqud.android.ui.theme.MafQudTheme
@@ -81,6 +82,7 @@ class CaseDetailsFragment : BaseFragment() {
     private fun ListenToChanges(scaffoldState: ScaffoldState) {
         val state = viewModel.stateChannel.collectAsState()
         val stateValue = state.value
+        state.value.case
         SwipeRefresh(
             state = rememberSwipeRefreshState(stateValue.isRefreshing),
             onRefresh = {
@@ -92,19 +94,28 @@ class CaseDetailsFragment : BaseFragment() {
 
             CaseDetailsScreen(stateValue.case,
                 onContact = {
-                    val actionToContact =
-                        CaseDetailsFragmentDirections.actionCaseDetailsFragmentToContactFragment(
-                            stateValue.case
-                        )
-                    actionToContact.caseId = args.caseMatch?.case?.id ?: -1
-                    findNavController().navigate(actionToContact)
+                    if (stateValue.case != null) {
+                        openContactCaseScreen(stateValue)
+                    }
                 })
-
 
             if (stateValue.networkError != null) {
                 stateValue.networkError.ShowNetworkErrorSnakeBar(scaffoldState)
             }
         }
+    }
+
+    private fun openContactCaseScreen(stateValue: CaseDetailsViewState) {
+        val actionToContact =
+            CaseDetailsFragmentDirections.actionCaseDetailsFragmentToContactFragment()
+        actionToContact.caseContact = CaseContact(
+            id = args.caseMatch?.case?.id ?: -1,
+            caseType = args.caseModel?.caseType ?: CaseType.NONE,
+            name = stateValue.case?.details?.name,
+            phone = stateValue.case?.user,
+            address = stateValue.case?.location?.getFullAddress(),
+        )
+        findNavController().navigate(actionToContact)
     }
 
 

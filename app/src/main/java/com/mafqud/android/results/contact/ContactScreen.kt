@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
-import com.mafqud.android.results.caseDetails.models.CaseDetailsResponse
+import com.mafqud.android.mapper.CaseContact
 import com.mafqud.android.ui.compose.ButtonAuth
 import com.mafqud.android.ui.theme.*
 import com.mafqud.android.util.animations.WavesAnimation
@@ -28,7 +28,7 @@ fun ContactScreen(
     onContactSuccess: () -> Unit = {},
     onContactFailed: () -> Unit = {},
     openDialer: (String) -> Unit = {},
-    caseDetails: CaseDetailsResponse? = null,
+    caseContact: CaseContact? = null,
 ) {
     BoxUi(
         modifier = Modifier
@@ -49,7 +49,7 @@ fun ContactScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             SpacerUi(modifier = Modifier.height(50.dp))
-            TableContent(openDialer, caseDetails)
+            TableContent(openDialer, caseContact)
         }
         BoxUi(
             Modifier
@@ -75,9 +75,9 @@ fun ContactScreen(
 }
 
 @Composable
-fun TableContent(openDialer: (String) -> Unit, caseDetails: CaseDetailsResponse?) {
+fun TableContent(openDialer: (String) -> Unit, caseContact: CaseContact?) {
 
-    caseDetails?.let {
+    caseContact?.let {
         BoxUi(
             modifier = Modifier
                 .height(200.dp)
@@ -101,7 +101,7 @@ fun TableContent(openDialer: (String) -> Unit, caseDetails: CaseDetailsResponse?
                     )
                     TextUi(
                         modifier = Modifier.weight(2f),
-                        text = caseDetails.details?.name ?: stringResource(id = R.string.no_name),
+                        text = caseContact.name ?: stringResource(id = R.string.no_name),
                         color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.titleMedium
                     )
@@ -116,10 +116,10 @@ fun TableContent(openDialer: (String) -> Unit, caseDetails: CaseDetailsResponse?
                         color = MaterialTheme.colorScheme.onTertiaryContainer,
                         style = MaterialTheme.typography.titleMedium
                     )
-                    val casePhone = "caseDetails.phone"
+                    val casePhone = caseContact.phone
                     TextUi(
                         modifier = Modifier.weight(2f),
-                        text = casePhone,
+                        text = casePhone ?: "",
                         color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.titleMedium
                     )
@@ -131,7 +131,10 @@ fun TableContent(openDialer: (String) -> Unit, caseDetails: CaseDetailsResponse?
                             Modifier
                                 .size(50.dp)
                                 .clickable {
-                                    openDialer(casePhone)
+                                    // pen dialer
+                                    if (casePhone != null) {
+                                        openDialer(casePhone)
+                                    }
                                 }) {
                             WavesAnimation(Modifier.size(50.dp))
                         }
@@ -151,7 +154,7 @@ fun TableContent(openDialer: (String) -> Unit, caseDetails: CaseDetailsResponse?
                     )
                     TextUi(
                         modifier = Modifier.weight(2f),
-                        text = caseDetails.location?.getFullAddress() ?: "",
+                        text = caseContact.address ?: "",
                         color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.titleMedium
                     )

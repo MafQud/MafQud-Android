@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
 import com.mafqud.android.home.model.CaseType
+import com.mafqud.android.mapper.CaseContact
 import com.mafqud.android.notification.CaseModel
 import com.mafqud.android.ui.compose.ButtonAuth
 import com.mafqud.android.ui.compose.TextFieldNationalID
@@ -30,7 +31,7 @@ import com.mafqud.android.util.validation.validateNationalIDForm
 @Composable
 @Preview
 fun SuccessScreen(
-    caseModel: CaseModel? = CaseModel(),
+    caseContact: CaseContact? = CaseContact(),
     nationalID: String = "",
     showResults: (String) -> Unit = {}
 ) {
@@ -63,7 +64,7 @@ fun SuccessScreen(
                 modifier = Modifier.size(286.dp, 252.dp)
             )
 
-            val firstString = when (caseModel?.caseType) {
+            val firstString = when (caseContact?.caseType) {
                 CaseType.MISSING -> stringResource(id = R.string.success_results_lost)
                 CaseType.FOUND -> stringResource(id = R.string.success_results_found)
                 CaseType.NONE -> stringResource(id = R.string.error_unknown)
@@ -102,7 +103,7 @@ fun SuccessScreen(
             SpacerUi(modifier = Modifier.height(20.dp))
 
         }
-        val dialogTitle = when (caseModel?.caseType) {
+        val dialogTitle = when (caseContact?.caseType) {
             CaseType.MISSING -> stringResource(id = R.string.warn_dailog_title_lost)
             CaseType.FOUND -> stringResource(id = R.string.warn_dailog_title_found)
             CaseType.NONE -> stringResource(id = R.string.error_unknown)
