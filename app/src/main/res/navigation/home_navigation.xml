@@ -10,7 +10,7 @@
         android:id="@+id/action_pop_out_of_graph"
         app:destination="@+id/homeFragment"
         app:launchSingleTop="true"
-        app:popUpTo="@id/notifications_graph"
+        app:popUpTo="@id/homeFragment"
         app:popUpToInclusive="true" />
 
     <action

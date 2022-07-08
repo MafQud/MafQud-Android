@@ -128,7 +128,7 @@ class ContactFragment : BaseFragment() {
             lifecycleScope.launchWhenCreated {
                 viewModel
                     .intentChannel
-                    .send(ContactIntent.Done(it.id ?: -1))
+                    .send(ContactIntent.Failed(it.id ?: -1))
             }
         }
 
