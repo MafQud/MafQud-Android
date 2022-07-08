@@ -1,6 +1,7 @@
 package com.mafqud.android.results.contact
 
 import com.mafqud.android.base.BaseRepository
+import com.mafqud.android.results.contactSuccess.models.ContactRequest
 import com.mafqud.android.results.states.success.SuccessResultsIntent
 import com.mafqud.android.results.states.success.models.NationalIdBody
 import com.mafqud.android.util.network.Result
@@ -14,7 +15,7 @@ class ContactRepository @Inject constructor() : BaseRepository() {
 
     suspend fun contactDone(caseID: Int): Result<Boolean> {
         return safeApiCall {
-            remoteDataManager.publishCase(
+            remoteDataManager.updateCaseContact(
                 caseID = caseID,
             )
             return@safeApiCall true
@@ -27,6 +28,16 @@ class ContactRepository @Inject constructor() : BaseRepository() {
                 caseID = caseID,
             )
             return@safeApiCall true
+        }
+    }
+
+    suspend fun createContact(caseID: Int): Result<Int?> {
+        return safeApiCall {
+            return@safeApiCall remoteDataManager.createCaseContact(
+                ContactRequest(
+                    caseId = caseID
+                )
+            ).id
         }
     }
 }

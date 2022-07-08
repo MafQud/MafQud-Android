@@ -9,4 +9,5 @@ data class ContactViewState(
     val isLoading: Boolean = false,
     val errorFieldMessage: String? = null,
     val networkError: Result.NetworkError? = null,
+    val contactID: Int? = null
 )

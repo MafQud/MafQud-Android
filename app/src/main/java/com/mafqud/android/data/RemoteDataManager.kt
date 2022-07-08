@@ -18,6 +18,8 @@ import com.mafqud.android.reportedCases.models.ReportedCasesResponse
 import com.mafqud.android.results.caseDetails.models.CaseDetailsResponse
 import com.mafqud.android.results.cases.models.CasesMatchesResponse
 import com.mafqud.android.results.contact.models.CreateCaseContactBody
+import com.mafqud.android.results.contactSuccess.models.ContactRequest
+import com.mafqud.android.results.contactSuccess.models.ContactResponse
 import com.mafqud.android.results.states.success.models.NationalIdBody
 import com.mafqud.android.util.network.tokenRefresh.TokenRefreshBody
 import com.mafqud.android.util.network.tokenRefresh.TokenRefreshResponse
@@ -163,11 +165,12 @@ interface RemoteDataManager {
     @GET("/api/cases/contacts/{caseID}/update/")
     suspend fun updateCaseContact(
         @Path("caseID") caseID: Int,
-        // TODO
-    ): CaseDetailsResponse
+    )
 
     @POST("/api/cases/contacts/create/")
-    suspend fun createCaseContact(): CreateCaseContactBody
+    suspend fun createCaseContact(
+        @Body contactRequest: ContactRequest
+    ): ContactResponse
 
 
     @POST("/api/cases/create/")

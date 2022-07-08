@@ -22,6 +22,7 @@ import com.mafqud.android.R
 import com.mafqud.android.base.fragment.BaseFragment
 import com.mafqud.android.ui.compose.LoadingDialog
 import com.mafqud.android.ui.compose.TitledAppBar
+import com.mafqud.android.ui.other.showToast
 import com.mafqud.android.ui.theme.MafQudTheme
 import com.mafqud.android.util.network.ShowNetworkErrorSnakeBar
 import com.mafqud.android.util.other.openDialer
@@ -33,6 +34,24 @@ class ContactFragment : BaseFragment() {
 
     private val viewModel: ContactViewModel by viewModels()
     private val args: ContactFragmentArgs by navArgs()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requestContactID()
+    }
+
+    private fun requestContactID() {
+        if (args.caseContact?.id != null) {
+            val id = args.caseContact?.id
+            if (id != null) {
+                lifecycleScope.launchWhenCreated {
+                    viewModel
+                        .intentChannel
+                        .send(ContactIntent.CreateContact(id))
+                }
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,12 +89,17 @@ class ContactFragment : BaseFragment() {
         val state = viewModel.stateChannel.collectAsState()
         val stateValue = state.value
 
-        stateValue.isContactDoneSuccess?.let {
-            Toast.makeText(requireContext(), "isContactDoneSuccess", Toast.LENGTH_SHORT).show()
+        stateValue.isContactDoneSuccess?.let { isSuccess ->
+            if (isSuccess) {
+                requireContext().showToast(stringResource(id = R.string.case_done))
+                findNavController().navigate(
+                    R.id.action_pop_out_of_graph,
+                )
+            }
         }
 
         stateValue.isContactFailedSuccess?.let {
-            Toast.makeText(requireContext(), "isContactFailedSuccess", Toast.LENGTH_SHORT).show()
+            // TODO complete api call to notify another user
         }
 
         ContactScreen(

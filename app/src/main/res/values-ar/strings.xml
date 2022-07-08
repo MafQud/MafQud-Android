@@ -191,5 +191,6 @@
     <string name="found_date">تاريخ العثور عليه</string>
     <string name="address_lost_title">عنوان المكان الذي فقد فيه</string>
     <string name="not_found">لا يوجد</string>
+    <string name="case_done">تم إنهاء الحالة بنجاح</string>
 
 </resources>

@@ -214,4 +214,5 @@
     <string name="found_date">Found date</string>
     <string name="address_lost_title">Lost address location</string>
     <string name="not_found">Not Found</string>
+    <string name="case_done">Case Done</string>
 </resources>

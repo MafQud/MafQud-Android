@@ -15,28 +15,67 @@ class ContactViewModel @Inject constructor(private val contactRepository: Contac
             when (it) {
                 is ContactIntent.Done -> doneContact(it)
                 is ContactIntent.Failed -> failedContact(it)
+                is ContactIntent.CreateContact -> createContact(it)
             }
         }
     }
 
-    private fun doneContact(contactIntent: ContactIntent.Done) {
+    private fun createContact(it: ContactIntent.CreateContact) {
         _stateChannel.tryEmit(
             stateChannel.value.copy(
                 isLoading = true,
                 errorFieldMessage = null,
                 networkError = null,
-                isContactDoneSuccess = null,
-                isContactFailedSuccess = null,
+                isContactDoneSuccess = false,
+                isContactFailedSuccess = false,
             )
         )
         launchViewModelScope {
-            val result = contactRepository.contactDone(contactIntent.caseID)
+            val result = contactRepository.createContact(it.caseID)
             when (result) {
                 is Result.NetworkError.Generic -> emitGenericFailedState(result.copy())
                 Result.NetworkError.NoInternet -> emitInternetFailedState(result as Result.NetworkError.NoInternet)
-                is Result.Success -> emitDoneSuccessStat()
+                is Result.Success -> saveCurrentContactId(result.data)
             }
         }
+    }
+
+    private fun saveCurrentContactId(id: Int?) {
+        _stateChannel.tryEmit(
+            stateChannel.value.copy(
+                isLoading = false,
+                errorFieldMessage = null,
+                networkError = null,
+                isContactDoneSuccess = null,
+                isContactFailedSuccess = null,
+                contactID = id
+            )
+        )
+    }
+
+    private fun doneContact(contactIntent: ContactIntent.Done) {
+        stateChannel.value.contactID?.let {
+
+            _stateChannel.tryEmit(
+                stateChannel.value.copy(
+                    isLoading = true,
+                    errorFieldMessage = null,
+                    networkError = null,
+                    isContactDoneSuccess = null,
+                    isContactFailedSuccess = null,
+                )
+            )
+
+            launchViewModelScope {
+                val result = contactRepository.contactDone(it)
+                when (result) {
+                    is Result.NetworkError.Generic -> emitGenericFailedState(result.copy())
+                    Result.NetworkError.NoInternet -> emitInternetFailedState(result as Result.NetworkError.NoInternet)
+                    is Result.Success -> emitDoneSuccessStat()
+                }
+            }
+        }
+
     }
 
     private fun failedContact(contactIntent: ContactIntent.Failed) {
