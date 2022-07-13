@@ -5,11 +5,14 @@ import android.view.MenuItem
 import android.view.View
 import androidx.compose.runtime.MutableState
 import androidx.core.view.isVisible
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mafqud.android.R
 import com.mafqud.android.base.activity.BaseActivity
+import com.mafqud.android.ui.other.showToast
 import com.mafqud.android.util.other.statusBarColor
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -33,6 +36,19 @@ class HomeActivity : BaseActivity() {
         //setup
         NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.navController)
 
+        navHostFragment.navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            when (destination.id) {
+                R.id.homeFragment,
+                R.id.reportFragment,
+                R.id.mapFragment,
+                R.id.moreFragment ->  {
+                    bottomNavigationView.isVisible = true
+                }
+                else -> {
+                    bottomNavigationView.isVisible = false
+                }
+            }
+        }
         // listen on (bottomNavigationView) item clicked
         //onNavigationBottomItemClicked(bottomNavigationView, isHomeBarVisible)
     }

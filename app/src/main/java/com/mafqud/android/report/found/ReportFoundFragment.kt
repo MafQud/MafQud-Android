@@ -179,18 +179,18 @@ class ReportFoundFragment : BaseFragment() {
             }
         }
         findNavController().navigate(R.id.action_reportFoundFragment_to_cameraFragment)
-        val currentActivity = activity
+       /* val currentActivity = activity
         if (currentActivity is HomeActivity) {
             currentActivity.bottomBarNavigationVisibility(isVisible = false)
-        }
+        }*/
     }
 
     override fun onResume() {
         super.onResume()
-        val currentActivity = activity
+       /* val currentActivity = activity
         if (currentActivity is HomeActivity) {
             currentActivity.bottomBarNavigationVisibility(isVisible = true)
-        }
+        }*/
     }
 
     @Composable
