@@ -8,6 +8,7 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.core.net.toFile
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mafqud.android.R
 import java.io.File
 import java.text.SimpleDateFormat
@@ -16,7 +17,6 @@ import java.util.concurrent.ExecutorService
 
 private const val FILENAME = "yyyy-MM-dd-HH-mm-ss-SSS"
 private const val PHOTO_EXTENSION = ".jpg"
-
 
 
 fun ImageCapture.takePicture(
@@ -51,7 +51,12 @@ fun ImageCapture.takePicture(
                 }
                 onImageCaptured(savedUri, false)
             }
+
             override fun onError(exception: ImageCaptureException) {
+                FirebaseCrashlytics.getInstance().apply {
+                    recordException(exception)
+                    log("CameraUtil, takePicture ->" + exception.localizedMessage)
+                }
                 onError(exception)
             }
         })

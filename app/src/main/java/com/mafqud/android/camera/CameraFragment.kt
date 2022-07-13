@@ -297,7 +297,7 @@ class CameraFragment : Fragment() {
                     imageCapture.flashMode = when (cameraUIAction.flashState) {
                         FlashState.Auto -> ImageCapture.FLASH_MODE_AUTO
                         FlashState.Off -> ImageCapture.FLASH_MODE_OFF
-                        FlashState.On -> ImageCapture.FLASH_TYPE_ONE_SHOT_FLASH
+                        FlashState.On -> ImageCapture.FLASH_TYPE_USE_TORCH_AS_FLASH
                     }
                 }
             }
