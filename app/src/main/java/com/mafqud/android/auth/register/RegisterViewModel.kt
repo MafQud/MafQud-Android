@@ -169,7 +169,7 @@ class RegisterViewModel @Inject constructor(
                     isLoading = false,
                     errorFieldMessage = null,
                     networkError = null,
-                    stepCount = StepCount.Two
+                    /*stepCount = StepCount.Two*/
                 )
             )
         }

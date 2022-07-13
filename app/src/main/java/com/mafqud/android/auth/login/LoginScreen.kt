@@ -134,7 +134,7 @@ fun LoginScreen(
                     isPasswordError = isPasswordError,
                     onSuccessValidation = { phone, pass ->
                         // here trying to remove the zero number
-                        val phoneWithoutZero = phone.drop(0)
+                        val phoneWithoutZero = phone.drop(1)
                         // fire button click
                         onNextPressed(
                             LoginUiData(

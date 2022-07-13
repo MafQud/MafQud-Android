@@ -14,8 +14,15 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
         handleIntents {
             when (it) {
                 is LoginIntent.PhoneLogin -> loginWithPhone(it)
+                LoginIntent.Clear -> clearUi()
             }
         }
+    }
+
+    private fun clearUi() {
+        _stateChannel.tryEmit(
+            LoginViewState()
+        )
     }
 
 

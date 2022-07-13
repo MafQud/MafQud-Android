@@ -8,14 +8,19 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
+import com.google.firebase.appcheck.FirebaseAppCheck
+import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory
 import com.google.firebase.auth.*
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mafqud.android.R
 import com.mafqud.android.auth.intro.IntroScreen
 import com.mafqud.android.auth.login.LoginIntent
@@ -33,6 +38,7 @@ import com.mafqud.android.util.other.LogMe
 import com.mafqud.android.util.other.statusBarColor
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
@@ -101,8 +107,12 @@ class AuthActivity : BaseActivity() {
         scaffoldState: ScaffoldState,
         registerViewModel: RegisterViewModel,
     ) {
+        initSafetyNet()
         // variable for FirebaseAuth class
         mAuth = FirebaseAuth.getInstance()
+        mAuth.apply {
+            firebaseAuthSettings.setAppVerificationDisabledForTesting(true)
+        }
 
         val isDialogOpened = remember {
             mutableStateOf(false)
@@ -157,6 +167,14 @@ class AuthActivity : BaseActivity() {
 
     }
 
+    private fun initSafetyNet() {
+        FirebaseApp.initializeApp(this)
+        val firebaseAppCheck = FirebaseAppCheck.getInstance()
+        firebaseAppCheck.installAppCheckProviderFactory(
+            SafetyNetAppCheckProviderFactory.getInstance()
+        )
+    }
+
     private fun resetInitialUiState(registerViewModel: RegisterViewModel) {
         lifecycleScope.launchWhenCreated {
             registerViewModel.intentChannel.send(RegisterIntent.Clear)
@@ -197,7 +215,7 @@ class AuthActivity : BaseActivity() {
         registerViewModel: RegisterViewModel,
         phone: String,
     ) {
-        val mPhone = "+2$phone"
+        val mPhone = "+20$phone"
         // this method is used for getting
         // OTP on user phone number.
         val options = PhoneAuthOptions.newBuilder(mAuth)
@@ -217,6 +235,7 @@ class AuthActivity : BaseActivity() {
                     // we are storing in our string
                     // which we have already created.
                     verificationId = s
+                    sendNextActiveStep(registerViewModel, StepCount.Two)
                 }
 
                 // this method is called when user
@@ -266,6 +285,12 @@ class AuthActivity : BaseActivity() {
                     // Show a message and update the UI
                     // ...
                     LogMe.i("onVeriFailed", message)
+                    //Report non-fatal exceptions
+                    reportNonFatalError(
+                        e,
+                        "AuthActivity, sendVerificationCode, onVerificationFailed $message",
+                        phone
+                    )
                     showToast(message)
                 }
             }) // OnVerificationStateChangedCallbacks
@@ -273,15 +298,33 @@ class AuthActivity : BaseActivity() {
         PhoneAuthProvider.verifyPhoneNumber(options)
     }
 
+    private fun reportNonFatalError(e: Exception, message: String, phone: String) {
+        FirebaseCrashlytics.getInstance().apply {
+            recordException(e)
+            setUserId(phone)
+            log(message)
+        }
+    }
+
     fun verifyCode(registerViewModel: RegisterViewModel, code: String, onSuccessOtp: () -> Unit) {
         verifyOtpLoadingIntent(registerViewModel, isLoading = true)
-        // below line is used for getting getting
-        // credentials from our verification id and code.
-        val credential = PhoneAuthProvider.getCredential(verificationId, code)
+        if (verificationId.isNotEmpty()) {
+            try {
+                // below line is used for getting getting
+                // credentials from our verification id and code.
+                val credential = PhoneAuthProvider.getCredential(verificationId, code)
 
-        // after getting credential we are
-        // calling sign in method.
-        signInWithCredential(registerViewModel, credential, onSuccessOtp)
+                // after getting credential we are
+                // calling sign in method.
+                signInWithCredential(registerViewModel, credential, onSuccessOtp)
+            } catch (e: Exception) {
+                showToast(getString(R.string.otp_error))
+                reportNonFatalError(e, e.localizedMessage.toString(), "null phone")
+            }
+        } else {
+            FirebaseCrashlytics.getInstance().log("verificationId is empty")
+            showToast(getString(R.string.otp_error))
+        }
     }
 
     private fun signInWithCredential(
@@ -363,7 +406,7 @@ class AuthActivity : BaseActivity() {
         val loginViewModel: LoginViewModel by viewModels()
         LoginScreen(scaffoldState = scaffoldState, viewModel = loginViewModel,
             onBackPressed = {
-                navController.popBackStack()
+                clearLoginUi(navController, loginViewModel)
             }, onNextPressed = {
                 // login after done clicked in keypad
                 loginIntent(
@@ -374,6 +417,15 @@ class AuthActivity : BaseActivity() {
             }, onLoginSuccess = {
                 openReportActivity()
             })
+
+        BackHandler {
+            clearLoginUi(navController, loginViewModel)
+        }
+    }
+
+    private fun clearLoginUi(navController: NavHostController, loginViewModel: LoginViewModel) {
+        loginViewModel.intentChannel.trySend(LoginIntent.Clear)
+        navController.popBackStack()
     }
 
     @Composable

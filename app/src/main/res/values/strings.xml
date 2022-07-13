@@ -215,4 +215,5 @@
     <string name="address_lost_title">Lost address location</string>
     <string name="not_found">Not Found</string>
     <string name="case_done">Case Done</string>
+    <string name="otp_error">Failed to verfiy, Go back and enter your number again.</string>
 </resources>

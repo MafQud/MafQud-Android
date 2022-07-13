@@ -295,6 +295,10 @@ dependencies {
     implementation "org.greenrobot:eventbus:$eventbus"
     kapt "org.greenrobot:eventbus-annotation-processor:$eventbusProcessor"
 
+    implementation 'androidx.browser:browser:1.4.0'
+    implementation 'com.google.firebase:firebase-appcheck-safetynet:16.0.0'
+
+
 }
 
 private Integer generateVersionCode() {
