@@ -431,8 +431,7 @@ fun IconAdd(
 ) {
     BoxUi(
         modifier = Modifier
-            .size(iconSize)
-            .padding(2.dp),
+            .size(iconSize),
         contentAlignment = Alignment.Center
     ) {
         IconUi(

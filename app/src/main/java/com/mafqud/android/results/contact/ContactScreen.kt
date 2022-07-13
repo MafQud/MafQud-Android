@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
@@ -116,10 +117,11 @@ fun TableContent(openDialer: (String) -> Unit, caseContact: CaseContact?) {
                         color = MaterialTheme.colorScheme.onTertiaryContainer,
                         style = MaterialTheme.typography.titleMedium
                     )
-                    val casePhone = caseContact.phone
+                    val casePhone = caseContact.phone ?: ""
+                    val fullNumberDigit = "0$casePhone"
                     TextUi(
                         modifier = Modifier.weight(2f),
-                        text = casePhone ?: "",
+                        text = fullNumberDigit,
                         color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.titleMedium
                     )
@@ -132,9 +134,7 @@ fun TableContent(openDialer: (String) -> Unit, caseContact: CaseContact?) {
                                 .size(50.dp)
                                 .clickable {
                                     // pen dialer
-                                    if (casePhone != null) {
-                                        openDialer(casePhone)
-                                    }
+                                    openDialer(fullNumberDigit)
                                 }) {
                             WavesAnimation(Modifier.size(50.dp))
                         }
@@ -150,7 +150,8 @@ fun TableContent(openDialer: (String) -> Unit, caseContact: CaseContact?) {
                         modifier = Modifier.weight(1f),
                         text = stringResource(id = R.string.address_founded),
                         color = MaterialTheme.colorScheme.onTertiaryContainer,
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.titleMedium,
+                        overflow = TextOverflow.Visible
                     )
                     TextUi(
                         modifier = Modifier.weight(2f),

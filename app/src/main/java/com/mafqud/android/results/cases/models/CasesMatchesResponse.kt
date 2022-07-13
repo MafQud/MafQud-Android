@@ -1,4 +1,5 @@
 package com.mafqud.android.results.cases.models
+
 import androidx.annotation.Keep
 import com.mafqud.android.home.model.CaseType
 import com.squareup.moshi.Json
@@ -19,7 +20,7 @@ data class CasesMatchesResponse(
     val previous: Any? = Any(), // null
     @field:Json(name = "results")
     val caseMatches: List<CaseMatch> = emptyList()
-) {
+) : Serializable {
     @Keep
     data class CaseMatch(
         @field:Json(name = "case")
@@ -45,7 +46,7 @@ data class CasesMatchesResponse(
             val type: String? = "" // F
         ) {
             fun getCaseType(): CaseType {
-                return when(type){
+                return when (type) {
                     "M" -> CaseType.MISSING
                     "F" -> CaseType.FOUND
                     else -> CaseType.NONE
@@ -55,6 +56,7 @@ data class CasesMatchesResponse(
             fun getFullAddress(): String {
                 return location?.gov + " - " + location?.city
             }
+
             @Keep
             data class Location(
                 @field:Json(name = "city")

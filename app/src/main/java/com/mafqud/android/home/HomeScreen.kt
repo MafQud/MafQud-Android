@@ -138,7 +138,7 @@ private fun SearchUi(
     ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         TapsUi(onTapClicked, selectedTapState)
         DropDownUi(ageRange, onRangeSelected, govs, onGovSelected, selectedGovId)
-        SearchNameUi(searchedName, onSearchTyping, isNoName,onNoNameSelected )
+        SearchNameUi(searchedName, onSearchTyping, isNoName, onNoNameSelected)
     }
 }
 
@@ -216,9 +216,13 @@ fun IncludeNoNames(modifier: Modifier, isSelected: Boolean, onNoNameSelected: ()
                 onNoNameSelected()
             }
     ) {
-        RowUi(Modifier.padding(4.dp)) {
+        RowUi(
+            Modifier.padding(4.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             IconAdd()
             TextUi(
+                modifier = Modifier.padding(end = 4.dp),
                 text = stringResource(id = R.string.no_name_state),
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.background

@@ -3,7 +3,6 @@ package com.mafqud.android.results.caseDetails
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -24,8 +23,10 @@ import com.mafqud.android.ui.compose.ButtonAuth
 import com.mafqud.android.ui.compose.UserPhoto
 import com.mafqud.android.ui.compose.toCorrectImageUrl
 import com.mafqud.android.ui.theme.*
-import com.mafqud.android.util.dateFormat.fromFullDateToAnother
 import com.mafqud.android.util.dateFormat.fromNormalDateToFull
+import com.mafqud.android.util.toLocalizedNumber
+import java.text.NumberFormat
+import java.util.*
 
 @Composable
 @Preview
@@ -133,13 +134,14 @@ fun TableContent(case: CaseDetailsResponse) {
                 )
                 TextUi(
                     modifier = Modifier.weight(2f),
-                    text = date,
+                    text = date.ifEmpty { stringResource(id = R.string.not_found)},
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.titleMedium
                 )
             }
             SpacerSmallLine()
 
+            //age
             RowUi(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
 
                 //Email
@@ -149,9 +151,12 @@ fun TableContent(case: CaseDetailsResponse) {
                     color = MaterialTheme.colorScheme.onTertiaryContainer,
                     style = MaterialTheme.typography.titleMedium
                 )
+
+                val formattedAge = case.details?.age.toLocalizedNumber()
+
                 TextUi(
                     modifier = Modifier.weight(2f),
-                    text = case.details?.age?.toString() ?: "",
+                    text = formattedAge.ifEmpty { stringResource(id = R.string.not_found) },
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.titleMedium
                 )
