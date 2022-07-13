@@ -46,7 +46,7 @@ fun LostScreen(
     openGalleryClicked: () -> Unit = {},
     onCloseClicked: (Uri) -> Unit = {},
     openImagePreviewer: (List<Uri>, Int) -> Unit = { it, _it -> },
-    onNextClicked: (Int, Int) -> Unit = {it, _it ->},
+    onNextClicked: (Int, Int) -> Unit = { it, _it -> },
     govs: List<MyGov>? = emptyList(),
     cities: List<MyCity>? = emptyList(),
     onGovSelected: (Int) -> Unit = {},
@@ -86,10 +86,9 @@ fun LostScreen(
                 ((isValidImagesRang))
 
 
-            isFormActivated = true
-                /*((isValidImagesRang))
-                        && selectedGovId.value != -1
-                        && selectedCityId.value != -1*/
+            isFormActivated = ((isValidImagesRang))
+                    && selectedGovId.value != -1
+                    && selectedCityId.value != -1
 
             SpacerUi(modifier = Modifier.height(16.dp))
             Header()

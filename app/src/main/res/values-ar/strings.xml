@@ -92,7 +92,7 @@
     <string name="found_name">اسم المعثور عليه</string>
     <string name="found_des">موصفات المعثور عليه</string>
     <string name="address_found_where">عنوان المكان الذي تم العثور عليه فيه</string>
-    <string name="upload_inst1">يجب رفع صورتين على الأقل</string>
+    <string name="upload_inst1">يجب رفع صورة على الأقل</string>
     <string name="upload_inst2">يجب رفع صور تحتوي على المفقود فقط</string>
     <string name="flip">اقلب</string>
     <string name="flash">الفلاش</string>
@@ -192,5 +192,7 @@
     <string name="address_lost_title">عنوان المكان الذي فقد فيه</string>
     <string name="not_found">لا يوجد</string>
     <string name="case_done">تم إنهاء الحالة بنجاح</string>
+    <string name="otp_error">فشل في ارسال الكود برجاء العوده لادخال الرقم من جديد</string>
+    <string name="upload_inst3">اقصي عدد هو 3 صور</string>
 
 </resources>
