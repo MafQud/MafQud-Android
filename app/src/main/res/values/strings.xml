@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Mafqud</string>
+    <string name="app_name">MafQud</string>
     <string name="google" translatable="false">Google</string>
     <string name="facebook" translatable="false">Facebook</string>
     <string name="log_out">Log out</string>
@@ -96,7 +96,7 @@
     <string name="lost_name">Lost name</string>
     <string name="address_lost_where">"Address lost "</string>
     <string name="gender_age">Select gender and age</string>
-    <string name="lost_date">Lost date</string>
+    <string name="lost_date">Lost date: </string>
     <string name="lost_des">Lost description</string>
     <string name="search_losts">Search in losts</string>
     <string name="lost_date_title">Lost date timme</string>
@@ -211,7 +211,7 @@
     <string name="gps">Open GPS</string>
     <string name="search_found_2">We will do our best to find him</string>
     <string name="search_found">We will seach for him ...</string>
-    <string name="found_date">Found date</string>
+    <string name="found_date">Found date: </string>
     <string name="address_lost_title">Lost address location</string>
     <string name="not_found">Not Found</string>
     <string name="case_done">Case Done</string>

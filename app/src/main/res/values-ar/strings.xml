@@ -73,7 +73,7 @@
     <string name="lost_name">اسم المفقود</string>
     <string name="address_lost_where">عنوان المكان الذي فُقد فيه</string>
     <string name="gender_age">تحديد الجنس والسن</string>
-    <string name="lost_date">تاريخ التغيب</string>
+    <string name="lost_date">تاريخ التغيب :</string>
     <string name="lost_des">موصفات المفقود</string>
     <string name="search_losts">بحث عن المفقود</string>
     <string name="lost_date_title">أقرب وقت لحدوث الواقعة</string>
@@ -188,7 +188,7 @@
     <string name="search_found_2">سنبذل قصارى جهدنا للعثور عليه</string>
     <string name="map_pemissions">يجب عليك قبول أذونات المواقع للحصول على أقرب الحالات لك</string>
     <string name="search_found">سوف نقوم بالبحث عن المعثور عليه ونقوم بابلاغك بذلك</string>
-    <string name="found_date">تاريخ العثور عليه</string>
+    <string name="found_date">تاريخ العثور عليه :</string>
     <string name="address_lost_title">عنوان المكان الذي فقد فيه</string>
     <string name="not_found">لا يوجد</string>
     <string name="case_done">تم إنهاء الحالة بنجاح</string>

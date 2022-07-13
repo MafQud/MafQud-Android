@@ -24,6 +24,8 @@ import com.mafqud.android.ui.compose.ButtonAuth
 import com.mafqud.android.ui.compose.UserPhoto
 import com.mafqud.android.ui.compose.toCorrectImageUrl
 import com.mafqud.android.ui.theme.*
+import com.mafqud.android.util.dateFormat.fromFullDateToAnother
+import com.mafqud.android.util.dateFormat.fromNormalDateToFull
 
 @Composable
 @Preview
@@ -122,6 +124,7 @@ fun TableContent(case: CaseDetailsResponse) {
         ) {
             RowUi(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 // date
+                val date = fromNormalDateToFull(case.details?.lastSeen)
                 TextUi(
                     modifier = Modifier.weight(1f),
                     text = stringResource(id = R.string.data_founded),
@@ -130,7 +133,7 @@ fun TableContent(case: CaseDetailsResponse) {
                 )
                 TextUi(
                     modifier = Modifier.weight(2f),
-                    text = case.details?.lastSeen ?: "",
+                    text = date,
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.titleMedium
                 )
@@ -149,28 +152,6 @@ fun TableContent(case: CaseDetailsResponse) {
                 TextUi(
                     modifier = Modifier.weight(2f),
                     text = case.details?.age?.toString() ?: "",
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.titleMedium
-                )
-            }
-            SpacerSmallLine()
-
-            // description
-            RowUi(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                val desTitle = when (case.getCaseType()) {
-                    CaseType.FOUND -> stringResource(id = R.string.found_des)
-                    CaseType.MISSING -> stringResource(id = R.string.lost_des)
-                    CaseType.NONE -> ""
-                }
-                TextUi(
-                    modifier = Modifier.weight(1f),
-                    text = desTitle,
-                    color = MaterialTheme.colorScheme.onTertiaryContainer,
-                    style = MaterialTheme.typography.titleMedium
-                )
-                TextUi(
-                    modifier = Modifier.weight(2f),
-                    text = case.details?.description ?: stringResource(id = R.string.not_found),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.titleMedium
                 )
@@ -198,6 +179,29 @@ fun TableContent(case: CaseDetailsResponse) {
                     style = MaterialTheme.typography.titleMedium
                 )
             }
+
+            SpacerSmallLine()
+            // description
+            RowUi(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                val desTitle = when (case.getCaseType()) {
+                    CaseType.FOUND -> stringResource(id = R.string.found_des)
+                    CaseType.MISSING -> stringResource(id = R.string.lost_des)
+                    CaseType.NONE -> ""
+                }
+                TextUi(
+                    modifier = Modifier.weight(1f),
+                    text = desTitle,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                    style = MaterialTheme.typography.titleMedium
+                )
+                TextUi(
+                    modifier = Modifier.weight(2f),
+                    text = case.details?.description ?: stringResource(id = R.string.not_found),
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
+            SpacerUi(modifier = Modifier.height(150.dp))
         }
     }
 }

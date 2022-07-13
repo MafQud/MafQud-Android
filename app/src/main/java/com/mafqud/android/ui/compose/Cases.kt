@@ -20,6 +20,7 @@ import com.mafqud.android.R
 import com.mafqud.android.home.model.CaseType
 import com.mafqud.android.home.model.CasesDataResponse
 import com.mafqud.android.ui.theme.*
+import com.mafqud.android.util.dateFormat.fromNormalDateToFull
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @Composable
@@ -121,6 +122,7 @@ fun CaseItem(
 
                     SpacerUi(modifier = Modifier.height(8.dp))
                     //date
+                    val date = fromNormalDateToFull(case.lastSeen)
                     RowUi(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         val dateTitle = when(case.getCaseType()) {
                             CaseType.FOUND -> stringResource(id = R.string.found_date)
@@ -133,7 +135,7 @@ fun CaseItem(
                             style = MaterialTheme.typography.titleSmall
                         )
                         TextUi(
-                            text = case.lastSeen ?: "",
+                            text = date.ifEmpty { stringResource(id = R.string.not_found) },
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             style = MaterialTheme.typography.titleSmall
                         )
