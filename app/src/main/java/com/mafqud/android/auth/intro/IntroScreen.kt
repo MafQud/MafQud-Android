@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
 import com.mafqud.android.ui.compose.ButtonAuth
@@ -21,7 +22,11 @@ import com.mafqud.android.ui.theme.TextUi
 
 
 @Composable
-fun IntroScreen(onLogin: () -> Unit, onSignUp: () -> Unit) {
+@Preview
+fun IntroScreen(
+    onLogin: () -> Unit = {},
+    onSignUp: () -> Unit = {}
+) {
     BoxUi(
         modifier = Modifier
             .fillMaxSize()
@@ -32,13 +37,14 @@ fun IntroScreen(onLogin: () -> Unit, onSignUp: () -> Unit) {
         ColumnUi(
             modifier = Modifier
                 .align(Alignment.Center)
+                .fillMaxSize()
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             ImageUi(
                 painter = painterResource(id = R.drawable.ic_intro_robot),
-                modifier = Modifier.size(250.dp, 300.dp)
+                modifier = Modifier.weight(1f)/*.size(250.dp, 300.dp)*/
             )
 
             TextUi(
@@ -73,12 +79,14 @@ fun IntroScreen(onLogin: () -> Unit, onSignUp: () -> Unit) {
                 backgroundColor = MaterialTheme.colorScheme.onPrimaryContainer, onClick = {
                     onSignUp()
                 })
+
+            ImageUi(
+                painter = painterResource(id = R.drawable.ic_mafqud_logo),
+                modifier = Modifier.weight(.2f)
+                   /* .align(Alignment.BottomCenter)*/
+            )
         }
 
-        ImageUi(
-            painter = painterResource(id = R.drawable.ic_mafqud_logo),
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-        )
+
     }
 }
