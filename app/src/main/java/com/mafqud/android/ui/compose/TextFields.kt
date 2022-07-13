@@ -259,10 +259,11 @@ fun TextFieldEmail(value: MutableState<String>, isEmailError: MutableState<Boole
 
 
 @Composable
+@Preview
 fun TextFieldPhone(
-    phone: MutableState<String>,
-    isPhoneError: MutableState<Boolean>,
-    focusRequester: FocusRequester,
+    phone: MutableState<String> = mutableStateOf(""),
+    isPhoneError: MutableState<Boolean> = mutableStateOf(false),
+    focusRequester: FocusRequester? = null,
     maxPhoneLength: Int = PHONE_MAX_LENGTH,
 ) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
@@ -279,23 +280,23 @@ fun TextFieldPhone(
                     isPhoneError.value = false
                 },
                 singleLine = true,
-                leadingIcon = {
-                    RowUi(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-                        TextUi(
-                            modifier = Modifier.padding(4.dp),
-                            text = stringResource(id = R.string.egypt_code),
-                            color = MaterialTheme.colorScheme.onBackground,
-                            style = MaterialTheme.typography.labelLarge
-                        )
-                        SpacerUi(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .width(2.dp)
-                                .padding(vertical = 12.dp)
-                                .background(MaterialTheme.colorScheme.onBackground),
-                        )
-                    }
-                },
+                /*  leadingIcon = {
+                      RowUi(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+                          TextUi(
+                              modifier = Modifier.padding(4.dp),
+                              text = stringResource(id = R.string.egypt_code),
+                              color = MaterialTheme.colorScheme.onBackground,
+                              style = MaterialTheme.typography.labelLarge
+                          )
+                          SpacerUi(
+                              modifier = Modifier
+                                  .fillMaxHeight()
+                                  .width(2.dp)
+                                  .padding(vertical = 12.dp)
+                                  .background(MaterialTheme.colorScheme.onBackground),
+                          )
+                      }
+                  },*/
                 trailingIcon = {
                     if (isPhoneError.value)
                         Icon(
@@ -309,7 +310,7 @@ fun TextFieldPhone(
                     keyboardType = KeyboardType.Number
                 ),
                 keyboardActions = KeyboardActions(
-                    onNext = { focusRequester.requestFocus() }),
+                    onNext = { focusRequester?.requestFocus() }),
                 isError = isPhoneError.value,
                 shape = RoundedCornerShape(50),
                 colors = TextFieldDefaults.textFieldColors(
@@ -324,6 +325,7 @@ fun TextFieldPhone(
                 )
             )
 
+            SpacerUi(modifier = Modifier.height(4.dp))
             //counter message
             TextUi(
                 text = "${phone.value.length} / $maxPhoneLength",
@@ -394,7 +396,7 @@ fun TextFieldNationalID(
                     keyboardType = KeyboardType.Number
                 ),
                 keyboardActions = KeyboardActions(
-                    onDone  = { keyboardController?.hide() }),
+                    onDone = { keyboardController?.hide() }),
                 isError = isIdError.value,
                 shape = RoundedCornerShape(50),
                 colors = TextFieldDefaults.textFieldColors(

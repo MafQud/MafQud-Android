@@ -5,7 +5,7 @@ import android.util.Patterns
 import androidx.compose.runtime.MutableState
 import com.mafqud.android.util.other.LogMe
 
-const val PHONE_MAX_LENGTH = 10
+const val PHONE_MAX_LENGTH = 11
 const val NATIONAL_ID_MAX_LENGTH = 14
 
 data class PasswordError(

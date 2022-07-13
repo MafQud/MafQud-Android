@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ScaffoldState
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -13,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mafqud.android.R
 import com.mafqud.android.auth.openReportActivity
@@ -31,12 +33,13 @@ data class LoginUiData(
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
+@Preview
 fun LoginScreen(
-    viewModel: LoginViewModel,
+    viewModel: LoginViewModel = LoginViewModel(LoginRepository()),
     onLoginSuccess: () -> Unit = {},
     onBackPressed: () -> Unit = {},
     onNextPressed: (LoginUiData) -> Unit = {},
-    scaffoldState: ScaffoldState,
+    scaffoldState: ScaffoldState = rememberScaffoldState(),
 ) {
     // ui state
     val state = viewModel.stateChannel.collectAsState()
@@ -130,10 +133,12 @@ fun LoginScreen(
                     isPhoneError = isPhoneError,
                     isPasswordError = isPasswordError,
                     onSuccessValidation = { phone, pass ->
+                        // here trying to remove the zero number
+                        val phoneWithoutZero = phone.drop(0)
                         // fire button click
                         onNextPressed(
                             LoginUiData(
-                                phone = phone,
+                                phone = phoneWithoutZero,
                                 password = pass,
                             )
                         )

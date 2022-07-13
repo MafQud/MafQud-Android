@@ -197,7 +197,7 @@ class AuthActivity : BaseActivity() {
         registerViewModel: RegisterViewModel,
         phone: String,
     ) {
-        val mPhone = "+20$phone"
+        val mPhone = "+2$phone"
         // this method is used for getting
         // OTP on user phone number.
         val options = PhoneAuthOptions.newBuilder(mAuth)
