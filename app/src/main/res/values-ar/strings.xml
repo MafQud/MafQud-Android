@@ -73,8 +73,8 @@
     <string name="lost_name">اسم المفقود</string>
     <string name="address_lost_where">عنوان المكان الذي فُقد فيه</string>
     <string name="gender_age">تحديد الجنس والسن</string>
-    <string name="lost_date">تاريخ التغيب :</string>
-    <string name="lost_des">موصفات المفقود</string>
+    <string name="lost_date">تاريخ التغيب:</string>
+    <string name="lost_des">مواصفات المفقود</string>
     <string name="search_losts">بحث عن المفقود</string>
     <string name="lost_date_title">أقرب وقت لحدوث الواقعة</string>
     <string name="lost_des_title">وصف الملابس والعلامات الجسدية بالتفصيل</string>
@@ -90,7 +90,7 @@
     <string name="gender">الجنس</string>
     <string name="insert_more_found">من فضلك قم بملئ أكبر عدد ممكن من بيانات الاستمارة لتساعدنا في سرعة الوصول إلى أهل المعثور عليه</string>
     <string name="found_name">اسم المعثور عليه</string>
-    <string name="found_des">موصفات المعثور عليه</string>
+    <string name="found_des">مواصفات المعثور عليه</string>
     <string name="address_found_where">عنوان المكان الذي تم العثور عليه فيه</string>
     <string name="upload_inst1">يجب رفع صورة على الأقل</string>
     <string name="upload_inst2">يجب رفع صور تحتوي على المفقود فقط</string>
@@ -194,5 +194,6 @@
     <string name="case_done">تم إنهاء الحالة بنجاح</string>
     <string name="otp_error">فشل في ارسال الكود برجاء العوده لادخال الرقم من جديد</string>
     <string name="upload_inst3">اقصي عدد هو 3 صور</string>
+    <string name="upload_inst4">يفضل رفع صور بجودة جيدة</string>
 
 </resources>

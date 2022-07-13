@@ -39,8 +39,9 @@ fun UploadingPhotosInfo(stateType: StateType = StateType.LOST) {
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        DotText(stringResource(id = R.string.upload_inst1))
         DotText(stringResource(id = R.string.upload_inst3))
+        DotText(stringResource(id = R.string.upload_inst1))
+        DotText(stringResource(id = R.string.upload_inst4))
         DotText(stringResource(id = secondString))
 
     }
