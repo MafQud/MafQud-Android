@@ -8,17 +8,13 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
-import com.google.firebase.appcheck.FirebaseAppCheck
-import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory
 import com.google.firebase.auth.*
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mafqud.android.R
@@ -38,7 +34,6 @@ import com.mafqud.android.util.other.LogMe
 import com.mafqud.android.util.other.statusBarColor
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
@@ -107,11 +102,11 @@ class AuthActivity : BaseActivity() {
         scaffoldState: ScaffoldState,
         registerViewModel: RegisterViewModel,
     ) {
-        initSafetyNet()
+        //initSafetyNet()
         // variable for FirebaseAuth class
         mAuth = FirebaseAuth.getInstance()
         mAuth.apply {
-            firebaseAuthSettings.setAppVerificationDisabledForTesting(true)
+            //firebaseAuthSettings.setAppVerificationDisabledForTesting(true)
         }
 
         val isDialogOpened = remember {
@@ -167,13 +162,14 @@ class AuthActivity : BaseActivity() {
 
     }
 
-    private fun initSafetyNet() {
+    /*private fun initSafetyNet() {
         FirebaseApp.initializeApp(this)
         val firebaseAppCheck = FirebaseAppCheck.getInstance()
         firebaseAppCheck.installAppCheckProviderFactory(
             SafetyNetAppCheckProviderFactory.getInstance()
         )
-    }
+
+    }*/
 
     private fun resetInitialUiState(registerViewModel: RegisterViewModel) {
         lifecycleScope.launchWhenCreated {
@@ -215,7 +211,7 @@ class AuthActivity : BaseActivity() {
         registerViewModel: RegisterViewModel,
         phone: String,
     ) {
-        val mPhone = "+20$phone"
+        val mPhone = "+2$phone"
         // this method is used for getting
         // OTP on user phone number.
         val options = PhoneAuthOptions.newBuilder(mAuth)

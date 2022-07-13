@@ -18,6 +18,7 @@ class RegisterRepository @Inject constructor() : BaseRepository() {
 
     suspend fun signUp(signupData: RegisterViewModel.SignUpForm): Result<Any> {
         return safeApiCall {
+            val phoneWithoutZero = signupData.phone?.drop(1)
             val fcmToken = getUserFCMToken()
             return@safeApiCall coroutineScope {
                 launch {
@@ -29,7 +30,7 @@ class RegisterRepository @Inject constructor() : BaseRepository() {
                                 city = signupData.cityId
                             ),
                             name = signupData.fullName,
-                            username = signupData.phone,
+                            username = phoneWithoutZero,
                             password = signupData.password
                         )
                     )
@@ -58,10 +59,12 @@ class RegisterRepository @Inject constructor() : BaseRepository() {
         saveUserDataAndLogFlag(user = user, accessToken = accessToken)
 
     }
+
     suspend fun isValidPhone(phoneIntent: RegisterIntent.ValidatePhone): Result<Unit> {
         return safeApiCall {
+            val phoneWithoutZero = phoneIntent.phone.drop(1)
             remoteDataManager.validatePhone(
-                ValidatePhoneRequest(phone = phoneIntent.phone)
+                ValidatePhoneRequest(phone = phoneWithoutZero)
             )
         }
     }

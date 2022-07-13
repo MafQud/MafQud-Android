@@ -218,4 +218,5 @@
     <string name="otp_error">Failed to verfiy, Go back and enter your number again.</string>
     <string name="upload_inst3">Max uploaded images 3</string>
     <string name="upload_inst4">Should upload good quality image</string>
+    <string name="otp_wait">wait until verfication ends</string>
 </resources>

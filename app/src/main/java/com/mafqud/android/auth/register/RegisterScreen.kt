@@ -455,10 +455,10 @@ private fun PhoneForm(mPhone: String, onNextPressed: (String) -> Unit) {
                 isPhoneError = isPhoneError,
                 onSuccessValidation = { phone ->
                     // here trying to remove the zero number
-                    val phoneWithoutZero = phone.drop(1)
-                    LogMe.i("Registre_screen", phoneWithoutZero.toString())
+                    //val phoneWithoutZero = phone.drop(1)
+                    //LogMe.i("Registre_screen", phoneWithoutZero.toString())
                     // fire button click
-                    onNextPressed(phoneWithoutZero)
+                    onNextPressed(phone)
                 }
             )
         })
