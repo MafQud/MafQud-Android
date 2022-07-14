@@ -109,6 +109,9 @@ android {
             arg('eventBusIndex', 'com.example.myapp.MyEventBusIndex')
         }
     }
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
