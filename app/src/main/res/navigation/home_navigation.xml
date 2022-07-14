@@ -24,7 +24,7 @@
         android:id="@+id/action_contactFragment_to_contactFailedFragment"
         app:destination="@id/contactFailedFragment" />
     <fragment
-        android:id="@+id/contactFailedFragment"
+        android:id="@+id/contactFailedFragmenationalIDFragmentnt"
         android:name="com.mafqud.android.results.contactFailed.ContactFailedFragment"
         android:label="ContactFailedFragment" />
     <include app:graph="@navigation/notifications_graph" />
@@ -156,13 +156,7 @@
         android:label="SuccessReportingFragment" >
         <action
             android:id="@+id/action_national_id_fragment_to_contactFragment"
-            app:destination="@id/contactFragment2" >
-          <!--  <argument
-                android:name="caseModel"
-                app:argType="com.mafqud.android.notification.CaseModel"
-                app:nullable="true"
-                android:defaultValue="@null" />-->
-        </action>
+            app:destination="@id/contactFragment2" />
         <action
             app:enterAnim="@anim/fade_in"
             app:popExitAnim="@anim/slide_right"

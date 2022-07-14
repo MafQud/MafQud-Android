@@ -35,7 +35,7 @@
             android:defaultValue="@null" />
     </fragment>
     <fragment
-        android:id="@+id/nationalIDFragment"
+        android:id="@+id/nationalIDFragmentNoti"
         android:name="com.mafqud.android.results.states.success.NationalIDFragment"
         android:label="SuccessReportingFragment" >
         <argument
@@ -101,7 +101,7 @@
     </fragment>
     <action
         android:id="@+id/action_notificationFragment_to_national_id"
-        app:destination="@id/nationalIDFragment" />
+        app:destination="@id/nationalIDFragmentNoti" />
     <action
         app:enterAnim="@anim/fade_in"
         app:popExitAnim="@anim/slide_right"
@@ -139,7 +139,7 @@
             app:enterAnim="@anim/fade_in"
             app:popExitAnim="@anim/slide_right"
             android:id="@+id/action_notificationFragment_to_national_id"
-            app:destination="@id/nationalIDFragment" />
+            app:destination="@id/nationalIDFragmentNoti" />
         <action
             app:enterAnim="@anim/fade_in"
             app:popExitAnim="@anim/slide_right"
