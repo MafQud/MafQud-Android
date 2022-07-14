@@ -26,7 +26,7 @@ jobs:
       - name: Sign AAB
         uses: r0adkll/sign-android-release@v1
         with:
-          releaseDirectory: app/build/outputs/bundle/release
+          releaseDirectory: app/release
           signingKeyBase64: ${{ secrets.SIGNING_KEY }}
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
@@ -41,7 +41,7 @@ jobs:
         with:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           packageName: com.mafqud.android
-          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          releaseFiles: app/release/app-release.aab
           #whatsNewDirectory: whatsnew/
           track: internal
 
