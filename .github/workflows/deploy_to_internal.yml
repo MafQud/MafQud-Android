@@ -17,31 +17,20 @@ jobs:
         with:
           java-version: 11
 
+      #- name: Build Project
+      #  run: ./gradlew build
 
-      - name: Build Project
-        run: ./gradlew build
-
-      - name: Generate Release Bundle
+      - name: Build Release AAB
         run: ./gradlew bundleRelease
 
-      - name: Sign Release Bundle
+      - name: Sign AAB               // 2
         uses: r0adkll/sign-android-release@v1
-        # ID used to access action output
-        id: sign_app
         with:
           releaseDirectory: app/build/outputs/bundle/release
           signingKeyBase64: ${{ secrets.SIGNING_KEY }}
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
-      - uses: actions/upload-artifact@master
-        with:
-          name: release.abb
-          path: app/build/outputs/bundle/release/app-release.aab
-      - uses: actions/upload-artifact@master
-        with:
-          name: mapping.txt
-          path: app/build/outputs/mapping/release/mapping.txt
 
   deploy-play-store:
     needs: [ build ]
@@ -61,7 +50,7 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           # 3
           packageName: com.raywenderlich.android.rwquotes
-          releaseFile: app/build/outputs/bundle/release/app-release.aab
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
           whatsNewDirectory: whatsnew/
           track: internal
   #          mappingFile: mapping.txt
