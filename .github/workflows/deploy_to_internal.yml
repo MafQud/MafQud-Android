@@ -45,7 +45,7 @@ jobs:
         with:
           serviceAccountJsonPlainText: service_account.json
           packageName: com.mafqud.android
-          releaseFiles: app/build/outputs/bundle/release/*.aab
+          releaseFiles: ${{ github.workspace }}/build/app/outputs/bundle/release/app-release.aab
           #whatsNewDirectory: whatsnew/
           track: internal
 
