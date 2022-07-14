@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/national_graph"
+    app:startDestination="@id/nationalIDFragment">
+
+    <fragment
+        android:id="@+id/nationalIDFragment"
+        android:name="com.mafqud.android.results.states.success.NationalIDFragment"
+        android:label="SuccessReportingFragment">
+        <action
+            android:id="@+id/action_national_id_fragment_to_contactFragment"
+            app:destination="@id/contactFragment2">
+            <argument
+                android:name="caseContact"
+                android:defaultValue="@null"
+                app:argType="com.mafqud.android.mapper.CaseContact"
+                app:nullable="true" />
+        </action>
+        <action
+            android:id="@+id/action_national_id_to_resultsCasesFragment"
+            app:destination="@id/resultsCasesFragment"
+            app:enterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_right">
+            <argument
+                android:name="caseModel"
+                android:defaultValue="@null"
+                app:argType="com.mafqud.android.notification.CaseModel"
+                app:nullable="true" />
+        </action>
+        <argument
+            android:name="caseContact"
+            android:defaultValue="@null"
+            app:argType="com.mafqud.android.mapper.CaseContact"
+            app:nullable="true" />
+    </fragment>
+</navigation>

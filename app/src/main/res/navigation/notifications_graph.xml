@@ -1,73 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:startDestination="@id/notificationFragment"
-    android:id="@+id/notifications_graph">
+    android:id="@+id/notifications_graph"
+    app:startDestination="@id/notificationFragment">
 
 
     <action
-        app:enterAnim="@anim/fade_in"
-        app:popExitAnim="@anim/slide_right"
         android:id="@+id/action_pop_out_of_graph"
         app:destination="@+id/homeFragment"
+        app:enterAnim="@anim/fade_in"
         app:launchSingleTop="true"
+        app:popExitAnim="@anim/slide_right"
         app:popUpTo="@id/notifications_graph"
         app:popUpToInclusive="true" />
 
     <action
-        app:enterAnim="@anim/fade_in"
-        app:popExitAnim="@anim/slide_right"
         android:id="@+id/action_contactFragment_to_contactFailedFragment"
-        app:destination="@id/contactFailedFragment" />
+        app:destination="@id/contactFailedFragment"
+        app:enterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/slide_right" />
     <fragment
         android:id="@+id/contactFragment"
         android:name="com.mafqud.android.results.contact.ContactFragment"
         android:label="ContactFragment">
         <action
-            app:enterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_right"
             android:id="@+id/action_contactFragment_to_contactFailedFragment"
-            app:destination="@id/contactFailedFragment" />
-        <argument
-            android:name="caseContact"
-            app:argType="com.mafqud.android.mapper.CaseContact"
-            app:nullable="true"
-            android:defaultValue="@null" />
-    </fragment>
-    <fragment
-        android:id="@+id/nationalIDFragmentNoti"
-        android:name="com.mafqud.android.results.states.success.NationalIDFragment"
-        android:label="SuccessReportingFragment" >
-        <argument
-            android:name="caseContact"
-            app:argType="com.mafqud.android.mapper.CaseContact"
-            app:nullable="true"
-            android:defaultValue="@null" />
-        <action
+            app:destination="@id/contactFailedFragment"
             app:enterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_right"
-            android:id="@+id/action_national_id_to_resultsCasesFragment"
-            app:destination="@id/resultsCasesFragment" />
+            app:popExitAnim="@anim/slide_right" />
+        <argument
+            android:name="caseContact"
+            android:defaultValue="@null"
+            app:argType="com.mafqud.android.mapper.CaseContact"
+            app:nullable="true" />
     </fragment>
+    <include app:graph="@navigation/national_graph" />
+
     <fragment
         android:id="@+id/caseDetailsFragment"
         android:name="com.mafqud.android.results.caseDetails.CaseDetailsFragment"
         android:label="CaseDetailsFragment">
         <argument
             android:name="caseModel"
+            android:defaultValue="@null"
             app:argType="com.mafqud.android.notification.CaseModel"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
         <action
-            app:enterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_right"
             android:id="@+id/action_caseDetailsFragment_to_contactFragment"
-            app:destination="@id/contactFragment" />
+            app:destination="@id/contactFragment"
+            app:enterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_right" />
         <argument
             android:name="caseMatch"
+            android:defaultValue="@null"
             app:argType="com.mafqud.android.results.cases.models.CasesMatchesResponse$CaseMatch"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/failedFragment"
@@ -75,9 +62,9 @@
         android:label="FailedFragment">
         <argument
             android:name="caseModel"
+            android:defaultValue="@null"
             app:argType="com.mafqud.android.notification.CaseModel"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/resultsCasesFragment"
@@ -85,71 +72,77 @@
         android:label="ResultsCasesFragment">
         <argument
             android:name="caseModel"
+            android:defaultValue="@null"
             app:argType="com.mafqud.android.notification.CaseModel"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
         <action
-            app:enterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_right"
             android:id="@+id/action_resultsCasesFragment_to_publishCaseFragment"
-            app:destination="@id/publishCaseFragment" />
-        <action
+            app:destination="@id/publishCaseFragment"
             app:enterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_right"
+            app:popExitAnim="@anim/slide_right" />
+        <action
             android:id="@+id/action_resultsCasesFragment_to_caseDetailsFragment"
-            app:destination="@id/caseDetailsFragment" />
+            app:destination="@id/caseDetailsFragment"
+            app:enterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_right" />
     </fragment>
     <action
         android:id="@+id/action_notificationFragment_to_national_id"
-        app:destination="@id/nationalIDFragmentNoti" />
+        app:destination="@id/nationalIDFragment" />
     <action
-        app:enterAnim="@anim/fade_in"
-        app:popExitAnim="@anim/slide_right"
         android:id="@+id/action_resultsCasesFragment_to_publishCaseFragment"
-        app:destination="@id/publishCaseFragment" />
+        app:destination="@id/publishCaseFragment"
+        app:enterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/slide_right" />
     <fragment
         android:id="@+id/contactFailedFragment"
         android:name="com.mafqud.android.results.contactFailed.ContactFailedFragment"
         android:label="ContactFailedFragment" />
     <action
-        app:enterAnim="@anim/fade_in"
-        app:popExitAnim="@anim/slide_right"
         android:id="@+id/action_notificationFragment_to_failedFragment"
-        app:destination="@id/failedFragment" />
-    <action
+        app:destination="@id/failedFragment"
         app:enterAnim="@anim/fade_in"
-        app:popExitAnim="@anim/slide_right"
+        app:popExitAnim="@anim/slide_right" />
+    <action
         android:id="@+id/action_successLostFragment_to_resultsCasesFragment"
-        app:destination="@id/resultsCasesFragment" />
-    <action
+        app:destination="@id/resultsCasesFragment"
         app:enterAnim="@anim/fade_in"
-        app:popExitAnim="@anim/slide_right"
+        app:popExitAnim="@anim/slide_right" />
+    <action
         android:id="@+id/action_resultsCasesFragment_to_caseDetailsFragment"
-        app:destination="@id/caseDetailsFragment" />
-    <action
+        app:destination="@id/caseDetailsFragment"
         app:enterAnim="@anim/fade_in"
-        app:popExitAnim="@anim/slide_right"
+        app:popExitAnim="@anim/slide_right" />
+    <action
         android:id="@+id/action_caseDetailsFragment_to_contactFragment"
-        app:destination="@id/contactFragment" />
+        app:destination="@id/contactFragment"
+        app:enterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/slide_right" />
     <fragment
         android:id="@+id/notificationFragment"
         android:name="com.mafqud.android.notification.NotificationFragment"
         android:label="NotificationFragment">
         <action
-            app:enterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_right"
             android:id="@+id/action_notificationFragment_to_national_id"
-            app:destination="@id/nationalIDFragmentNoti" />
-        <action
+            app:destination="@id/national_graph"
             app:enterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_right"
+            app:popExitAnim="@anim/slide_right">
+            <argument
+                android:name="caseContact"
+                android:defaultValue="@null"
+                app:argType="com.mafqud.android.mapper.CaseContact"
+                app:nullable="true" />
+        </action>
+        <action
             android:id="@+id/action_notificationFragment_to_failedFragment"
-            app:destination="@id/failedFragment" />
-        <action
+            app:destination="@id/failedFragment"
             app:enterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_right"
+            app:popExitAnim="@anim/slide_right" />
+        <action
             android:id="@+id/action_notificationFragment_to_resultsCasesFragment"
-            app:destination="@id/resultsCasesFragment" />
+            app:destination="@id/resultsCasesFragment"
+            app:enterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_right" />
     </fragment>
     <fragment
         android:id="@+id/publishCaseFragment"
@@ -157,8 +150,8 @@
         android:label="PublishCaseFragment">
         <argument
             android:name="caseModel"
+            android:defaultValue="@null"
             app:argType="com.mafqud.android.notification.CaseModel"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
     </fragment>
 </navigation>

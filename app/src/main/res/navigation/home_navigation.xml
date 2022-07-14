@@ -136,7 +136,13 @@
             app:destination="@id/imageSliderFragment" />
         <action
             android:id="@+id/action_homeDetailsFragment_to_nationalIdFragment"
-            app:destination="@id/nationalIDFragment" />
+            app:destination="@id/national_graph" >
+            <argument
+                android:name="caseContact"
+                app:argType="com.mafqud.android.mapper.CaseContact"
+                app:nullable="true"
+                android:defaultValue="@null" />
+        </action>
         <action
             android:id="@+id/action_homeDetailsFragment_to_contactFragment2"
             app:destination="@id/contactFragment2" />
@@ -150,30 +156,8 @@
             app:argType="string"
             app:nullable="true" />
     </fragment>
-    <fragment
-        android:id="@+id/nationalIDFragment"
-        android:name="com.mafqud.android.results.states.success.NationalIDFragment"
-        android:label="SuccessReportingFragment" >
-        <action
-            android:id="@+id/action_national_id_fragment_to_contactFragment"
-            app:destination="@id/contactFragment2" />
-        <action
-            app:enterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_right"
-            android:id="@+id/action_national_id_to_resultsCasesFragment"
-            app:destination="@id/resultsCasesFragment" >
-            <argument
-                android:name="caseModel"
-                app:argType="com.mafqud.android.notification.CaseModel"
-                app:nullable="true"
-                android:defaultValue="@null" />
-        </action>
-        <argument
-            android:name="caseContact"
-            app:argType="com.mafqud.android.mapper.CaseContact"
-            app:nullable="true"
-            android:defaultValue="@null" />
-    </fragment>
+    <include app:graph="@navigation/national_graph" />
+
     <fragment
         android:id="@+id/contactFragment2"
         android:name="com.mafqud.android.results.contact.ContactFragment"
