@@ -23,7 +23,7 @@ jobs:
       - name: Build Release AAB
         run: ./gradlew bundleRelease
 
-      - name: Sign AAB               // 2
+      - name: Sign AAB
         uses: r0adkll/sign-android-release@v1
         with:
           releaseDirectory: app/build/outputs/bundle/release
@@ -36,25 +36,14 @@ jobs:
     needs: [ build ]
     runs-on: ubuntu-latest
     steps:
-      # 1
-      - uses: actions/download-artifact@master
-        with:
-          name: release.abb
-      #      - uses: actions/download-artifact@master
-      #        with:
-      #          name: mapping.txt
-      # 2
       - name: Publish to Play Store alpha test track
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-          # 3
-          packageName: com.raywenderlich.android.rwquotes
+          packageName: com.mafqud.android
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
-          whatsNewDirectory: whatsnew/
+          #whatsNewDirectory: whatsnew/
           track: internal
-  #          mappingFile: mapping.txt
-
 
   discord_notification:
     needs: [ deploy-play-store ]
