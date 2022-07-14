@@ -45,7 +45,7 @@ android {
         }
     }
 
-    signingConfigs {
+    /*signingConfigs {
         // my.jks information
         release {
             storePassword project.property("MyApp.signing.password")
@@ -53,12 +53,12 @@ android {
             keyAlias project.property("MyApp.signing.alias")
             keyPassword project.property("MyApp.signing.password")
         }
-    }
+    }*/
 
     buildTypes {
         release {
             // to sign the release apk
-            signingConfig signingConfigs.release
+            //signingConfig signingConfigs.release
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             //buildConfigField "String", "BUILDTYPE_AND_PRE_RELEASE", "\"release.${getPreRelease()}\""
