@@ -17,8 +17,8 @@ jobs:
         with:
           java-version: 11
 
-      #- name: Build Project
-      #  run: ./gradlew build
+      - name: Build Project
+        run: ./gradlew build
 
       - name: Build Release AAB
         run: ./gradlew bundleRelease
@@ -36,16 +36,12 @@ jobs:
     needs: [ build ]
     runs-on: ubuntu-latest
     steps:
-
-      - name: Create service_account.json
-        run: echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' > service_account.json
-
       - name: Publish to Play Store alpha test track
-        uses: r0adkll/upload-google-play@v1.0.15
+        uses: r0adkll/upload-google-play@v1
         with:
-          serviceAccountJsonPlainText: service_account.json
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           packageName: com.mafqud.android
-          releaseFiles: ./build/outputs/bundle/release/android-ci-release.aab
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
           #whatsNewDirectory: whatsnew/
           track: internal
 
