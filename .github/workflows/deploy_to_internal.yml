@@ -4,8 +4,6 @@ name: Build and Deploy to play store(Internal test)
 ## 2 (conditions) -> Actions that will be executed when you push code currently none
 on:
   push:
-    tags:
-      - "v*.*.*-alpha"
 ## 3 (jobs)
 jobs:
   build:
@@ -13,6 +11,17 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Set Up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Run Tests
+        run: ./gradlew test
+
+      - name: Build Project
+        run: ./gradlew build
 
       - name: Generate Release Bundle
         run: ./gradlew bundleRelease
@@ -35,18 +44,18 @@ jobs:
         with:
           name: mapping.txt
           path: app/build/outputs/mapping/release/mapping.txt
-          
+
   deploy-play-store:
-    needs: [build]
+    needs: [ build ]
     runs-on: ubuntu-latest
     steps:
       # 1
       - uses: actions/download-artifact@master
         with:
           name: release.abb
-#      - uses: actions/download-artifact@master
-#        with:
-#          name: mapping.txt
+      #      - uses: actions/download-artifact@master
+      #        with:
+      #          name: mapping.txt
       # 2
       - name: Publish to Play Store alpha test track
         uses: r0adkll/upload-google-play@v1
@@ -57,11 +66,11 @@ jobs:
           releaseFile: app/build/outputs/bundle/release/app-release.aab
           whatsNewDirectory: whatsnew/
           track: internal
-#          mappingFile: mapping.txt
+  #          mappingFile: mapping.txt
 
 
   discord_notification:
-    needs: [deploy-play-store]
+    needs: [ deploy-play-store ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -73,8 +82,8 @@ jobs:
         env:
           RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
         run: |
-            echo $RELEASE_VERSION
-            echo ${{ steps.vars.outputs.tag }}
+          echo $RELEASE_VERSION
+          echo ${{ steps.vars.outputs.tag }}
 
       - uses: sarisia/actions-status-discord@v1
         with:
@@ -92,16 +101,16 @@ jobs:
 
 
   notifyTelegram:
-    needs: [deploy-play-store]
+    needs: [ deploy-play-store ]
     runs-on: ubuntu-latest
     steps:
-    - name: send custom message
-      uses: appleboy/telegram-action@master
-      with:
-        to: ${{ secrets.TELEGRAM_TO }}
-        token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: |
-          New version of ${{ github.event.repository.name }} is ready!
-          Version: ${{ steps.vars.outputs.tag }}
-          Click to install!
-          (//TODO ADD APP LINK)
+      - name: send custom message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            New version of ${{ github.event.repository.name }} is ready!
+            Version: ${{ steps.vars.outputs.tag }}
+            Click to install!
+            (//TODO ADD APP LINK)
