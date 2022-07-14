@@ -121,8 +121,8 @@ class ImageSliderFragment : Fragment() {
 
 
     override fun onDestroy() {
-        //requireActivity().statusBarColor(resources.getColor(R.color.white))
-        controlHomeNavigationBar(true)
+       /* //requireActivity().statusBarColor(resources.getColor(R.color.white))
+        controlHomeNavigationBar(true)*/
         super.onDestroy()
     }
 

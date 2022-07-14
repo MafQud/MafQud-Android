@@ -143,6 +143,9 @@ class MapViewModel @Inject constructor(
     private fun getSavedLocation(): Location? = _stateChannel.value.location
 
     private fun emitCasesData(data: CasesDataResponse) {
+        val casesNew = data.cases.map {
+            it.location
+        }
         launchViewModelScope {
             _stateChannel.emit(
                 stateChannel.value.copy(
