@@ -26,7 +26,7 @@ jobs:
       - name: Sign AAB
         uses: r0adkll/sign-android-release@v1
         with:
-          releaseDirectory: app/release
+          releaseDirectory: app/build/outputs/bundle/release
           signingKeyBase64: ${{ secrets.SIGNING_KEY }}
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
@@ -41,7 +41,7 @@ jobs:
         with:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           packageName: com.mafqud.android
-          releaseFiles: app/release/app-release.aab
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
           #whatsNewDirectory: whatsnew/
           track: internal
 
@@ -90,3 +90,22 @@ jobs:
             Version: ${{ steps.vars.outputs.tag }}
             Click to install!
             (//TODO ADD APP LINK)
+
+#  - name: Sign Release Bundle
+#    uses: r0adkll/sign-android-release@v1
+#    # ID used to access action output
+#    id: sign_app
+#    with:
+#      releaseDirectory: app/build/outputs/bundle/release
+#      signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+#      alias: ${{ secrets.ALIAS }}
+#      keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+#      keyPassword: ${{ secrets.KEY_PASSWORD }}
+#  - uses: actions/upload-artifact@master
+#    with:
+#      name: release.abb
+#      path: app/build/outputs/bundle/release/app-release.aab
+#  - uses: actions/upload-artifact@master
+#    with:
+#      name: mapping.txt
+#      path: app/build/outputs/mapping/release/mapping.txt
