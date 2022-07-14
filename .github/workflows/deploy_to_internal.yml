@@ -36,10 +36,14 @@ jobs:
     needs: [ build ]
     runs-on: ubuntu-latest
     steps:
+
+      - name: Create service_account.json
+        run: echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' > service_account.json
+
       - name: Publish to Play Store alpha test track
         uses: r0adkll/upload-google-play@v1.0.15
         with:
-          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+          serviceAccountJsonPlainText: service_account.json
           packageName: com.mafqud.android
           releaseFiles: app/build/outputs/bundle/release/*.aab
           #whatsNewDirectory: whatsnew/
