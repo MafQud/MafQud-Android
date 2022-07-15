@@ -102,10 +102,11 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            New version of ${{ APP_NAME }} is ready!
+            New version of ${{ env.APP_NAME }} is ready!
             Version: ${{ steps.vars.outputs.tag }}
             Click to install!
-            ($INTERNAL_APP_LINK)
+            ${{ $INTERNAL_APP_LINK }}
+
 
 #  - name: Sign Release Bundle
 #    uses: r0adkll/sign-android-release@v1
