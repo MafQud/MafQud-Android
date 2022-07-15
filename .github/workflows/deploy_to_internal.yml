@@ -40,6 +40,7 @@ jobs:
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
           #whatsNewDirectory: whatsnew/
           track: internal
+          status: completed
 
 #  deploy-play-store:
 #    needs: [ build ]
