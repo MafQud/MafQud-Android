@@ -1,10 +1,19 @@
-## 1 (workflow name)
+## (workflow name)
 name: Build and Deploy to play store(Internal test)
 
-## 2 (conditions) -> Actions that will be executed when you push code currently none
+## (conditions) -> Actions that will be executed when you push code currently none
 on:
   push:
-## 3 (jobs)
+
+## some vars
+env:
+  APP_NAME: ${{ github.event.repository.name }
+  APP_VERSION: ${{ steps.vars.outputs.tag }}
+  INTERNAL_APP_LINK: https://play.google.com/apps/internaltest/4698997697459283178
+  PUBLIC_APP_LINK: https://play.google.com/store/apps/details?id=com.mafqud.android
+
+
+## (jobs)
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -12,48 +21,48 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-#      - name: Set up JDK 11
-#        uses: actions/setup-java@v1
-#        with:
-#          java-version: 11
-#
-##      - name: Build Project
-##        run: ./gradlew build
-#
-#      - name: Build Release AAB
-#        run: ./gradlew bundleRelease
-#
-#      - name: Sign AAB
-#        uses: r0adkll/sign-android-release@v1
-#        with:
-#          releaseDirectory: app/build/outputs/bundle/release
-#          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-#          alias: ${{ secrets.ALIAS }}
-#          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-#          keyPassword: ${{ secrets.KEY_PASSWORD }}
-#
-#      - name: Publish to Play Store internal test track
-#        uses: r0adkll/upload-google-play@v1
-#        with:
-#          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-#          packageName: com.mafqud.android
-#          releaseFiles: app/build/outputs/bundle/release/app-release.aab
-#          #whatsNewDirectory: whatsnew/
-#          track: internal
-#          status: completed
+  #      - name: Set up JDK 11
+  #        uses: actions/setup-java@v1
+  #        with:
+  #          java-version: 11
+  #
+  ##      - name: Build Project
+  ##        run: ./gradlew build
+  #
+  #      - name: Build Release AAB
+  #        run: ./gradlew bundleRelease
+  #
+  #      - name: Sign AAB
+  #        uses: r0adkll/sign-android-release@v1
+  #        with:
+  #          releaseDirectory: app/build/outputs/bundle/release
+  #          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+  #          alias: ${{ secrets.ALIAS }}
+  #          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+  #          keyPassword: ${{ secrets.KEY_PASSWORD }}
+  #
+  #      - name: Publish to Play Store internal test track
+  #        uses: r0adkll/upload-google-play@v1
+  #        with:
+  #          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+  #          packageName: com.mafqud.android
+  #          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+  #          #whatsNewDirectory: whatsnew/
+  #          track: internal
+  #          status: completed
 
-#  deploy-play-store:
-#    needs: [ build ]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Publish to Play Store alpha test track
-#        uses: r0adkll/upload-google-play@v1
-#        with:
-#          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-#          packageName: com.mafqud.android
-#          releaseFiles: app/build/outputs/bundle/release/app-release.aab
-#          #whatsNewDirectory: whatsnew/
-#          track: internal
+  #  deploy-play-store:
+  #    needs: [ build ]
+  #    runs-on: ubuntu-latest
+  #    steps:
+  #      - name: Publish to Play Store alpha test track
+  #        uses: r0adkll/upload-google-play@v1
+  #        with:
+  #          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+  #          packageName: com.mafqud.android
+  #          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+  #          #whatsNewDirectory: whatsnew/
+  #          track: internal
 
   discord_notification:
     needs: [ build ]
@@ -66,10 +75,10 @@ jobs:
       # for printing app version name in workflow
       - name: Check version output
         env:
-          RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
+          RELEASE_VERSION: $APP_VERSION
         run: |
           echo $RELEASE_VERSION
-          echo ${{ steps.vars.outputs.tag }}
+          echo $APP_VERSION
 
       - uses: sarisia/actions-status-discord@v1
         with:
@@ -78,12 +87,12 @@ jobs:
           color: 0x00FF00
           avatar_url: ${{ secrets.DISCORD_AVATAR }}
           username: |
-            ${{ github.event.repository.name }} application
+            $APP_NAME application
           title: |
-            :star2:  New version of ${{ github.event.repository.name }} is ready!
+            :star2:  New version of $APP_NAME is ready!
           description: |
-            :clipboard: Version `${{ steps.vars.outputs.tag }}`
-            :outbox_tray: Click [here](//TODO ADD APP LINK) to install!
+            :clipboard: Version `$APP_VERSION`
+            :outbox_tray: Click [here]($INTERNAL_APP_LINK) to install!
 
 
   notifyTelegram:
@@ -96,10 +105,10 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            New version of ${{ github.event.repository.name }} is ready!
-            Version: ${{ steps.vars.outputs.tag }}
+            New version of $APP_NAME is ready!
+            Version: $APP_VERSION
             Click to install!
-            (//TODO ADD APP LINK)
+            ($INTERNAL_APP_LINK)
 
 #  - name: Sign Release Bundle
 #    uses: r0adkll/sign-android-release@v1
