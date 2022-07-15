@@ -105,7 +105,7 @@ jobs:
             New version of ${{ env.APP_NAME }} is ready!
             Version: ${{ steps.vars.outputs.tag }}
             Click to install!
-            ${{ $INTERNAL_APP_LINK }}
+            ${{ env.INTERNAL_APP_LINK }}
 
 
 #  - name: Sign Release Bundle
