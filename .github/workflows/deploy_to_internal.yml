@@ -8,7 +8,7 @@ on:
 ## some vars
 env:
   APP_NAME: MafQud
-  RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
+  RELEASE_VERSION: steps.vars.outputs.tag
   INTERNAL_APP_LINK: https://play.google.com/apps/internaltest/4698997697459283178
   PUBLIC_APP_LINK: https://play.google.com/store/apps/details?id=com.mafqud.android
 
