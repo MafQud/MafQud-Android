@@ -7,7 +7,7 @@ on:
 
 ## some vars
 env:
-  APP_NAME: ${{ github.event.repository.name }
+  APP_NAME: MafQud
   APP_VERSION: ${{ steps.vars.outputs.tag }}
   INTERNAL_APP_LINK: https://play.google.com/apps/internaltest/4698997697459283178
   PUBLIC_APP_LINK: https://play.google.com/store/apps/details?id=com.mafqud.android
