@@ -1,19 +1,16 @@
-## (workflow name)
+## 1 (workflow name)
 name: Build and Deploy to play store(Internal test)
 
-## (conditions) -> Actions that will be executed when you push code currently none
+## 2 (conditions) -> Actions that will be executed when you push code currently none
 on:
   push:
-
+## 3 (jobs)
 ## some vars
 env:
   APP_NAME: MafQud
-  APP_VERSION: ${{ steps.vars.outputs.tag }}
   INTERNAL_APP_LINK: https://play.google.com/apps/internaltest/4698997697459283178
   PUBLIC_APP_LINK: https://play.google.com/store/apps/details?id=com.mafqud.android
 
-
-## (jobs)
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -75,10 +72,10 @@ jobs:
       # for printing app version name in workflow
       - name: Check version output
         env:
-          RELEASE_VERSION: $APP_VERSION
+          RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
         run: |
           echo $RELEASE_VERSION
-          echo $APP_VERSION
+          echo ${{ steps.vars.outputs.tag }}
 
       - uses: sarisia/actions-status-discord@v1
         with:
@@ -91,7 +88,7 @@ jobs:
           title: |
             :star2:  New version of $APP_NAME is ready!
           description: |
-            :clipboard: Version `$APP_VERSION`
+            :clipboard: Version `${{ steps.vars.outputs.tag }}`
             :outbox_tray: Click [here]($INTERNAL_APP_LINK) to install!
 
 
@@ -106,7 +103,7 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
             New version of $APP_NAME is ready!
-            Version: $APP_VERSION
+            Version: ${{ steps.vars.outputs.tag }}
             Click to install!
             ($INTERNAL_APP_LINK)
 
