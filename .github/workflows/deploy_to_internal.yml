@@ -102,7 +102,7 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            New version of $APP_NAME is ready!
+            New version of ${APP_NAME} is ready!
             Version: ${{ steps.vars.outputs.tag }}
             Click to install!
             ($INTERNAL_APP_LINK)
