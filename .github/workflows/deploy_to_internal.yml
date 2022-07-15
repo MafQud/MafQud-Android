@@ -61,35 +61,35 @@ jobs:
   #          #whatsNewDirectory: whatsnew/
   #          track: internal
 
-  discord_notification:
-    needs: [ build ]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set output
-        id: vars
-        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
-      # for printing app version name in workflow
-      - name: Check version output
-        env:
-          RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
-        run: |
-          echo $RELEASE_VERSION
-          echo ${{ steps.vars.outputs.tag }}
-
-      - uses: sarisia/actions-status-discord@v1
-        with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          nodetail: true
-          color: 0x00FF00
-          avatar_url: ${{ secrets.DISCORD_AVATAR }}
-          username: |
-            $APP_NAME application
-          title: |
-            :star2:  New version of $APP_NAME is ready!
-          description: |
-            :clipboard: Version `${{ steps.vars.outputs.tag }}`
-            :outbox_tray: Click [here]($INTERNAL_APP_LINK) to install!
+#  discord_notification:
+#    needs: [ build ]
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Set output
+#        id: vars
+#        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+#      # for printing app version name in workflow
+#      - name: Check version output
+#        env:
+#          RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
+#        run: |
+#          echo $RELEASE_VERSION
+#          echo ${{ steps.vars.outputs.tag }}
+#
+#      - uses: sarisia/actions-status-discord@v1
+#        with:
+#          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+#          nodetail: true
+#          color: 0x00FF00
+#          avatar_url: ${{ secrets.DISCORD_AVATAR }}
+#          username: |
+#            ${ APP_NAME } application
+#          title: |
+#            :star2:  New version of $APP_NAME is ready!
+#          description: |
+#            :clipboard: Version `${{ steps.vars.outputs.tag }}`
+#            :outbox_tray: Click [here]($INTERNAL_APP_LINK) to install!
 
 
   notifyTelegram:
