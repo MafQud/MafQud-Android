@@ -1,12 +1,8 @@
-## welocome to MafQud android github repoistory.
-<p align="center">
-  <img src="img/welcome.png" height="400" width="350">
-</p>
-
 ### :telescope: About MafQud: 
-[![IMAGE ALT TEXT HERE](img/youtube.png)](https://www.youtube.com/watch?v=y3xAC0fqwOc&t=5s)
 
 `MafQud is a mobile application that leverages cutting edge Computer Vision techniques to help find missing people.`
+
+[<img alt="text" width="500" src="img/youtube.png" />](https://www.youtube.com/watch?v=y3xAC0fqwOc&t=5s)
 
 People who are willing to help will submit pictures of children whom they suspect to be lost or kidnapped, along with the location in which they found him/her.
 On the other hand, families of victims need to upload pictures of their missing child along with some distinctive information about him/her.
@@ -48,7 +44,7 @@ open-source world.
 ### :railway_track:	 MafQud Team:
 
 <p align="left">
-  <img src="img/team.png" height="400" width="350">
+  <img src="img/team.png" height="500">
 </p>      
 - Youssef El-Mahdy `Project manager`
 - Ahmed Shehata `Android developer`
