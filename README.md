@@ -2,6 +2,7 @@
 
 `MafQud is a mobile application that leverages cutting edge Computer Vision techniques to help find missing people.`
 
+**`Watch our Youtube video:`**    
 [<img alt="text" width="500" src="img/youtube.png" />](https://www.youtube.com/watch?v=y3xAC0fqwOc&t=5s)
 
 People who are willing to help will submit pictures of children whom they suspect to be lost or kidnapped, along with the location in which they found him/her.
@@ -43,27 +44,27 @@ open-source world.
 
 ### :railway_track:	 MafQud Team:
 
-<p align="left">
-  <img src="img/team.png" height="500">
-</p>      
-- Youssef El-Mahdy `Project manager`
-- Ahmed Shehata `Android developer`
-- Osama Ragab `Back-end developer`
-- Osama Yasser `Back-end developer`
-- Eman Ebrahim `Data scientist`
-- Tasneem Nabil `Data scientist`
-- Omar Hegazy `Data scientist`
-- Marwa Kamel `UI/UX designer`
+<p><img align="center" height="500" src="img/team.png">
+</br>
 
+-   Youssef El-Mahdy `Project manager`
+-   Marwa Kamel `UI/UX designer`
+-   Ahmed Shehata `Android developer`
+-   Osama Yasser `Back-end developer`
+-   Osama Ragab `Back-end developer`
+-   Eman Ebrahim `Data scientist`
+-   Tasneem Nabil `Data scientist`
+-   Omar Hegazy `Data scientist`
+</p>
 
 ### :railway_track:	 MafQud branding:
 [MafQud Branding](https://www.behance.net/gallery/142190383/MafQud-Branding)
 
-### :star2:	  List Of Features:
+### :star2:	 List Of Features:
 
-<p align="center">
-  <img src="img/features.png" height="400" width="350">
-</p>      
+<p align="ledt"> <img src="img/features.png" height="300" >
+ </br>
+  
 -   Splash screen
 -   Onboarding
 -   Sign-up and login
@@ -73,11 +74,14 @@ open-source world.
 -   Native maps
 -   Device hardware access (camera, GPS)
 
+</p>      
 
-### :boom: center on Google Play:
-<p align="left">
-  <img src="img/play.png" height="400" width="350">
-</p> 
+
+
+### :boom: MafQud on Google Play:
+<p align="left"> <img src="img/play.png" height="250" >
+</br>
+
 -   [MafQud](https://play.google.com/store/apps/details?id=com.mafqud.android)
 -   Released on: Jul 2, 2022
 -   Programming language: Kotlin.  
@@ -85,6 +89,8 @@ open-source world.
 -   Store listing name: MafQud
 -   Contact Email: mafqudapp@gmail.com
 -   [Privacy Policy](https://gist.github.com/Eng-AhmedShehata/aae20217432b3679e1fce357cbc46f5d)
+
+</p> 
 
 
 ### :open_book: Dependencies:
