@@ -109,3 +109,7 @@ lottie
 Maps compose  
 Firebase crashlyatics   
 Firebase phone verfication   
+
+
+### Licence:
+[MIT License](https://choosealicense.com/licenses/mit/)
