@@ -79,7 +79,7 @@ open-source world.
 
 
 ### :boom: MafQud on Google Play:
-<p align="left"> <img src="img/play.png" height="250" >
+<p align="left"> <img src="img/play.png" height="200" >
 </br>
 
 -   [MafQud](https://play.google.com/store/apps/details?id=com.mafqud.android)
