@@ -4,7 +4,10 @@ name: Build and Deploy to play store(Internal test)
 ## 2 (conditions) -> Actions that will be executed when you push code currently none
 on:
   push:
-## 3 (jobs)
+    tags:
+      - v*.*.*-*
+
+
 ## some vars
 env:
   APP_NAME: MafQud
