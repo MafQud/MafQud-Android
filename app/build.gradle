@@ -13,9 +13,9 @@ apply plugin: 'com.google.gms.google-services'
 // breaking
 ext.majorVersion = 2
 // feature
-ext.minorVersion = 1
+ext.minorVersion = 2
 //bugfix
-ext.patchVersion = 6
+ext.patchVersion = 0
 /*
  alpha - beta  - stable
  */
