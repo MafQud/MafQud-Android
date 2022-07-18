@@ -15,7 +15,7 @@ env:
   PUBLIC_APP_LINK: https://play.google.com/store/apps/details?id=com.mafqud.android
 
 jobs:
-  build:
+  build_Deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -53,7 +53,7 @@ jobs:
 
 
   discord_notification:
-    needs: [ build ]
+    needs: [ build_Deploy ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -82,8 +82,8 @@ jobs:
             :clipboard: Version `${{ env.RELEASE_VERSION }}`
             :outbox_tray: Click [here](${{ env.INTERNAL_APP_LINK }}) to install!
 
-  notifyTelegram:
-    needs: [ build ]
+  telegram_notification:
+    needs: [ build_Deploy ]
     runs-on: ubuntu-latest
     steps:
       - name: send custom message
@@ -92,7 +92,7 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            New version of ${{ env.APP_NAME }} is ready!
+            New version of ${{ steps.vars.outputs.tag }} is ready!
             Version: ${{ steps.vars.outputs.tag }}
             Click to install!
             ${{ env.INTERNAL_APP_LINK }}
