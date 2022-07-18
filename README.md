@@ -93,7 +93,6 @@ open-source world.
 -   Released on: Jul 2, 2022
 -   Programming language: Kotlin.  
 -   OS versions: Android 5 and above
--   Store listing name: MafQud
 -   Contact Email: mafqudapp@gmail.com
 -   [Privacy Policy](https://gist.github.com/Eng-AhmedShehata/aae20217432b3679e1fce357cbc46f5d)
 
