@@ -9,6 +9,8 @@
         android:name="com.mafqud.android.results.states.success.NationalIDFragment"
         android:label="SuccessReportingFragment">
         <action
+            app:enterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_right"
             android:id="@+id/action_national_id_fragment_to_contactFragment"
             app:destination="@id/contactFragment2">
             <argument

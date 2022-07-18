@@ -135,6 +135,8 @@
             android:id="@+id/action_homeDetailsFragment_to_imageSliderFragment"
             app:destination="@id/imageSliderFragment" />
         <action
+            app:enterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_right"
             android:id="@+id/action_homeDetailsFragment_to_nationalIdFragment"
             app:destination="@id/national_graph" >
             <argument
