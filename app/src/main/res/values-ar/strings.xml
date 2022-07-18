@@ -195,5 +195,8 @@
     <string name="otp_error">فشل في ارسال الكود برجاء العوده لادخال الرقم من جديد</string>
     <string name="upload_inst3">اقصي عدد هو 3 صور</string>
     <string name="upload_inst4">يفضل رفع صور بجودة جيدة</string>
+    <string name="date">Date</string>
+    <string name="range_date">Date search</string>
+    <string name="choose">Choose</string>
 
 </resources>

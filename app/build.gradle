@@ -87,6 +87,10 @@ android {
     // Set both the Java and Kotlin compilers to target Java 8.
 
     compileOptions {
+        // Flag to enable support for the new language APIs
+        coreLibraryDesugaringEnabled true
+
+        // Sets Java compatibility to Java 8
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -301,6 +305,7 @@ dependencies {
     implementation 'androidx.browser:browser:1.4.0'
     //implementation 'com.google.firebase:firebase-appcheck-safetynet:16.0.0'
 
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.9'
 
 }
 

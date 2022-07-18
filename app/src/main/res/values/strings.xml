@@ -219,4 +219,7 @@
     <string name="upload_inst3">Max uploaded images 3</string>
     <string name="upload_inst4">Should upload good quality image</string>
     <string name="otp_wait">wait until verfication ends</string>
+    <string name="date">Date</string>
+    <string name="range_date">Date search</string>
+    <string name="choose">Choose</string>
 </resources>

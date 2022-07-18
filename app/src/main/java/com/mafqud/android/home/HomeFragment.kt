@@ -84,18 +84,20 @@ class HomeFragment : BaseFragment() {
             CircleLoading(stateValue.isLoading)
 
             HomeScreen(
+                activity = requireActivity(),
                 isNoName = stateValue.isNoName,
                 selectedGovId = stateValue.govID,
                 govs = stateValue.govs,
                 searchedName = stateValue.searchedName,
                 ageRange = stateValue.ageRange,
+                dateRange = stateValue.dateRange,
                 cases = stateValue.cases,
                 selectedTapState = stateValue.casesTabType,
                 onTapClicked = {
                     requestCasesIntent(it)
                 }, onCaseClicked = {
                     openCaseDetails(it)
-                }, onRangeSelected = {
+                }, onAgeRangeSelected = {
                     requestCasesByAgeIntent(it)
                 }, onSearchTyping = {
                     requestCasesByNameIntent(it)
@@ -103,11 +105,19 @@ class HomeFragment : BaseFragment() {
                     requestCasesByGovIntent(it)
                 }, onNoNameSelected = {
                     requestCasesByNoNameIntent()
+                }, onDateRangeSelected = {
+                    requestCasesByDateIntent(it)
                 })
 
             if (stateValue.networkError != null) {
                 stateValue.networkError.ShowNetworkErrorSnakeBar(scaffoldState)
             }
+        }
+    }
+
+    private fun requestCasesByDateIntent(it: DateRange) {
+        lifecycleScope.launchWhenCreated {
+            viewModel.intentChannel.send(HomeIntent.GetCasesByDate(it))
         }
     }
 

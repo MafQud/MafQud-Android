@@ -14,6 +14,14 @@ data class AgeRange(
     val end: Int,
 )
 
+@Keep
+data class DateRange(
+    //2021-04-29
+    val start: String,
+    //2022-08-15
+    val end: String,
+)
+
 data class HomeViewState(
     val isLoading: Boolean = false,
     val isRefreshing: Boolean = false,
@@ -23,6 +31,7 @@ data class HomeViewState(
     val casesTabType: CasesTabType = CasesTabType.ALL,
     val cases: Flow<PagingData<CasesDataResponse.Case>>? = null,
     val ageRange: AgeRange? = null,
+    val dateRange: DateRange? = null,
     val searchedName: String? = null,
     val isNoName: Boolean = false,
     val govs: List<MyGov>? = null,

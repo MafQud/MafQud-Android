@@ -24,6 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.fragment.app.FragmentActivity
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -35,6 +36,7 @@ import com.mafqud.android.ui.compose.CaseItem
 import com.mafqud.android.ui.compose.DropDownItems
 import com.mafqud.android.ui.compose.IconAdd
 import com.mafqud.android.ui.picker.AgePickerDialog
+import com.mafqud.android.ui.picker.DatePickerDialog
 import com.mafqud.android.ui.theme.*
 import com.mafqud.android.util.network.HandlePagingError
 import com.mafqud.android.util.other.LogMe
@@ -48,12 +50,15 @@ enum class CasesTabType {
 
 @Composable
 fun HomeScreen(
+    activity: FragmentActivity,
     onTapClicked: (CasesTabType) -> Unit = {},
-    onRangeSelected: (AgeRange) -> Unit = {},
+    onAgeRangeSelected: (AgeRange) -> Unit = {},
+    onDateRangeSelected: (DateRange) -> Unit = {},
     onCaseClicked: (CasesDataResponse.Case) -> Unit = {},
     cases: Flow<PagingData<CasesDataResponse.Case>>?,
     selectedTapState: CasesTabType,
     ageRange: AgeRange?,
+    dateRange: DateRange?,
     searchedName: String?,
     onSearchTyping: (String) -> Unit = {},
     govs: List<MyGov>?,
@@ -71,8 +76,10 @@ fun HomeScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         HeadSearchUi(
+            activity,
             onTapClicked, selectedTapState,
-            ageRange, onRangeSelected,
+            ageRange, dateRange,
+            onAgeRangeSelected, onDateRangeSelected,
             searchedName, onSearchTyping,
             govs, onGovSelected, selectedGovId,
             isNoName,
@@ -84,10 +91,13 @@ fun HomeScreen(
 
 @Composable
 fun HeadSearchUi(
+    activity: FragmentActivity,
     onTapClicked: (CasesTabType) -> Unit = {},
     selectedTapState: CasesTabType = CasesTabType.ALL,
     ageRange: AgeRange?,
-    onRangeSelected: (AgeRange) -> Unit,
+    dateRange: DateRange?,
+    onAgeRangeSelected: (AgeRange) -> Unit,
+    onDateRangeSelected: (DateRange) -> Unit,
     searchedName: String?,
     onSearchTyping: (String) -> Unit,
     govs: List<MyGov>?,
@@ -100,12 +110,15 @@ fun HeadSearchUi(
         Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
     ) {
         SearchUi(
+            activity,
             //tap action
             onTapClicked,
             selectedTapState,
             // age filter
             ageRange,
-            onRangeSelected,
+            dateRange,
+            onAgeRangeSelected,
+            onDateRangeSelected,
             // name filter
             searchedName,
             onSearchTyping,
@@ -122,10 +135,13 @@ fun HeadSearchUi(
 
 @Composable
 private fun SearchUi(
+    activity: FragmentActivity,
     onTapClicked: (CasesTabType) -> Unit,
     selectedTapState: CasesTabType,
     ageRange: AgeRange?,
+    dateRange: DateRange?,
     onRangeSelected: (AgeRange) -> Unit,
+    onDateRangeSelected: (DateRange) -> Unit,
     searchedName: String?,
     onSearchTyping: (String) -> Unit,
     isNoName: Boolean,
@@ -137,7 +153,16 @@ private fun SearchUi(
 ) {
     ColumnUi(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         TapsUi(onTapClicked, selectedTapState)
-        DropDownUi(ageRange, onRangeSelected, govs, onGovSelected, selectedGovId)
+        DropDownUi(
+            activity,
+            ageRange,
+            dateRange,
+            onRangeSelected,
+            onDateRangeSelected,
+            govs,
+            onGovSelected,
+            selectedGovId
+        )
         SearchNameUi(searchedName, onSearchTyping, isNoName, onNoNameSelected)
     }
 }
@@ -233,8 +258,11 @@ fun IncludeNoNames(modifier: Modifier, isSelected: Boolean, onNoNameSelected: ()
 
 @Composable
 private fun DropDownUi(
+    activity: FragmentActivity,
     ageRange: AgeRange?,
+    dateRange: DateRange?,
     onRangeSelected: (AgeRange) -> Unit,
+    onDateRangeSelected: (DateRange) -> Unit,
     govs: List<MyGov>?,
     onGovSelected: (Int?) -> Unit,
     selectedGovId: Int?
@@ -248,13 +276,15 @@ private fun DropDownUi(
             ageRange,
             onRangeSelected
         )
-        DropDownItems(
-            items = listOf("تاريخ التغيب"),
-            modifier = Modifier
+
+        DateTextPicker(
+            activity,
+            Modifier
                 .weight(1f)
                 .height(30.dp),
+            dateRange,
+            onDateRangeSelected
         )
-
 
         // Govs
         val selectedItem = remember {
@@ -341,6 +371,67 @@ fun AgeTextPicker(
                 AgeRange(
                     start = startSlider.value.toInt(),
                     end = endSlider.value.toInt()
+                )
+            )
+        }
+    )
+}
+
+@Composable
+fun DateTextPicker(
+    activity: FragmentActivity,
+    modifier: Modifier,
+    dateRange: DateRange?,
+    onRangeSelected: (DateRange) -> Unit
+) {
+    val isOpened = remember {
+        mutableStateOf(false)
+    }
+    val startSlider = remember {
+        mutableStateOf((dateRange?.start ?: ""))
+    }
+    val endSlider = remember {
+        mutableStateOf((dateRange?.end ?: ""))
+    }
+    // clear range
+    if (dateRange == null) {
+        startSlider.value = ""
+        endSlider.value = ""
+    }
+    LogMe.i("homeDateRange", startSlider.value)
+    LogMe.i("homeDateRange", endSlider.value)
+
+    BoxUi(
+        modifier = modifier
+            .clip(RoundedCornerShape(50))
+            .background(MaterialTheme.colorScheme.primary)
+            .padding(horizontal = 4.dp)
+            .clickable {
+                isOpened.value = true
+            },
+        contentAlignment = Alignment.Center
+    ) {
+        val mDateRange =
+            startSlider.value + " /n " + endSlider.value
+        TextUi(
+            modifier = Modifier.padding(start = 4.dp),
+            text =
+            stringResource(id = R.string.date) + " " + mDateRange,
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.onPrimary,
+        ) // City name label
+    }
+
+    DatePickerDialog(
+        activity = activity,
+        startPickedDate = startSlider,
+        endPickedDate = endSlider,
+        isOpened = isOpened,
+        onConfirmClicked = {
+            onRangeSelected(
+                DateRange(
+                    start = startSlider.value,
+                    end = endSlider.value
                 )
             )
         }
