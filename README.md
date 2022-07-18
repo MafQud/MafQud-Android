@@ -116,6 +116,10 @@ Maps compose
 Firebase crashlyatics   
 Firebase phone verfication   
 
+### :railway_track:	 What's next?:
+- Test the app (Unit, Integration, UI)
+- Fix bugs
+- Add new feaures
 
 ### Licence:
 [MIT License](https://choosealicense.com/licenses/mit/)
