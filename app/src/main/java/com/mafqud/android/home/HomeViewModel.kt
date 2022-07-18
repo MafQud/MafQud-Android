@@ -29,8 +29,22 @@ class HomeViewModel @Inject constructor(
                 is HomeIntent.GetCasesByName -> getCaseByName(it)
                 is HomeIntent.GetCasesByGov -> getCaseByGov(it)
                 is HomeIntent.GetCasesByNoName -> getCaseByNoName()
+                is HomeIntent.GetCasesByDate -> getCaseByDate(it)
             }
         }
+    }
+
+    private fun getCaseByDate(it: HomeIntent.GetCasesByDate) {
+        setDateRange(it.dateRange)
+        getAllData(isRefreshing = false)
+    }
+
+    private fun setDateRange(dateRange: DateRange) {
+        _stateChannel.tryEmit(
+            stateChannel.value.copy(
+                dateRange = dateRange
+            )
+        )
     }
 
     private fun getCaseByNoName() {
@@ -134,10 +148,19 @@ class HomeViewModel @Inject constructor(
     private fun refreshData() {
         resetNoName()
         restAgeRange()
+        restDateRange()
         resetSearchName()
         resetGov()
         emitRefreshingState()
         getAllData(true)
+    }
+
+    private fun restDateRange() {
+        _stateChannel.tryEmit(
+            stateChannel.value.copy(
+                dateRange = null
+            )
+        )
     }
 
     private fun resetNoName() {
@@ -198,12 +221,15 @@ class HomeViewModel @Inject constructor(
             getAgeRange(),
             geSearchName(),
             getGovID(),
-            getIsNoName()
+            getIsNoName(),
+            getDateRange()
         )
         when (result) {
             is Result.Success -> emitNotificationsData(result.data)
         }
     }
+
+    private fun getDateRange() = _stateChannel.value.dateRange
 
     private fun getIsNoName() = _stateChannel.value.isNoName
 

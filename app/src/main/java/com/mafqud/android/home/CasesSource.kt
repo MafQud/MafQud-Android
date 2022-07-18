@@ -2,6 +2,7 @@ package com.mafqud.android.home
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.google.android.play.core.assetpacks.da
 import com.mafqud.android.data.RemoteDataManager
 import com.mafqud.android.home.model.CasesDataResponse
 import com.mafqud.android.util.other.LogMe
@@ -15,7 +16,8 @@ class CasesSource(
     private val ageRange: AgeRange?,
     private val searchName: String?,
     private val govID: Int?,
-    private val isNoName: Boolean?
+    private val isNoName: Boolean?,
+    private val dateRange: DateRange?
 ) : PagingSource<Int, CasesDataResponse.Case>() {
 
     override suspend fun load(params: LoadParams<Int>): PagingSource.LoadResult<Int, CasesDataResponse.Case> {
@@ -36,7 +38,9 @@ class CasesSource(
                 endAge = ageRange?.end,
                 name = if (searchName?.trim().isNullOrEmpty()) null else searchName,
                 govID = govID,
-                isNoName = isNoName
+                isNoName = isNoName,
+                startDate = if (dateRange?.start.isNullOrEmpty()) null else dateRange?.start,
+                endDate = if (dateRange?.end.isNullOrEmpty()) null else dateRange?.end,
             )
 
             val nextPage: Int? =

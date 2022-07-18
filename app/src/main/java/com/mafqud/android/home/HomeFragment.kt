@@ -22,6 +22,7 @@ import com.mafqud.android.ui.compose.HomeAppBar
 import com.mafqud.android.ui.status.loading.CircleLoading
 import com.mafqud.android.ui.theme.MafQudTheme
 import com.mafqud.android.util.network.ShowNetworkErrorSnakeBar
+import com.mafqud.android.util.other.LogMe
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -116,6 +117,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun requestCasesByDateIntent(it: DateRange) {
+        LogMe.i("requestCasesByDateIntent called", it.start + "-" + it.end)
         lifecycleScope.launchWhenCreated {
             viewModel.intentChannel.send(HomeIntent.GetCasesByDate(it))
         }

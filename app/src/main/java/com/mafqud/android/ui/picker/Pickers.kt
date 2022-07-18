@@ -82,9 +82,11 @@ fun datePicker(onDataPicked: (String) -> Unit): DatePickerDialog {
     return mDatePickerDialog
 }
 
+
+
 private fun dateFormatterGlobal(milliseconds: Long?): String {
     milliseconds?.let {
-        val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.UK)
         val calendar: Calendar = Calendar.getInstance()
         calendar.timeInMillis = it
         return formatter.format(calendar.time)

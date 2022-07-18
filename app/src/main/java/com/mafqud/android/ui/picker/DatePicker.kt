@@ -22,6 +22,8 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.fragment.app.FragmentActivity
 import com.mafqud.android.R
 import com.mafqud.android.ui.theme.*
+import com.mafqud.android.util.dateFormat.fromGlobalToDisplay
+import com.mafqud.android.util.other.LogMe
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -34,6 +36,7 @@ fun DatePickerDialog(
     activity: FragmentActivity
 ) {
     ColumnUi {
+        LogMe.i("DatePickerDialog_start", startPickedDate.value)
 
         if (isOpened.value) {
             Dialog(
@@ -81,7 +84,7 @@ fun DatePickerDialog(
                             }
 
                             val startDisplayedDate = remember {
-                                mutableStateOf("")
+                                mutableStateOf(fromGlobalToDisplay(startFormattedDate.value))
                             }
 
                             val startPicker = datePicker(updatedDate = { global, display ->
@@ -126,10 +129,10 @@ fun DatePickerDialog(
                             }
 
                             val endFormattedDate = remember {
-                                mutableStateOf(startPickedDate.value)
+                                mutableStateOf(endPickedDate.value)
                             }
                             val endDisplayedDate = remember {
-                                mutableStateOf("")
+                                mutableStateOf(fromGlobalToDisplay(endPickedDate.value))
                             }
                             val endPicker = datePicker(updatedDate = { global, display ->
                                 endFormattedDate.value = global

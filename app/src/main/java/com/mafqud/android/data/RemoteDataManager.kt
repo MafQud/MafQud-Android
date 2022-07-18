@@ -88,6 +88,8 @@ interface RemoteDataManager {
         @Query("limit") limit: Int,
         @Query("start_age") startAge: Int? = null,
         @Query("end_age") endAge: Int? = null,
+        @Query("start_date") startDate: String? = null,
+        @Query("end_date") endDate: String? = null,
         @Query("name") name: String? = null,
         @Query("gov") govID: Int? = null,
         @Query("include_null") isNoName: Boolean? = null,

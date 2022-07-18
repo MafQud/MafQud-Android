@@ -390,6 +390,7 @@ fun DateTextPicker(
     val startSlider = remember {
         mutableStateOf((dateRange?.start ?: ""))
     }
+    LogMe.i("DateTextPicker",dateRange?.start ?: "" )
     val endSlider = remember {
         mutableStateOf((dateRange?.end ?: ""))
     }
@@ -398,8 +399,8 @@ fun DateTextPicker(
         startSlider.value = ""
         endSlider.value = ""
     }
-    LogMe.i("homeDateRange", startSlider.value)
-    LogMe.i("homeDateRange", endSlider.value)
+    LogMe.i("homeDateRange_start", startSlider.value)
+    LogMe.i("homeDateRange_end", endSlider.value)
 
     BoxUi(
         modifier = modifier
@@ -411,12 +412,12 @@ fun DateTextPicker(
             },
         contentAlignment = Alignment.Center
     ) {
-        val mDateRange =
-            startSlider.value + " /n " + endSlider.value
+       /* val mDateRange =
+            startSlider.value + " /n " + endSlider.value*/
         TextUi(
             modifier = Modifier.padding(start = 4.dp),
             text =
-            stringResource(id = R.string.date) + " " + mDateRange,
+            stringResource(id = R.string.date),
             style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.onPrimary,
         ) // City name label
