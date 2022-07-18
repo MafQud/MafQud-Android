@@ -47,6 +47,7 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           packageName: com.mafqud.android
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          changesNotSentForReview: true
           #whatsNewDirectory: whatsnew/
           track: internal
           status: completed
