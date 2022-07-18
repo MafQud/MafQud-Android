@@ -1,6 +1,13 @@
 ### :telescope: About MafQud: 
 
+
 `MafQud is a mobile application that leverages cutting edge Computer Vision techniques to help find missing people.`
+
+
+[![Generic badge](https://img.shields.io/badge/OS-Android-<COLOR>.svg)](https://play.google.com/store/apps/details?id=com.mafqud.android)
+[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
+
+</br>
 
 **`Watch our Youtube video:`**    
 [<img alt="text" width="500" src="img/youtube.png" />](https://www.youtube.com/watch?v=y3xAC0fqwOc&t=5s)
