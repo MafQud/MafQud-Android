@@ -15,7 +15,7 @@ class NationalIDHelper @Inject constructor() {
         }
     }
 
-    fun shouldOpenNationalIdScreen() = true
+    fun shouldOpenNationalIdScreen() = getUserNationalID().isEmpty()
 
 
 }
