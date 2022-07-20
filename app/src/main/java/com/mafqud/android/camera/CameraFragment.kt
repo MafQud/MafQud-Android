@@ -53,6 +53,7 @@ import com.mafqud.android.ui.compose.CameraAppBar
 import com.mafqud.android.ui.compose.DismissDialog
 import com.mafqud.android.ui.compose.PhotoDialog
 import com.mafqud.android.ui.theme.*
+import com.mafqud.android.util.other.LogMe
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -243,6 +244,8 @@ class CameraFragment : Fragment() {
         }
 
         CameraView(onImageCaptured = { uri, fromGallery ->
+            LogMe.i("myUri", uri.toString())
+
             pickedImage.value = uri
             isOpened.value = true
 

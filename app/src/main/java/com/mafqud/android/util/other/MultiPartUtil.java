@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
+import androidx.camera.core.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -21,8 +22,8 @@ public class MultiPartUtil {
         // use the FileUtils to get the actual file by uri
         File file = FileUtils.getFile(context, fileUri);
 
-        //Logger.i("FileUtils", file.getName());
-        //Logger.i("FileUtils", file.getPath());
+        LogMe.i("FileUtils", file.getName());
+        LogMe.i("FileUtils", file.getPath());
         // create RequestBody instance from file
         RequestBody requestFile =
                 RequestBody.create(

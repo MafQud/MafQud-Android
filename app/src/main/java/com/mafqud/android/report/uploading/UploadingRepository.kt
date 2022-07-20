@@ -11,6 +11,7 @@ import android.net.Uri
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.webkit.MimeTypeMap
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mafqud.android.base.BaseRepository
 import com.mafqud.android.files.FinishUploadBody
 import com.mafqud.android.files.StartUploadBody
@@ -19,14 +20,18 @@ import com.mafqud.android.home.model.CaseType
 import com.mafqud.android.report.uploading.models.CreateCaseBody
 import com.mafqud.android.util.ImageSaver
 import com.mafqud.android.util.fileManager.getCurrentDate
+import com.mafqud.android.util.fileManager.getCurrentDateMilliSec
 import com.mafqud.android.util.network.Result
 import com.mafqud.android.util.network.safeApiCall
 import com.mafqud.android.util.other.FileUtils
 import com.mafqud.android.util.other.LogMe
 import com.mafqud.android.util.other.MultiPartUtil
+import kotlinx.coroutines.delay
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.ByteArrayOutputStream
+import java.lang.Exception
 import javax.inject.Inject
 
 
@@ -54,26 +59,41 @@ class UploadingRepository @Inject constructor() : BaseRepository() {
             val uploadedFilesIds = listOf<Int>().toMutableList()
 
             allImagesToUpload.forEach { uri ->
+                LogMe.i("myUri", uri.toString())
+
                 // First -> get uploaded file credentials
                 // get the credentials to upload photo
+
+                val fileName = uri.path.toString()
+                val imageMIMEType = getMIMEType(uri)
+                val imageExtension = "." + imageMIMEType.substringAfter('/')
+
+                LogMe.i("fileName", fileName)
                 val awsCredentials = remoteDataManager.startUploadingImage(
                     StartUploadBody(
                         // fileName : myImagePickedName/21.jpg
-                        fileName = uri.path.toString() + "." + getUriMemiType(uri),
+                        fileName = fileName,
                         // fileType : image/jpg
-                        fileType = "image/" + getUriMemiType(uri)
+                        fileType = imageMIMEType
                     )
                 )
 
-                val multiPartPhoto =
+
+                LogMe.i("multiPartPhoto", uri.toString())
+                val multiPartPhoto: MultipartBody.Part? = try {
                     MultiPartUtil.fileToMultiPart(appContext, uri, "file")
+                } catch (e: Exception) {
+                    LogMe.i("multiPartPhoto", e.message.toString())
+                    null
+                }
 
                 val mediaType = "multipart/form-data".toMediaType()
                 val uploadingResult = awsUploading.uploadFileToAWS(
                     acl = awsCredentials.fields?.acl.toString().toRequestBody(mediaType),
                     Content_Type = awsCredentials.fields?.contentType.toString()
                         .toRequestBody(mediaType),
-                    key = awsCredentials.fields?.key.toString().toRequestBody(mediaType),
+                    key = (awsCredentials.fields?.key.toString())
+                        .toRequestBody(mediaType),
                     x_amz_algorithm = awsCredentials.fields?.xAmzAlgorithm.toString()
                         .toRequestBody(mediaType),
                     x_amz_credential = awsCredentials.fields?.xAmzCredential.toString()
@@ -83,9 +103,12 @@ class UploadingRepository @Inject constructor() : BaseRepository() {
                     policy = awsCredentials.fields?.policy.toString().toRequestBody(mediaType),
                     x_amz_signature = awsCredentials.fields?.xAmzSignature.toString()
                         .toRequestBody(mediaType),
-                    file = multiPartPhoto
+                    file = multiPartPhoto!!
                 )
 
+                LogMe.i("uploadingResult", uploadingResult.message())
+                LogMe.i("uploadingResult", uploadingResult.body().toString())
+                LogMe.i("uploadingResult", uploadingResult.errorBody().toString())
 
                 val resultFinish = remoteDataManager.finishUploadingImage(
                     FinishUploadBody(fileId = awsCredentials.id.toString())
@@ -108,6 +131,28 @@ class UploadingRepository @Inject constructor() : BaseRepository() {
             "${mime.getExtensionFromMimeType(contentResolver.getType(uri)) ?: "*"}"
         LogMe.i("getUriMemiType", result)
         return result
+    }
+
+    private fun getMIMEType(uri: Uri): String {
+        var mimeType: String? = null
+        mimeType = if (ContentResolver.SCHEME_CONTENT == uri.scheme) {
+            val cr = appContext.contentResolver
+            cr.getType(uri)
+        } else {
+            val fileExtension = MimeTypeMap.getFileExtensionFromUrl(
+                uri
+                    .toString()
+            )
+            MimeTypeMap.getSingleton().getMimeTypeFromExtension(
+                fileExtension.toLowerCase()
+            )
+        }
+        if (mimeType == null) {
+            FirebaseCrashlytics.getInstance()
+                .log("UploadingRepository: getMEMIType-> mimeType is null")
+        }
+        LogMe.i("getUriMIMEType", mimeType.toString())
+        return mimeType ?: "notDefined"
     }
 
 

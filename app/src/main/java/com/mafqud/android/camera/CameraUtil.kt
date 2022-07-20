@@ -4,13 +4,16 @@ import android.content.Context
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.webkit.MimeTypeMap
+import android.webkit.URLUtil
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCapture.ERROR_FILE_IO
 import androidx.camera.core.ImageCaptureException
 import androidx.core.net.toFile
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mafqud.android.R
 import java.io.File
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
@@ -47,10 +50,14 @@ fun ImageCapture.takePicture(
                     arrayOf(savedUri.toFile().absolutePath),
                     arrayOf(mimeType)
                 ) { _, uri ->
-
+                    if (isValidURI(uri)) {
+                        onImageCaptured(uri, false)
+                    } else {
+                        onError(ImageCaptureException(ERROR_FILE_IO, "ImageCaptureException", null))
+                    }
                 }
-                onImageCaptured(savedUri, false)
             }
+
 
             override fun onError(exception: ImageCaptureException) {
                 FirebaseCrashlytics.getInstance().apply {
@@ -60,6 +67,10 @@ fun ImageCapture.takePicture(
                 onError(exception)
             }
         })
+}
+
+fun isValidURI(uri: Uri?): Boolean {
+    return uri.toString().contains("content://")
 }
 
 
