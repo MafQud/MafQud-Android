@@ -83,17 +83,17 @@ jobs:
             :clipboard: Version `${{ env.RELEASE_VERSION }}`
             :outbox_tray: Click [here](${{ env.INTERNAL_APP_LINK }}) to install!
 
-  telegram_notification:
-    needs: [ build_Deploy ]
-    runs-on: ubuntu-latest
-    steps:
-      - name: send custom message
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            New version of ${{ steps.vars.outputs.tag }} is ready!
-            Version: ${{ steps.vars.outputs.tag }}
-            Click to install!
-            ${{ env.INTERNAL_APP_LINK }}
+#  telegram_notification:
+#    needs: [ build_Deploy ]
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: send custom message
+#        uses: appleboy/telegram-action@master
+#        with:
+#          to: ${{ secrets.TELEGRAM_TO }}
+#          token: ${{ secrets.TELEGRAM_TOKEN }}
+#          message: |
+#            New version of ${{ steps.vars.outputs.tag }} is ready!
+#            Version: ${{ steps.vars.outputs.tag }}
+#            Click to install!
+#            ${{ env.INTERNAL_APP_LINK }}
