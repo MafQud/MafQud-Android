@@ -89,7 +89,7 @@ class PublishCaseFragment : BaseFragment() {
              */
             when (stateValue.networkError) {
                 is Result.NetworkError.Generic -> {
-                    if (stateValue.networkError.type == HttpErrorType.BadRequest) {
+                    if (stateValue.networkError.type == HttpErrorType.BadRequest()) {
                         //close current screen
                         val message = stringResource(id = R.string.puclished_before)
                         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()

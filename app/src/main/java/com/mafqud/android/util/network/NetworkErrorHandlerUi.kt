@@ -128,7 +128,7 @@ private fun Throwable.isUnauthorized(): Boolean {
 fun getMessageFromGeneric(networkError: Result.NetworkError.Generic): String {
     return when (networkError.type) {
         HttpErrorType.BadGateway -> stringResource(id = R.string.error_bad_gateway)
-        HttpErrorType.BadRequest -> stringResource(id = R.string.error_bad_request)
+        is HttpErrorType.BadRequest -> stringResource(id = R.string.error_bad_request)
         is HttpErrorType.DataInvalid -> stringResource(id = R.string.error_unknown)
         HttpErrorType.Forbidden -> stringResource(id = R.string.error_forbidden)
         HttpErrorType.InternalServerError -> stringResource(id = R.string.error_server_error)
