@@ -18,7 +18,9 @@ class RegisterRepository @Inject constructor() : BaseRepository() {
 
     suspend fun signUp(signupData: RegisterViewModel.SignUpForm): Result<Any> {
         return safeApiCall {
+            // convert 11 num digit to 10
             val phoneWithoutZero = signupData.phone?.drop(1)
+            // get fcm token
             val fcmToken = getUserFCMToken()
             return@safeApiCall coroutineScope {
                 launch {
@@ -34,10 +36,10 @@ class RegisterRepository @Inject constructor() : BaseRepository() {
                             password = signupData.password
                         )
                     )
-                    //delay(200)
+                    delay(50)
                     val result = remoteDataManager.login(
                         LoginBody(
-                            username = signupData.phone ?: "",
+                            username = phoneWithoutZero ?: "",
                             password = signupData.password ?: ""
                         )
                     )

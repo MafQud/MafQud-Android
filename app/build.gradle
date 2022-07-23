@@ -15,7 +15,7 @@ ext.majorVersion = 2
 // feature
 ext.minorVersion = 2
 //bugfix
-ext.patchVersion = 4
+ext.patchVersion = 5
 /*
  alpha - beta  - stable
  */
