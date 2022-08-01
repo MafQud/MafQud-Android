@@ -80,7 +80,7 @@ jobs:
           title: |
             :star2:  New version of ${{ env.APP_NAME }} is ready!
           description: |
-            :clipboard: Version `${{ env.RELEASE_VERSION }}`
+            :clipboard: Version `${{ steps.vars.outputs.tag }}`
             :outbox_tray: Click [here](${{ env.INTERNAL_APP_LINK }}) to install!
 
 #  telegram_notification:

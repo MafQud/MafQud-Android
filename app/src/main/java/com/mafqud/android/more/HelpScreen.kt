@@ -32,7 +32,7 @@ import com.mafqud.android.ui.theme.TextUi
 @Composable
 @Preview
 fun HelpScreen() {
-    val url = remember { mutableStateOf("https://gist.github.com/Eng-AhmedShehata/aae20217432b3679e1fce357cbc46f5d") }
+    val url = remember { mutableStateOf("https://gist.github.com/ahmed-shehataa/aae20217432b3679e1fce357cbc46f5d") }
     val visibility = remember { mutableStateOf(true) }
     BoxUi(
         modifier = Modifier
