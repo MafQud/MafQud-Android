@@ -2,9 +2,9 @@ package com.mafqud.android.util.validation
 
 import android.text.TextUtils
 import android.util.Patterns
-import androidx.compose.compiler.plugins.kotlin.EmptyFunctionMetrics.name
 import androidx.compose.runtime.MutableState
 import com.mafqud.android.util.other.LogMe
+import java.util.regex.Pattern
 
 const val PHONE_MAX_LENGTH = 11
 const val NATIONAL_ID_MAX_LENGTH = 14
@@ -20,8 +20,8 @@ enum class PassErrorType {
     NONE
 }
 
-fun isValidEmail(email: String): Boolean {
-    return if (TextUtils.isEmpty(email)) {
+fun isValidEmail(email: String,/* pattern: Pattern = Patterns.EMAIL_ADDRESS*/): Boolean {
+    return if (email.isEmpty()) {
         false
     } else {
         Patterns.EMAIL_ADDRESS.matcher(email).matches()
@@ -165,6 +165,7 @@ fun validateNameForm(
     onSuccessValidation(mName)
 
 }
+
 fun validateNAmeAndEmailForm(
     name: String,
     email: String,
