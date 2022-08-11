@@ -2,6 +2,7 @@ package com.mafqud.android.util.validation
 
 import android.text.TextUtils
 import android.util.Patterns
+import androidx.compose.compiler.plugins.kotlin.EmptyFunctionMetrics.name
 import androidx.compose.runtime.MutableState
 import com.mafqud.android.util.other.LogMe
 
@@ -53,6 +54,12 @@ fun isValidName(name: String): Boolean {
     return name.isNotEmpty()
 }
 
+/**
+ *  yyyy-MM-dd
+ */
+fun isValidDate(date: String): Boolean {
+    return date.matches(Regex("\\d{4}-\\d{2}-\\d{2}"))
+}
 
 fun validatePhoneForm(
     phone: String,
