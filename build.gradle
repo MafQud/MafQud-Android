@@ -11,3 +11,8 @@ plugins {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+task testAllApplication(dependsOn: ['app:test', 'app:connectedAndroidTest']) {
+    group = 'custom_tasks'
+    description = "Run all tests (Local unit test, Instrumented unit test)"
+}
