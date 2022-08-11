@@ -68,7 +68,7 @@ class MydateFormatKtTest {
 
     @Test
     fun `fromGlobalToDisplay, when passing a valid data yyyy-MM-dd, then return formatted data Mon, 1999 07 12`() {
-        val initialDate = "2022-12-5"
+        val initialDate = "2022-12-05"
         val result =
             fromGlobalToDisplay(initialDate, Locale.ENGLISH)
 
@@ -87,6 +87,7 @@ class MydateFormatKtTest {
         initialDates.add("07/12/2022")
         initialDates.add("2022,12,07")
         initialDates.add("2022:12:15")
+        initialDates.add("2022-12-5")
         //initialDates.add("2022-12-55")
 
         initialDates.forEach { initialDate ->
